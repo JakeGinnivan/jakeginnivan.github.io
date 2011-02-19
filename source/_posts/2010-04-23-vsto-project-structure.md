@@ -42,6 +42,6 @@ From here you should add all application specific code into the .Core project, a
 Now just create a test project to test our .Core project and we are off and racing. For my next post I will add IoC support into our application and show you how you can inject dependencies into Ribbons.
 
 
-  [1]: /get/screenshot/NewOutlookAddin.png
-  [2]: /get/screenshot/EmbedInteropTypes.png
-  [3]: /get/screenshot/AddinSolutionExplorer.png
+  [1]: /get/screenshots/NewOutlookAddin.png
+  [2]: /get/screenshots/EmbedInteropTypes.png
+  [3]: /get/screenshots/AddinSolutionExplorer.png
