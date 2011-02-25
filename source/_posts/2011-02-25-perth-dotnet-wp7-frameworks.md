@@ -26,15 +26,15 @@ You will leave knowing much more about Windows Phone 7 dev, and how to select th
 # The Talk Details
 Talk Link: [http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx][1]
 
-**When:** Thursday, Mar 3rd, 5:30pm - 7:00pm
+**When:** Thursday, Mar 3rd, 5:30pm - 7:00pm<br/>
 **Where:** Enex 100 Seminar Room, Level 3, 100 St Georges Terrace, Perth
 
 # The frameworks
 So far the frameworks I am aware of:
 
-[Columbus][2] - written by Artem Govorov
-[Windows Phone MVP][3] - written by [Brendan Kowitz][4]
-[Calburn Micro][5] - written by [Rob Eisenberg][6]
+[Columbus][2] - written by Artem Govorov<br/>
+[Windows Phone MVP][3] - written by [Brendan Kowitz][4]<br/>
+[Calburn Micro][5] - written by [Rob Eisenberg][6]<br/>
 [MVVM Light][7] - written by [Laurent Bugnion (GalaSoft)][8]
 
 If you know of others let me know, and tell me what is your favourite thing in that framework.
