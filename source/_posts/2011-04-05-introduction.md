@@ -124,8 +124,8 @@ I would love feedback, I still have a lot of unit testing to do and test every c
  
 
 
-  [1]: vsto/ribbon-designer
-  [2]: vsto-contrib/ribbon-factory
+  [1]: ../vsto-ribbon-designer-in-depth
+  [2]: ribbon-factory
   [3]: vsto-com-interop
-  [4]: vsto-contrib/com-cleanup-extension-methods
+  [4]: com-cleanup-extension-methods
   [5]: http://vstocontrib.codeplex.com/releases
