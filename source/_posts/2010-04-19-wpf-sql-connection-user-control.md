@@ -3,7 +3,7 @@ layout: post
 title: WPF SQL Connection User Control
 metaTitle: WPF SQL Connection User Control
 description: 
-revised: 2011-02-19
+revised: 2011-04-06
 date: 2010-04-19
 categories: [.net,c#,wpf]
 migrated: true
@@ -246,4 +246,4 @@ Although not needed for this user control the GetTables method was already in th
   [2]: /get/screenshots/ConnectionBuilder1.PNG
   [3]: /get/screenshots/ConnectionBuilder2.PNG
   [4]: /get/screenshots/ConnectionBuilder3.PNG
-  [5]: /get/downloads/WpfApplication1.zip
+  [5]: /get/downloads/SqlConnectionSelector.zip
