@@ -3,7 +3,7 @@ layout: post
 title: Introduction to VSTO Contrib
 metaTitle: Introduction to VSTO Contrib
 description: The release of VSTO Contrib is imminent, this will be a series covering various parts of VSTO Contrib.
-revised: 2011-04-05
+revised: 2011-04-20
 date: 2011-04-05
 categories: [open-source,vsto,vsto-contrib,wpf]
 migrated: true
@@ -72,12 +72,12 @@ The issue is that code quickly becomes ugly and unmanageable when everything is 
 These helpers come in two flavours, simple, and dynamic proxies. 
 
 ###.WithComCleanup()
-This extension method will return either a Wrapped<ComType> : IDisposable (simple) or a IComType : ComType, IDisposable (dynamic proxy).
+This extension method will return either a `Wrapped<ComType> : IDisposable` (simple) or a `IComType : ComType, IDisposable` (dynamic proxy).
 
 Usage is:
-using (var sheets = workbook.WorkSheets.WithComCleanup())
-sheets.Resource.Add() //for simple
-or sheets.Add() //for dynamic proxy version
+`using (var sheets = workbook.WorkSheets.WithComCleanup())`
+`sheets.Resource.Add() //for simple`
+or `sheets.Add() //for dynamic proxy version`
 
 The dynamic proxy is slightly nicer, but you have to take on a dependency to Castle.Core if you want that. If you want to see some more code examples of how this can cleanup your VSTO/Office Automation code, [have a look here][4]
 
@@ -91,8 +91,8 @@ Allows you to cleanly write linq against office collections. *Beware* as this wi
 
 But you will get a RCW has been separated from underlying com object exception if you do this:
 
-var sheetOne = workbook.Sheets.ComLinq<WorkSheet>().SingleOrDefault(s=>s.Name == "Sheet1");
-sheetOne.Name = "NewSheetName"; //Will throw exception, because Enumerator has already released the WorkSheet as SingleOrDefault forces the IEnumerable to be iterated.
+    var sheetOne = workbook.Sheets.ComLinq<WorkSheet>().SingleOrDefault(s=>s.Name == "Sheet1");
+    sheetOne.Name = "NewSheetName"; //Will throw exception, because Enumerator has already released the WorkSheet as SingleOrDefault forces the IEnumerable to be iterated.
 
 Future versions may have a custom collection which only expose specific operations to make this extension method more predictable. For the moment, use with caution.
 
