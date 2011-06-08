@@ -3,7 +3,7 @@ layout: post
 title: TFS Merge Tools Configuration
 metaTitle: TFS Merge Tools Configuration
 description: Every time I format my machine, I have to think of all the different file extensions I work with. Here is my list.
-revised: 2011-06-02
+revised: 2011-06-08
 date: 2011-06-01
 categories: [tfs,.net]
 migrated: true
@@ -23,7 +23,7 @@ I use KDiff, so the Compare arguments are `%1 --fname %6 %2 --fname %7` and Merg
 
 Great, except I have to register all the extensions that I want to use KDiff for. This is my list:
 
-`.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb`
+`.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql`
 
 What other extensions am I missing? 
 
