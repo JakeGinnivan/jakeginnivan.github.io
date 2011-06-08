@@ -23,7 +23,7 @@ I use KDiff, so the Compare arguments are `%1 --fname %6 %2 --fname %7` and Merg
 
 Great, except I have to register all the extensions that I want to use KDiff for. This is my list:
 
-`.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql`
+    .xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql
 
 What other extensions am I missing? 
 
