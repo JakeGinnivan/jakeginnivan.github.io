@@ -3,7 +3,7 @@ layout: post
 title: Quake Style Powershell Console v2
 metaTitle: Quake Style Powershell Console, v2
 description: I revisited this idea, and have improved it a lot =)
-revised: 2011-02-19
+revised: 2011-06-09
 date: 2010-09-01
 categories: [powershell,command-line]
 migrated: true
@@ -57,6 +57,6 @@ You will see a few command windows run, and you will be prompted to put in your 
   [2]: http://sourceforge.net/projects/console/files/
   [3]: http://jpassing.com/2007/12/08/launch-elevated-processes-from-the-command-line/
   [4]: http://www.wintellect.com/cs/blogs/jrobbins/archive/2007/03/27/elevate-a-process-at-the-command-line-in-vista.aspx
-  [5]: /get/screenshots/quakeconsolescripts.zip
+  [5]: get/downloads/quakeconsolescripts.zip
   [6]: http://www.autohotkey.com/download/
   [7]: http://www.autohotkey.com/docs/Hotstrings.htm#AutoCorrect
