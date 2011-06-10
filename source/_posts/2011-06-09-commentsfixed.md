@@ -15,7 +15,7 @@ summary: |
   
 
 ---
-While doing a large update to FunnelWeb, I was dogfooding. Unfortunately I forgot to update my blog when I pushed my updates uinto the dev repository.
+While doing a large update to FunnelWeb, I was dogfooding. Unfortunately I forgot to update my blog when I pushed my updates up into the dev repository.
 
 This resulted in my blog running a broken version which only ever existed in my local repository. Doh..
 
