@@ -18,7 +18,7 @@ summary: |
 Windows Phone Essentials tries to fill a gap that many of the other WP7 frameworks don't fill. Most of the libraries out there are Controls and UI related libraries, wp7essentials tries to fill that gap.
 
 # Background
-[Brendan Kowitz][1] has been writing [Windows Phone MVP][2] and I have started on [Windows Phone MVC][3] which was inspired from [Columbus][4], but the changes I was planning to make to Columbus fundamentally changed the way it worked.
+[Brendan Kowitz][1] has been writing [Windows Phone MVP][2] and I have started on [Windows Phone MVC][3] which was inspired from [Columbus][4], but the changes I was planning to make to Columbus fundamentally changed the way it worked.  
 At Mobile Camp Oz, Brendan and I discussed many of the problems we are trying to solve with Windows Phone MVC and MVP. So we have taken the best approaches from each of the frameworks, put them into a common essentials library (which both frameworks rely on) reducing the amount of extra work we both have to do, make the API's for both frameworks similar. Now the decision is simply do I prefer to work using the MVC pattern, or the MVP pattern!
 
 # Windows Phone Essentials
