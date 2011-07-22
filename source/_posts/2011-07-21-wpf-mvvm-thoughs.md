@@ -232,3 +232,7 @@ Notice in our default contructor we call `this.PopulateDesignTimeData().With<Mai
     }
 
 Because of the way our IoC containers work, they will always choose the most specific constructor they can. If it cannot find the dependencies it will default back to the default constructor, which will throw a Debug.Assert because it is not in design time mode.
+
+# Source
+
+[Download example project](/get/downloads/WpfApplication3.zip)
