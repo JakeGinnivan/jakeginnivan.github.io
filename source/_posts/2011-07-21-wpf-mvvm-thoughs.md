@@ -40,7 +40,7 @@ Now I want to be able to tell the calling viewmodel if I was cancelled, or possi
 
     public interface IDialogueView : IView
     {
-        void DialogueDisplayed(IDialogueWindow window);
+        void DialogueDisplayed();
         void DialogueClosed();
     }
 
@@ -117,6 +117,68 @@ Start off and create a new 'WPF Window'. Then we define an interface for it in t
         {
             _viewModel = viewModel;
             DataContext = _viewModel;
-            
+            InitializeComponent();
+        }
+
+        public void DialogueDisplayed()
+        {
+            _viewModel.Initialise();
+        }
+
+        public void DialogueClosed()
+        {
+        }
+
+        public event EventHandler<DialogueResultEventArgs<SomeData>> Finished
+        {
+            add { _viewModel.Finished += value; }
+            remove { _viewModel.Finished -= value; }
         }
     }
+
+    public interface IMyView : IDialogueView<SomeData>
+    { }
+
+Doing this requires some basic coding, but allows full IoC support, and allows the viewmodel to raise the finished event, which will cause the UIService to close the window and return to the caller. It also gives a nice place to hook into things. 
+In my current projects, we actually define all windows as UserControls, and our UI server creates the window with custom chrome and gives us full control over everything. It is working very well.
+
+Then lets look at the Xaml.
+
+    <Window x:Class="WpfApplication3.MainWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            Title="MainWindow" Height="350" Width="525"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            mc:Ignorable="d"
+            d:DataContext="{d:DesignInstance MyViewModel}">
+        <Grid>
+        
+        </Grid>
+    </Window>
+
+In my current project we also have an attached behaviour which allows us to specify a provider to set the datacontext. We leave the d:DataContext in there so we get R# support for our bindings =)
+
+Next chance I get, I was thinking that doing something like this in the viewmodel might work quite well.
+
+## Random ViewModel design data idea
+
+    public class MainViewModel : ViewModelBase
+    {
+        public MainViewModel()
+        {
+            this.PopulateDesignTimeData().With<MainViewModelData>();
+        }
+
+        public string SomeProperty { get; set; }
+    }
+
+    public class MainViewModelData : IDesignTimeViewModelPopulator<MainViewModel>
+    {
+        public void Populate(MainViewModel viewModel)
+        {
+            viewModel.SomeProperty = "blah";
+        }
+    }
+
+The default constructor will throw if not in design time and we are running in debug (debug.assert).
