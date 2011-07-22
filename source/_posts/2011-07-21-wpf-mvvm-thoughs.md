@@ -89,6 +89,8 @@ Now I want to be able to tell the calling viewmodel if I was cancelled, or possi
         public DialogueResult<T> Result { get; private set; }
     }
 
+
+
 Then we need some way for our ViewModels to interact with other Views using these interfaces, enter IUIService
 
     public interface IUIService
@@ -151,7 +153,7 @@ Then lets look at the Xaml.
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             mc:Ignorable="d"
-            d:DataContext="{d:DesignInstance MyViewModel}">
+            d:DataContext="{d:DesignInstance MainViewModel, IsDesignTimeCreatable=True}">
         <Grid>
         
         </Grid>
@@ -161,7 +163,40 @@ In my current project we also have an attached behaviour which allows us to spec
 
 Next chance I get, I was thinking that doing something like this in the viewmodel might work quite well.
 
-## Random ViewModel design data idea
+# IoC - Putting it together
+
+In our appliation startup, we need to register out IoC container, I am using Autofac. This is my registration
+
+    private void ApplicationStartup(object sender, StartupEventArgs e)
+    {
+        var containerBuilder = new ContainerBuilder();
+        containerBuilder.RegisterType<UIService>().As<IUIService>();
+        containerBuilder.RegisterType<SomeService>().As<ISomeService>();
+        containerBuilder
+            .RegisterAssemblyTypes(typeof(App).Assembly)
+            .AssignableTo<IView>()
+            .AsImplementedInterfaces();
+        containerBuilder
+            .RegisterAssemblyTypes(typeof(App).Assembly)
+            .AssignableTo<ViewModelBase>()
+            .AsSelf();
+        var container = containerBuilder.Build();
+        container.Resolve<IUIService>().ShowDialogue(container.Resolve<IMainView>());
+    }
+
+I register my UIService, another random service, then use the assembly scanning features to register viewmodels and views. I then resolve my UIService, and show my IMainViewModel!
+
+
+#Design Time and Runtime ViewModel wireup
+`Note:` I have not used this technique in a production project, but think it would be cool to try out and think it would be better than the setup I am using now.
+
+We add default constructor to our viewmodel:
+
+    public MainWindow() : this(new MainViewModel())
+    {
+    }
+
+We then setup our viewmodel, which will look like:
 
     public class MainViewModel : ViewModelBase
     {
@@ -170,8 +205,23 @@ Next chance I get, I was thinking that doing something like this in the viewmode
             this.PopulateDesignTimeData().With<MainViewModelData>();
         }
 
+        public MainViewModel(ISomeService someService)
+        {
+            //To show some DI at runtime
+            SomeProperty = someService.GetAValue();
+        }
+
         public string SomeProperty { get; set; }
+        public event EventHandler<DialogueResultEventArgs> Finished;
+
+        protected void OnFinished(DialogueResultEventArgs e)
+        {
+            var handler = Finished;
+            if (handler != null) handler(this, e);
+        }
     }
+
+Notice in our default contructor we call `this.PopulateDesignTimeData().With<MainViewModelData>()`? Here is the MainViewModelData class:
 
     public class MainViewModelData : IDesignTimeViewModelPopulator<MainViewModel>
     {
@@ -181,4 +231,4 @@ Next chance I get, I was thinking that doing something like this in the viewmode
         }
     }
 
-The default constructor will throw if not in design time and we are running in debug (debug.assert).
+Because of the way our IoC containers work, they will always choose the most specific constructor they can. If it cannot find the dependencies it will default back to the default constructor, which will throw a Debug.Assert because it is not in design time mode.
