@@ -3,7 +3,7 @@ layout: post
 title: Windows Phone MVC Update
 metaTitle: Windows Phone MVC Update
 description: I have just pushed a MASSIVE update! So many enhancements, bug fixes, and maturity is in this release. 
-revised: 2011-08-22
+revised: 2011-08-23
 date: 2011-08-21
 categories: [wp7,mvc,open-source]
 migrated: true
@@ -25,6 +25,12 @@ This is going to be quite a long post going through many features of Windows Pho
 I am still a little way from v1, so there will be API changes, but I am more than happy to field some questions about how to use it.
 
 Many of the improvements on this release are due to [http://transhub.wordpress.com/](http://transhub.wordpress.com/) using Windows Phone MVC and I have been working close with the transub team to make sure the framework helped them deliver a killer app!
+
+## Important Links
+
+NuGet Package Name: WindowsPhoneMVC [link](http://nuget.org/List/Search?packageType=Packages&searchTerm=WindowsPhoneMVC)  
+Codeplex URL: [http://windowsphonemvc.codeplex.com/](http://windowsphonemvc.codeplex.com/)  
+Documentation: [http://windowsphonefoundations.net/windowsphonemvc](http://windowsphonefoundations.net/windowsphonemvc)
 
 ## MVC
 First off it is important to understand how a MVC framework works.
