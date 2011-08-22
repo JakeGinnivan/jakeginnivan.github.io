@@ -28,7 +28,7 @@ Many of the improvements on this release are due to [http://transhub.wordpress.c
 
 ## Important Links
 
-NuGet Package Name: WindowsPhoneMVC [link](http://nuget.org/List/Search?packageType=Packages&searchTerm=WindowsPhoneMVC)  
+NuGet Package Name: [WindowsPhoneMVC](http://nuget.org/List/Search?packageType=Packages&searchTerm=WindowsPhoneMVC)  
 Codeplex URL: [http://windowsphonemvc.codeplex.com/](http://windowsphonemvc.codeplex.com/)  
 Documentation: [http://windowsphonefoundations.net/windowsphonemvc](http://windowsphonefoundations.net/windowsphonemvc)
 
