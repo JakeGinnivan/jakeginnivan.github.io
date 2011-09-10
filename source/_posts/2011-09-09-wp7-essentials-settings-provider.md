@@ -65,3 +65,12 @@ So in the last release we added the SettingsList control, which will generate th
 This is a first cut, and over time I will polish this page, and add support for ordering the properties and stuff (or feel free to submit pull requests :)). But I recon this is pretty cool for a first cut.
 
 Also the reason I am using a combobox instead of the ListPicker is there is a bug where the control simply doesn't work inside a scroll viewer. Bah. Anyone interested in doing a community fork which simply fixes bugs in the toolkit and doesn't add any new features?
+
+# Get it
+
+This control is in a separate package (to keep the essentials package lean and mean :P).
+
+    Install-Package WindowsPhoneEssentials.Controls.Settings
+
+[Codeplex](http://wp7essentials.codeplex.com/)  
+[NuGet](http://nuget.org/List/Search?searchTerm=WindowsPhoneEssentials)
