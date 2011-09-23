@@ -15,7 +15,7 @@ summary: |
   Now that WP MVC is maturing, it is important that when you have performance issues or any issues, you can find the problem easily!
 
 ---
-! WP7 Essentials Tracing
+# WP7 Essentials Tracing
 A new feature coming in the next release is a super easy to use Trace class to allow you to debug your app really easily.
 
 In your App.xaml.cs constructor simply put:
@@ -32,7 +32,7 @@ Then the following code will output `9/23/2011 8:10 PM - Debug   [MyClass] - Som
 
 Notice that we pass a lambda into the WriteInfo class, this is so the Trace class can be super lazy and if the message is not going to be written to the Trace appenders, it will not even construct that string (useful if you are doing more complex logging like checking memory usage etc).
 
-! WP7 MVC Tracing
+# WP7 MVC Tracing
 I have been using this tracing ability in vNext of Windows Phone MVC to measure performance and start optimising. Here is an example of the full debug log when running
 
 
@@ -134,3 +134,5 @@ Say we want to silence the Navigator because it logs a lot, we simply do:
 And all Trace events from the Navigator class will be ignored. So you can find out useful information when you need it, and ignore it other times!
 
 Keen to know what everyone thinks.
+
+## Check it out at [http://windowsphonemvc.codeplex.com/](http://windowsphonemvc.codeplex.com/)
