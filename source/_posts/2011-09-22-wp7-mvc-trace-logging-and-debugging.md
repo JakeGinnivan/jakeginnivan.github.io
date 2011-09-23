@@ -21,7 +21,7 @@ A new feature coming in the next release is a super easy to use Trace class to a
 In your App.xaml.cs constructor simply put:
 
     #if DEBUG
-        Trace.Appenders.Add(Debug.WriteLine);
+        Trace.Appenders.Add(s=>Debug.WriteLine(s));
         Trace.TraceLevel = TraceLevel.Debug;
     #endif
 
