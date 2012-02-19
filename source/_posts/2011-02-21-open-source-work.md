@@ -3,7 +3,7 @@ layout: post
 title: Open Source Work
 metaTitle: Open Source Work
 description: A collection of the open source projects I am currently contributing to, or have created.
-revised: 2011-02-21
+revised: 2012-02-19
 date: 2011-02-21
 categories: [open-source]
 migrated: true
