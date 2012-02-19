@@ -48,3 +48,6 @@ PublicApiGenerator.cs
 PublicApiApprovalTest.cs  
 
 Open up PublicApiApprovalTest and fix up the compilation error (specify assembly, and properly attribute up the test for your framework of choice. Then get started!
+
+
+The source is also available at [https://github.com/JakeGinnivan/ApiApprover](https://github.com/JakeGinnivan/ApiApprover)
