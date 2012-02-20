@@ -3,7 +3,7 @@ layout: post
 title: ApiApprover
 metaTitle: ApiApprover
 description: 
-revised: 2012-02-19
+revised: 2012-02-20
 date: 2012-02-19
 categories: [open-source,nuget,semanticversioning]
 migrated: true
@@ -41,7 +41,7 @@ So what does that actually look like:
 
 # How do I use it?
 
-Add the **`ApiApprover`** NuGet package  
+Add the [**`ApiApprover`**](https://nuget.org/packages/ApiApprover/1.0.0) NuGet package  
   
 It will drop a few files into your test project  
 PublicApiGenerator.cs  
