@@ -15,7 +15,7 @@ summary: |
   
 
 ---
-I have just installed Windows 8 consumer preview on my dev machine, then all my API Approval tests started failing with this exception =(
+I have just installed Windows 8 consumer preview on my dev machine, then all my API Approval tests started failing with this exception because I don't have TortoiseMerge installed =(
 
     System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
        at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
