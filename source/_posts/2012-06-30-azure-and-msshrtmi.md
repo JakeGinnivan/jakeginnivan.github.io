@@ -79,7 +79,7 @@ I have removed all the other FunnelWeb initialisation code, and just left the im
         }
     }
 
-I then create a amd64 and x86 folder in the _bin_deployableAssemblies folder so they get copied into the bin folder during the build.
+I then create a amd64 and x86 folder in the `_bin_deployableAssemblies` folder so they get copied into the bin folder during the build.
 When the AppDomain tries to resolve the native file, I dynamically load the correct version.
 
 Comments on my approach would be great.
