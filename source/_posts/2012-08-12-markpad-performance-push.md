@@ -165,3 +165,8 @@ We then start a long running task (background operation in the preview appdomain
 We then invoke the creation of the content host on Markpads UI thread, and replace the content of the UserControl with the MarkPad preview.
 
 There are a few more things, but this should help you follow the Markpad codebase if you ever want to host a WPF control in another AppDomain :)
+
+## Links
+Go grab the source, have a look. If you are so inclined you can pick up a issue, and submit a pull request!
+
+[https://github.com/Code52/DownmarkerWPF](https://github.com/Code52/DownmarkerWPF)
