@@ -3,7 +3,7 @@ layout: post
 title: Markpad Performance Push
 metaTitle: Markpad Performance Push
 description: 
-revised: 2012-06-30
+revised: 2012-08-12
 date: 2012-08-12
 categories: [wpf,code52]
 migrated: true
@@ -18,6 +18,8 @@ summary: |
 If you haven't seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files.
 
 ![MarkPad](/assets/posts/2012-08-12-markpad-performance-push/screenshot.png)
+
+![MarkpadPerformancePush1](/assets/posts/2012-08-12-markpad-performance-push/MarkpadPerformancePush1_634804150263142500.png)
 
 While flying back from Oslo and [NDC](http://www.ndcoslo.com/) I spent probably 12+ hours of my ~20 hours of flying working on improving performance in MarkPad and cleaning up the codebase. This is documenting the most significant change.
 
