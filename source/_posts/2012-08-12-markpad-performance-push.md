@@ -19,8 +19,6 @@ If you haven't seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel,
 
 ![MarkPad](/assets/posts/2012-08-12-markpad-performance-push/screenshot.png)
 
-![MarkpadPerformancePush1](/assets/posts/2012-08-12-markpad-performance-push/MarkpadPerformancePush1_634804150263142500.png)
-
 While flying back from Oslo and [NDC](http://www.ndcoslo.com/) I spent probably 12+ hours of my ~20 hours of flying working on improving performance in MarkPad and cleaning up the codebase. This is documenting the most significant change.
 
 # Hosting Awesomium in it's own AppDomain
