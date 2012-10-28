@@ -27,6 +27,7 @@ White reached a nice maturity level and active development stopped about 2 years
 ## Why I'm taking on White
 Personally, I have been on a rather large WPF project on and off for the past 2.5 years and rely on UI Automation very heavily. When we started the project, White was the most mature UI Automation framework.
 
+This is a snapshot of some of our builds, every CI build that succeeds with kick-off many UI automation test runs for different configurations.  
 ![TeamCity](/assets/posts/2012-10-28-teststack-white/UIAutomationTests.png)
 
 Over the last few years, we have wrapped White and have been running a custom builds and have learnt a lot about UI automation. 
