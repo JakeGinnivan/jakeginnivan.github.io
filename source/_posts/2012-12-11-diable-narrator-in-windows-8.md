@@ -27,6 +27,7 @@ I get rather annoyed with the narrator. Using [this](http://blog.ostebaronen.dk/
 ![Narrator 3](/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator3.png)
  - Add yourself, then explicitly deny `Read & execute` and `Read`. Click yes on warning about modifying security on system files  
 ![Narrator 4](/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator4.png)
- - Change owner to `SYSTEM`
+ - Change owner to `SYSTEM`  
+![Narrator 5](/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png)
 
 Win+Enter now won't do anything :D
