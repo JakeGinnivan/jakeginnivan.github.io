@@ -3,7 +3,7 @@ layout: post
 title: Disable Narrator in Windows 8
 metaTitle: Disable Narrator in Windows 8
 description: Use resharper and accidently hit win+enter rather than alt+enter and Narrator pops up? This is how you disable it
-revised: 2012-12-11
+revised: 2012-12-12
 date: 2012-12-11
 categories: [windows8]
 migrated: true
@@ -16,6 +16,8 @@ summary: |
 
 ---
 I get rather annoyed with the narrator. Using [this](http://blog.ostebaronen.dk/2012/08/disable-narrator-in-windows-8.html) as inspiration here is how you do it.
+
+**Update:**  Another solution is available at [http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/](http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/) which uses Image File Execution Options instead.
 
 Note: You can just delete it, but windows will restore it every time an update is installed
 
@@ -33,3 +35,6 @@ Note: You can just delete it, but windows will restore it every time an update i
 ![Narrator 5](/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png)
 
 Win+Enter now won't do anything :D
+
+
+  [1]: http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/
