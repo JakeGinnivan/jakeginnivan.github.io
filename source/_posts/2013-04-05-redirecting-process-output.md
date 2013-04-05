@@ -17,7 +17,7 @@ summary: |
 ---
 I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.
 
-Based on a blog post that Lucian Wischik posted a while back at http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx I have created a c# version of his code which makes it nice and easy.
+Based on a blog post that Lucian Wischik posted a while back at [http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx](http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx) I have created a c# version of his code which makes it nice and easy.
 
 # Usage
 
