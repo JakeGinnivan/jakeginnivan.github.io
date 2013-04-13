@@ -67,5 +67,7 @@ I mentioned earlier my tests are xUnit.net and that visual studio only lets you 
 
 This is where [https://github.com/JakeGinnivan/TestCaseAutomationAssigner](https://github.com/JakeGinnivan/TestCaseAutomationAssigner) comes in. It is a simple WPF application which allows you to associate either xUnit.net or NUnit tests with Test Cases.
 
+You can install this from [http://teamcity.ginnivan.net/guestAuth/repository/download/bt48/.lastSuccessful/ClickOnce/TestCaseAutomationAssigner.application](http://teamcity.ginnivan.net/guestAuth/repository/download/bt48/.lastSuccessful/ClickOnce/TestCaseAutomationAssigner.application)
+
 # Summary
 Using TestCaseAutomationAssigner, TfsCreateBuild and VSTest.TeamCityLogger you can use TeamCity as your build server, xUnit or NUnit as your unit test framework and report the results back into Test Manager and TFS giving you all the reportability and value that comes with TFS when you use all the features!
