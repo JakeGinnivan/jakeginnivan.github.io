@@ -3,7 +3,7 @@ layout: post
 title: TeamCity Build Results in TFS
 metaTitle: TeamCity Build Results in TFS
 description: 
-revised: 2013-03-25
+revised: 2013-04-13
 date: 2013-04-13
 categories: []
 migrated: true
@@ -27,15 +27,18 @@ My goal is to have my automated regression tests (both UI and Integration tests)
 
 This allows the Testers to use the planned automation features in TFS to mark certain Test Cases as 'Planned' for automation, it also lights up a whole lot of reporting around test case readiness and other things.
 
+# How?
 There are a few parts to automatically marking test cases as passed/failed.
 
 1. Associated Automation  
-If you open a test case up in Visual Studio, you can assign an MSTest test to a test case
-2. Build Results with Test Results  
-Many features need builds in TFS, then the .trx results file published to that build
-3. A test run created in Test Manager which can be linked to a test suite, this will automatically pass/fail a test.
+If you open a test case up in Visual Studio, you can assign an MSTest test to a test case  
+![TeamCityBuildResultsinTFS1](/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS1_635014894026562500.png)
+2. Get a .trx file which can be published to TFS (By using VSTest.Console with the TeamCityAndTrx logger)
+![TeamCityBuildResultsinTFS2](/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS2_635014894036562500.png)  
+![TeamCityBuildResultsinTFS3](/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS3_635014894039375000.png)
+3. Publish the build using TfsBuildResultPublisher (see [BuildAndPublish.msbuild](https://github.com/JakeGinnivan/TfsBuildResultPublisher/blob/master/BuildAndPublish.msbuild) for an example)
+4. A test run created in Test Manager which can be linked to a test suite, this will automatically pass/fail a test. 
 
-# How?
 I have built a few projects which glue this all together.
 
 ## 1. VSTest.TeamCityLogger
@@ -49,15 +52,15 @@ Now we have a TeamCity build, which exports a .trx file!
 
 More information available at [https://github.com/JakeGinnivan/VSTest.TeamCityLogger](https://github.com/JakeGinnivan/VSTest.TeamCityLogger)
 
-## 2. TfsCreateBuild
-The next part of the puzzle is getting the build into TFS, this is where TfsCreateBuild comes in. 
+## 2. TfsBuildResultPublisher 
+The next part of the puzzle is getting the build into TFS, this is where TfsBuildResultPublisher comes in. 
 It is based off Based off [http://blogs.msdn.com/b/jpricket/archive/2010/02/23/creating-fake-builds-in-tfs-build-2010.aspx](http://blogs.msdn.com/b/jpricket/archive/2010/02/23/creating-fake-builds-in-tfs-build-2010.aspx) and [http://msmvps.com/blogs/vstsblog/archive/2011/04/26/creating-fake-builds-in-tfs-build-2010-using-the-command-line.aspx](http://msmvps.com/blogs/vstsblog/archive/2011/04/26/creating-fake-builds-in-tfs-build-2010-using-the-command-line.aspx) but it provides a heap of additional options, like:
 
  - Publish Test Results, if you simply want to publish a .trx into your build, TfsCreateBuild will take care of that for you.
  - Publish Test Run to MTM (Microsoft Test Manager)
     - In addition to this, VSTest.Console.exe generates different testId's to MSTest, this means that MTM will not recognise the associated tests (I am coming to this soon!). TfsCreateBuild has a flag to fix your .trx file and correct the testId's so the automation is matched.
 
-More information available at [https://github.com/JakeGinnivan/TfsCreateBuild](https://github.com/JakeGinnivan/TfsCreateBuild)
+More information available at [https://github.com/JakeGinnivan/TfsBuildResultPublisher](https://github.com/JakeGinnivan/TfsBuildResultPublisher)
 
 ## TestCaseAutomationAssigner
 I mentioned earlier my tests are xUnit.net and that visual studio only lets you associate MSTest tests with Test Cases. 
