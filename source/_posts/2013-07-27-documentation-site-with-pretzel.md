@@ -47,11 +47,11 @@ To view your wiki, run
 
 This will fire up pretzel's web server, and launch your wiki.
 
-![NewDocument](NewDocument.png)
+![NewDocument](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument.png)
 
 Lets create a few files
 
-![NewDocument1](NewDocument1.png)
+![NewDocument1](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument1.png)
 
 Notice the items circled in blue are new files, each file we create must have what is called yaml front matter (circled in red).
 
@@ -59,18 +59,18 @@ Yaml front matter contains metadata about the file, like the title, permalink (a
 
 If you refresh your browser, you will get this
 
-![NewDocument2](NewDocument2.png)
+![NewDocument2](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument2.png)
 
 Pretzel has detected changes to files in the site, then rebuilt our site for us.
 
 ## Deploying to Azure Wesbites
 Create the website
-![NewDocument3](NewDocument3.png)
-![NewDocument4](NewDocument4.png)
-![NewDocument5](NewDocument5.png)
+![NewDocument3](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument3.png)
+![NewDocument4](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument4.png)
+![NewDocument5](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument5.png)
 
 Now our site and deployment is setup, lets deploy. First copy the git deployment url
-![NewDocument6](NewDocument6.png)
+![NewDocument6](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument6.png)
 
 Now we head back to our powershell console and run the following commands:
 
@@ -129,9 +129,9 @@ And that should deploy our site, if everything went well, you should have an out
      * [new branch]      master -> master
 
 Check the azure management console
-![NewDocument8](NewDocument8.png)
+![NewDocument8](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument8.png)
 
 Head to your website
-![NewDocument7](NewDocument7.png)
+![NewDocument7](/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument7.png)
 
 Job done! You have a new wiki for documentation.
