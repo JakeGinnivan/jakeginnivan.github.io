@@ -15,7 +15,7 @@ summary: |
   How you can get a documentation site up and running really fast with Pretzel and Azure Websites
 
 ---
-Over the last day or so, I have been setting up the documentation website for TestStack at http://teststack.azurewebsites.net/
+Over the last day or so, I have been setting up the documentation website for TestStack at [http://teststack.azurewebsites.net/](http://teststack.azurewebsites.net/)
 
 With Pretzel's Wiki template support, it is super easy to get your own site setup.
 
