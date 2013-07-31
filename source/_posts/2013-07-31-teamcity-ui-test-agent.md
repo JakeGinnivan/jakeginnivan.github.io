@@ -66,7 +66,7 @@ Personally I use TightVNC.
 ![NewDocument11](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png)
 
 ### Finishing VM Setup
-Reconnect using something other than remote desktop
+Reconnect using something other than remote desktop  
 ![NewDocument12](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png)
 
 Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).
@@ -94,7 +94,7 @@ Save the following text into a .reg file i.e DisableWER.reg then run
 Fill in your teamcity server URL, and note the port number the agent is running on
 ![UITestAgent4](/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png)  
 
-Now we go back into Azure Management, and add the port
+Now we go back into Azure Management, and add the port  
 ![UITestAgent5](/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png)  
 
 #### Open Filewall Ports
