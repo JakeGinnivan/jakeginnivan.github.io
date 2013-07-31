@@ -25,7 +25,7 @@ I recommend using a VM, because otherwise you are leaving a desktop unlocked whe
 
 ![NewDocument](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png)
 
-![NewDocument1](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png)
+![NewDocument1](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png)  
 I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS's are all that are available in Azure. This also means you don't have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop. 
 
 ![NewDocument2](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png)
@@ -47,8 +47,8 @@ Before you close server manager you want to click on `Configure IE ESC`, then tu
 Next, we need our VM to login automatically, if our VM restarts, it needs to come straight back up and logs in.
 
 To do this, download Sysinternals Autologon for Windows from [http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx](http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx). Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
-The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)
-![NewDocument8](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png)
+The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)  
+![NewDocument8](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png)  
 ![NewDocument9](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png)
 
 Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
