@@ -23,6 +23,11 @@ The previous test suite was often red, which meant that it was hard to know if t
 
 You can see the CI status at [http://teamcity.ginnivan.net/project.html?projectId=TestStack_White](http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&branch_TestStack_White=__all_branches__)
 
+## TestStack.White.ScreenObjects
+Also released is [https://www.nuget.org/packages/TestStack.White.ScreenObjects](https://www.nuget.org/packages/TestStack.White.ScreenObjects)
+
+This is the old White.Repository project, finally released on NuGet. Hopefully there should be some updates to this project coming up as well!
+
 ## Namespace Change
 Being part of TestStack now, we wanted to bring White's namespace into line with the other TestStack projects.
 
