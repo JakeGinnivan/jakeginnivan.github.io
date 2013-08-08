@@ -129,7 +129,7 @@ The script looked like this
 	& c:\Windows\system32\inetsrv\AppCmd.exe set vdir "SampleWebSite/" /physicalPath:"$physicalPath"
 	& c:\Windows\system32\inetsrv\AppCmd.exe set vdir "AdminSite/" /physicalpath:"$adminWebPhysicalPath"
 	& c:\Windows\system32\inetsrv\AppCmd.exe set vdir "GuestServices/" /physicalpath:"$guestServicesPhysicalPath"
-	& c:\Windows\system32\inetsrv\AppCmd.exe set vdir "FakeApi/" /physicalpath:"$fakeEmbedApiPhysicalPath"
+	& c:\Windows\system32\inetsrv\AppCmd.exe set vdir "FakeApi/" /physicalpath:"$fakeApiPhysicalPath"
 
 Just execute this as part of your build process before you run your UI Automation tests.
 
