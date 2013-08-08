@@ -138,12 +138,12 @@ To see it all working together, check out MarkPad's build script at [https://git
 ## Deploying to Azure
 
 ### Setup a storage account
-![NewDocument14](NewDocument14.png)
+![Create Storage Account](/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure.png)
 
-![NewDocument15](NewDocument15.png)  
+![Create Storage Account 2](/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure1.png)  
 
 Once created, go to the `containers` tab, then add a new container.
-![NewDocument16](NewDocument16.png)
+![Create Container](/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure2.png)
 
 Make sure you choose `Public Container` as the access level, otherwise things will not work!
 
