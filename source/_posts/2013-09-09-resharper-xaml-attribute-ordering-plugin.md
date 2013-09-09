@@ -27,7 +27,7 @@ Here are some screenshots
 
 Now, I don't expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.
 
-Check out the code, report issues and submit pull requests at [https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup][5]
+Check out the code, report issues and submit pull requests at [https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup][5] and install from [ReSharper Extensions Site][6]
 
 
   [1]: https://xamlstyler.codeplex.com/
@@ -35,3 +35,4 @@ Check out the code, report issues and submit pull requests at [https://github.co
   [3]: http://jake.ginnivan.net/get/Capture1.PNG
   [4]: http://jake.ginnivan.net/get/Capture2.PNG
   [5]: https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup
+  [6]: https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/
