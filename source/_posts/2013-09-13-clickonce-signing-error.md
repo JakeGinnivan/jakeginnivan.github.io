@@ -17,7 +17,9 @@ summary: |
 ---
 On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.
 
-The command: `mage.exe -New Application -ToFile <path>\App.exe.manifest -name "<Name>" -Version 0.1.1.1 -FromDirectory <path>\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"`
+The command: 
+
+    mage.exe -New Application -ToFile <path>\App.exe.manifest -name "<Name>" -Version 0.1.1.1 -FromDirectory <path>\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
 
 And was getting `This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"`
 
