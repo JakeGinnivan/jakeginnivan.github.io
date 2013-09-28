@@ -36,7 +36,7 @@ Then tell TeamCity to Label Successful builds
 ## 2. Setup some additional build parameters
 ![Release-NuGet-SemVer-packages-from-Teamcity](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity_635160285057326250.png)
 
-### 1. AssemblyVersion
+### 2.1. AssemblyVersion
 This is the assembly version, only change this for major releases, this will save people adding binding redirects when different projects rely on different versions
 ![Release-NuGet-SemVer-packages-from-Teamcity1](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity1_635160285061232500.png)  
 ![Release-NuGet-SemVer-packages-from-Teamcity2](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity2_635160285065138750.png)
@@ -45,7 +45,7 @@ If you want the text version of the spec, it is
 
     text description='The assembly version which will be stamped (assembly info version/nuget version will be the build number)' display='prompt' label='AssemblyVersion' validationMode='not_empty'
 
-### 2. Prerelease
+### 2.2. Prerelease
 This is a checkbox, when ticked it's value is `-pre` so we can just use it in the version
 ![Release-NuGet-SemVer-packages-from-Teamcity3](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity3_635160285069201250.png)  
 ![Release-NuGet-SemVer-packages-from-Teamcity4](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity4_635160285073263750.png)
@@ -54,14 +54,14 @@ Once again the text version of the spec is
 
     checkbox checkedValue='-pre' description='Check this box if you want a pre-release' display='prompt' label='PreRelease?'
     
-### 3. Version
+### 2.3. Version
 This is the version which you will pass to NuGet when you are creating your package
 ![Release-NuGet-SemVer-packages-from-Teamcity5](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity5_635160285077170000.png)  
 ![Release-NuGet-SemVer-packages-from-Teamcity6](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity6_635160285081076250.png)  
 
     text description='This is the version number, adjust the major/minor as needed to conform to semver' display='prompt' label='VersionNumber' validationMode='not_empty'
 
-### 4. env.Version
+### 2.4. env.Version
 This is just so the version gets set as an environmental variable so my build scripts can pick it up
 
 ![Release-NuGet-SemVer-packages-from-Teamcity7](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity7_635160285084513750.png)
