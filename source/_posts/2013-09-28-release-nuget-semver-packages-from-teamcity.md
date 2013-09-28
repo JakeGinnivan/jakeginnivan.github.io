@@ -28,7 +28,7 @@ My goals were
 
 # My Solution
 ## 1. Setup the VCS Root to be authenticated
-![ReleaseNuGetSemVerpackagesfromTeamcity](Release-NuGet-SemVer-packages-from-Teamcity\ReleaseNuGetSemVerpackagesfromTeamcity.png)
+![ReleaseNuGetSemVerpackagesfromTeamcity](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/ReleaseNuGetSemVerpackagesfromTeamcity.png)
 
 Then tell TeamCity to Label Successful builds
 ![Release-NuGet-SemVer-packages-from-Teamcity11](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity11_635160285120295000.png)
