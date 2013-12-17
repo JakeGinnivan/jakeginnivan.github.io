@@ -22,16 +22,16 @@ I am excited about this project because it will save me a heap of time and effor
 GitReleaseNotes was another project I kicked off about the same time that [Simon Cropp](https://github.com/simoncropp) and [Andreas Öhlund](https://github.com/andreasohlund) were kicking off similar projects, see [https://github.com/Particular/ReleaseNotesCompiler](https://github.com/Particular/ReleaseNotesCompiler). We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.
 
 ## What does it do
-The concept is quite simple, you can optionally specify a Git tag (it will select the newest tag if you do not specify one). It will then scan all commits for references to issues.
+The concept is quite simple, you can optionally specify a Git tag (it will select the newest tag if you do not specify one). It will then scan all newer commits for references to issues.
 
-Once it has all the referenced commits, it will connect to either GitHub or Jira (and soon YouTrack, TFS and BitBucket) fetching all the closed issues which have been referenced.
+Once it has all the referenced commits, it will connect the issue tracker you specify, currently GitHub or Jira (and soon YouTrack, TFS and BitBucket) and fetch all the closed issues which have been referenced.
 It will then output your release notes in [Semantic Release Notes](http://www.semanticreleasenotes.org/) format (which is also markdown) to a file you specify.
 
-It can also publish a release on GitHub, including all the closed issues since your last release.
+It can also publish a release on GitHub, including the generated release notes.
 
 Here are some examples of the types of release notes it can generate:
 
-[Simple single issue release](https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.ApproveSimpleTests.approved.txt]  
+[Simple single issue release](https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.ApproveSimpleTests.approved.txt)  
 [Multiple releases](https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.MultipleReleases.approved.txt)
 
 ## How to use it
