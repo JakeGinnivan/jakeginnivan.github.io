@@ -4,7 +4,7 @@
   <title><![CDATA[Category: TestStack | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/teststack/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Convention Tests V2 Released]]></title>
+    <title type="html"><![CDATA[Convention Tests v2 Released]]></title>
     <link href="http://JakeGinnivan.github.io/conventiontests-v2-released/"/>
     <updated>2013-09-19T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/conventiontests-v2-released</id>
@@ -91,6 +91,57 @@ TestAssembly.ClassWithPrivateDefaultCtor
 </code></pre>
 
 <p>Then if you look in the directory where your test assembly is, there will be an html report called <code>Conventions.htm</code>, serving as living documentation!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <updated>2013-08-01T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
+
+<p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
+
+<p>The previous test suite was often red, which meant that it was hard to know if there were regressions as other issues were fixed.</p>
+
+<p>You can see the CI status at <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;branch_TestStack_White=__all_branches__">http://teamcity.ginnivan.net/project.html?projectId=TestStack_White</a></p>
+
+<!-- more -->
+
+
+<h2>TestStack.White.ScreenObjects</h2>
+
+<p>Also released is <a href="https://www.nuget.org/packages/TestStack.White.ScreenObjects">https://www.nuget.org/packages/TestStack.White.ScreenObjects</a></p>
+
+<p>This is the old White.Repository project, finally released on NuGet. Hopefully there should be some updates to this project coming up as well!</p>
+
+<h2>Namespace Change</h2>
+
+<p>Being part of TestStack now, we wanted to bring White&rsquo;s namespace into line with the other TestStack projects.</p>
+
+<p>White&rsquo;s namespace has changed from <code>White.Core</code> to <code>TestStack.White</code>. Once you upgrade just run <code>Fix-WhiteNamespaces</code> from your NuGet console and we will fix all your namespace references for you!</p>
+
+<h2>Change Log</h2>
+
+<p>The change log is available at <a href="http://teststack.azurewebsites.net/White/ChangeLog.html">http://teststack.azurewebsites.net/White/ChangeLog.html</a></p>
+
+<p>You may notice the website (which we will have a domain for very shortly), this is the new TestStack documentation site/wiki.</p>
+
+<p>Please have a look around, post comments, contribute and give us feedback!</p>
+
+<h2>Pull Requests</h2>
+
+<p>Whenever you submit a pull request for White, we will automatically do a CI build, then a full UI Test run.
+This means if you do not want to wait for the test suite to run on your machine, you can just submit your pull request, then wait for the status to be reported back (which sometimes fails for some reason, but you should be able to see it on the build server).</p>
+
+<h2>Whats next</h2>
+
+<p>The next step for White is upgrading to v3 of the UIA Library, this will likely break a few things (which is why it was important to get the tests running properly).</p>
+
+<h2>Reporting Issues</h2>
+
+<p>If you find an issue in White, create an issue on github, and even better, create a failing UI tests. I do not mind pull requests with a failing test, I can fix the underlying issue without you getting involved in the inner workings of White.</p>
 ]]></content>
   </entry>
   

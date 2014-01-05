@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Azure | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/azure/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[ClickOnce From Azure Blob Storage]]></title>
+    <title type="html"><![CDATA[ClickOnce from Azure Blob Storage]]></title>
     <link href="http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage/"/>
     <updated>2013-08-08T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage</id>
@@ -190,6 +190,227 @@ write-host "Fixed Manfiest File"
 <p>Now you just point at the .application file, for example MarkPad&rsquo;s nightly is available from <a href="http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application">http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application</a></p>
 
 <p>Hope this helps you out, I have found this is a really cheap and easy way to get ClickOnce installers out there!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
+    <link href="http://JakeGinnivan.github.io/teamcity-ui-test-agent/"/>
+    <updated>2013-07-31T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teamcity-ui-test-agent</id>
+    <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
+
+<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
+This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
+
+<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
+
+<!-- more -->
+
+
+<h2>Create our VM on Azure</h2>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
+I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS&rsquo;s are all that are available in Azure. This also means you don&rsquo;t have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop.</p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
+
+<p>Now we are ready to go, lets remote desktop into our VM</p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
+
+<p>Enter your remote desktop credentials which we you setup when creating your VM
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
+
+<h2>Setting up your VM</h2>
+
+<p>On first login, make sure you tell the initial configuration and server manager to not open on start
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
+
+<p>Before you close server manager you want to click on <code>Configure IE ESC</code>, then turn it off. Otherwise downloading everything will be rather painful (unless you just want to download firefox or chrome, then don&rsquo;t worry.</p>
+
+<p>Next, we need our VM to login automatically, if our VM restarts, it needs to come straight back up and logs in.</p>
+
+<p>To do this, download Sysinternals Autologon for Windows from <a href="http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx">http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx</a>. Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
+The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
+
+<p>Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
+TeamViewer will also work.</p>
+
+<p>Personally I use TightVNC.</p>
+
+<h3>Installing/Configuring TightVNC</h3>
+
+<ol>
+<li>Download from <a href="http://www.tightvnc.com/download.php">http://www.tightvnc.com/download.php</a></li>
+<li>Do a complete install, leave all options ticked when presented with them.</li>
+<li>Set your passwords, I am happy to not have a separate administration password.<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
+<li>Install the DFMirage driver, available from the TightVNC download page</li>
+<li>If using azure you need to open up the port (Manage VM, EndPoints, Add, Next)<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
+</ol>
+
+
+<h3>Finishing VM Setup</h3>
+
+<p>Reconnect using something other than remote desktop<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
+
+<p>Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).</p>
+
+<h4>Disable WER</h4>
+
+<p>Windows error reporting causes issues when running UI automation, if you app crashes (which is why we have UI automation, to find that sort fo thing) then you want it to exit straight away, not popup the Windows Error Reporting Dialog
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
+
+<p>Save the following text into a .reg file i.e DisableWER.reg then run</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows]
+"ErrorMode"="2"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting]
+"DontShowUI"="1"
+</code></pre>
+
+<h3>Installing the teamcity build agent</h3>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
+
+<p>Fill in your teamcity server URL, and note the port number the agent is running on
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
+
+<p>Now we go back into Azure Management, and add the port<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
+
+<h4>Open Filewall Ports</h4>
+
+<p>Once we have added the port on azure, we need to open the windows firewall for that port on the VM itself<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
+Put in port 9090, or whatever you set your teamcity server to<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
+Next, Next, Next, give it a good name &lsquo;TeamCity Build Agent&rsquo;, Finish</p>
+
+<h4>Set to automatic startup</h4>
+
+<p>Now open explorer, and go to <code>%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code> and create a new shortcut<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
+
+<p>Browse to your TeamCity build agent folder, and select <code>agent.bat</code></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
+Then add the parameter <code>start</code> onto the path. You should end up with
+<code>"C:\UITestsBuildAgent\bin\agent.bat" start</code>
+Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. Then Run the shortcut. Your TeamCity build agent should startup and connect to TeamCity
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
+
+<p>Authorise the build agent, then the agent should update itself and restart, after a few minutes you should have another build controller online!
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
+
+<h2>Conclusion</h2>
+
+<p>There you have it, a build agent that runs UI Tests on an unlocked desktop in Azure</p>
+
+<h3>NOTE: TeamCity is not setup for SSL, so everything is unencrypted. This would be another blog post in itself, please leave a comment if that would be useful for you?</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Azure and msshrtmi.dll]]></title>
+    <link href="http://JakeGinnivan.github.io/azure-and-msshrtmi/"/>
+    <updated>2012-06-30T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/azure-and-msshrtmi</id>
+    <content type="html"><![CDATA[<h2>The Problem</h2>
+
+<p>A while back we received some Azure pull requests which added an Azure project and fixed all our SQL scripts so they were compatible with SQL Azure and that was pretty good, FunnelWeb would run in Azure.</p>
+
+<p>The problem though is updates to the my.config required a full new deployment, so I wanted to support loading the configuration from the Role Environment config files instead when running in Azure.</p>
+
+<p>So in our configuration settings class I put something like this:</p>
+
+<pre><code>public string Get(string name)
+{
+    return (RoleEnvironment.IsAvailable)
+                ? RoleEnvironment.GetConfigurationSettingValue(name)
+                : myConfigSettings.Get(name);
+}
+</code></pre>
+
+<p>All good, local testing works beautifully. So I start with deploying to Azure Websites via git using the same script we use to deploy to AppHarbor. And boom:</p>
+
+<pre><code>---&gt; System.TypeInitializationException: The type initializer for 'Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment' threw an exception. ---&gt; System.IO.FileNotFoundException: Could not load file or assembly 'msshrtmi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35' or one of its dependencies. The system cannot find the file specified.
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.InitializeEnvironment()
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment..cctor()
+   --- End of inner exception stack trace ---
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.get_IsAvailable()
+</code></pre>
+
+<!-- more -->
+
+
+<p>It seems the static initialiser for RoleEnvironment relies on a native dll which is installed into the GAC by the Azure SDK&hellip; Isn&rsquo;t the point of IsAvailable to check if you are running in Azure&hellip; =(</p>
+
+<p>So I start searching for that assembly, turns out it lives at <code>"C:\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\bin\runtimes\base\x64\msshrtmi.dll"</code> and <code>"C:\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\bin\runtimes\base\x86\msshrtmi.dll"</code> for the two different CPU architectures.</p>
+
+<p>So I start off by putting the x64 version in the bin directory, which then blew up with</p>
+
+<pre><code>Could not load file or assembly 'msshrtmi' or one of its dependencies. An attempt was made to load a program with an incorrect format.
+</code></pre>
+
+<p>So I put the x86 version into the bin directory, and huzzah we were up and running. I then updated my blog to the latest build (anyone on here yesterday would have seen it going up and down for about an hour :P) and boom, back to <code>Could not load file or assembly 'msshrtmi' or one of its dependencies. An attempt was made to load a program with an incorrect format.</code></p>
+
+<p>Obviously this is not a good solution, and FunnelWeb now can only run on a x86 app pool, which my host is running an x64 app pool.</p>
+
+<h2>My Solution</h2>
+
+<p>I have removed all the other FunnelWeb initialisation code, and just left the important parts.</p>
+
+<pre><code>public class MvcApplication : HttpApplication
+{
+    private static string basePath;
+
+    private void Application_Start()
+    {
+        basePath = Server.MapPath("/");
+        AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+    }
+
+    // Unfortunately this unmanaged dll is required by azure to check if we are running in azure
+    // There is also a x86 and x64 version which is why we have to take this approach
+    static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+    {
+        if (args.Name.StartsWith("msshrtmi,", StringComparison.OrdinalIgnoreCase))
+        {
+            var fileName = Path.Combine(basePath, "bin", ((IntPtr.Size == 4) ? "x86" : "amd64"), "msshrtmi.dll");
+
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+
+            return Assembly.LoadFile(fileName);
+        }
+
+        return null;
+    }
+}
+</code></pre>
+
+<p>I then create a amd64 and x86 folder in the <code>_bin_deployableAssemblies</code> folder so they get copied into the bin folder during the build.
+When the AppDomain tries to resolve the native file, I dynamically load the correct version.</p>
+
+<p>Comments on my approach would be great.</p>
 ]]></content>
   </entry>
   

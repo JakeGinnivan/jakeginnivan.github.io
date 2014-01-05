@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Async | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/async/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -124,6 +124,33 @@ public class AwaitableDelegateCommand&lt;T&gt; : IAsyncCommand&lt;T&gt;, IComman
 <p>Notice that the AwaitableDelegateCommand implements ICommand, which makes WPF happy, but our viewmodels expose IAsyncCommand, which makes our tests happy. All in all, it works pretty well for me!</p>
 
 <p>If you need a <code>DelegateCommand</code> implementation, check out <a href="https://gist.github.com/JakeGinnivan/5166898">this gist</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Async warning with nSubstitute]]></title>
+    <link href="http://JakeGinnivan.github.io/async-warning-with-nsubstitute/"/>
+    <updated>2012-10-16T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/async-warning-with-nsubstitute</id>
+    <content type="html"><![CDATA[<p>I got sick of a heap of warnings in VS which look like this:</p>
+
+<pre><code>Warning 1   Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+</code></pre>
+
+<p>The code which was causing this error was a received call: <code>_service.Received().CancelAsync()</code></p>
+
+<p>My solution to the problem is creating a simple extension</p>
+
+<pre><code>public static class NSubstituteHelper
+{
+    public static void IgnoreAwaitForNSubstituteAssertion(this Task task)
+    {
+
+    }
+}
+</code></pre>
+
+<p>Then my code turns into <code>_service.Received().CancelAsync().IgnoreAwaitForNSubstituteAssertion()</code> and my issue goes away</p>
 ]]></content>
   </entry>
   

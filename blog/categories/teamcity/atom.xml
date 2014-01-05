@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Teamcity | Jake Ginnivan's blog]]></title>
+  <title><![CDATA[Category: TeamCity | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/teamcity/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Release NuGet SemVer Packages From Teamcity]]></title>
+    <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
     <link href="http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity/"/>
     <updated>2013-09-28T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity</id>
@@ -271,6 +271,90 @@ Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. T
 <p>There you have it, a build agent that runs UI Tests on an unlocked desktop in Azure</p>
 
 <h3>NOTE: TeamCity is not setup for SSL, so everything is unencrypted. This would be another blog post in itself, please leave a comment if that would be useful for you?</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TeamCity Build Results in TFS]]></title>
+    <link href="http://JakeGinnivan.github.io/teamcity-build-results-in-tfs/"/>
+    <updated>2013-04-13T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teamcity-build-results-in-tfs</id>
+    <content type="html"><![CDATA[<h1>Why?</h1>
+
+<p>Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our test tool, TFS for work items, GitHub for source control and TeamCity for our build server.</p>
+
+<p>All our tests are written using xUnit.net. When you start working with testers it becomes important to surface your automated and manual testing together, so testers can work more efficiently and have more confidence in the software the team is producing.</p>
+
+<p>Enter TFS. TFS is a great product that starts really value adding when you use different components together, the testing tools is an example of this. When you use Team Build with the testing tools, a heap of features and workflows start working way better!</p>
+
+<h1>What?</h1>
+
+<p>My goal is to have my automated regression tests (both UI and Integration tests) which are written in xUnit to report their results back into TFS (Builds) and Test Manager (Test Runs).</p>
+
+<p>This allows the Testers to use the planned automation features in TFS to mark certain Test Cases as &lsquo;Planned&rsquo; for automation, it also lights up a whole lot of reporting around test case readiness and other things.</p>
+
+<!-- more -->
+
+
+<h1>How?</h1>
+
+<p>There are a few parts to automatically marking test cases as passed/failed.</p>
+
+<ol>
+<li>Associated Automation<br/>
+If you open a test case up in Visual Studio, you can assign an MSTest test to a test case<br/>
+<img src="/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS1_635014894026562500.png" alt="TeamCityBuildResultsinTFS1" /></li>
+<li>Get a .trx file which can be published to TFS (By using VSTest.Console with the TeamCityAndTrx logger)
+<img src="/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS2_635014894036562500.png" alt="TeamCityBuildResultsinTFS2" /><br/>
+<img src="/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS3_635014894039375000.png" alt="TeamCityBuildResultsinTFS3" /></li>
+<li>Publish the build using TfsBuildResultPublisher (see <a href="https://github.com/JakeGinnivan/TfsBuildResultPublisher/blob/master/BuildAndPublish.msbuild">BuildAndPublish.msbuild</a> for an example)</li>
+<li>A test run created in Test Manager which can be linked to a test suite, this will automatically pass/fail a test.</li>
+</ol>
+
+
+<p>I have built a few projects which glue this all together.</p>
+
+<h2>1. VSTest.TeamCityLogger</h2>
+
+<p>The first step is I have xUnit tests, luckily Visual Studio 2012 has a new test runner, this introduces <a href="http://msdn.microsoft.com/en-us/library/hh598952.aspx">Unit Test Adapters</a> to support third party test frameworks.</p>
+
+<p>The new test runner has a command line version too called VSTest.Console.exe which allows you to specify which logger to use, out of the box there is a <code>trxLogger</code> to output a .trx file for any framework.</p>
+
+<p>VSTest.TeamCityLogger introduces two new loggers <code>TeamCityLogger</code> and <code>TeamCityAndTrxLogger</code>, the first simply exposes VSTest results to TeamCity, the second also outputs a .trx file.</p>
+
+<p>Now we have a TeamCity build, which exports a .trx file!</p>
+
+<p>More information available at <a href="https://github.com/JakeGinnivan/VSTest.TeamCityLogger">https://github.com/JakeGinnivan/VSTest.TeamCityLogger</a></p>
+
+<h2>2. TfsBuildResultPublisher</h2>
+
+<p>The next part of the puzzle is getting the build into TFS, this is where TfsBuildResultPublisher comes in.
+It is based off Based off <a href="http://blogs.msdn.com/b/jpricket/archive/2010/02/23/creating-fake-builds-in-tfs-build-2010.aspx">http://blogs.msdn.com/b/jpricket/archive/2010/02/23/creating-fake-builds-in-tfs-build-2010.aspx</a> and <a href="http://msmvps.com/blogs/vstsblog/archive/2011/04/26/creating-fake-builds-in-tfs-build-2010-using-the-command-line.aspx">http://msmvps.com/blogs/vstsblog/archive/2011/04/26/creating-fake-builds-in-tfs-build-2010-using-the-command-line.aspx</a> but it provides a heap of additional options, like:</p>
+
+<ul>
+<li>Publish Test Results, if you simply want to publish a .trx into your build, TfsCreateBuild will take care of that for you.</li>
+<li>Publish Test Run to MTM (Microsoft Test Manager)
+
+<ul>
+<li>In addition to this, VSTest.Console.exe generates different testId&rsquo;s to MSTest, this means that MTM will not recognise the associated tests (I am coming to this soon!). TfsCreateBuild has a flag to fix your .trx file and correct the testId&rsquo;s so the automation is matched.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>More information available at <a href="https://github.com/JakeGinnivan/TfsBuildResultPublisher">https://github.com/JakeGinnivan/TfsBuildResultPublisher</a></p>
+
+<h2>TestCaseAutomationAssigner</h2>
+
+<p>I mentioned earlier my tests are xUnit.net and that visual studio only lets you associate MSTest tests with Test Cases.</p>
+
+<p>This is where <a href="https://github.com/JakeGinnivan/TestCaseAutomationAssigner">https://github.com/JakeGinnivan/TestCaseAutomationAssigner</a> comes in. It is a simple WPF application which allows you to associate either xUnit.net or NUnit tests with Test Cases.</p>
+
+<p>You can install this from <a href="http://teamcity.ginnivan.net/guestAuth/repository/download/bt48/.lastSuccessful/ClickOnce/TestCaseAutomationAssigner.application">http://teamcity.ginnivan.net/guestAuth/repository/download/bt48/.lastSuccessful/ClickOnce/TestCaseAutomationAssigner.application</a></p>
+
+<h1>Summary</h1>
+
+<p>Using TestCaseAutomationAssigner, TfsCreateBuild and VSTest.TeamCityLogger you can use TeamCity as your build server, xUnit or NUnit as your unit test framework and report the results back into Test Manager and TFS giving you all the reportability and value that comes with TFS when you use all the features!</p>
 ]]></content>
   </entry>
   

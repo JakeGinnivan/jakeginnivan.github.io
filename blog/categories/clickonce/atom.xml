@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ClickOnce | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/clickonce/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,7 +14,27 @@
 
   
   <entry>
-    <title type="html"><![CDATA[ClickOnce From Azure Blob Storage]]></title>
+    <title type="html"><![CDATA[ClickOnce Signing Error]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-signing-error/"/>
+    <updated>2013-09-13T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-signing-error</id>
+    <content type="html"><![CDATA[<p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
+
+<p>The command:</p>
+
+<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
+</code></pre>
+
+<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
+
+<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
+
+<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce from Azure Blob Storage]]></title>
     <link href="http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage/"/>
     <updated>2013-08-08T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage</id>
@@ -190,6 +210,23 @@ write-host "Fixed Manfiest File"
 <p>Now you just point at the .application file, for example MarkPad&rsquo;s nightly is available from <a href="http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application">http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application</a></p>
 
 <p>Hope this helps you out, I have found this is a really cheap and easy way to get ClickOnce installers out there!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce Deployment in TeamCity]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity/"/>
+    <updated>2009-08-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity</id>
+    <content type="html"><![CDATA[<p>I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server.</p>
+
+<p>This blog post was very useful for getting the initial build working <a href="http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html">http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html</a> it also mentions how to fix the error MSB3147: Could not find required file &lsquo;setup.bin&rsquo; in &lsquo;ProjectFolder\Engine&rsquo; error I was getting.</p>
+
+<p>According to the post we just have to copy the Generic Bootstrapper across to our build machine and create a registry key to let .net know where to find it.</p>
+
+<p>What all the resources (I have seen the same fix posted in a lot of places) fail to mention is the registry key that you need to modify if you are running a x64 system is HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\3.5.</p>
+
+<p>This Wow6432Node key has got me a few times before…</p>
 ]]></content>
   </entry>
   

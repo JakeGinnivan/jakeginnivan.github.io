@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Open-source | Jake Ginnivan's blog]]></title>
+  <title><![CDATA[Category: Open Source | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/open-source/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,7 +14,49 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Documentation Site With Pretzel]]></title>
+    <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
+    <link href="http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin/"/>
+    <updated>2013-09-09T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin</id>
+    <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
+
+<p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
+
+<p>Here are some screenshots</p>
+
+<p><img src="http://jake.ginnivan.net/get/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+
+<p><img src="http://jake.ginnivan.net/get/Capture2.PNG" alt="Options" /></p>
+
+<p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
+
+<p>Check out the code, report issues and submit pull requests at <a href="https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup">https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup</a> and install from <a href="https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/">ReSharper Extensions Site</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
+    <link href="http://JakeGinnivan.github.io/vsto-contrib/v0-12-released/"/>
+    <updated>2013-08-06T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/vsto-contrib/v0-12-released</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
+
+<p>This release is aimed at fixing a bunch of bugs, like some callbacks not working, creating a viewmodel instance for when no documents are open and supporting Office 2013!
+Due to the complexities of supporting multiple versions, I have dropped Office 2007 support. Please let me know if this is a major issue, and I might try to add it back in next release.</p>
+
+<p>I have also released a getting started video. This is one of the first screencasts I have done, so I will likely do it again next release. Also when you install VSTO Contrib, a readme will popup, this will help you get started.</p>
+
+<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://JakeGinnivan.github.io//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+
+
+<p>I will try to produce some documentation/blog posts on VSTO Contrib over the next few weeks.</p>
+
+<p>From now, I will be tracking changes/fixes a lot better. Please report any issues at <a href="https://github.com/JakeGinnivan/VSTOContrib/issues">https://github.com/JakeGinnivan/VSTOContrib/issues</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Documentation Site with Pretzel]]></title>
     <link href="http://JakeGinnivan.github.io/documentation-site-with-pretzel/"/>
     <updated>2013-07-27T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/documentation-site-with-pretzel</id>
@@ -191,263 +233,176 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[ApiApprover]]></title>
-    <link href="http://JakeGinnivan.github.io/apiapprover/"/>
-    <updated>2012-02-19T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/apiapprover</id>
-    <content type="html"><![CDATA[<p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
+    <title type="html"><![CDATA[Markpad Performance Push]]></title>
+    <link href="http://JakeGinnivan.github.io/markpad-performance-push/"/>
+    <updated>2012-08-12T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/markpad-performance-push</id>
+    <content type="html"><![CDATA[<p>If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files.</p>
 
-<p>The interesting thing about Semantic versioning is that often people accidently break the semantic version. So I wrote a unit test which solves this problem</p>
+<p><img src="/assets/posts/2012-08-12-markpad-performance-push/screenshot.png" alt="MarkPad" /></p>
 
-<pre><code>[Fact]
-public void phoenix_has_no_public_api_changes()
-{
-    // arrange
-    var phoenix = typeof(IPhoenixHost).Assembly;
-
-    // act
-    var publicApi = CodeGen.CreatePublicApiForAssembly(phoenix);
-
-    // assert
-    var reporter = new DiffReporter();
-    Approvals.Approve(new ApprovalTextWriter(publicApi), new XUnitTestFrameworkNamer(), reporter);
-}
-</code></pre>
+<p>While flying back from Oslo and <a href="http://www.ndcoslo.com/">NDC</a> I spent probably 12+ hours of my ~20 hours of flying working on improving performance in MarkPad and cleaning up the codebase. This is documenting the most significant change.</p>
 
 <!-- more -->
 
 
-<h1>What it does</h1>
+<h1>Hosting Awesomium in it&rsquo;s own AppDomain</h1>
 
-<p>This test is actually quite simple, we grab the assembly, I then have a class which generates the public API for that assembly as a string. I then use Approval Tests to approve any API changes with a diff tool.</p>
+<p>This was by far the biggest performance win for us, we moved Awesomium (the .net wrapper around the Chrome rendering engine) into it&rsquo;s own AppDomain, and show &lsquo;Preview Loading&hellip;&rsquo; much like visual studio does for it&rsquo;s designer.</p>
 
-<p>So what does that actually look like:<br/>
-<img src="/assets/posts/2012-02-19-apiapprover/ApiChange.png" alt="ApiChange" /></p>
+<p>Basically the way it works is we have a HtmlPreview.xaml control which is pretty simple:</p>
 
-<h1>How do I use it?</h1>
+<pre><code>&lt;UserControl x:Class="MarkPad.PreviewControl.HtmlPreview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Loaded="HtmlPreviewLoaded"&gt;
+  &lt;UserControl.Effect&gt;
+    &lt;DropShadowEffect BlurRadius="10"
+                      Color="Black"
+                      Opacity="0.25"
+                      Direction="270" /&gt;
+  &lt;/UserControl.Effect&gt;
 
-<p>Add the <a href="https://nuget.org/packages/ApiApprover/1.0.0"><strong><code>ApiApprover</code></strong></a> NuGet package</p>
-
-<p>It will drop a few files into your test project<br/>
-PublicApiGenerator.cs<br/>
-PublicApiApprovalTest.cs</p>
-
-<p>Open up PublicApiApprovalTest and fix up the compilation error (specify assembly, and properly attribute up the test for your framework of choice. Then get started!</p>
-
-<p>The source is also available at <a href="https://github.com/JakeGinnivan/ApiApprover">https://github.com/JakeGinnivan/ApiApprover</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[WP7 MVC Debug and Tracing]]></title>
-    <link href="http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging/"/>
-    <updated>2011-09-22T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging</id>
-    <content type="html"><![CDATA[<h2>WP7 Essentials Tracing</h2>
-
-<p>A new feature coming in the next release is a super easy to use Trace class to allow you to debug your app really easily.</p>
-
-<!-- more -->
-
-
-<p>In your App.xaml.cs constructor simply put:</p>
-
-<pre><code>#if DEBUG
-    Trace.Appenders.Add(s=&gt;Debug.WriteLine(s));
-    Trace.TraceLevel = TraceLevel.Debug;
-#endif
+  &lt;Border BorderThickness="0"
+          Background="White"&gt;
+    &lt;TextBlock Text="Preview loading..."
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center" /&gt;
+  &lt;/Border&gt;
+&lt;/UserControl&gt;
 </code></pre>
 
-<p>Then the following code will output <code>9/23/2011 8:10 PM - Debug   [MyClass] - Some  Trace Message</code> in your Debug output window. You can add your own trace appenders too if you want to implement logging in your app.</p>
+<p>The magic is inside the Loaded event of this control:</p>
 
-<pre><code>// this.GetType() == typeof(MyClass)
-Trace.WriteInfo(this, TraceLevel.Debug, ()=&gt;"Some Trace Message");
-</code></pre>
-
-<p>Notice that we pass a lambda into the WriteInfo class, this is so the Trace class can be super lazy and if the message is not going to be written to the Trace appenders, it will not even construct that string (useful if you are doing more complex logging like checking memory usage etc).</p>
-
-<h2>WP7 MVC Tracing</h2>
-
-<p>I have been using this tracing ability in vNext of Windows Phone MVC to measure performance and start optimising. Here is an example of the full debug log when running</p>
-
-<pre><code>9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - Scanning for and Registering Autofac Modules
-9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - {
-9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] -     Registering module ApplicationModule... 1ms
-9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - } 46ms
-9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - Building Container... 72ms
-9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] - Handling WP7 Navigation Event to /Shell.xaml
-9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] - {
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 8.54296875
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to Home.MainPage
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller Home
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         {
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -             Scanning assemblies for controllers and building lookup... 2ms
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         } 10ms
-9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] -     } 45ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action MainPage on Home... 28ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.MainPage... 52ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.MainPage
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     {
-9/23/2011 8:46 PM - Debug   [DefaultViewLocator            ] -         Scanning assemblies for views and building lookup... 3ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     } 214ms
-9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.MainPage added to Journal
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 1ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 9.15234375
-9/23/2011 8:46 PM - Info    [Navigator                     ] - } 526ms
-9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - Parsing Navigation Expression
-9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - {
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 9.23046875
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to AnotherController.Example
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller AnotherController... 0ms
-9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] -     } 14ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action Example on AnotherController... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for AnotherController.Example... 0ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for AnotherController.Example... 44ms
-9/23/2011 8:46 PM - Debug   [Journal                       ] -     AnotherController.Example added to Journal
-9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel MainViewModel... 1ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 10.90234375
-9/23/2011 8:46 PM - Info    [Navigator                     ] - } 101ms
-9/23/2011 8:46 PM - Debug   [Journal                       ] - AnotherController.Example popped from Journal
-9/23/2011 8:46 PM - Debug   [Journal                       ] - Home.MainPage popped from Journal
-9/23/2011 8:46 PM - Info    [Navigator                     ] - Memory usage before navigation: 9.1640625
-9/23/2011 8:46 PM - Info    [Navigator                     ] - Navigating Backward to Home.MainPage
-9/23/2011 8:46 PM - Info    [Navigator                     ] - {
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Home... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action MainPage on Home... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.MainPage... 0ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.MainPage... 22ms
-9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.MainPage added to Journal
-9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel ExampleViewModel... 0ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 1ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 10.55859375
-9/23/2011 8:46 PM - Info    [Navigator                     ] - } 82ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] - Memory usage before navigation: 9.8359375
-9/23/2011 8:46 PM - Info    [Navigator                     ] - Navigating Forward to Home.DebugPage
-9/23/2011 8:46 PM - Info    [Navigator                     ] - {
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Home... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action DebugPage on Home... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.DebugPage... 4ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.DebugPage... 104ms
-9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.DebugPage added to Journal
-9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel MainViewModel... 0ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 13.82421875
-9/23/2011 8:46 PM - Info    [Navigator                     ] - } 267ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] - Loading partial view Debug.DemoPartial
-9/23/2011 8:46 PM - Info    [Navigator                     ] - {
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Debug... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action DemoPartial on Debug... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Debug.DemoPartial... 2002ms
-Partial Activated
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PartialViewResult completion steps... 2ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] - } 2040ms
-9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - Parsing Navigation Expression
-9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - {
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 15.98828125
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to DebugController.PageWithResult
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
-9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller DebugController... 0ms
-9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] -     } 12ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action PageWithResult on DebugController... 0ms
-9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for DebugController.PageWithResult... 0ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for DebugController.PageWithResult... 35ms
-9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
-9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 17
-9/23/2011 8:46 PM - Info    [Navigator                     ] - } 103ms
-</code></pre>
-
-<p>Now you may be saying one of two things, OMG that is way better than the OOTB profiler or you will be saying now my output window will be spammed!</p>
-
-<p>Say we want to silence the Navigator because it logs a lot, we simply do:</p>
-
-<pre><code>Trace.Filters.Add(typeof(Navigator));
-</code></pre>
-
-<p>And all Trace events from the Navigator class will be ignored. So you can find out useful information when you need it, and ignore it other times!</p>
-
-<p>Keen to know what everyone thinks.</p>
-
-<h2>Check it out at <a href="http://windowsphonemvc.codeplex.com/">http://windowsphonemvc.codeplex.com/</a></h2>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[WP7 Essentials Settings Provider]]></title>
-    <link href="http://JakeGinnivan.github.io/wp7-essentials-settings-provider/"/>
-    <updated>2011-09-09T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/wp7-essentials-settings-provider</id>
-    <content type="html"><![CDATA[<p>Update: This project has been superseeded by <a href="https://github.com/JakeGinnivan/SettingsProvider.net">SettingsProvider.net</a></p>
-
-<!-- more -->
-
-
-<h1>Settings Provider?</h1>
-
-<p>The settings provider is a port from the FunnelWeb settings provider to Windows Phone. It is a really simple interface</p>
-
-<pre><code>public interface ISettingsProvider
+<pre><code>private void HtmlPreviewLoaded(object sender, RoutedEventArgs e)
 {
-    T GetSettings&lt;T&gt;() where T : ISettings, new();
-    void SaveSettings&lt;T&gt;(T settings) where T : ISettings;
+    Loaded -= HtmlPreviewLoaded;
+    var context = TaskScheduler.FromCurrentSynchronizationContext();
+
+    //We are hosting the Awesomium preview in another appdomain so our main UI thread does not take the hit
+    hostAppDomain = AppDomain.CreateDomain("HtmlPreviewDomain");
+    var filename = FileName;
+
+    // create the AppDomain on a new thread as we want to ensure it is an 
+    // STA thread as this makes life easier for creating UI components
+    var thread = new Thread(() =&gt;
+    {
+        var awesomiumHostType = typeof(AwesomiumHost);
+        host = (AwesomiumHost)hostAppDomain.CreateInstanceAndUnwrap(awesomiumHostType.Assembly.FullName, awesomiumHostType.FullName,
+        false, BindingFlags.Default, null, new object[] { filename, BaseDirectory }, CultureInfo.CurrentCulture, null);
+
+        host.SetHtml(content);
+
+        var controlHandle = host.ControlHandle;
+
+        Task.Factory.StartNew(() =&gt;
+        {
+            //Delay until preview control has loaded before creating content host
+            host.LoadedWaitHandle.WaitOne();
+
+            // We need to invoke on the Markpad dispatcher, we are currently in the host appdomains STA Thread.
+            Dispatcher.BeginInvoke(new Action(() =&gt;
+            {
+                hwndContentHost = new HwndContentHost(controlHandle);
+                //Without the border we don't get the dropshadows
+                Content = new Border
+                {
+                    Background = Brushes.White,
+                    Padding = new Thickness(3),
+                    Child = hwndContentHost
+                };
+            }));
+        }, TaskCreationOptions.LongRunning);
+
+        host.Run();
+        //I can't get this unloading without an error, 
+        // I am gathering Application.Shutdown is causing the appdomain to shutdown too
+        //AppDomain.Unload(hostAppDomain);
+    });
+
+    thread.SetApartmentState(ApartmentState.STA);
+    thread.Start();
 }
 </code></pre>
 
-<p>So what does <code>T</code> actually look like:</p>
+<p>So what does this actually do!</p>
 
-<pre><code>public class ApplicationSettings : NotifyPropertyChanged, ISettings
+<p>First we create the AppDomain, and spin up a dedicated thread which will be the UI thread of new AppDomain.</p>
+
+<pre><code>hostAppDomain = AppDomain.CreateDomain("HtmlPreviewDomain");
+
+var thread = new Thread(() =&gt;
 {
-    [DefaultValue(5)]
-    [DisplayName("Number Results")]
-    public int NumberResults { get; set; }
+    // We initialise it all in here
+});
 
-    public string Nickname { get; set; }
+thread.SetApartmentState(ApartmentState.STA);
+thread.Start();
+</code></pre>
 
-    [DefaultValue(true)]
-    [DisplayName("Enable Stuff")]
-    public bool EnableStuff { get; set; }
+<p>Inside this new thread, we create an instance of the AwesomiumHost, which is a class which can be marshalled across AppDomains</p>
 
-    public DateTime? Birthday { get; set; }
-
-    [DisplayName("Some Options")]
-    public Options SomeOptions { get; set; }
-}
-
-public enum Options
+<pre><code>public class AwesomiumHost : MarshalByRefObject, IDisposable
 {
-    Value1, 
-    Value2
+    public string FileName { get; private set; }
+    public string Html { get; set; }
+    public double ScrollPercentage { get; set; }
+
+    public IntPtr ControlHandle { get; }
+    public ManualResetEvent LoadedWaitHandle { get; }
+
+    public void SetHtml(string content);
+    public void WbProcentualZoom();
+    public void Print();
+    public void Run();
+
+    public void Dispose();
 }
 </code></pre>
 
-<p>Pretty easy right? We can use NotifyPropertyWeaver to keep the class nice and clean. Then to fetch or persist our settings we just need to do</p>
+<p>So we create the instance and unwrap it:</p>
 
-<pre><code>var applicationSettings = settingsProvider.GetSettings&lt;ApplicationSettings&gt;();
-applicationSettings.SomeOptions = Options.Value2;
-settingsProvider.SaveSettings(applicationSettings);
+<pre><code>var awesomiumHostType = typeof(AwesomiumHost);
+host = (AwesomiumHost)hostAppDomain.CreateInstanceAndUnwrap(awesomiumHostType.Assembly.FullName, awesomiumHostType.FullName,
+        false, BindingFlags.Default, null, new object[] { filename, BaseDirectory }, CultureInfo.CurrentCulture, null);
+
+host.SetHtml(content);
+var controlHandle = host.ControlHandle;
 </code></pre>
 
-<p>The Settings Provider is limited to types supported by the Convert.ChangeType method (for a number of reasons, if this is too restrictive, let me know and why).</p>
+<p>This has gone and created the control, and got the ControlHandle which we need to host WPF controls across appdomains, there is some nasty code in the <code>static long CreateWindowHandle(Visual frameworkElement)</code> method if you want to know how to do it.</p>
 
-<p>So in the last release we added the SettingsList control, which will generate this for you (just the settings control, not the page, highlighted in red is what you get generated)</p>
+<p>We then start a long running task (background operation in the preview appdomain) which blocks until the control has fully loaded (the LoadedWaitHandle is set once the Loaded event fires on the Awesomium control).</p>
 
-<p><img src="/assets/posts/2011-09-09-wp7-essentials-settings-provider/SettingsProvider.png" alt="Settings Provider control" /></p>
+<pre><code>Task.Factory.StartNew(() =&gt;
+{
+    //Delay until preview control has loaded before creating content host
+    host.LoadedWaitHandle.WaitOne();
 
-<p>This is a first cut, and over time I will polish this page, and add support for ordering the properties and stuff (or feel free to submit pull requests :)). But I recon this is pretty cool for a first cut.</p>
-
-<p>Also the reason I am using a combobox instead of the ListPicker is there is a bug where the control simply doesn&rsquo;t work inside a scroll viewer. Bah. Anyone interested in doing a community fork which simply fixes bugs in the toolkit and doesn&rsquo;t add any new features?</p>
-
-<h1>Get it</h1>
-
-<p>This control is in a separate package (to keep the essentials package lean and mean :P).</p>
-
-<pre><code>Install-Package WindowsPhoneEssentials.Controls.Settings
+    // We need to invoke on the Markpad dispatcher, we are currently in the host appdomains STA Thread.
+    Dispatcher.BeginInvoke(new Action(() =&gt;
+    {
+        hwndContentHost = new HwndContentHost(controlHandle);
+        //Without the border we don't get the dropshadows
+        Content = new Border
+        {
+            Background = Brushes.White,
+            Padding = new Thickness(3),
+            Child = hwndContentHost
+        };
+    }));
+}, TaskCreationOptions.LongRunning);
 </code></pre>
 
-<p><a href="http://wp7essentials.codeplex.com/">Codeplex</a><br/>
-<a href="http://nuget.org/List/Search?searchTerm=WindowsPhoneEssentials">NuGet</a></p>
+<p>We then invoke the creation of the content host on Markpads UI thread, and replace the content of the UserControl with the MarkPad preview.</p>
+
+<p>There are a few more things, but this should help you follow the Markpad codebase if you ever want to host a WPF control in another AppDomain :)</p>
+
+<h2>Links</h2>
+
+<p>Go grab the source, have a look. If you are so inclined you can pick up a issue, and submit a pull request!</p>
+
+<p><a href="https://github.com/Code52/DownmarkerWPF">https://github.com/Code52/DownmarkerWPF</a></p>
 ]]></content>
   </entry>
   

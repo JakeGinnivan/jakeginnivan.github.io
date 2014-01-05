@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Github | Jake Ginnivan's blog]]></title>
+  <title><![CDATA[Category: GitHub | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -248,7 +248,7 @@ git push upstream --tags
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Release NuGet SemVer Packages From Teamcity]]></title>
+    <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
     <link href="http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity/"/>
     <updated>2013-09-28T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity</id>

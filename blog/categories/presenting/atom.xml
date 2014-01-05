@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Presenting | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/presenting/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DDD Melbourne Rest Talk]]></title>
+    <link href="http://JakeGinnivan.github.io/ddd-melbourne-rest-talk/"/>
+    <updated>2012-07-30T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/ddd-melbourne-rest-talk</id>
+    <content type="html"><![CDATA[<p>Over the weekend I presented at <a href="http://www.dddmelbourne.com/">http://www.dddmelbourne.com/</a> on building RESTful web services.</p>
+
+<p>I wanted to do it a bit different to the REST talks I had been to, and really try to cover how it all fits together, as well as the theory and covering the <a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a> I put together a RESTful beer API, which I want to evolve over time as a cool example. My intention is to release WebApi.Hal as a NuGet package once it matures a little more and I figure out the API and conventions.</p>
+
+<p>My slides are available <strong><a href="https://www.dropbox.com/s/vksivsuo5fx44qp/REST.pptx">here</a></strong></p>
+
+<p>All the sample code is available in the WebApi.Hal project on github (<a href="https://github.com/JakeGinnivan/WebApi.Hal">https://github.com/JakeGinnivan/WebApi.Hal</a>) and I do accept pull requests. =)</p>
+
+<p>The resource linker stuff is a bit clunky, but I think it is becoming quite a good example of a RESTful API. If you want to help out or have suggestions just fire me an email to jake at ginnivan dot net.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My Sessions at TechEd 2011]]></title>
+    <link href="http://JakeGinnivan.github.io/teched-2011/"/>
+    <updated>2011-08-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teched-2011</id>
+    <content type="html"><![CDATA[<h1>DEV304 &ndash; Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
+
+<p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
+If you have used it, and hated it, I will also be showing how to improve your experience and give you a way of approaching the problems and some nice ways to improve the default experience. Part of this is a quick intro to COM Interop, how it works and how to make sure you avoid problems with it.
+And finally, I will be showing a bit of VSTO contrib and how you can use IoC and other cool enhancements to the platform.</p>
+
+<h1>WPH305 &ndash; Multi-Tasking and Application Services (Fri, 8:15am)</h1>
+
+<p>In this session with Chris Walsh, we will be going through a whole lot of App services related features in Windows Phone Mango. We will cover things like Multi-Tasking, Background agents, Tiles, Notifications and Search extra&rsquo;s. We have some cool demo&rsquo;s and it will be a fun session.</p>
+
+<h1>Demos</h1>
+
+<p>I also have a few demo&rsquo;s lined up
+ &ndash; Unit Testing with WP7 (1:30pm Wednesday)
+ &ndash; Windows Phone MVC Intro (2:00pm Wednesday)</p>
+
+<ul>
+<li>Unit Testing with WP7 (1:00pm Wednesday)</li>
+<li>Windows Phone MVC Intro (1:30pm Wednesday)</li>
+</ul>
+
+
+<p>If you attend, feedback is always welcomed and please submit your evals, it helps us as speakers a lot.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
@@ -111,42 +159,6 @@
 <li><a href="http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx">http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[TechEd DEV332 Resources]]></title>
-    <link href="http://JakeGinnivan.github.io/dev332-resources/"/>
-    <updated>2010-08-29T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/dev332-resources</id>
-    <content type="html"><![CDATA[<h1>DEV332</h1>
-
-<p>Thanks to everyone that attended my session, any feedback you have would be great!</p>
-
-<h1>Resources</h1>
-
-<ul>
-<li><a href="/get/downloads/dev332.zip">Demos</a></li>
-<li><a href="/get/downloads/dev332_Ginnivan.zip">Powerpoint</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[TechEd 2010]]></title>
-    <link href="http://JakeGinnivan.github.io/tech-ed-2010/"/>
-    <updated>2010-08-21T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/tech-ed-2010</id>
-    <content type="html"><![CDATA[<p>I have been lucky enough to be selected to speak at TechEd this year, and it is only 2 days away!</p>
-
-<p>The backend of my blog blew up a few weeks ago and have been trying to find the time to rebuild it, and I have managed to get it done while fine tuning my talk.</p>
-
-<p>I will be speaking about how to use VSTO as a platform, it is a level 300 talk so expect a lot of code, demo&rsquo;s and hopefully you will be able to take a few things away. I am really looking forward to this talk and I think that people will be surprised at what you can achieve with VSTO if you know what path to take.</p>
-
-<p>My talk is DEV332 at 8.15 am Thursday morning in Meeting Room 8.</p>
-
-<p><img src="http://australia.msteched.com/p/TEAU10/resources/BB_100_hearMe.JPG" alt="Come listen to DEV332 at TechEd" /></p>
 ]]></content>
   </entry>
   

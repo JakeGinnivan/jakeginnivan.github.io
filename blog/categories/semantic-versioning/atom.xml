@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Semantic Versioning | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/semantic-versioning/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T21:00:45+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ApiApprover]]></title>
+    <link href="http://JakeGinnivan.github.io/apiapprover/"/>
+    <updated>2012-02-19T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/apiapprover</id>
+    <content type="html"><![CDATA[<p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
+
+<p>The interesting thing about Semantic versioning is that often people accidentally break the semantic version. So I wrote a unit test which solves this problem</p>
+
+<pre><code>[Fact]
+public void phoenix_has_no_public_api_changes()
+{
+    // arrange
+    var phoenix = typeof(IPhoenixHost).Assembly;
+
+    // act
+    var publicApi = CodeGen.CreatePublicApiForAssembly(phoenix);
+
+    // assert
+    var reporter = new DiffReporter();
+    Approvals.Approve(new ApprovalTextWriter(publicApi), new XUnitTestFrameworkNamer(), reporter);
+}
+</code></pre>
+
+<!-- more -->
+
+
+<h1>What it does</h1>
+
+<p>This test is actually quite simple, we grab the assembly, I then have a class which generates the public API for that assembly as a string. I then use Approval Tests to approve any API changes with a diff tool.</p>
+
+<p>So what does that actually look like:<br/>
+<img src="/assets/posts/2012-02-19-apiapprover/ApiChange.png" alt="ApiChange" /></p>
+
+<h1>How do I use it?</h1>
+
+<p>Add the <a href="https://nuget.org/packages/ApiApprover/1.0.0"><strong><code>ApiApprover</code></strong></a> NuGet package</p>
+
+<p>It will drop a few files into your test project<br/>
+PublicApiGenerator.cs<br/>
+PublicApiApprovalTest.cs</p>
+
+<p>Open up PublicApiApprovalTest and fix up the compilation error (specify assembly, and properly attribute up the test for your framework of choice. Then get started!</p>
+
+<p>The source is also available at <a href="https://github.com/JakeGinnivan/ApiApprover">https://github.com/JakeGinnivan/ApiApprover</a></p>
+]]></content>
+  </entry>
+  
+</feed>

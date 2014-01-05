@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Tfs - Jake Ginnivan's blog</title>
+  <title>Category: TFS - Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Category: tfs">
+  <meta name="description" content="Category: TFS">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,14 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://JakeGinnivan.github.ioblog/categories/tfs">
+  <link rel="canonical" href="http://JakeGinnivan.github.ioblog/categories/tfs/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/feed/index.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,13 +49,22 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
-    <h2>Things I find useful</h2>
+  <ul class="social-links">
   
+    <li><a class="feed" href="/feed/index.xml" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="/feed/index.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -70,6 +78,7 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About</a></li>
 </ul>
 
 </nav>
@@ -79,11 +88,28 @@
 <article role="article">
   
   <header>
-    <h1 class="entry-title">Category: Tfs</h1>
+    <h1 class="entry-title">Category: TFS</h1>
     
   </header>
   
   <div id="blog-archives" class="category">
+
+
+
+  
+  <h2>2013</h2>
+
+<article>
+  
+<h1><a href="/teamcity-build-results-in-tfs/">TeamCity Build Results in TFS</a></h1>
+<time datetime="2013-04-13T00:00:00+01:00" pubdate><span class='month'>Apr</span> <span class='day'>13</span> <span class='year'>2013</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/tfs/'>TFS</a>, <a class='category' href='/blog/categories/teamcity/'>TeamCity</a></span>
+</footer>
+
+
+</article>
 
 
 
@@ -96,7 +122,7 @@
 <time datetime="2011-06-01T00:00:00+01:00" pubdate><span class='month'>Jun</span> <span class='day'>01</span> <span class='year'>2011</span></time>
 
 <footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/tfs/'>tfs</a></span>
+  <span class="categories">posted in <a class='category' href='/blog/categories/dot-net/'>.NET</a>, <a class='category' href='/blog/categories/tfs/'>TFS</a></span>
 </footer>
 
 
@@ -116,6 +142,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
+      </li>
+    
+      <li class="post">
         <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
       </li>
     
@@ -124,15 +154,11 @@
       </li>
     
       <li class="post">
-        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
       <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
-      </li>
-    
-      <li class="post">
-        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
       </li>
     
   </ul>
@@ -147,7 +173,7 @@
   <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
   
   <script type="text/javascript">
-    $(document).ready(function(){
+    $.domReady(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -158,8 +184,8 @@
 
         github.showRepos({
             user: 'JakeGinnivan',
-            count: 0,
-            skip_forks: true,
+            count: 6,
+            skip_forks: false,
             target: '#gh_repos'
         });
     });
@@ -167,7 +193,10 @@
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
-
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list"><li><a href='/blog/categories/dot-net/'>.NET (6)</a></li><li><a href='/blog/categories/async/'>Async (2)</a></li><li><a href='/blog/categories/automapper/'>AutoMapper (1)</a></li><li><a href='/blog/categories/azure/'>Azure (3)</a></li><li><a href='/blog/categories/clickonce/'>ClickOnce (3)</a></li><li><a href='/blog/categories/continuous-delivery/'>Continuous Delivery (2)</a></li><li><a href='/blog/categories/git/'>Git (3)</a></li><li><a href='/blog/categories/gitflow/'>GitFlow (1)</a></li><li><a href='/blog/categories/github/'>GitHub (3)</a></li><li><a href='/blog/categories/jira/'>Jira (1)</a></li><li><a href='/blog/categories/log4net/'>log4net (1)</a></li><li><a href='/blog/categories/msbuild/'>MSBuild (1)</a></li><li><a href='/blog/categories/nuget/'>NuGet (3)</a></li><li><a href='/blog/categories/open-source/'>Open Source (20)</a></li><li><a href='/blog/categories/presenting/'>Presenting (8)</a></li><li><a href='/blog/categories/resharper/'>ReSharper (2)</a></li><li><a href='/blog/categories/semantic-versioning/'>Semantic Versioning (1)</a></li><li><a href='/blog/categories/teamcity/'>TeamCity (5)</a></li><li><a href='/blog/categories/testing/'>Testing (5)</a></li><li><a href='/blog/categories/teststack/'>TestStack (2)</a></li><li><a href='/blog/categories/tfs/'>TFS (2)</a></li><li><a href='/blog/categories/ui-automation/'>UI Automation (6)</a></li><li><a href='/blog/categories/vsto/'>VSTO (17)</a></li><li><a href='/blog/categories/webapi/'>WebApi (1)</a></li><li><a href='/blog/categories/white/'>White (2)</a></li><li><a href='/blog/categories/windows-phone/'>Windows Phone (9)</a></li><li><a href='/blog/categories/wpf/'>Wpf (8)</a></li></ul>
+</section>
 
 
 
@@ -180,6 +209,8 @@
   <footer role="contentinfo"><p>
   Copyright &copy; 2014 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
 </p>
 
 </footer>
@@ -193,7 +224,7 @@
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>

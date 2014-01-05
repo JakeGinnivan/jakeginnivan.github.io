@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Resharper | Jake Ginnivan's blog]]></title>
+  <title><![CDATA[Category: ReSharper | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/resharper/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -35,7 +35,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[No More R# Warnings for nHibernate Aliases]]></title>
+    <title type="html"><![CDATA[No more R# warnings for nHibernate aliases]]></title>
     <link href="http://JakeGinnivan.github.io/nhibernate-alias-warnings/"/>
     <updated>2011-07-21T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/nhibernate-alias-warnings</id>

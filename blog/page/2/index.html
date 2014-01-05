@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have just pushed the button on VSTO Contrib v0.12! This release is aimed at fixing a bunch of bugs, like some callbacks not working, creating a &hellip;">
+  <meta name="description" content="Web Project Dev Environment A common problem projects have is when a new dev joins the team is they hopefully have to follow a bunch of instructions &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,14 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://JakeGinnivan.github.io/blog/page/2">
+  <link rel="canonical" href="http://JakeGinnivan.github.io/blog/page/2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/feed/index.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,13 +49,22 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
-    <h2>Things I find useful</h2>
+  <ul class="social-links">
   
+    <li><a class="feed" href="/feed/index.xml" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="/feed/index.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -70,6 +78,7 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About</a></li>
 </ul>
 
 </nav>
@@ -77,6 +86,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/automated-project-environment-setup/">Automated Project Environment Setup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-08T00:00:00+01:00" pubdate data-updated="true">Aug 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Web Project Dev Environment</h2>
+
+<p>A common problem projects have is when a new dev joins the team is they hopefully have to follow a bunch of instructions to set everything up. Most of the time, those instructions are out of date so another member of the team ends up setting everything up.</p>
+
+<p>Depending on the complexity of the project, this can be quite time consuming.</p>
+
+<p>The last project I was on was greenfields, so from day 1 we had a <code>Setup Dev Environment.ps1</code> file in the root of the project. This powershell script did the following:</p>
+
+<ul>
+<li>Installed IIS, and all the components we needed (windows auth, .net etc)</li>
+<li>Registered asp.net with IIS</li>
+<li>Created Websites with host headers for each of the sites in the project (we ended up having 3 different websites)</li>
+<li>Opened the HOSTS file in notepad (elevated) and printed out the lines you needed to paste into your HOSTS file</li>
+</ul>
+
+
+<p>Over time, this script gained more and more features. But when a new team member joined the team, they just ran this script which installed/configured everything.</p>
+
+<p>Why IIS you may ask, instead of say IIS Express. Well this approach means each site had it&rsquo;s own domain, so fiddler works out of the box. It also means that our UI Test suite doesn&rsquo;t have to fire up IIS Express to run it&rsquo;s tests.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/automated-project-environment-setup/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -493,72 +561,6 @@ This means that you need a fully unlocked desktop for things to work correctly. 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/teststack-white/">Announcing TestStack.White</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-28T00:00:00+01:00" pubdate data-updated="true">Oct 28<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Project White</h1>
-
-<p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>
-
-<p>The goal of White was to create a nice abstraction over Microsoft&rsquo;s UI Automation framework in a consistent and object orientated way.</p>
-
-<p>White reached a nice maturity level and active development stopped about 2 years ago, since then things have moved on.</p>
-
-<p><a href="https://github.com/petmongrels">Vivek Singh</a> has given me permission to take this project over and try and increase the activity on this project again.</p>
-
-<h2>Why I&rsquo;m taking on White</h2>
-
-<p>Personally, I have been on a rather large WPF project on and off for the past 2.5 years and rely on UI Automation very heavily. When we started the project, White was the most mature UI Automation framework.</p>
-
-<p>This is a snapshot of some of our builds, every CI build that succeeds with kick-off many UI automation test runs for different configurations.<br/>
-<img src="/assets/posts/2012-10-28-teststack-white/UIAutomationTests.png" alt="TeamCity" /></p>
-
-<p>Over the last few years, we have wrapped White and have been running a custom builds and have learnt a lot about UI automation.</p>
-
-<p>I would like to put some of the learnings and improvements back into White to make it easier for everyone to use UI automation without paying for one of the commercial offerings.</p>
-
-<p>One of my colleagues at <a href="http://www.readify.net">Readify</a>, <a href="http://www.mehdi-khalili.com/">Mehdi Khalili</a> did a presentation at Perth .NET usergroup on UI Automation, he was suggesting many things that we were already doing on this project except he was focusing on Web Automation.
-Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="http://kozmic.pl/">Krzysztof Koźmic</a> formed <a href="http://teststack.github.com/">TestStack</a>.</p>
-
-<p>After talking with Mehdi in the pub, he convinced me that I should restart White, and also join TestStack so we can keep some great testing related projects together!</p>
-
-<h2>TestStack.White</h2>
-
-<p>I have been doing some updates and cleanups on White over the past month or two in a private repo, but I have now opened it up at <a href="https://github.com/TestStack/White">https://github.com/TestStack/White</a>.</p>
-
-<p>I am looking forward to working on White some more, and I welcome pull requests :P</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -576,6 +578,10 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
+      </li>
+    
+      <li class="post">
         <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
       </li>
     
@@ -584,15 +590,11 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
       </li>
     
       <li class="post">
-        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
       <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
-      </li>
-    
-      <li class="post">
-        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
       </li>
     
   </ul>
@@ -607,7 +609,7 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
   
   <script type="text/javascript">
-    $(document).ready(function(){
+    $.domReady(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -618,8 +620,8 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
 
         github.showRepos({
             user: 'JakeGinnivan',
-            count: 0,
-            skip_forks: true,
+            count: 6,
+            skip_forks: false,
             target: '#gh_repos'
         });
     });
@@ -627,7 +629,10 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
-
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list"><li><a href='/blog/categories/dot-net/'>.NET (6)</a></li><li><a href='/blog/categories/async/'>Async (2)</a></li><li><a href='/blog/categories/automapper/'>AutoMapper (1)</a></li><li><a href='/blog/categories/azure/'>Azure (3)</a></li><li><a href='/blog/categories/clickonce/'>ClickOnce (3)</a></li><li><a href='/blog/categories/continuous-delivery/'>Continuous Delivery (2)</a></li><li><a href='/blog/categories/git/'>Git (3)</a></li><li><a href='/blog/categories/gitflow/'>GitFlow (1)</a></li><li><a href='/blog/categories/github/'>GitHub (3)</a></li><li><a href='/blog/categories/jira/'>Jira (1)</a></li><li><a href='/blog/categories/log4net/'>log4net (1)</a></li><li><a href='/blog/categories/msbuild/'>MSBuild (1)</a></li><li><a href='/blog/categories/nuget/'>NuGet (3)</a></li><li><a href='/blog/categories/open-source/'>Open Source (20)</a></li><li><a href='/blog/categories/presenting/'>Presenting (8)</a></li><li><a href='/blog/categories/resharper/'>ReSharper (2)</a></li><li><a href='/blog/categories/semantic-versioning/'>Semantic Versioning (1)</a></li><li><a href='/blog/categories/teamcity/'>TeamCity (5)</a></li><li><a href='/blog/categories/testing/'>Testing (5)</a></li><li><a href='/blog/categories/teststack/'>TestStack (2)</a></li><li><a href='/blog/categories/tfs/'>TFS (2)</a></li><li><a href='/blog/categories/ui-automation/'>UI Automation (6)</a></li><li><a href='/blog/categories/vsto/'>VSTO (17)</a></li><li><a href='/blog/categories/webapi/'>WebApi (1)</a></li><li><a href='/blog/categories/white/'>White (2)</a></li><li><a href='/blog/categories/windows-phone/'>Windows Phone (9)</a></li><li><a href='/blog/categories/wpf/'>Wpf (8)</a></li></ul>
+</section>
 
 
 
@@ -639,6 +644,8 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   <footer role="contentinfo"><p>
   Copyright &copy; 2014 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
 </p>
 
 </footer>
@@ -652,7 +659,7 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>

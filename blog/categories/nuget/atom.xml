@@ -4,7 +4,7 @@
   <title><![CDATA[Category: NuGet | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/nuget/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Release NuGet SemVer Packages From Teamcity]]></title>
+    <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
     <link href="http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity/"/>
     <updated>2013-09-28T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity</id>
@@ -135,6 +135,77 @@
 <p>Now hit run, this will publish to NuGet and create the tag in Git. The final step is to go back to GitHub and publish the release (this is not done automatically, and I&rsquo;m sure it could be automated through the GitHub API).</p>
 
 <p>This is my first attempt at making it easy for me to release my open source projects with SemVer and GitHub Releases</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ApiApprover]]></title>
+    <link href="http://JakeGinnivan.github.io/apiapprover/"/>
+    <updated>2012-02-19T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/apiapprover</id>
+    <content type="html"><![CDATA[<p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
+
+<p>The interesting thing about Semantic versioning is that often people accidentally break the semantic version. So I wrote a unit test which solves this problem</p>
+
+<pre><code>[Fact]
+public void phoenix_has_no_public_api_changes()
+{
+    // arrange
+    var phoenix = typeof(IPhoenixHost).Assembly;
+
+    // act
+    var publicApi = CodeGen.CreatePublicApiForAssembly(phoenix);
+
+    // assert
+    var reporter = new DiffReporter();
+    Approvals.Approve(new ApprovalTextWriter(publicApi), new XUnitTestFrameworkNamer(), reporter);
+}
+</code></pre>
+
+<!-- more -->
+
+
+<h1>What it does</h1>
+
+<p>This test is actually quite simple, we grab the assembly, I then have a class which generates the public API for that assembly as a string. I then use Approval Tests to approve any API changes with a diff tool.</p>
+
+<p>So what does that actually look like:<br/>
+<img src="/assets/posts/2012-02-19-apiapprover/ApiChange.png" alt="ApiChange" /></p>
+
+<h1>How do I use it?</h1>
+
+<p>Add the <a href="https://nuget.org/packages/ApiApprover/1.0.0"><strong><code>ApiApprover</code></strong></a> NuGet package</p>
+
+<p>It will drop a few files into your test project<br/>
+PublicApiGenerator.cs<br/>
+PublicApiApprovalTest.cs</p>
+
+<p>Open up PublicApiApprovalTest and fix up the compilation error (specify assembly, and properly attribute up the test for your framework of choice. Then get started!</p>
+
+<p>The source is also available at <a href="https://github.com/JakeGinnivan/ApiApprover">https://github.com/JakeGinnivan/ApiApprover</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[NuGet Packages targeting WP7]]></title>
+    <link href="http://JakeGinnivan.github.io/nugetwp7/"/>
+    <updated>2011-06-21T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/nugetwp7</id>
+    <content type="html"><![CDATA[<p><strong>Update</strong> Compatibility table at <a href="http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples">http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples</a></p>
+
+<p>I released windows phone essentials last week, and I have the mango tools installed, so all seemed fine. Then when a friend of mine tried to install the package they got the following error:</p>
+
+<pre><code>Unable to find assembly references that are compatible with the target framework 'Silverlight,Version=v4.0,Profile=WindowsPhone'
+</code></pre>
+
+<p>Hrrm that blows. As you may be aware, Windows Phone 7 runs a version of silverlight known as Silverlight 3.7. NuGet recommends that you use the lib\SL3-WP for windows phone projects, but if you install the mango tools, this will change to SL4-WP. On top of that if you create a project targeting mango specifically you need to put your library into SL4-WindowsPhone71. It seems that NuGet 1.4 will replace WP with WindowsPhone, but I am not sure about previous versions.</p>
+
+<p>My workaround at the moment is to just specify all of them until there is some official documentation:</p>
+
+<pre><code>lib\SL3-WP\WindowsPhoneEssentials.dll
+lib\SL4-WindowsPhone71\WindowsPhoneEssentials.dll
+lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
+</code></pre>
 ]]></content>
   </entry>
   

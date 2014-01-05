@@ -18,14 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://JakeGinnivan.github.io/multitargeted-windows-phone-project">
+  <link rel="canonical" href="http://JakeGinnivan.github.io/multitargeted-windows-phone-project/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/feed/index.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -50,13 +49,22 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
-    <h2>Things I find useful</h2>
+  <ul class="social-links">
   
+    <li><a class="feed" href="/feed/index.xml" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="/feed/index.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -70,6 +78,7 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About</a></li>
 </ul>
 
 </nav>
@@ -457,7 +466,7 @@ pause
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/msbuild/'>msbuild</a>, <a class='category' href='/blog/categories/open-source/'>open-source</a>, <a class='category' href='/blog/categories/wp7/'>wp7</a>
+    <a class='category' href='/blog/categories/open-source/'>Open Source</a>, <a class='category' href='/blog/categories/windows-phone/'>Windows Phone</a>
   
 </span>
 
@@ -499,6 +508,10 @@ pause
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
+      </li>
+    
+      <li class="post">
         <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
       </li>
     
@@ -507,15 +520,11 @@ pause
       </li>
     
       <li class="post">
-        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
       <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
-      </li>
-    
-      <li class="post">
-        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
       </li>
     
   </ul>
@@ -530,7 +539,7 @@ pause
   <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
   
   <script type="text/javascript">
-    $(document).ready(function(){
+    $.domReady(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -541,8 +550,8 @@ pause
 
         github.showRepos({
             user: 'JakeGinnivan',
-            count: 0,
-            skip_forks: true,
+            count: 6,
+            skip_forks: false,
             target: '#gh_repos'
         });
     });
@@ -550,7 +559,10 @@ pause
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
-
+<section>
+  <h1>Categories</h1>
+  <ul id="category-list"><li><a href='/blog/categories/dot-net/'>.NET (6)</a></li><li><a href='/blog/categories/async/'>Async (2)</a></li><li><a href='/blog/categories/automapper/'>AutoMapper (1)</a></li><li><a href='/blog/categories/azure/'>Azure (3)</a></li><li><a href='/blog/categories/clickonce/'>ClickOnce (3)</a></li><li><a href='/blog/categories/continuous-delivery/'>Continuous Delivery (2)</a></li><li><a href='/blog/categories/git/'>Git (3)</a></li><li><a href='/blog/categories/gitflow/'>GitFlow (1)</a></li><li><a href='/blog/categories/github/'>GitHub (3)</a></li><li><a href='/blog/categories/jira/'>Jira (1)</a></li><li><a href='/blog/categories/log4net/'>log4net (1)</a></li><li><a href='/blog/categories/msbuild/'>MSBuild (1)</a></li><li><a href='/blog/categories/nuget/'>NuGet (3)</a></li><li><a href='/blog/categories/open-source/'>Open Source (20)</a></li><li><a href='/blog/categories/presenting/'>Presenting (8)</a></li><li><a href='/blog/categories/resharper/'>ReSharper (2)</a></li><li><a href='/blog/categories/semantic-versioning/'>Semantic Versioning (1)</a></li><li><a href='/blog/categories/teamcity/'>TeamCity (5)</a></li><li><a href='/blog/categories/testing/'>Testing (5)</a></li><li><a href='/blog/categories/teststack/'>TestStack (2)</a></li><li><a href='/blog/categories/tfs/'>TFS (2)</a></li><li><a href='/blog/categories/ui-automation/'>UI Automation (6)</a></li><li><a href='/blog/categories/vsto/'>VSTO (17)</a></li><li><a href='/blog/categories/webapi/'>WebApi (1)</a></li><li><a href='/blog/categories/white/'>White (2)</a></li><li><a href='/blog/categories/windows-phone/'>Windows Phone (9)</a></li><li><a href='/blog/categories/wpf/'>Wpf (8)</a></li></ul>
+</section>
 
 
 
@@ -563,6 +575,8 @@ pause
   <footer role="contentinfo"><p>
   Copyright &copy; 2014 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
 </p>
 
 </footer>
@@ -579,7 +593,7 @@ pause
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>

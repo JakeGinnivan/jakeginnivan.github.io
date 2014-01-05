@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Verifying Logged Messages With Log4Net]]></title>
+    <title type="html"><![CDATA[Verifying logged messages with Log4Net]]></title>
     <link href="http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net/"/>
     <updated>2013-09-13T00:00:00+01:00</updated>
     <id>http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net</id>
@@ -89,6 +89,155 @@ public class RecordTest
     }
 }
 </code></pre>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <updated>2013-08-01T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
+
+<p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
+
+<p>The previous test suite was often red, which meant that it was hard to know if there were regressions as other issues were fixed.</p>
+
+<p>You can see the CI status at <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;branch_TestStack_White=__all_branches__">http://teamcity.ginnivan.net/project.html?projectId=TestStack_White</a></p>
+
+<!-- more -->
+
+
+<h2>TestStack.White.ScreenObjects</h2>
+
+<p>Also released is <a href="https://www.nuget.org/packages/TestStack.White.ScreenObjects">https://www.nuget.org/packages/TestStack.White.ScreenObjects</a></p>
+
+<p>This is the old White.Repository project, finally released on NuGet. Hopefully there should be some updates to this project coming up as well!</p>
+
+<h2>Namespace Change</h2>
+
+<p>Being part of TestStack now, we wanted to bring White&rsquo;s namespace into line with the other TestStack projects.</p>
+
+<p>White&rsquo;s namespace has changed from <code>White.Core</code> to <code>TestStack.White</code>. Once you upgrade just run <code>Fix-WhiteNamespaces</code> from your NuGet console and we will fix all your namespace references for you!</p>
+
+<h2>Change Log</h2>
+
+<p>The change log is available at <a href="http://teststack.azurewebsites.net/White/ChangeLog.html">http://teststack.azurewebsites.net/White/ChangeLog.html</a></p>
+
+<p>You may notice the website (which we will have a domain for very shortly), this is the new TestStack documentation site/wiki.</p>
+
+<p>Please have a look around, post comments, contribute and give us feedback!</p>
+
+<h2>Pull Requests</h2>
+
+<p>Whenever you submit a pull request for White, we will automatically do a CI build, then a full UI Test run.
+This means if you do not want to wait for the test suite to run on your machine, you can just submit your pull request, then wait for the status to be reported back (which sometimes fails for some reason, but you should be able to see it on the build server).</p>
+
+<h2>Whats next</h2>
+
+<p>The next step for White is upgrading to v3 of the UIA Library, this will likely break a few things (which is why it was important to get the tests running properly).</p>
+
+<h2>Reporting Issues</h2>
+
+<p>If you find an issue in White, create an issue on github, and even better, create a failing UI tests. I do not mind pull requests with a failing test, I can fix the underlying issue without you getting involved in the inner workings of White.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Async warning with nSubstitute]]></title>
+    <link href="http://JakeGinnivan.github.io/async-warning-with-nsubstitute/"/>
+    <updated>2012-10-16T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/async-warning-with-nsubstitute</id>
+    <content type="html"><![CDATA[<p>I got sick of a heap of warnings in VS which look like this:</p>
+
+<pre><code>Warning 1   Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+</code></pre>
+
+<p>The code which was causing this error was a received call: <code>_service.Received().CancelAsync()</code></p>
+
+<p>My solution to the problem is creating a simple extension</p>
+
+<pre><code>public static class NSubstituteHelper
+{
+    public static void IgnoreAwaitForNSubstituteAssertion(this Task task)
+    {
+
+    }
+}
+</code></pre>
+
+<p>Then my code turns into <code>_service.Received().CancelAsync().IgnoreAwaitForNSubstituteAssertion()</code> and my issue goes away</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Getting Started with ApprovalTests without installing TortoiseSVN]]></title>
+    <link href="http://JakeGinnivan.github.io/getting-started-with-api-approver/"/>
+    <updated>2012-03-08T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/getting-started-with-api-approver</id>
+    <content type="html"><![CDATA[<p>I have just installed Windows 8 consumer preview on my dev machine, then all my API Approval tests started failing with this exception because I don&rsquo;t have TortoiseMerge installed =(</p>
+
+<pre><code>System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
+   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start()
+   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start(String fileName, String arguments)
+   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
+   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
+   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
+   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
+   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
+   at Phoenix.Tests.ApiChanges.phoenix_has_no_public_api_changes() in C:\Users\Jake\_Code\Phoenix\src\net40\Phoenix.Tests\ApiChanges.cs:line 22
+System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
+   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start()
+   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start(String fileName, String arguments)
+   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
+   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
+   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
+   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
+   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
+</code></pre>
+
+<p>My issue is I don&rsquo;t want to install TortoiseSVN just to get TortoiseMerge which ApiApprover uses by default.</p>
+
+<p>So I created a Chocolatey package at <a href="http://chocolatey.org/packages/tortoisemerge">http://chocolatey.org/packages/tortoisemerge</a> which will download and add TortoiseMerge to your Path, then Approval Tests DiffReporter will just start working :)</p>
+
+<h1>Install Steps</h1>
+
+<h2>1. Install Chocolatey</h2>
+
+<p><strong>PS:></strong> <code>iex ((new-object net.webclient).DownloadString('http://bit.ly/psChocInstall'))</code></p>
+
+<h2>2. Install TortoiseMerge via Chocolatey</h2>
+
+<p><strong>PS:></strong> <code>cinst TortoiseMerge</code></p>
+
+<p>Done :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Phone Test Project Template]]></title>
+    <link href="http://JakeGinnivan.github.io/phone-test-project/"/>
+    <updated>2011-08-20T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/phone-test-project</id>
+    <content type="html"><![CDATA[<p>Last week I put together a project template for a windows phone 7 test project. At the moment there isn&rsquo;t a really good story for unit testing on the phone. If you have the mango tools you have to grab the Mango Silverlight Unit Test assemblies from Jeff Wincox&rsquo;s blog.</p>
+
+<p>The Project Template available at <a href="http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b">http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b</a> is really basic, and you then have to add a reference via NuGet of either the Silverlight Unit Testing Framework (doesn&rsquo;t work with Mango), or WindowsPhoneEssentials.Testing.</p>
+
+<p>The advantage of the WindowsPhoneEssentials.Testing project is it contains the Mango compatible versions, sets everything up and has a collection of really useful testing related helpers/abstractions for WP7. Check out <a href="http://windowsphonefoundations.net/windowsphoneessentials">http://windowsphonefoundations.net/windowsphoneessentials</a> or the source at <a href="http://wp7essentials.codeplex.com/">http://wp7essentials.codeplex.com/</a> for more information.</p>
+
+<p>But what you get after you install it is:</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/NewTestProject.png" alt="New Phone Test Project" /></p>
+
+<p>Then you add the NuGet reference to WindowsPhoneEssentials.Testing</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/TestingNuGet.png" alt="Add NuGet reference to WindowsPhoneEssentials.Testing" /></p>
 
 <p>Enjoy!</p>
 ]]></content>

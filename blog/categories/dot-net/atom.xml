@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: .net | Jake Ginnivan's blog]]></title>
+  <title><![CDATA[Category: .NET | Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/blog/categories/dot-net/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T16:26:22+00:00</updated>
+  <updated>2014-01-05T21:00:45+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -178,23 +178,6 @@ Console.Write(stdErr);
 </code></pre>
 
 <p>What other extensions am I missing?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Blog Redesign]]></title>
-    <link href="http://JakeGinnivan.github.io/blog-redesign/"/>
-    <updated>2011-02-25T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/blog-redesign</id>
-    <content type="html"><![CDATA[<p>As part of my redesign, I have also changed web hosts. My apologies to anyone that has had their RSS feeds spammed by the process of me rebuilding my blog. I also have not transferred comments yet, I hopefully will get around to that shortly!</p>
-
-<p>If you have a spare moment, could you give some feedback on:</p>
-
-<p>What do you think of my new blog theme?
-What content do you like on my blog?
-What would you like to see?</p>
-
-<p>I am planning on blogging more and feedback would be great about the direction you would like me to go, or the content you enjoy seeing or what you do not want to see.</p>
 ]]></content>
   </entry>
   
@@ -739,6 +722,21 @@ public class Arguments
     }
 }
 </code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VSTO Contrib]]></title>
+    <link href="http://JakeGinnivan.github.io/vsto-contrib/"/>
+    <updated>2010-07-14T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/vsto-contrib</id>
+    <content type="html"><![CDATA[<p>Over the time with working with VSTO, I have created a heap of reusable classes and extensions for VSTO. So I have decided to start a Contrib project.</p>
+
+<p><a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a></p>
+
+<p>The best class (in my opinion) in the Office.Utility project is the RibbonFactory, it allows you to have a ribbon callback file for each xml ribbon, register all the callback files via IoC (or manually), then the factory will locate the associated Ribbon.xml file and wire up all the callbacks for you. I prefer working with the Ribbon XML model over the designer, but the limitation of only having a single callback class is really annoying. The ribbon factory gets around that</p>
+
+<p>Over the next few months I will write up some more posts about ways to really leverage VSTO, and also write maintainable apps.</p>
 ]]></content>
   </entry>
   
