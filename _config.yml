@@ -3,11 +3,15 @@
 # ----------------------- #
 
 url: http://JakeGinnivan.github.io
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+title: Jake Ginnivan's blog
+subtitle: Things I find useful
+author: Jake Ginnivan
 simple_search: http://google.com/search
-description:
+description: |
+  I'm Jake, an Open Source Enthusiast, Blogger, Speaker and Microsoft MVP (VSTO) based in London at the moment and from Perth, Australia originally.
+  Currently working for http://weareadaptive.com
+  
+  Unless specified all code on this blog is released under MIT License.
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -19,7 +23,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email:
+email: jake@ginnivan.net
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -63,13 +67,13 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user:
+github_user: JakeGinnivan
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user:
+twitter_user: JakeGinnivan
 twitter_tweet_button: true
 
 # Google +1
@@ -90,11 +94,11 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
+disqus_short_name: jakeginnivansblog
 disqus_show_comment_count: false
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-42948513-1
 
 # Facebook Like
 facebook_like: false
