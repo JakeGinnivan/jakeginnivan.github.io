@@ -36,7 +36,7 @@ All good, local testing works beautifully. So I start with deploying to Azure We
        at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment..cctor()
        --- End of inner exception stack trace ---
        at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.get_IsAvailable()
-
+<!-- more -->
 It seems the static initialiser for RoleEnvironment relies on a native dll which is installed into the GAC by the Azure SDK... Isn't the point of IsAvailable to check if you are running in Azure... =(
 
 So I start searching for that assembly, turns out it lives at `"C:\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\bin\runtimes\base\x64\msshrtmi.dll"` and `"C:\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\bin\runtimes\base\x86\msshrtmi.dll"` for the two different CPU architectures.

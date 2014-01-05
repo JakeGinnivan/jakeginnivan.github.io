@@ -15,6 +15,8 @@ summary: |
   
 
 ---
+Office Automation and COM interop code can be really ugly, this post show you how the extension methods in VSTO Contrib can help
+<!-- more -->
 #Ugly Office Automation Code
 
 You have been tasked with the simple job of writing a console application which goes through every contact in an Outlook addressbook and replacing Smith, John with John Smith. Because you want Outlook 2003 to close properly when you call quit, you make sure you manage your references properly. The code you come up with looks something like:

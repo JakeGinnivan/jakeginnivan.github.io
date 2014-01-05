@@ -24,7 +24,7 @@ Much to my surpise, it is actually very light-weight and you can drop much of it
 [https://github.com/TestStack/ConventionTests](https://github.com/TestStack/ConventionTests) is my guinea pig!
 
 To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, 'upstream' is the main repository, 'origin' is my fork.
-
+<!-- more -->
 ## 1. Convert the repo over to git-flow
 From your git command line
 

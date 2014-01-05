@@ -19,7 +19,7 @@ summary: |
 When I first started on this library, it was a very simple set of classes designed to help me do trivial tasks in VSTO, such as simplifying listening to certain events, wrappers, and it was really a dumping ground for code that solved problems I had while developing VSTO solutions.
 
 Just before TechEd last year (August), I started trying to tackle some more fundamental architectural issues, such as no ability to use DI, or IoC, which often causes VSTO solutions to have Ribbons with hundreds of lines of code behind, this issue is made worse with Ribbon XML which only lets you have a single callback file for ALL ribbons.
-
+<!-- more -->
 #Version Support
 I am targeting both Office 2007 & 2010 using either .NET 3.5 or .NET 4.0, and currently support Outlook, Word, Excel and PowerPoint. This means there are 16 different packages you can download.
 

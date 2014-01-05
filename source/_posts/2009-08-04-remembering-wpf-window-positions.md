@@ -22,7 +22,7 @@ So I went in search of a solution that someone else had written first, I found a
 The [second example][2] I found has the idea of using attached properties, which I liked a lot.
 
 The problem with the MSDN sample is you need to set up each window manually by overriding some of the Windows methods, the second solution did not cater for the edge cases.
-
+<!-- more -->
 <h1>How do we do it?</h1>
 The first problem is persisting the data, I wanted to be able to store the position across sessions for multiple windows AND store the class in a reusable library. So I decided to create a internal ApplicationSettings class within my class to store each window, passing the Type.FullName of the window to the ApplicationSettings constructor to make sure settings names are not doubled up.
 

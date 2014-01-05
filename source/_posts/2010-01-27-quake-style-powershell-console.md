@@ -19,7 +19,7 @@ I decided today that I wanted a quake style powershell console (with the classic
 ![Awesome powershell console][1]
 
 I used [http://www.instructables.com/id/"Drop-Down",-Quake-style-command-prompt-for-Window/][2] as a template to get it all working, but wanted to use Console2 instead of v1.5 like this article uses.
-
+<!-- more -->
 <h1>What you need?</h1>
 
 Download [AutoHotKey][3] <br />

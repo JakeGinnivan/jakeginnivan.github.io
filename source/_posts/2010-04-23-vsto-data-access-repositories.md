@@ -16,7 +16,7 @@ summary: |
 
 ---
 If we want to do anything interesting with VSTO and Outlook we will have to access data from Outlook. That will normally be Contacts, or Appointments or Emails? When you do this you will probably leak items, then Outlook will stop behaving normally, you can get ghost inspectors (click save & close, and the window stays open, but ribbon is grayed out), or errors when you try to edit a item through the Outlook UI. There can be many side effects, most are not fun to track down the cause.
-
+<!-- more -->
 <h1>Repository Pattern</h1>
 
 This seems as good a place as any to cover the repository pattern, it is REALLY important if you want a stable VSTO app. If you are unsure what it is then have a read of [http://martinfowler.com/eaaCatalog/repository.html][1].

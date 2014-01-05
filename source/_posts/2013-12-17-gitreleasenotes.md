@@ -20,7 +20,7 @@ I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitH
 I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.
 
 GitReleaseNotes was another project I kicked off about the same time that [Simon Cropp](https://github.com/simoncropp) and [Andreas Öhlund](https://github.com/andreasohlund) were kicking off similar projects, see [https://github.com/Particular/ReleaseNotesCompiler](https://github.com/Particular/ReleaseNotesCompiler). We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.
-
+<!-- more -->
 ## What does it do
 The concept is quite simple, you can optionally specify a Git tag (it will select the newest tag if you do not specify one). It will then scan all newer commits for references to issues.
 

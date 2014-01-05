@@ -22,9 +22,9 @@ Original source: [http://www.codeproject.com/KB/recipes/command_line.aspx][1]
 I have a few specific requirements:
 
  - It must support lists, or the same argument specified multiple times. If an argument has comma’s in it then it will be treated as a list and split on the comma.
- - It must support paths with a trailing \ ie. –arg:”c:\Users\ginnivanj\My Path\”
+ - It must support paths with a trailing \ ie. –arg:"c:\Users\ginnivanj\My Path\"
  - Has support for flags.
-
+<!-- more -->
 ![Class Diagram][2]
 
 <h1>Example Usage</h1>
@@ -541,4 +541,4 @@ Tests use xUnit as the unit testing framework
 
 
   [1]: http://www.codeproject.com/KB/recipes/command_line.aspx
-  [2]: /get/screenshots/ArgPaserClassDiagram.png
+  [2]: /get/screenshots/argPaserClassDiagram.png

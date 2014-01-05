@@ -24,7 +24,7 @@ But this falls down when you start using async, because the lambda will end up b
 Read [Lucians blog post](http://blogs.msdn.com/b/lucian/archive/2013/02/18/talk-the-new-async-design-patterns.aspx) for more information about why async void is bad.
 
 So we introduced a new interface, called `IAsyncCommand` and it looks like this
-
+<!-- more -->
     public interface IAsyncCommand : IAsyncCommand<object>
     {
     }

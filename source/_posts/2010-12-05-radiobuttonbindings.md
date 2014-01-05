@@ -18,7 +18,7 @@ summary: |
 Today I had to build a search screen, it had 3 radio buttons for different types of items to search, and each item had very specific search fields.
 
 On my viewmodel I had 3x IsSearchingBlahItems properties. And bound the IsChecked property on my radio buttons to those properties. I then had some stack panels which were bound to the same properties. Here is what this would look like:
-
+<!-- more -->
     <RadioButton IsChecked="{Binding IsSearchingGeneralItems}" /> 
     <RadioButton IsChecked="{Binding IsSearchingJewelleryItems}" /> 
     <RadioButton IsChecked="{Binding IsSearchingWatchItems}" /> 

@@ -3,7 +3,7 @@ layout: post
 title: About Me
 metaTitle: About Me
 description: A bit of information about me
-revised: 2011-06-22
+revised: 2012-02-19
 date: 2011-02-21
 categories: []
 migrated: true

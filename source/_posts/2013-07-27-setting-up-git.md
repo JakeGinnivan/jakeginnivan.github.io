@@ -18,7 +18,7 @@ summary: |
 I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.
 
 I use [Git Extensions](https://code.google.com/p/gitextensions/) as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.
-
+<!-- more -->
 ## Required Software
 Tick both boxes (MsysGit and KDiff3)
 

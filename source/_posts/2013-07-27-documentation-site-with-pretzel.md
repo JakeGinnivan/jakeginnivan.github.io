@@ -18,7 +18,7 @@ summary: |
 Over the last day or so, I have been setting up the documentation website for TestStack at [http://teststack.azurewebsites.net/](http://teststack.azurewebsites.net/)
 
 With Pretzel's Wiki template support, it is super easy to get your own site setup.
-
+<!-- more -->
 ## Create the site in pretzel
 This assumes you already have pretzel and it is in your PATH.
 

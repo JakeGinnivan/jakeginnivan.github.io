@@ -27,7 +27,7 @@ Once I got that working, I started tweaking, improving, adding in context awaren
  - Making custom task panes, which are associated with a ribbon (i.e. button to show/hide custom task pane) really simple.
 
 The VSTO tooling is pretty good, especially around the designer, but I want the best of both worlds, and to be able to fall into `the pit of success` as [Paul Stovell][1] often says.
-
+<!-- more -->
 #View Model's in Office?
 I have broken all the differences between each of the Office applications up into terminology which is common to all of them, and abstracted the behaviours of each. The way I have broken it down is into
 

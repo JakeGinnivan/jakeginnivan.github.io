@@ -30,7 +30,7 @@ We added this class to our project and added a reference to `Microsoft.WindowsAz
     }
 
 Our WebApi site starts 404'ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.
-
+<!-- more -->
 ## The issue
 So I started work this morning investigating why our UI automation tests were all hanging/broken. I noticed our message processor was logging errors 'Not Found', restarting everything I managed to get something which looked like:
 

@@ -29,7 +29,7 @@ Features:
  - Also validates against SQL Compact databases
 
 All in all, for small apps I think this makes connecting to a SQL database really easy! The SqlConnectionString class is also handy for any type of apps that have to manipulate a Sql Connection String.
-
+<!-- more -->
 <h1>SqlConnectionString Class</h1>
 
 At the core of this user control is a SqlConnectionString

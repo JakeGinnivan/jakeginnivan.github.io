@@ -24,7 +24,7 @@ Often we cannot resolve a UI element, and we will get an error like:
 While this is great, often it is hard to figure out why this happens, could be due to a validation error on the previous screen, or a error popup etc. So out infrastructure will automatically take a screenshot whenever it catches a AutomationException.
 
 The problem is the modal window that was often captured (and was blocking a button press on the main window) was coming out as a tiny little square with no contents:
-
+<!-- more -->
 ![Blank Modal Dialogue][1]
 
 I began digging, then realised that using GDI+ to take a screenshot of a WPF app doesn't seem to always work. It worked fine on my machine, but not our build machine.
@@ -89,5 +89,5 @@ And now I have:
 ![Working modal screenshot][2]
 
 
-  [1]: /get/screenshots/blankmodal.png
-  [2]: /get/screenshots/propermodal.png
+  [1]: /get/screenshots/blankModal.png
+  [2]: /get/screenshots/properModal.png

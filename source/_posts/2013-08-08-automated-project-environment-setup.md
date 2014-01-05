@@ -30,7 +30,7 @@ The last project I was on was greenfields, so from day 1 we had a `Setup Dev Env
 Over time, this script gained more and more features. But when a new team member joined the team, they just ran this script which installed/configured everything.
 
 Why IIS you may ask, instead of say IIS Express. Well this approach means each site had it's own domain, so fiddler works out of the box. It also means that our UI Test suite doesn't have to fire up IIS Express to run it's tests.
-
+<!-- more -->
 ### The script
 This is what our script looked like
 

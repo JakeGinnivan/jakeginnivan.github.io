@@ -25,7 +25,7 @@ My goals were
  - Support SemVer, including pre-release packages
  - Assembly versions should be stamped with informational version as well as a version
  - Be able to link to the project GitHub releases from the NuSpec
-
+<!-- more -->
 # My Solution
 ## 1. Setup the VCS Root to be authenticated
 ![ReleaseNuGetSemVerpackagesfromTeamcity](/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/ReleaseNuGetSemVerpackagesfromTeamcity.png)

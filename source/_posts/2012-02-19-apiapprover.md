@@ -32,7 +32,8 @@ The interesting thing about Semantic versioning is that often people accidently 
         var reporter = new DiffReporter();
         Approvals.Approve(new ApprovalTextWriter(publicApi), new XUnitTestFrameworkNamer(), reporter);
     }
-        
+<!-- more -->
+
 # What it does
 This test is actually quite simple, we grab the assembly, I then have a class which generates the public API for that assembly as a string. I then use Approval Tests to approve any API changes with a diff tool.
 

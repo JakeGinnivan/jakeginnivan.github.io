@@ -23,7 +23,7 @@ Here is a scenario
     var entries = session.QueryOver<Entry>(()=>entryAlias);
 
 In the above scenario R# will warn that entryAlias is always null, which is is, but I don't care, nHibernate is simply getting the type from the expression.
-
+<!-- more -->
 So I have created a simple static class:
 
     /// <summary>

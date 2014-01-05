@@ -15,6 +15,10 @@ summary: |
   
 
 ---
+Ever wanted to know a bit more about how VSTO gives you the Ribbon designer. This post will explain Ribbon XML, then how the designer gives you more.
+
+<!-- more -->
+
 #Ribbon Designer
 One of the goals when VSTO 'RAD' or Rapid Application Development, where you get your draggy/droppy style of development. Which is exactly what the Ribbon designer gives you, a really simple, winforms like way of building up your ribbons. It gives you:
 

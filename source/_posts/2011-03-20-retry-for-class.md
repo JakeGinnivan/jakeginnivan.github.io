@@ -18,7 +18,7 @@ summary: |
 With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put a lot of good helpers in place (WaitWhileBusy etc), there are still times where a button does not enable quick enough, or a windows is opening and if you do not have automatic retry enabled you will have quite fragile UI automation tests.
 
 This is where my Retry static class comes in handy.
-
+<!-- more -->
 ##Usage
     var element = Retry.ForDefault(
                       () => screen.WhiteWindow.Get(searchCriteria),

@@ -15,6 +15,8 @@ summary: |
   The WP7 Essentials library is constantly evolving, the most recent addition is a UI for settings used with the Settings Provider
 
 ---
+Update: This project has been superseeded by [SettingsProvider.net](https://github.com/JakeGinnivan/SettingsProvider.net)
+<!-- more -->
 # Settings Provider?
 The settings provider is a port from the FunnelWeb settings provider to Windows Phone. It is a really simple interface
 

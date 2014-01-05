@@ -20,7 +20,7 @@ Many UI automation frameworks automate not only using automation patterns, but a
 This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM's, but you can use your own vm infrastructure. 
 
 I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM's run on a locked desktop, or on the cloud and you need to remote in.
-
+<!-- more -->
 ## Create our VM on Azure
 
 ![NewDocument](/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png)

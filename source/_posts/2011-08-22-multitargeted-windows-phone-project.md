@@ -17,7 +17,7 @@ summary: |
 ---
 I saw Shawn Wildermuth's post on maintaining a project targeting multiple versions of windows phone, I thought I would share the way I do it as I think it is far easier than the alternatives.
 [http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions](http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions)
-
+<!-- more -->
 # Multi-Targeted .csproj file
 
 First off I open up my .csproj file and add this under the initial property group

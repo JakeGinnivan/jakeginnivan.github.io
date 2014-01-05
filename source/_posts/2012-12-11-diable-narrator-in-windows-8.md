@@ -18,7 +18,7 @@ summary: |
 I get rather annoyed with the narrator. Using [this](http://blog.ostebaronen.dk/2012/08/disable-narrator-in-windows-8.html) as inspiration here is how you do it.
 
 **Update:**  Another solution is available at [http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/](http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/) which uses Image File Execution Options instead.
-
+<!-- more -->
 Note: You can just delete it, but windows will restore it every time an update is installed
 
  - Open `C:\Windows\System32`

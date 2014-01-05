@@ -19,7 +19,7 @@ summary: |
 
 In my current project, we are leveraging AutoMapper a lot to map our Domain to Dto's. The major problem we are facing is that our mappings are getting quite complex and bloated, especially for flattened Dtos or Summaries which have properties that cover all the properties from the concrete types they come from.
 It seemed unnatural that I could define a mapping that looked like:
-
+<!-- more -->
     Mapper.CreateMap<ItemBase, ItemSummaryDto>()
         .ForMember(d => d.Description, m => m.MapFrom(s => s.ItemSummary))
         .Include<GeneralItem, GeneralItemSummaryDto>()

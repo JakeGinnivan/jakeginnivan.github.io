@@ -22,7 +22,7 @@ This is bad..
 Unfortunately out of the box this is really hard to get around, in this post I will present a few options and a few helper classes that will be included in Outlook.Utility very soon.
 
 I try to use IoC and DI as much as I can inside Outlook add-ins, in some places this is really hard, so I fall back to a ServiceLocator.
-
+<!-- more -->
 <h1>Why IoC <strong>and</strong> ServiceLocator</h1>
 
 If you are not sure about what IoC, DI or a ServiceLocator is I suggest you do some reading, understanding these concepts (even if you do not use them) will make you a better developer. Start at [http://martinfowler.com/articles/injection.html][1].

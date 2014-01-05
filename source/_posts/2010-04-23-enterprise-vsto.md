@@ -24,7 +24,7 @@ I have started an open source library called Outlook.Utility, which I will proba
 The main issue with the code is it doesn’t release any COM references and actually leaks, as I invest more time into my Outlook.Utility project I will clean up all the leaks as well as add my own helper classes and extensions. I am going to start a Enterprise VSTO series that will use this library and cover ways you can create a good maintainable add-in.
 
 Over a few posts I will cover IoC, Patterns to use, COM interop, performance issues/solutions, WPF integration (using MVVM) and a few other things. I then will probably put it all in a webcast at the end.
-
+<!-- more -->
 <h1>Enterprise VSTO Series</h1>
 
 [Project Structure][2] <br />

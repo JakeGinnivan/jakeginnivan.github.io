@@ -15,7 +15,7 @@ summary: |
   Normally, if you wanted to do this you would try inject ILog. This is a cleaner alternative
 
 ---
-I came across a constructor which looked something like this
+I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.
 
     ClassCtor(...., Func<ILog> logFactory) { .. }
 
@@ -24,7 +24,7 @@ The log factory would grab inject a log for the class, but everywhere else in th
     ILog log = LogManager.GetLogger(typeof(CLASS));
 
 There must be a better way, something like a scoped appender or something, so I came up with this syntax
-
+<!-- more -->
     [TestFixture]
     public class RecordTest
     {

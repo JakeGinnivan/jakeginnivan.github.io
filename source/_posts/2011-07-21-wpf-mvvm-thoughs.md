@@ -25,7 +25,7 @@ Lets start with the problems we want to solve with our solution
  - ViewModels should be testable
 
 Frameworks like Magellan solve these sort of issues in other ways, but if you don't want to take on a framework then maybe an approach like this may help you get started.
-
+<!-- more -->
 #My approach
 
 I find that once you progress past a basic application with simple interactions that often you need views to interact with each other, this could be returning data from a modal dialogue or anything.

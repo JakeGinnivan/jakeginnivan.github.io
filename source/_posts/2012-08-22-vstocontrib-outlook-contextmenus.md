@@ -16,6 +16,7 @@ summary: |
 
 ---
 So the scenario was that I want to show additional menu items when right clicking on an email.
+<!-- more -->
 
     <contextMenus>
       <contextMenu idMso="ContextMenuMailItem">

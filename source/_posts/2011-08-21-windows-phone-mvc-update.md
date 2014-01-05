@@ -25,7 +25,7 @@ This is going to be quite a long post going through many features of Windows Pho
 I am still a little way from v1, so there will be API changes, but I am more than happy to field some questions about how to use it.
 
 Many of the improvements on this release are due to [http://transhub.wordpress.com/](http://transhub.wordpress.com/) using Windows Phone MVC and I have been working close with the transub team to make sure the framework helped them deliver a killer app!
-
+<!-- more -->
 ## Important Links
 
 NuGet Package Name: [WindowsPhoneMVC](http://nuget.org/List/Search?packageType=Packages&searchTerm=WindowsPhoneMVC)  

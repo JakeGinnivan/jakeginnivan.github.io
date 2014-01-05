@@ -16,7 +16,7 @@ summary: |
 
 ---
 Without a good project structure you will find you cannot test any of your code and will possibly run into maintainability problems. For my user group talk last month I built a Outlook add-in that synchronises contacts and events from Facebook into outlook. I chose Facebook because it has a easy to access public API and most people are familiar with it. Over the next few weeks I will go through the process of building it, demonstrating many concepts as I go. At the end I will release the completed project.
-
+<!-- more -->
 #File -> New
 
 ![New Outlook Add-in][1]

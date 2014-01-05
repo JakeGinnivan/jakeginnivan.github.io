@@ -26,7 +26,7 @@ Enter TFS. TFS is a great product that starts really value adding when you use d
 My goal is to have my automated regression tests (both UI and Integration tests) which are written in xUnit to report their results back into TFS (Builds) and Test Manager (Test Runs).
 
 This allows the Testers to use the planned automation features in TFS to mark certain Test Cases as 'Planned' for automation, it also lights up a whole lot of reporting around test case readiness and other things.
-
+<!-- more -->
 # How?
 There are a few parts to automatically marking test cases as passed/failed.
 

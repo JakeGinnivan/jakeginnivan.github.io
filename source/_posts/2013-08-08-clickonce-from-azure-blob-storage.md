@@ -21,7 +21,7 @@ Even with all it's problems ClickOnce is actually a decent option if you want a 
 I don't like using the publish feature in VS for my ClickOnce installers, it causes more problems than it solves. I tend to use Mage directly, but this is sometimes not that easy to figure out how to do it. Lets start by creating our installer.
 
 I am using MSBuild as my build platform, but these instructions can be adapted to anything really. 
-
+<!-- more -->
 ### Properties
     <PropertyGroup>
       <Version Condition="$(VERSION)==''">0.0.0.1</Version>

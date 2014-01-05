@@ -18,6 +18,7 @@ summary: |
 In this post I will give an introduction to COM Interop and covering some of the basic concepts you need to understand when dealing with VSTO and the Office Object Model. By understanding the way COM interop works and the potential impact of not deterministically cleaning up your references you will build much more reliable VSTO add-ins.
 
 After covering the basics of COM Interop I will write about a helper library I have written and have code examples of how it can make your life much easier.
+<!-- more -->
 
 #COM Interop Overview
 Hopefully you have a bit of a understanding about how it works, but I really want to explain my experiences and pull some of the high level concepts that will help you develop against the Office Object Model..
@@ -309,15 +310,15 @@ If you would like to read more about this check out these links:
 [http://blogs.msdn.com/vcblog/archive/2006/09/20/762884.aspx][17] - Mixing deterministic and non-deterministic cleanup
 
 
-  [1]: /get/screenshots/RCW.png
-  [2]: /get/screenshots/MemoryModels.png
+  [1]: /get/screenshots/rcw.png
+  [2]: /get/screenshots/memorymodels.png
   [3]: http://msdn.microsoft.com/en-us/magazine/bb985010.aspx
-  [4]: /get/screenshots/InvalidComObjectException.png
+  [4]: /get/screenshots/invalidcomobjectException.png
   [5]: http://blogs.msdn.com/visualstudio/archive/2010/03/01/marshal-releasecomobject-considered-dangerous.aspx
   [6]: /vsto-data-access-repositories
-  [7]: /get/screenshots/GhostInspector.png
+  [7]: /get/screenshots/ghostinspector.png
   [8]: http://msdn.microsoft.com/en-us/library/f07c8z1c(VS.71).aspx
-  [9]: /get/screenshots/OutlookCustomerFolderProperty.png
+  [9]: /get/screenshots/outlookCustomerFolderProperty.png
   [10]: http://www.guidanceshare.com/wiki/Interop_(.NET_1.1)_Performance_Guidelines_-_Marshal.ReleaseComObject
   [11]: http://blogs.msdn.com/mbend/archive/2007/04/18/the-mapping-between-interface-pointers-and-runtime-callable-wrappers-rcws.aspx
   [12]: http://www.add-in-express.com/creating-addins-blog/2008/10/30/releasing-office-objects-net/

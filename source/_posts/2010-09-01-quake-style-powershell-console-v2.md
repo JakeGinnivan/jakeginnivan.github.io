@@ -30,7 +30,7 @@ win + `
 = 
 
 ![Quake Mode Powershell][1]
-
+<!-- more -->
 ##What you need
 
  - [Console2 x64][2]

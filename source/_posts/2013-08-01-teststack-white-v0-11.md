@@ -22,7 +22,7 @@ The main focus between v0.10 and v0.11 is converting the old test suite into a n
 The previous test suite was often red, which meant that it was hard to know if there were regressions as other issues were fixed.
 
 You can see the CI status at [http://teamcity.ginnivan.net/project.html?projectId=TestStack_White](http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&branch_TestStack_White=__all_branches__)
-
+<!-- more -->
 ## TestStack.White.ScreenObjects
 Also released is [https://www.nuget.org/packages/TestStack.White.ScreenObjects](https://www.nuget.org/packages/TestStack.White.ScreenObjects)
 
