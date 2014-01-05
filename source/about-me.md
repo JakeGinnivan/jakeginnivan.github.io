@@ -6,26 +6,16 @@ description: A bit of information about me
 revised: 2012-02-19
 date: 2011-02-21
 categories: []
-migrated: true
-comments: true
-sharing: true
+comments: false
+sharing: false
 footer: true
 permalink: /about-me/
-summary: | 
-  
-
+summary: 
 ---
-I'm Jake, a Senior Developer working for Readify, Microsoft MVP (VSTO) and spend most of my spare time doing open source WPF, VSTO, WCF and Silverlight development, or speaking at local user groups.
+I'm Jake, an Open Source Enthusiast, Blogger, Speaker, Microsoft MVP (VSTO) and Readifarian on Sabbatical London at the moment normally based in Perth, Australia.
 
-Hope the content here will be useful to you. Unless specified all code on this blog is released under MIT License.
+Currently I am working for [http://weareadaptive.com](http://weareadaptive.com), with a bunch of really cool people. Check out the [Adaptive Blog](http://blog.weareadaptive.com/)
+  
+Unless specified all code on this blog is released under MIT License.
 
-You can contact me on twitter [JakeGinnivan][1] or email me at jake at ginnivan dot net
-
-![Microsoft MVP (VSTO)][3]
-![Readify][4]
-
-
-  [1]: http://twitter.com/JakeGinnivan
-  [2]: /get/MeSmall.jpg
-  [3]: /get/mvp-logo-small.gif
-  [4]: http://readify.net/img/readify.jpg
+You can contact me on twitter (above) or email me at jake at ginnivan dot net

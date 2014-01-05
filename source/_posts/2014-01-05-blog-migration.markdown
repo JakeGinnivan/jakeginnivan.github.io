@@ -7,5 +7,11 @@ categories: []
 ---
 I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site generators.
 
+## LinqPad Migration script
+Migrates posts, and images (putting them in the correct spot for Jekyll sites and rewriting links in your blog posts as it goes)
 
-http://www.dotnetguy.co.uk/post/2012/06/25/octopress-category-list-plugin/
+Available at [http://share.linqpad.net/76oqrd.linq](http://share.linqpad.net/76oqrd.linq)
+
+## Other Links
+
+https://github.com/tokkonopapa/octopress-tagcloud

@@ -1,2 +1,46 @@
 // This File is imported last, and will override other styles in the cascade
 // Add styles here to make changes without digging in too much
+
+header[role="banner"] {
+    padding-top: 0.5em;
+    padding-bottom: 0px;
+}
+
+.social-links {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+  float: right;
+  li {
+    float:left;
+    margin-left: 5px;
+    a {
+      
+      width: 48px;
+      height: 49px;
+      display: block;
+      background: url("/images/icons.png") no-repeat;
+      &.github {
+        &:hover {
+          background-position: 0 -49px;
+        }
+      }
+      &.feed {
+          background-position: -48px 0;
+        &:hover {
+          background-position: -48px -49px;
+        }
+      }
+      &.twitter {
+        background-position: -96px 0;
+        &:hover {
+          background-position: -96px -49px;
+        }
+      }
+    }
+  }
+}
+
+.subscription {
+   display:none;
+}
