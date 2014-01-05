@@ -1,29 +1,56 @@
 ---
-layout: default
+layout: page
+title: "This is the title for you homepage"
+date: 2013-08-16 23:48
+comments: true
+show_title: false
+sidebar: false
+hero_unit: true
+is_homepage: true
 ---
 
-<div class="blog-index">
-  {% assign index = true %}
-  {% for post in paginator.posts %}
-  {% assign content = post.content %}
-    <article>
-      {% include article.html %}
-    </article>
-  {% endfor %}
-  <div class="pagination">
-    {% if paginator.next_page %}
-      <a class="prev" href="{{paginator.next_page}}">&larr; Older</a>
-    {% endif %}
-    <a href="/blog/archives">Blog Archives</a>
-    {% if paginator.previous_page %}
-    <a class="next" href="{{paginator.previous_page}}">Newer &rarr;</a>
-    {% endif %}
+<div class="grid-wrapper">
+  <div class="grid">
+    <div class="grid__item one-third lap-one-whole palm-one-whole usp">
+      <div class="grid">
+        <div class="grid__item one-whole lap-one-third">
+          <span class="icon">
+            <i class="icon-laptop"></i>
+          </span>
+        </div>
+
+        <div class="grid__item one-whole lap-two-thirds">
+          {% include custom/grid_item_left.html %}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid__item one-third lap-one-whole palm-one-whole usp">
+      <div class="grid">
+        <div class="grid__item one-whole lap-one-third">
+          <span class="icon">
+            <i class="icon-search"></i>
+          </span>
+        </div>
+
+        <div class="grid__item one-whole lap-two-thirds">
+          {% include custom/grid_item_middle.html %}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid__item one-third lap-one-whole palm-one-whole usp">
+      <div class="grid">
+        <div class="grid__item one-whole lap-one-third">
+          <span class="icon">
+            <i class="icon-coffee"></i>
+          </span>
+        </div>
+		 
+        <div class="grid__item one-whole lap-two-thirds">
+         {% include custom/grid_item_right.html %}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-<aside class="sidebar">
-  {% if site.blog_index_asides.size %}
-    {% include_array blog_index_asides %}
-  {% else %}
-    {% include_array default_asides %}
-  {% endif %}
-</aside>
