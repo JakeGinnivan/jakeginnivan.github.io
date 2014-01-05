@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Automapper | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/automapper/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Adding Inheritance to AutoMapper]]></title>
+    <link href="http://JakeGinnivan.github.io/automapperinheritance/"/>
+    <updated>2010-10-31T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/automapperinheritance</id>
+    <content type="html"><![CDATA[<p><strong>Update:</strong> This is currently in the Automapper master, and will be included in the v2 release (hopefully Before/After map will also get included, patch submitted).</p>
+
+<p>In my current project, we are leveraging AutoMapper a lot to map our Domain to Dto&rsquo;s. The major problem we are facing is that our mappings are getting quite complex and bloated, especially for flattened Dtos or Summaries which have properties that cover all the properties from the concrete types they come from.
+It seemed unnatural that I could define a mapping that looked like:</p>
+
+<!-- more -->
+
+
+<pre><code>Mapper.CreateMap&lt;ItemBase, ItemSummaryDto&gt;()
+    .ForMember(d =&gt; d.Description, m =&gt; m.MapFrom(s =&gt; s.ItemSummary))
+    .Include&lt;GeneralItem, GeneralItemSummaryDto&gt;()
+    .Include&lt;SpecificItem, SpecificItemSummaryDto&gt;();
+Mapper.CreateMap&lt;GeneralItem, GeneralItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.GeneralProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.SpecificProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+</code></pre>
+
+<p>And have the rest of the properties map by convention. The problem is that the .Include function is only used for type resolution. i.e.</p>
+
+<pre><code>var dto = Mapper.Map&lt;ItemBase, ItemSummaryDto&gt;(new GeneralItem());
+Assert.IsInstanceOfType&lt;GeneralItemSummaryDto&gt;(dto); // Passes
+</code></pre>
+
+<p>If we validate our mapping we will find that Description is not mapped on GeneralItemSummaryDto and SpecificItemSummaryDto. This means out mapping ends up being:</p>
+
+<pre><code>Mapper.CreateMap&lt;ItemBase, ItemSummaryDto&gt;()
+    .Include&lt;GeneralItem, GeneralItemSummaryDto&gt;()
+    .Include&lt;SpecificItem, SpecificItemSummaryDto&gt;();
+Mapper.CreateMap&lt;GeneralItem, GeneralItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.Description, m =&gt; m.MapFrom(s =&gt; s.ItemSummary))
+    .ForMember(d =&gt; d.GeneralProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.Description, m =&gt; m.MapFrom(s =&gt; s.ItemSummary))
+    .ForMember(d =&gt; d.SpecificProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+</code></pre>
+
+<p>We have to duplicate the mapping of the Description property on both the items. For my current project this means our mappings are far more complicated than they need to be, and have massive amounts of duplicated ForMember(d=>d.Blah, m=>m.Ignore()) mappings because we have many flattened summary dtos which have properties from many of the concrete types that are mapped.</p>
+
+<p>Unfortunately it ended up being quite a difficult task, and with our complex mappings my initial implementations resulted in a few issues. I am pretty sure I have got most of them and have created quite a few unit tests covering it. Especially with collections of a base type, holding different concrete types.</p>
+
+<p>Is anyone interested in this functionality? If so let me know and I will create a proper Fork on Github and share my changes. I still need to cleanup the unit tests and the code a little bit as the AutoMapper codebase is really nice and I don&rsquo;t want to make it messy.</p>
+]]></content>
+  </entry>
+  
+</feed>

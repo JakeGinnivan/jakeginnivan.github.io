@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Retry.For - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="I have created a simple class to help with UI Automation, making it really easy to retry a action for a certain time">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/retry-for-class">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Retry.For</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-20T00:00:00+00:00" pubdate data-updated="true">Mar 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put a lot of good helpers in place (WaitWhileBusy etc), there are still times where a button does not enable quick enough, or a windows is opening and if you do not have automatic retry enabled you will have quite fragile UI automation tests.</p>
+
+<p>This is where my Retry static class comes in handy.</p>
+
+<!-- more -->
+
+
+<h2>Usage</h2>
+
+<pre><code>var element = Retry.ForDefault(
+                  () =&gt; screen.WhiteWindow.Get(searchCriteria),
+                  b =&gt; (bool)b.AutomationElement.GetCurrentPropertyValue(AutomationElement.IsOffscreenProperty, false));
+</code></pre>
+
+<p>or for retrying if a locked log file is encountered (app still shutting down, or in middle of a write)</p>
+
+<pre><code>Retry.For(() =&gt; File.Exists(@"C:\Logs\Terminal.log"), 5)
+</code></pre>
+
+<p>It will automatically retry if a value type is default, i.e if you call</p>
+
+<pre><code>Retry.For&lt;int&gt;(()=&gt;default(int), 5); //Will retry for 5 seconds, then return default(int)
+</code></pre>
+
+<p>And some more of the default conditions that cause retry</p>
+
+<ul>
+<li>Exception thrown</li>
+<li>Value type == default(type)</li>
+<li>Reference type == null</li>
+<li>bool == false</li>
+</ul>
+
+
+<p>You can also override the default conditions with a predicate.</p>
+
+<h2>Code</h2>
+
+<p>public static class Retry</p>
+
+<pre><code>{
+    public const int WindowWaitDefault = 30;
+    public const int ElementWaitDefault = 10;
+
+    public static Window ForDefault(Func&lt;Window&gt; getMethod)
+    {
+        return For(getMethod, WindowWaitDefault);
+    }
+
+    public static T ForDefault&lt;T&gt;(Func&lt;T&gt; getMethod)
+    {
+        return For(getMethod, ElementWaitDefault);
+    }
+
+    public static Window ForDefault(Func&lt;Window&gt; getMethod, Predicate&lt;Window&gt; shouldRetry)
+    {
+        return For(getMethod, shouldRetry, WindowWaitDefault);
+    }
+
+    public static T ForDefault&lt;T&gt;(Func&lt;T&gt; getMethod, Predicate&lt;T&gt; shouldRetry)
+    {
+        return For(getMethod, shouldRetry, ElementWaitDefault);
+    }
+
+    /// &lt;summary&gt;
+    /// Retrys until action does not throw an exception
+    /// &lt;/summary&gt;
+    /// &lt;param name="action"&gt;The action.&lt;/param&gt;
+    /// &lt;param name="retryForSeconds"&gt;The retry for seconds.&lt;/param&gt;
+    public static void For(Action action, int retryForSeconds)
+    {
+        var startTime = DateTime.Now;
+        while (DateTime.Now.Subtract(startTime).TotalSeconds &lt; retryForSeconds)
+        {
+            try
+            {
+                action();
+                return;
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(500);
+                continue;
+            }
+        }
+
+        action();
+    }
+
+    public static bool For(Func&lt;bool&gt; getMethod, int retryForSeconds)
+    {
+        return For(getMethod, g =&gt; !g, retryForSeconds);
+    }
+
+    public static T For&lt;T&gt;(Func&lt;T&gt; getMethod, int retryForSeconds)
+    {
+        //If T is a value type, by default we should retry if the value is default
+        //Reference types will return fase, so our predecate will always pass
+        return For(getMethod, IsValueTypeAndDefault, retryForSeconds);
+    }
+
+    public static T For&lt;T&gt;(Func&lt;T&gt; getMethod, Predicate&lt;T&gt; shouldRetry, int retryForSeconds)
+    {
+        var startTime = DateTime.Now;
+        T element;
+        while (DateTime.Now.Subtract(startTime).TotalSeconds &lt; retryForSeconds)
+        {
+            try
+            {
+                element = getMethod();
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(500);
+                continue;
+            }
+
+            //Making it safe for bool and value types and reference types
+            if (typeof(T) == typeof(bool) &amp;&amp; !shouldRetry(element))
+                return element;
+
+            if (typeof(T) != typeof(bool) &amp;&amp;
+                !IsReferenceTypeAndIsNull(element) &amp;&amp;
+                !shouldRetry(element))
+            {
+                return element;
+            }
+
+            Thread.Sleep(500);
+        }
+
+        element = getMethod();
+        return element;
+    }
+
+    private static bool IsReferenceTypeAndIsNull&lt;T&gt;(T element)
+    {
+        return (!(typeof(T).IsValueType) &amp;&amp; ReferenceEquals(element, null));
+    }
+
+    private static bool IsValueTypeAndDefault&lt;T&gt;(T element)
+    {
+        return (typeof(T).IsValueType &amp;&amp; element.Equals(default(T)));
+    }
+}
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-20T00:00:00+00:00" pubdate data-updated="true">Mar 20<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-number/'>c#</a>, <a class='category' href='/blog/categories/ui-automation/'>ui-automation</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/retry-for-class/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/retry-for-class/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/vsto/addin-uninstaller/" title="Previous Post: VSTO Add-in Uninstaller">&laquo; VSTO Add-in Uninstaller</a>
+      
+      
+        <a class="basic-alignment right" href="/vsto-contrib/com-cleanup-extension-methods/" title="Next Post: Cleaning up Office COM Interop Code with Extension Methods">Cleaning up Office COM Interop Code with Extension Methods &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/retry-for-class/';
+        var disqus_url = 'http://JakeGinnivan.github.io/retry-for-class/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

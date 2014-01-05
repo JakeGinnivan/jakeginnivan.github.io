@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tfs | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/tfs/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[TFS Merge Tools Configuration]]></title>
+    <link href="http://JakeGinnivan.github.io/tfsmergetools/"/>
+    <updated>2011-06-01T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/tfsmergetools</id>
+    <content type="html"><![CDATA[<p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
+
+<p>This blog post <a href="http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx">http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx</a> lists all common merge tools, and the command line arguments for each of them.</p>
+
+<p>I use KDiff, so the Compare arguments are <code>%1 --fname %6 %2 --fname %7</code> and Merge arguments are <code>%3 --fname %8 %2 --fname %7 %1 --fname %6 -o %4</code></p>
+
+<p>Great, except I have to register all the extensions that I want to use KDiff for. This is my list:</p>
+
+<pre><code>.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql,.rptproj,.rdl,.rss,.settings
+</code></pre>
+
+<p>What other extensions am I missing?</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ddd | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/ddd/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
+    <link href="http://JakeGinnivan.github.io/dddsydney/"/>
+    <updated>2011-06-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/dddsydney</id>
+    <content type="html"><![CDATA[<h1>Rich Client UI Automation, without shooting yourself in the foot</h1>
+
+<p>When you talk to most people that have tried Coded UI Tests or other UI Automation they tell you it was great, then it caused them way too much pain to be worth it. This phenomenon is also known as the Sine of Death by UI Test Automation. In this session Jake will show you how to avoid the Sine of Death and make UI Automation an invaluable part of your testing with a great ROI which reducing risk in the project.</p>
+
+<p>After watching this session you will talk away knowing how UI Automation works, what each of the Frameworks (White, Coded UI) give you, and the techniques you can apply to succeed with UI Automation. These techniques are used in production right now and you will see a demo of that applications test suite.</p>
+
+<h2>Resources</h2>
+
+<p>I will post resources on Rich Client Automation after my talk, or early next week.</p>
+]]></content>
+  </entry>
+  
+</feed>

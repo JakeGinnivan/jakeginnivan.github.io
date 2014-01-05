@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>VSTO and COM Interop - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="VSTO and COM Interop are two different things entirely, but you can't use VSTO without COM Interop. This post will help you do COM interop right.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/vsto-com-interop">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">VSTO and COM Interop</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-05-14T00:00:00+01:00" pubdate data-updated="true">May 14<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In this post I will give an introduction to COM Interop and covering some of the basic concepts you need to understand when dealing with VSTO and the Office Object Model. By understanding the way COM interop works and the potential impact of not deterministically cleaning up your references you will build much more reliable VSTO add-ins.</p>
+
+<p>After covering the basics of COM Interop I will write about a helper library I have written and have code examples of how it can make your life much easier.</p>
+
+<!-- more -->
+
+
+<h1>COM Interop Overview</h1>
+
+<p>Hopefully you have a bit of a understanding about how it works, but I really want to explain my experiences and pull some of the high level concepts that will help you develop against the Office Object Model..</p>
+
+<p>For any .NET application to talk to unmanaged code we need a .NET Interop Assembly which contains meta data about the types exposed in the COM component. When you add a reference to a COM component through the Add References dialog, visual studio will call the command line tool Tlbimp.exe and generate us a type library for that COM component, then the reference will be added to that Interop Assembly that we have generated. Publishers will often provide Primary Inerop Assemblies (PIA’s) which are signed Interop Assemblies by the publisher which prevent conflicts between different applications having their own generated Interop assemblies. I will refer to both as PIA’s from now on.</p>
+
+<p>Once we have our PIA’s .NET makes it very easy for us to interact with the COM types. Whenever a COM object crosses into our .NET application the CLR creates a runtime callable wrapper (RCW) which consumes the IUnknown (which provides object identity, type coercion and lifetime management) and IDispatch (used for late binding through reflection) and gives us an instance of the RCW which implements the interface of the type we requested. See below where the .NET client is given a RCW implementing the INew interface.
+<img src="/get/screenshots/rcw.png" alt="RCW" /></p>
+
+<p>There is a RCW created for every instance of a particular COM object. This means we can have references to a single RCW in multiple area’s of our application.</p>
+
+<h2>Memory Models</h2>
+
+<p>So all sounds really easy for the moment, we add a reference to our PIA’s, then .NET will do its best to make it seem like we are talking to a managed library and try to take care of all the memory management itself, after all that is what we are used to as .NET developers.</p>
+
+<p>The problem is .NET memory management is non-deterministic, meaning we do not know when our memory will be cleaned up by the garbage collector. COM on the other hand is unmanaged and follows a deterministic memory cleanup model. These models do not work well together.
+<img src="/get/screenshots/memorymodels.png" alt="Memory Models" /></p>
+
+<p>What is actually happening in the above diagram is when the garbage collector runs, it finds a RCW that has no references inside the managed process the garbage collector proceeds to clean up the RCW. The RCW actually implements a finaliser which releases all the associated COM references.</p>
+
+<p>By relying on the finaliser of the RCW it means that it requires at least two garbage collections to clean up our COM references. If you want to read about this in more detail check out <a href="http://msdn.microsoft.com/en-us/magazine/bb985010.aspx">http://msdn.microsoft.com/en-us/magazine/bb985010.aspx</a>.</p>
+
+<p>Microsoft have provided us with a method to clean up our COM references in a deterministic way. When you call Marshal.ReleaseComObject on a COM object it decrements the RCW’s reference counter, when this counter reaches 0 the underlying COM references are released. By calling ReleaseComObject on every COM object we request when we are finished with it we bring the two memory models closer together and can avoid hard to diagnose ‘ghost’ inspectors in Outlook (will explain later in the post).</p>
+
+<h2>How to achieve deterministic cleanup in .NET</h2>
+
+<p>Now that I have covered the basics of COM interop, we can look at ways to code in a deterministic manner.</p>
+
+<h3>Only ever use a single . (period) in lines of code</h3>
+
+<p><strong>Example:</strong> xlApp.Workbooks.Add()</p>
+
+<p>What is happening behind the scenes is we have a RCW for the <em>ExcelApplication interface, .Workbooks gives us a RCW implementing </em>WorkBooks interface, then we call the Add method which returns a _Workbook RCW.</p>
+
+<p>We have just lost the reference to a WorkBooks COM object. You can never force the release of those resources now, and Excel 2003 will not exit without killing the process (2007 has code that detects leaked objects and will clean up after you on exit).</p>
+
+<h3>Do not call Marshal.ReleaseComObject on an object that has left the current scope</h3>
+
+
+<p>f you let a COM object leave the scope it was instantiated in you probably can no longer guarantee that you have the only reference in your application. If you call Marshal.ReleaseComObject, the next time another area of your app makes a call to that COM object you will get a InvalidComObjectException thrown.
+<img src="/get/screenshots/invalidcomobjectException.png" alt="InvalidComObjectException" /></p>
+
+<p>The Visual Studio team posted on their blog a really interesting post titled “Marshal.ReleaseComObject Considered Dangerous“. Have a read at <a href="http://blogs.msdn.com/visualstudio/archive/2010/03/01/marshal-releasecomobject-considered-dangerous.aspx">http://blogs.msdn.com/visualstudio/archive/2010/03/01/marshal-releasecomobject-considered-dangerous.aspx</a></p>
+
+<h3>Call Marshal.ReleaseComObject on every COM object you bring into the managed process. (That does not leave that method scope)</h3>
+
+<p>Every COM object you get by accessing a property or calling a method you should release. For techniques on how to not let the COM object leave the current method scope check out my last blog post covering <a href="/vsto-data-access-repositories">Outlook data repositories</a>. Your goal should be to not let those COM objects leave the current scope, because once they do you shouldn’t release them explicitly anymore.</p>
+
+<h3>Release each item that is enumerated in a foreach loop</h3>
+
+<p>Foreach loops are a very big trap. Take:
+foreach (var item in folder.Items) { }</p>
+
+<p>That simple line of code leaks an Items collection, and every item that is enumerated is also leaked. I have a helper extension that makes it much easier. I will cover it closer to the end of the post.</p>
+
+<h2>Issues with not releasing</h2>
+
+<p>It is not just memory or ‘best practise’ that has made me look into this so much, there are many REAL problems that can be caused if you do not release your COM resources.</p>
+
+<h3>Application doesn’t exit</h3>
+
+<p>If you have ever done excel automation and used COM interop to generate excel documents on a server (I don’t recommend this by the way  ) then you probably have found that even though you call .Exit() on the excel API the process still hangs around. This is because you have missed releasing a resource, or released them in the wrong order.</p>
+
+<h3>Ghost Inspectors</h3>
+
+<p>If you have used Outlook a lot, you probably would have experienced this and just put it down to something strange happened. Here is what happens, I open a contact.</p>
+
+<p>Then I press Save &amp; Close and am left with</p>
+
+<p><img src="/get/screenshots/ghostinspector.png" alt="Ghost Inspector" /></p>
+
+<p>The ribbon gets greyed out. What has happened is the Inspector (the window) is no longer associated to the item it was displaying, but because of a leaked reference the Inspector did not close correctly. You CANNOT close this window through code (unless you find the window and close it through WIN32). I will cover this in more detail in another post, I still have not figured out how to not cause ghost inspectors sometimes when the inspector is opened modally.</p>
+
+<h3>Unable to resize appointments in calendar</h3>
+
+<p>One add-in I wrote synchronised calendar items. After a synchronisation you could no longer resize items in your calendar. This was due to not releasing each Appointment and all the child properties I accessed (user properties).</p>
+
+<p>As you can see, by not releasing the resources you access you can hit very hard to diagnose issues. You are much better off enforcing the I must release everything I access. (It is also a good idea to check Marshal.IsComObject() before you call release. Maybe put it in an extension method or a static helper method. Check out how I have done it in Outlook.Utility.</p>
+
+<h2>How to make this easier</h2>
+
+<p>I have spent some time creating some extension methods which makes dealing with COM objects much cleaner, and safer.</p>
+
+<p>The first problem I wanted to reduce the amount of boiler plate code to make sure you deterministically clean up your COM references.</p>
+
+<p>Enter the WithComCleanup extension method. Take this code:</p>
+
+<pre><code>void Main()
+{
+    _Application app;
+    _NameSpace session;
+    _MAPIFolder folder;
+    Items contactItems;
+    try
+    {
+        app = new Application();
+        session = app.Session;
+        folder = session.GetDefaultFolder(OlDefaultFolders.olFolderContacts);
+        contactItems = folder.Items;
+        foreach (_ContactItem contactItem in folder.Items)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(contactItem.FullName))
+                {
+                    contactItem.FileAs = contactItem.FullName;
+                    contactItem.Save();
+                }
+            }
+            finally
+            {
+                if (Marshal.IsComObject(contactItem))
+                    Marshal.ReleaseComObject(contactItem);
+            }
+        }
+    }
+    finally
+    {
+        if (contactItems != null &amp;&amp; Marshal.IsComObject(contactItems))
+            Marshal.ReleaseComObject(contactItems);
+        if (folder != null &amp;&amp; Marshal.IsComObject(folder))
+            Marshal.ReleaseComObject(folder);
+        if (session != null &amp;&amp; Marshal.IsComObject(session))
+            Marshal.ReleaseComObject(session);
+
+        if (app != null)
+        {
+            app.Quit();
+            if (Marshal.IsComObject(app))
+                Marshal.ReleaseComObject(app);
+        }
+    }
+}
+</code></pre>
+
+<p>Each COM variable must be declared out of the try/finally scope, and for each COM object we have to check if its null, and that it is a COM object (not only can you use COM objects in .NET, you can also implement a COM interface in .NET and pass it into the unmanaged application, you can read about COM Callable Wrappers at <a href="http://msdn.microsoft.com/en-us/library/f07c8z1c(VS.71).aspx">http://msdn.microsoft.com/en-us/library/f07c8z1c(VS.71).aspx</a>), but this means you can get a .NET object when you are expecting a COM object, as more parts of Office become managed this will mean you code will not break.</p>
+
+<p>Now lets use the WithComCleanup extension method:</p>
+
+<pre><code>void Main()
+{
+    using (var app = new Application().WithComCleanup())
+    {
+        using (var session = app.Resource.Session.WithComCleanup())
+        {
+            var folder = session.Resource.GetDefaultFolder(OlDefaultFolders.olFolderContacts);
+            using (var contactsFold = folder.WithComCleanup())
+            {
+                foreach (var contactItem in contactsFold.Resource.Items.ComLinq&lt;_ContactItem&gt;())
+                {
+                    if (!string.IsNullOrEmpty(contactItem.FullName))
+                    {
+                        contactItem.FileAs = contactItem.FullName;
+                        contactItem.Save();
+                    }
+                }
+            }
+        }
+        app.Resource.Quit();
+    }
+}
+</code></pre>
+
+<p>This code is functionally identical to the last snippet. What is happening is our COM resource is being wrapped in a AutoCleanup<T> object which implements IDisposable, which allows you to use a using statement to wrap each com object. It means more indentation, but I think it results in much cleaner code.</p>
+
+<p>Another thing you may notice is you now must access your COM object through the .Resource property. Lets have a look at another example. In this example I simply want to access a custom property on each Contact in Outlook.</p>
+
+<pre><code>void Main()
+{
+    _Application app;
+    _NameSpace session;
+    _MAPIFolder folder;
+    Items contactItems;
+    try
+    {
+        app = new Application();
+        session = app.Session;
+        folder = session.GetDefaultFolder(OlDefaultFolders.olFolderContacts);
+        contactItems = folder.Items;
+        foreach (_ContactItem contactItem in folder.Items)
+        {
+            UserProperties userProperties;
+            UserProperty property;
+            try
+            {
+                //Create a user property on every contact
+                userProperties = contactItem.UserProperties;
+                property = userProperties.Find("CustomProperty", true);
+                if (property == null)
+                    property = userProperties.Add(name, OlUserPropertyType.olText, false, Type.Missing);
+
+                property.Value = "Value";
+                //Dont save, just a demo
+            }
+            finally
+            {
+                if (Marshal.IsComObject(property))
+                    Marshal.ReleaseComObject(property);
+                if (Marshal.IsComObject(userProperties))
+                    Marshal.ReleaseComObject(userProperties);
+                if (Marshal.IsComObject(contactItem))
+                    Marshal.ReleaseComObject(contactItem);
+            }
+        }
+    }
+    finally
+    {
+        if (contactItems != null &amp;&amp; Marshal.IsComObject(contactItems))
+            Marshal.ReleaseComObject(contactItems);
+        if (folder != null &amp;&amp; Marshal.IsComObject(folder))
+            Marshal.ReleaseComObject(folder);
+        if (session != null &amp;&amp; Marshal.IsComObject(session))
+            Marshal.ReleaseComObject(session);
+
+        if (app != null)
+        {
+            app.Quit();
+            if (Marshal.IsComObject(app))
+                Marshal.ReleaseComObject(app);
+        }
+    }
+}
+</code></pre>
+
+<p>This is still a REALLY simple app, I think there is probably 80% boiler plate code to ensure all our COM references are cleaned up and Outlook shuts down gracefully.</p>
+
+<p>Enter the ComLinq and the Get/SetUserProperty extension methods.</p>
+
+<pre><code>void Main()
+{
+    using (var app = new Application().WithComCleanup())
+    {
+        using (var session = app.Resource.Session.WithComCleanup())
+        {
+            var folder = session.Resource.GetDefaultFolder(OlDefaultFolders.olFolderContacts);
+            using (var contactsFolder = folder.WithComCleanup())
+            using (var contactItems = contactsFolder.Resource.Items.WithComCleanup())
+            {
+                foreach (var contactItem in contactItems.ComLinq&lt;_ContactItem&gt;())
+                {
+                    contactItem.SetPropertyValue("CustomProperty", OlUserPropertyType.olText, "Value", addToFolder: false);
+                }
+            }
+        }
+        app.Resource.Quit();
+    }
+}
+</code></pre>
+
+<p>That is a massive reduction in code, lets look at what is actually happening here.</p>
+
+<p>First lets look at our loop:</p>
+
+<pre><code>foreach (var contactItem in contactItems.ComLinq&lt;_ContactItem&gt;())
+</code></pre>
+
+<p>Under the covers the ComLinq extension will wrap any IEnumerable (not the generic version) in custom generic IEnumerable, which has a IEnumerator that disposes the COM objects it enumerates as it enumerates the collection.</p>
+
+<p>The key thing to remember is that the items MUST NOT leave the scope of the foreach loop because the RCW’s will be poisoned as soon as the enumerator moves to the next item.</p>
+
+<pre><code>contactItem.SetPropertyValue("CustomProperty", OlUserPropertyType.olText, "Value", addToFolder: false);
+</code></pre>
+
+<p>Now lets have a look at the SetPropertyValue extension method (there is also a GetPropertyValue extension method as well).</p>
+
+<p>It takes 4 arguments, first is the name of the Property, second is the type, third is the value we want to set, then 4th is a flag to add the UserProperty to the parent folder, this allows you to search your custom property through the Outlook UI. For example in my FacebookToOutlook demo application I use it to filter appointments to facebook events.
+<img src="/get/screenshots/outlookCustomerFolderProperty.png" alt="Custom Folder Property" /></p>
+
+<p>The signature of the GetUserProperty extension method looks like this:</p>
+
+<pre><code>T GetPropertyValue&lt;T&gt;(UserProperties userProperties, string name, OlUserPropertyType type, bool create, Func&lt;object, T&gt; converter, T defaultValue)
+</code></pre>
+
+<p>And you can call it like this:</p>
+
+<pre><code>_appointmentItem.GetPropertyValue(FacebookeventidProperty, OlUserPropertyType.olText, false, Convert.ToInt64, -1)
+</code></pre>
+
+<p>As you can see it simplifies the syntax greatly, by using type intference with the converter and the default value we get a strongly typed way to get custom properties that cleans up all the COM resources it accesses deterministically.</p>
+
+<p>Check out these extensions plus other helpers in my Outlook.Utility project at <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a> to get the source code and see what other useful helpers are in that library.</p>
+
+<h1>Wrap up</h1>
+
+<p>This has been a pretty big post, which I hope is useful to people. I have not covered events and quite a lot of other things, but starting with knowing how COM interop basically works and deterministically cleaning up as many COM resources are you can make your life much easier.</p>
+
+<p>If you have feedback, please contact me.</p>
+
+<h2>Resources</h2>
+
+<p>If you would like to read more about this check out these links:</p>
+
+<p><a href="http://www.guidanceshare.com/wiki/Interop_(.NET_1.1)_Performance_Guidelines_-_Marshal.ReleaseComObject">http://www.guidanceshare.com/wiki/Interop<em>(.NET_1.1)</em>Performance_Guidelines<em>&ndash;</em>Marshal.ReleaseComObject</a> – DotNet 1.1, but still good</p>
+
+<p><a href="http://blogs.msdn.com/mbend/archive/2007/04/18/the-mapping-between-interface-pointers-and-runtime-callable-wrappers-rcws.aspx">http://blogs.msdn.com/mbend/archive/2007/04/18/the-mapping-between-interface-pointers-and-runtime-callable-wrappers-rcws.aspx</a></p>
+
+<p><a href="http://www.add-in-express.com/creating-addins-blog/2008/10/30/releasing-office-objects-net/">http://www.add-in-express.com/creating-addins-blog/2008/10/30/releasing-office-objects-net/</a> – I don’t use add-in express. But the content on this page is good.</p>
+
+<p><a href="http://msdn.microsoft.com/en-us/magazine/cc163316.aspx">http://msdn.microsoft.com/en-us/magazine/cc163316.aspx</a> &ndash; Managing Object Lifetime, good stuff, talks about deterministic finalisation in .NET</p>
+
+<p><a href="http://samteknik.blogspot.com/">http://samteknik.blogspot.com/</a> – It looks like Samir only started blogging late last year, but the two posts he has on his blog are a good read.</p>
+
+<p><a href="http://msdn.microsoft.com/en-us/library/8023ct8s(VS.100).aspx">http://msdn.microsoft.com/en-us/library/8023ct8s(VS.100).aspx</a> – COM interfaces explanation</p>
+
+<p><a href="http://msdn.microsoft.com/en-us/library/8bwh56xe(VS.100).aspx">http://msdn.microsoft.com/en-us/library/8bwh56xe(VS.100).aspx</a> – RCW description</p>
+
+<p><a href="http://blogs.msdn.com/vcblog/archive/2006/09/20/762884.aspx">http://blogs.msdn.com/vcblog/archive/2006/09/20/762884.aspx</a> &ndash; Mixing deterministic and non-deterministic cleanup</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-05-14T00:00:00+01:00" pubdate data-updated="true">May 14<span>th</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/c-number/'>c#</a>, <a class='category' href='/blog/categories/com-interop/'>com-interop</a>, <a class='category' href='/blog/categories/patternsandpractices/'>patternsandpractices</a>, <a class='category' href='/blog/categories/vsto/'>vsto</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/vsto-com-interop/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/vsto-com-interop/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/vsto-project-structure/" title="Previous Post: How to Structure a new VSTO Project">&laquo; How to Structure a new VSTO Project</a>
+      
+      
+        <a class="basic-alignment right" href="/vsto-contrib/" title="Next Post: VSTO Contrib">VSTO Contrib &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/vsto-com-interop/';
+        var disqus_url = 'http://JakeGinnivan.github.io/vsto-com-interop/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

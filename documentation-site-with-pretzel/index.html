@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Documentation Site With Pretzel - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="How you can get a documentation site up and running really fast with Pretzel and Azure Websites">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/documentation-site-with-pretzel">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Documentation Site With Pretzel</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T00:00:00+01:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
+
+<p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
+
+<!-- more -->
+
+
+<h2>Create the site in pretzel</h2>
+
+<p>This assumes you already have pretzel and it is in your PATH.</p>
+
+<pre><code>C:\PretzelDemo&gt;pretzel.exe create -t=Razor --wiki --azure
+</code></pre>
+
+<p>There are a few things we are saying:
+ &ndash; Create me a pretzel site
+ &ndash; We are not specifying a directory, so pretzel will create the site in the current directory
+ &ndash; We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
+ &ndash; The <em>&mdash;wiki</em> switch says we want a wiki template rather than the default blog setup
+ &ndash; The <em>&mdash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
+
+<pre><code>C:\PretzelDemo&gt; pretzel.exe create -t=razor --wiki --azure
+starting pretzel...
+create - configure a new site
+Using razor Engine
+Pretzel site template has been created
+Shim project added to allow deployment to azure websites
+Press any key to continue...
+</code></pre>
+
+<p>A file you may be interested in is <code>_source\_layouts\layout.cshtml</code>, this file has all the logic for your Wiki, feel free to edit this, make improvements, style changes, structural changes. What pretzel gives you is just a starting point!</p>
+
+<h2>The Wiki</h2>
+
+<p>To view your wiki, run
+<code>C:\PretzelDemo&gt; pretzel taste _source</code></p>
+
+<p>This will fire up pretzel&rsquo;s web server, and launch your wiki.</p>
+
+<p><img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument.png" alt="NewDocument" /></p>
+
+<p>Lets create a few files</p>
+
+<p><img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument1.png" alt="NewDocument1" /></p>
+
+<p>Notice the items circled in blue are new files, each file we create must have what is called yaml front matter (circled in red).</p>
+
+<p>Yaml front matter contains metadata about the file, like the title, permalink (a fixed url) and order among other things.</p>
+
+<p>If you refresh your browser, you will get this</p>
+
+<p><img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument2.png" alt="NewDocument2" /></p>
+
+<p>Pretzel has detected changes to files in the site, then rebuilt our site for us.</p>
+
+<h2>Deploying to Azure Wesbites</h2>
+
+<p>Create the website
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument3.png" alt="NewDocument3" />
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument4.png" alt="NewDocument4" />
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument5.png" alt="NewDocument5" /></p>
+
+<p>Now our site and deployment is setup, lets deploy. First copy the git deployment url
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument6.png" alt="NewDocument6" /></p>
+
+<p>Now we head back to our powershell console and run the following commands:</p>
+
+<pre><code>git init
+"_site" | Out-File .gitignore
+git add -A
+git commit -m "Committed wiki"
+git remote add azure &lt;deploymenturl&gt;
+git push azure master
+</code></pre>
+
+<p>And that should deploy our site, if everything went well, you should have an output looking something like this</p>
+
+<pre><code>C:\PretzelDemo [master]&gt; git push azure master
+Counting objects: 33, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (29/29), done.
+Writing objects: 100% (33/33), 716.65 KiB | 0 bytes/s, done.
+Total 33 (delta 10), reused 0 (delta 0)
+remote: Updating branch 'master'.
+remote: Updating submodules.
+remote: Preparing deployment for commit id '6476560e7e'.
+remote: Generating deployment script.
+remote: .
+remote: info:    Executing command site deploymentscript
+remote: info:    Solution file path: .\Shim.sln
+remote: info:    The site directory path: .\_source\_site
+remote: info:    Generating deployment script for .NET Web Site
+remote: info:    Generated deployment script files
+remote: info:    site deploymentscript command OK
+remote: Running deployment command...
+remote: Handling .NET Web Site deployment.
+remote: C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln.metaproj : warning MSB4121: The project configuration for project "Sham" was not specified in the solution file for the solution configuration "Release|Any CPU". [C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln]
+remote:   Shim -&gt; C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\bin\Release\Shim.dll
+remote:   starting pretzel...
+remote:   bake - transforming content into a website
+remote:   Recommended engine for directory: 'razor'
+remote:   done - took 2943ms
+remote:   Press any key to continue...
+remote: KuduSync.NET from: 'C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\_source\_site' to: 'C:\DWAS Files\Sites\pretzeldemo\VirtualDirectory0\site\wwwroot'
+remote: Deleting file: 'hostingstart.html'
+remote: Copying file: 'index.html'
+remote: Copying file: 'MainTopic.html'
+remote: Copying file: 'Topic.html'
+remote: Copying file: 'topic2.html'
+remote: Copying file: 'css\default.css'
+remote: Copying file: 'css\style.css'
+remote: Copying file: 'Feature\index - Copy.html'
+remote: Copying file: 'Feature\index.html'
+remote: Copying file: 'Feature\Topic - Copy.html'
+remote: Copying file: 'Feature\Topic 2.html'
+remote: Copying file: 'Feature\Topic.html'
+remote: Copying file: 'img\favicon.ico'
+remote: Finished successfully.
+remote: Deployment successful.
+To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
+ * [new branch]      master -&gt; master
+</code></pre>
+
+<p>Check the azure management console
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument8.png" alt="NewDocument8" /></p>
+
+<p>Head to your website
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument7.png" alt="NewDocument7" /></p>
+
+<p>Job done! You have a new wiki for documentation.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T00:00:00+01:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/open-source/'>open-source</a>, <a class='category' href='/blog/categories/pretzel/'>pretzel</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/documentation-site-with-pretzel/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/documentation-site-with-pretzel/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/teamcity-build-results-in-tfs/" title="Previous Post: TeamCity Build Results in TFS">&laquo; TeamCity Build Results in TFS</a>
+      
+      
+        <a class="basic-alignment right" href="/setting-up-git/" title="Next Post: Setting up Git">Setting up Git &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/documentation-site-with-pretzel/';
+        var disqus_url = 'http://JakeGinnivan.github.io/documentation-site-with-pretzel/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

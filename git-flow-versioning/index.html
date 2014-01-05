@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Git Flow Versioning - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="I just tried using git-flow to manage releases, I quite like it.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/git-flow-versioning">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Git Flow Versioning</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-02T00:00:00+01:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
+
+<p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
+
+<p>Much to my surpise, it is actually very light-weight and you can drop much of it if your process is simpler (say for open source).</p>
+
+<p><a href="https://github.com/TestStack/ConventionTests">https://github.com/TestStack/ConventionTests</a> is my guinea pig!</p>
+
+<p>To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, &lsquo;upstream&rsquo; is the main repository, &lsquo;origin&rsquo; is my fork.</p>
+
+<!-- more -->
+
+
+<h2>1. Convert the repo over to git-flow</h2>
+
+<p>From your git command line</p>
+
+<pre><code>git checkout master
+git fetch upstream
+git merge upstream/master
+git checkout develop
+git push upstream develop
+</code></pre>
+
+<p>This pushes the <code>develop</code> branch into your repo, then head to the project settings in github and change the default branch to <code>develop</code>.</p>
+
+<h2>2. Install GitFlowVersion</h2>
+
+<p>I am a big fan on Simon Cropp&rsquo;s (<a href="https://twitter.com/SimonCropp">https://twitter.com/SimonCropp</a>) work. He has been working on <a href="https://github.com/Particular/GitFlowVersion">https://github.com/Particular/GitFlowVersion</a> with Andreas Öhlund.</p>
+
+<p>Basically GitFlowVersion uses the conventions in place in git-flow to make it really easy to version your software.</p>
+
+<p>Once up and running, tags off <code>master</code> get a normal version, say <code>v2.1.0</code> (assume this is the LAST tagged release), develop CI builds get the version <code>v2.2.0-unstable20</code> where the minor is LASTMINOR + 1 and there has been 20 commits since the last tag on master. Or <code>v&lt;major&gt;.&lt;minor+1&gt;.0-unstable&lt;#commitssincelastrelease&gt;</code>
+Release branches have a version of <code>v2.2.0-beta</code> where 2.2.0 is the version you have put in the release branch name (in this case <code>release-2.2.0</code>)
+You can also tag a release branch as <code>rc1</code> or <code>rc2</code> and the version will become <code>v2.2.0-&lt;tag&gt;</code>.</p>
+
+<p>If this sounds confusing, its not, and it is all pretty automatic, read on to see what it actually means for you maintaining a project.</p>
+
+<h2>3. Contributing/Pull Requests</h2>
+
+<p>I always use feature branches, but not for an entire feature. I use very short lived branches, which I put up as a pull request as soon as I am done. I am known to submit 3+ pull requests all within the space of an hour when I work on a project because I just fix a bunch of small things.</p>
+
+<p>Nothing much changes here, except you take you branch from <code>develop</code>. So</p>
+
+<pre><code>git checkout develop
+git fetch upstream
+git merge upstream/develop
+git checkout -b FixingSomething
+</code></pre>
+
+<p>Pull requests now target <code>develop</code>, so I do my commits, push to origin like normal and submit my pull request targeting <code>develop</code></p>
+
+<p>Your CI build (assuming you are building pull requests) will trigger with build number <code>v2.2.0-PullRequest50</code>, where the version is the last release, with the minor bumped, just like develop version numbers, except the semver tag is PullRequest&lt;PR#>.
+I think that is pretty neat.</p>
+
+<h2>4. Releasing a new version</h2>
+
+<p>When you decide you want to release, or start preparing a release you can either take a release branch, or merge develop straight into master and tag master with the release (afaik this doesn&rsquo;t cause any issues :P)</p>
+
+<p>In my mind there are two styles to run a project,</p>
+
+<ol>
+<li>every checkin builds, then if tests pass autodeploys. These projects cannot adhere to semantic versioning, but the changes are often so tiny that upgrades pose little risk.</li>
+<li>At some point in time, the decision to release is made, this could be as soon as a pull request is merged, or after a particular milestone is reached. All the projects I am currently contributing to work in this way.</li>
+</ol>
+
+
+<h3>4.1 Using a release branch</h3>
+
+<p>Using a release branch allows you to make the decision I am going to release, there may be a few things I know I have to do before releasing (DbUp is a great example of this). But I don&rsquo;t want to stop being able to merge pull requests. To release using a branch (assume develop is up to date), and I am only fixing a bug in the current v2.1.0 release</p>
+
+<pre><code>git checkout -b release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release start 2.1.1
+</code></pre>
+
+<p>I can now leave this branch open for a bit, do the work I need to do to release 2.1.1 or send it to someone else on the team to OK. I could even release the 2.1.1 build as a pre-release package on NuGet. It would have version 2.1.1-beta1 remember.</p>
+
+<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &mdash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
+
+<pre><code>git checkout develop
+git merge release-2.1.1 --no-ff
+git checkout master
+git merge release-2.1.1 --no-ff
+git tag 2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release finish 2.1.1
+</code></pre>
+
+<p>Then publish</p>
+
+<pre><code>git push upstream master
+git push --tags
+git branch -d release-2.1.1
+git push upstream :release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release publish 2.1.1
+</code></pre>
+
+<h3>4.2 Skip release branch</h3>
+
+<p>If you don&rsquo;t want to bother with the release branch, you could also just go</p>
+
+<pre><code>git checkout master
+git merge develop --no-ff
+git tag 2.1.1
+git push upstream master
+git push --tags
+</code></pre>
+
+<h2>5. Publish the build</h2>
+
+<p>Now you have the release build from your CI you can progress through your build pipeline and release to NuGet or publish to a test environment or whatever the first step is in your Continuous Delivery pipeline.</p>
+
+<h2>That&rsquo;s it</h2>
+
+<p>I think Git-Flow is actually not too bad for releasing projects using semantic versioning, most of the time in this is writing the release notes, seeing what has changed since the last release (which is really easy due to the conventions in place!) and checking to see if you have any breaking changes which would mean a major version bump.</p>
+
+<p>As a summary. Here is me fixing and releasing a feature as a pre-release package. The current version on NuGet is currently v2.2.0</p>
+
+<pre><code>git fetch upstream
+git checkout develop
+git merge upstream/develop
+git checkout -b SomeFeature
+
+# Work..
+git commit -am "Some experimental feature"
+git push origin SomeFeature
+
+# Submit pull request, so NOTHING has changed yet, this PR is merged
+git fetch upstream
+git checkout develop
+git merge upstream/develop # to get my changes into my local develop branch
+
+# So now I am starting the release, nothing before here is new if you are using GitHub flow
+git checkout -b release-2.3.0
+git push upstream release-2.3.0
+</code></pre>
+
+<p>Now my CI builds, and I click the button to promote the last CI build as a pre-release NuGet package. Once I am happy, I have got my feedback</p>
+
+<pre><code>git checkout master
+git merge release-2.3.0 --no-ff
+git tag 2.3.0
+git push upstream master
+git push upstream --tags
+</code></pre>
+
+<p>My CI will build, and I can click the publish button on teamcity to release to NuGet.</p>
+
+<p>Thoughts? Do you know of an easier way. I am REALLY open to suggestions and willing to try stuff out at the moment :)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-02T00:00:00+01:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/gitflow/'>gitflow</a>, <a class='category' href='/blog/categories/github/'>github</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/git-flow-versioning/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/git-flow-versioning/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/release-nuget-semver-packages-from-teamcity/" title="Previous Post: Release NuGet SemVer packages from Teamcity">&laquo; Release NuGet SemVer packages from Teamcity</a>
+      
+      
+        <a class="basic-alignment right" href="/gitreleasenotes/" title="Next Post: GitReleaseNotes Initial Release!">GitReleaseNotes Initial Release! &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/git-flow-versioning/';
+        var disqus_url = 'http://JakeGinnivan.github.io/git-flow-versioning/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

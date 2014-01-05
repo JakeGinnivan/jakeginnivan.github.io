@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: IoC | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/ioc/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[VSTO Contrib RibbonFactory]]></title>
+    <link href="http://JakeGinnivan.github.io/vsto-contrib/ribbon-factory/"/>
+    <updated>2011-04-05T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/vsto-contrib/ribbon-factory</id>
+    <content type="html"><![CDATA[<h1>Why?</h1>
+
+<p>When I started creating a RibbonFactory, I hadn&rsquo;t actually looked into the way VSTO does it, I just wanted to use Ribbon XML, because it has more flexibility, but have a single class to represent a single ribbon and also support an IoC container, and DI for my ribbons.</p>
+
+<p>Once I got that working, I started tweaking, improving, adding in context awareness and a view other things. Recently my reasons for trying to finish this have been:</p>
+
+<ul>
+<li>Lack of IoC/DI support in VSTO</li>
+<li>Cost of brute force reflection when using ribbon designer</li>
+<li>Wanting to use Ribbon XML over Ribbon Designer, but not really viable due to missing context for ribbon xml.</li>
+<li>Ribbon XML having a single callback file</li>
+<li>Making custom task panes, which are associated with a ribbon (i.e. button to show/hide custom task pane) really simple.</li>
+</ul>
+
+
+<p>The VSTO tooling is pretty good, especially around the designer, but I want the best of both worlds, and to be able to fall into <code>the pit of success</code> as <a href="http://www.paulstovell.com/">Paul Stovell</a> often says.</p>
+
+<!-- more -->
+
+
+<h1>View Model&rsquo;s in Office?</h1>
+
+<p>I have broken all the differences between each of the Office applications up into terminology which is common to all of them, and abstracted the behaviours of each. The way I have broken it down is into</p>
+
+<p><code>View</code> &ndash; This is the Outlook Explorer, Word Window, Appointment Inspector. Whatever the actual window is that is displaying something in office, this is the view.
+<code>Context</code> &ndash; This is what the window is displaying, in word the Window is displaying a document, in PowerPoint that is a Presentation, in Outlook it is the Contact, or Appointment.
+<code>ViewModel</code> &ndash; Your entry point into VSTO now is view models. You define a few model for a particular ribbon type, then whenever a new context is created which has that ribbon type, you get a new view model instance, with the context set. You will also be notified when the current active view changes (switching between two windows showing the same document).</p>
+
+<h1>Show us the code</h1>
+
+<p>You start off with the IRibbonViewModel interface which looks like:</p>
+
+<pre><code>public interface IRibbonViewModel
+{
+    IRibbonUI RibbonUi { get; set; }
+    void Initialised(object context);
+    void CurrentViewChanged(object currentView);
+    void Cleanup();
+}
+</code></pre>
+
+<p><code>RibbonUi</code> will be set for you, this allows you to invalidate ribbon controls and activate different tabs on the ribbon.
+<code>Initialised(object context)</code> will be called when the context is available, allowing you to hook into events, populate viewmodel data or anything you want. <code>CurrentViewChanged</code> and <code>Cleanup</code> are called when the current active window changes, or the context is closing respectively.</p>
+
+<p>To get started all you have to do is create a class and make it inherit from IRibbonViewModel, then decorate it with the <code>RibbonViewModelAttribute</code>, which will look like this:</p>
+
+<pre><code>[RibbonViewModel(OutlookRibbonType.OutlookContact)]
+public class ContactFeed : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
+{
+
+}
+</code></pre>
+
+<p>OfficeViewModelBase is a helper base class which inherits from INotifyPropertyChanged, and has helpers for raising property changed events with compile time safety.</p>
+
+<p>The IRegisterCustomerTaskPane is the next interesting interface you have access to.</p>
+
+<pre><code>public interface IRegisterCustomTaskPane
+{
+    void RegisterTaskPanes(Register register);
+}
+
+public delegate ICustomTaskPaneWrapper Register(Func&lt;UserControl&gt; controlFactory, string title);
+</code></pre>
+
+<p>An example implementation is:</p>
+
+<pre><code>public void RegisterTaskPanes(Register register)
+{
+    _twitterTaskPane = register(() =&gt; new WpfPanelHost{Child = new TwitterFeed{DataContext = this}}, "Twitter");
+    _twitterTaskPane.Visible = true;
+    PanelShown = true;
+    _twitterTaskPane.VisibleChanged += TwitterTaskPaneVisibleChanged;
+    TwitterTaskPaneVisibleChanged(this, EventArgs.Empty);
+}
+</code></pre>
+
+<p>Now the RibbonFactory will take care of registering the custom task pane when new views are opened, and keep properties synchronised across the same task panes on different views (visibility etc).</p>
+
+<h1>How does it work?</h1>
+
+<p>This was the hard part, it all sounds good in theory, but getting all the pieces together was a lot of hard work.</p>
+
+<p>When <code>GetCustomIU(string RibbonId)</code> is called, the RibbonFactory finds a registered ViewModel for that ribbon type, it then fines the appropriate RibbonXml resource through the current <code>IViewLocator</code>, so you can specify your own conventions, by default it will look for a Resource with the same name, or try to match without view/viewmodel appended to the end of the names.</p>
+
+<p>Once the RibbonXML has been found, the RibbonFactory rewrites all callbacks and caches them inside the <code>ViewModelResolver</code> class, it also generates a tag and inserts that into the control.</p>
+
+<p><strong>Before:</strong><br/>
+<code>&lt;toggleButton id="testTogglePanelButton" onAction="PanelShown" getPressed="PanelShown" label="Show Panel" showImage="false" /&gt;</code><br/>
+<strong>After:</strong><br/>
+<code>&lt;toggleButton id="testTogglePanelButton" onAction="PressedOnAction" getPressed="GetPressed" label="Show Panel" showImage="false" tag="RibbonType1testTogglePanelButton" /&gt;</code></p>
+
+<p>The RibbonFactory has all known callback signatures defined, so when Office invokes one of the callbacks, it invoke a method on the RibbonFactory.<br/>
+RibbonXml callbacks have the control that initiated the callback available, and the control has the associated context, so the RibbonFactory will grab the context, then ask the <code>ViewModelResolver</code> to locate the current active view for that context. It then uses the Tag to know what the original callback was, and it will invoke that callback for you.</p>
+
+<p>Because it handles all the callbacks manually, it has no problems calling a Property getter or setter instead of a method. It also has quite nice error reporting when the viewmodel has the wrong method signature etc, unlike VSTO.</p>
+
+<h1>Setup/Getting Started</h1>
+
+<p>Getting started using the Ribbon Factory is quite easy, in your ThisAddIn.cs you have to override the <code>IRibbonExtensibility CreateRibbonExtensibilityObject()</code> and create a instance of the RibbonFactory for your office application. i.e OutlookRibbonFactory, WordRibbonFactory etc.</p>
+
+<p>Then in the Internal Startup method you need to add the bootstrapping and initialisation code. The TwitterFeed demo project I have looks like this:</p>
+
+<pre><code>public partial class ThisAddIn
+{
+    private AddinBootstrapper _core;
+
+    private static void ThisAddInStartup(object sender, EventArgs e)
+    {
+        //WPF Support
+        if (System.Windows.Application.Current == null)
+            new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+    }
+
+    protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
+    {
+        return new OutlookRibbonFactory(typeof(AddinBootstrapper).Assembly);
+    }
+
+    private void ThisAddInShutdown(object sender, EventArgs e)
+    {
+        _core.Dispose();
+        System.Windows.Application.Current.Shutdown();
+    }
+
+    private void InternalStartup()
+    {
+        _core = new AddinBootstrapper();
+        OutlookRibbonFactory.SetApplication(Application);
+        RibbonFactory.Current.InitialiseFactory(
+            t =&gt; (IRibbonViewModel)_core.Resolve(t),
+            CustomTaskPanes);
+
+        Startup += ThisAddInStartup;
+        Shutdown += ThisAddInShutdown;
+    }
+}
+</code></pre>
+
+<h1>Summary</h1>
+
+<p>The Ribbon Factory in VSTO Contrib I think is quite awesome, it gives a heap of features and makes VSTO development far easier. And it really complements the work the VSTO team has done around custom task panes. I will be exposing more VSTO related stuff as time goes by.</p>
+
+<p>Now go grab the bits from <a href="http://vstocontrib.codeplex.com/releases">http://vstocontrib.codeplex.com/releases</a> (very soon, for now source =))</p>
+]]></content>
+  </entry>
+  
+</feed>

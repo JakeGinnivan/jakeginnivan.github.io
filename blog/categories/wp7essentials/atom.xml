@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Wp7essentials | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/wp7essentials/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[WP7 Essentials Settings Provider]]></title>
+    <link href="http://JakeGinnivan.github.io/wp7-essentials-settings-provider/"/>
+    <updated>2011-09-09T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/wp7-essentials-settings-provider</id>
+    <content type="html"><![CDATA[<p>Update: This project has been superseeded by <a href="https://github.com/JakeGinnivan/SettingsProvider.net">SettingsProvider.net</a></p>
+
+<!-- more -->
+
+
+<h1>Settings Provider?</h1>
+
+<p>The settings provider is a port from the FunnelWeb settings provider to Windows Phone. It is a really simple interface</p>
+
+<pre><code>public interface ISettingsProvider
+{
+    T GetSettings&lt;T&gt;() where T : ISettings, new();
+    void SaveSettings&lt;T&gt;(T settings) where T : ISettings;
+}
+</code></pre>
+
+<p>So what does <code>T</code> actually look like:</p>
+
+<pre><code>public class ApplicationSettings : NotifyPropertyChanged, ISettings
+{
+    [DefaultValue(5)]
+    [DisplayName("Number Results")]
+    public int NumberResults { get; set; }
+
+    public string Nickname { get; set; }
+
+    [DefaultValue(true)]
+    [DisplayName("Enable Stuff")]
+    public bool EnableStuff { get; set; }
+
+    public DateTime? Birthday { get; set; }
+
+    [DisplayName("Some Options")]
+    public Options SomeOptions { get; set; }
+}
+
+public enum Options
+{
+    Value1, 
+    Value2
+}
+</code></pre>
+
+<p>Pretty easy right? We can use NotifyPropertyWeaver to keep the class nice and clean. Then to fetch or persist our settings we just need to do</p>
+
+<pre><code>var applicationSettings = settingsProvider.GetSettings&lt;ApplicationSettings&gt;();
+applicationSettings.SomeOptions = Options.Value2;
+settingsProvider.SaveSettings(applicationSettings);
+</code></pre>
+
+<p>The Settings Provider is limited to types supported by the Convert.ChangeType method (for a number of reasons, if this is too restrictive, let me know and why).</p>
+
+<p>So in the last release we added the SettingsList control, which will generate this for you (just the settings control, not the page, highlighted in red is what you get generated)</p>
+
+<p><img src="/assets/posts/2011-09-09-wp7-essentials-settings-provider/SettingsProvider.png" alt="Settings Provider control" /></p>
+
+<p>This is a first cut, and over time I will polish this page, and add support for ordering the properties and stuff (or feel free to submit pull requests :)). But I recon this is pretty cool for a first cut.</p>
+
+<p>Also the reason I am using a combobox instead of the ListPicker is there is a bug where the control simply doesn&rsquo;t work inside a scroll viewer. Bah. Anyone interested in doing a community fork which simply fixes bugs in the toolkit and doesn&rsquo;t add any new features?</p>
+
+<h1>Get it</h1>
+
+<p>This control is in a separate package (to keep the essentials package lean and mean :P).</p>
+
+<pre><code>Install-Package WindowsPhoneEssentials.Controls.Settings
+</code></pre>
+
+<p><a href="http://wp7essentials.codeplex.com/">Codeplex</a><br/>
+<a href="http://nuget.org/List/Search?searchTerm=WindowsPhoneEssentials">NuGet</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Phone Test Project Template]]></title>
+    <link href="http://JakeGinnivan.github.io/phone-test-project/"/>
+    <updated>2011-08-20T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/phone-test-project</id>
+    <content type="html"><![CDATA[<p>Last week I put together a project template for a windows phone 7 test project. At the moment there isn&rsquo;t a really good story for unit testing on the phone. If you have the mango tools you have to grab the Mango Silverlight Unit Test assemblies from Jeff Wincox&rsquo;s blog.</p>
+
+<p>The Project Template available at <a href="http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b">http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b</a> is really basic, and you then have to add a reference via NuGet of either the Silverlight Unit Testing Framework (doesn&rsquo;t work with Mango), or WindowsPhoneEssentials.Testing.</p>
+
+<p>The advantage of the WindowsPhoneEssentials.Testing project is it contains the Mango compatible versions, sets everything up and has a collection of really useful testing related helpers/abstractions for WP7. Check out <a href="http://windowsphonefoundations.net/windowsphoneessentials">http://windowsphonefoundations.net/windowsphoneessentials</a> or the source at <a href="http://wp7essentials.codeplex.com/">http://wp7essentials.codeplex.com/</a> for more information.</p>
+
+<p>But what you get after you install it is:</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/NewTestProject.png" alt="New Phone Test Project" /></p>
+
+<p>Then you add the NuGet reference to WindowsPhoneEssentials.Testing</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/TestingNuGet.png" alt="Add NuGet reference to WindowsPhoneEssentials.Testing" /></p>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WP7 Essentials Released!]]></title>
+    <link href="http://JakeGinnivan.github.io/wp7essentials/"/>
+    <updated>2011-06-09T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/wp7essentials</id>
+    <content type="html"><![CDATA[<p>Windows Phone Essentials tries to fill a gap that many of the other WP7 frameworks don&rsquo;t fill. Most of the libraries out there are Controls and UI related libraries, wp7essentials tries to fill that gap.</p>
+
+<!-- more -->
+
+
+<h1>Background</h1>
+
+<p><a href="http://www.kowitz.net/">Brendan Kowitz</a> has been writing <a href="http://windowsphonemvp.codeplex.com/">Windows Phone MVP</a> and I have started on <a href="http://windowsphonemvc.codeplex.com/">Windows Phone MVC</a> which was inspired from <a href="http://columbus.codeplex.com/">Columbus</a>, but the changes I was planning to make to Columbus fundamentally changed the way it worked.<br/>
+At Mobile Camp Oz, Brendan and I discussed many of the problems we are trying to solve with Windows Phone MVC and MVP. So we have taken the best approaches from each of the frameworks, put them into a common essentials library (which both frameworks rely on) reducing the amount of extra work we both have to do, make the API&rsquo;s for both frameworks similar. Now the decision is simply do I prefer to work using the MVC pattern, or the MVP pattern!</p>
+
+<h1>Windows Phone Essentials</h1>
+
+<p>One of the primary goals for wp7essentials is to make phone apps testable, so we have two packages, the first is the <code>WindowsPhoneEssentials</code> package, the second is <code>WindowsPhoneEssentials.Testing</code> which has additional helpers for writing unit tests against WP7 apps.</p>
+
+<h1>Get started</h1>
+
+<p>Either look for <code>WindowsPhoneEssentials</code> on NuGet, or head to <a href="http://wp7essentials.codeplex.com/documentation">http://wp7essentials.codeplex.com/documentation</a> to check out the documentation.</p>
+
+<p>Please give feedback, we are keen to hear what you would want out of a library like this.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>WP7 MVC Debug and Tracing - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Now that WP MVC is maturing, it is important that when you have performance issues or any issues, you can find the problem easily!">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">WP7 MVC Debug and Tracing</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-22T00:00:00+01:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>WP7 Essentials Tracing</h2>
+
+<p>A new feature coming in the next release is a super easy to use Trace class to allow you to debug your app really easily.</p>
+
+<!-- more -->
+
+
+<p>In your App.xaml.cs constructor simply put:</p>
+
+<pre><code>#if DEBUG
+    Trace.Appenders.Add(s=&gt;Debug.WriteLine(s));
+    Trace.TraceLevel = TraceLevel.Debug;
+#endif
+</code></pre>
+
+<p>Then the following code will output <code>9/23/2011 8:10 PM - Debug   [MyClass] - Some  Trace Message</code> in your Debug output window. You can add your own trace appenders too if you want to implement logging in your app.</p>
+
+<pre><code>// this.GetType() == typeof(MyClass)
+Trace.WriteInfo(this, TraceLevel.Debug, ()=&gt;"Some Trace Message");
+</code></pre>
+
+<p>Notice that we pass a lambda into the WriteInfo class, this is so the Trace class can be super lazy and if the message is not going to be written to the Trace appenders, it will not even construct that string (useful if you are doing more complex logging like checking memory usage etc).</p>
+
+<h2>WP7 MVC Tracing</h2>
+
+<p>I have been using this tracing ability in vNext of Windows Phone MVC to measure performance and start optimising. Here is an example of the full debug log when running</p>
+
+<pre><code>9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - Scanning for and Registering Autofac Modules
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - {
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] -     Registering module ApplicationModule... 1ms
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - } 46ms
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - Building Container... 72ms
+9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] - Handling WP7 Navigation Event to /Shell.xaml
+9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] - {
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 8.54296875
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to Home.MainPage
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller Home
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -             Scanning assemblies for controllers and building lookup... 2ms
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         } 10ms
+9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] -     } 45ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action MainPage on Home... 28ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.MainPage... 52ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.MainPage
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultViewLocator            ] -         Scanning assemblies for views and building lookup... 3ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     } 214ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.MainPage added to Journal
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 1ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 9.15234375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 526ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - Parsing Navigation Expression
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - {
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 9.23046875
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to AnotherController.Example
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller AnotherController... 0ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] -     } 14ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action Example on AnotherController... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for AnotherController.Example... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for AnotherController.Example... 44ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     AnotherController.Example added to Journal
+9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel MainViewModel... 1ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 10.90234375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 101ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] - AnotherController.Example popped from Journal
+9/23/2011 8:46 PM - Debug   [Journal                       ] - Home.MainPage popped from Journal
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Memory usage before navigation: 9.1640625
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Navigating Backward to Home.MainPage
+9/23/2011 8:46 PM - Info    [Navigator                     ] - {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action MainPage on Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.MainPage... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.MainPage... 22ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.MainPage added to Journal
+9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel ExampleViewModel... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 1ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 10.55859375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 82ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Memory usage before navigation: 9.8359375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Navigating Forward to Home.DebugPage
+9/23/2011 8:46 PM - Info    [Navigator                     ] - {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action DebugPage on Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.DebugPage... 4ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.DebugPage... 104ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.DebugPage added to Journal
+9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel MainViewModel... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 13.82421875
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 267ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Loading partial view Debug.DemoPartial
+9/23/2011 8:46 PM - Info    [Navigator                     ] - {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Debug... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action DemoPartial on Debug... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Debug.DemoPartial... 2002ms
+Partial Activated
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PartialViewResult completion steps... 2ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 2040ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - Parsing Navigation Expression
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - {
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 15.98828125
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to DebugController.PageWithResult
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller DebugController... 0ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] -     } 12ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action PageWithResult on DebugController... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for DebugController.PageWithResult... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for DebugController.PageWithResult... 35ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 17
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 103ms
+</code></pre>
+
+<p>Now you may be saying one of two things, OMG that is way better than the OOTB profiler or you will be saying now my output window will be spammed!</p>
+
+<p>Say we want to silence the Navigator because it logs a lot, we simply do:</p>
+
+<pre><code>Trace.Filters.Add(typeof(Navigator));
+</code></pre>
+
+<p>And all Trace events from the Navigator class will be ignored. So you can find out useful information when you need it, and ignore it other times!</p>
+
+<p>Keen to know what everyone thinks.</p>
+
+<h2>Check it out at <a href="http://windowsphonemvc.codeplex.com/">http://windowsphonemvc.codeplex.com/</a></h2>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-22T00:00:00+01:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>mvc</a>, <a class='category' href='/blog/categories/open-source/'>open-source</a>, <a class='category' href='/blog/categories/wp7/'>wp7</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/wp7-essentials-settings-provider/" title="Previous Post: WP7 Essentials Settings Provider">&laquo; WP7 Essentials Settings Provider</a>
+      
+      
+        <a class="basic-alignment right" href="/apiapprover/" title="Next Post: ApiApprover">ApiApprover &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging/';
+        var disqus_url = 'http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

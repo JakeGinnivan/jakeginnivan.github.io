@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ui-automation | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/ui-automation/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
+    <link href="http://JakeGinnivan.github.io/teamcity-ui-test-agent/"/>
+    <updated>2013-07-31T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teamcity-ui-test-agent</id>
+    <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
+
+<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
+This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
+
+<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
+
+<!-- more -->
+
+
+<h2>Create our VM on Azure</h2>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
+I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS&rsquo;s are all that are available in Azure. This also means you don&rsquo;t have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop.</p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
+
+<p>Now we are ready to go, lets remote desktop into our VM</p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
+
+<p>Enter your remote desktop credentials which we you setup when creating your VM
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
+
+<h2>Setting up your VM</h2>
+
+<p>On first login, make sure you tell the initial configuration and server manager to not open on start
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
+
+<p>Before you close server manager you want to click on <code>Configure IE ESC</code>, then turn it off. Otherwise downloading everything will be rather painful (unless you just want to download firefox or chrome, then don&rsquo;t worry.</p>
+
+<p>Next, we need our VM to login automatically, if our VM restarts, it needs to come straight back up and logs in.</p>
+
+<p>To do this, download Sysinternals Autologon for Windows from <a href="http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx">http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx</a>. Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
+The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
+
+<p>Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
+TeamViewer will also work.</p>
+
+<p>Personally I use TightVNC.</p>
+
+<h3>Installing/Configuring TightVNC</h3>
+
+<ol>
+<li>Download from <a href="http://www.tightvnc.com/download.php">http://www.tightvnc.com/download.php</a></li>
+<li>Do a complete install, leave all options ticked when presented with them.</li>
+<li>Set your passwords, I am happy to not have a separate administration password.<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
+<li>Install the DFMirage driver, available from the TightVNC download page</li>
+<li>If using azure you need to open up the port (Manage VM, EndPoints, Add, Next)<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
+</ol>
+
+
+<h3>Finishing VM Setup</h3>
+
+<p>Reconnect using something other than remote desktop<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
+
+<p>Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).</p>
+
+<h4>Disable WER</h4>
+
+<p>Windows error reporting causes issues when running UI automation, if you app crashes (which is why we have UI automation, to find that sort fo thing) then you want it to exit straight away, not popup the Windows Error Reporting Dialog
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
+
+<p>Save the following text into a .reg file i.e DisableWER.reg then run</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows]
+"ErrorMode"="2"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting]
+"DontShowUI"="1"
+</code></pre>
+
+<h3>Installing the teamcity build agent</h3>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
+
+<p>Fill in your teamcity server URL, and note the port number the agent is running on
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
+
+<p>Now we go back into Azure Management, and add the port<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
+
+<h4>Open Filewall Ports</h4>
+
+<p>Once we have added the port on azure, we need to open the windows firewall for that port on the VM itself<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
+Put in port 9090, or whatever you set your teamcity server to<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
+Next, Next, Next, give it a good name &lsquo;TeamCity Build Agent&rsquo;, Finish</p>
+
+<h4>Set to automatic startup</h4>
+
+<p>Now open explorer, and go to <code>%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code> and create a new shortcut<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
+
+<p>Browse to your TeamCity build agent folder, and select <code>agent.bat</code></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
+Then add the parameter <code>start</code> onto the path. You should end up with
+<code>"C:\UITestsBuildAgent\bin\agent.bat" start</code>
+Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. Then Run the shortcut. Your TeamCity build agent should startup and connect to TeamCity
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
+
+<p>Authorise the build agent, then the agent should update itself and restart, after a few minutes you should have another build controller online!
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
+
+<h2>Conclusion</h2>
+
+<p>There you have it, a build agent that runs UI Tests on an unlocked desktop in Azure</p>
+
+<h3>NOTE: TeamCity is not setup for SSL, so everything is unencrypted. This would be another blog post in itself, please leave a comment if that would be useful for you?</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Announcing TestStack.White]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white/"/>
+    <updated>2012-10-28T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white</id>
+    <content type="html"><![CDATA[<h1>Project White</h1>
+
+<p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>
+
+<p>The goal of White was to create a nice abstraction over Microsoft&rsquo;s UI Automation framework in a consistent and object orientated way.</p>
+
+<p>White reached a nice maturity level and active development stopped about 2 years ago, since then things have moved on.</p>
+
+<p><a href="https://github.com/petmongrels">Vivek Singh</a> has given me permission to take this project over and try and increase the activity on this project again.</p>
+
+<h2>Why I&rsquo;m taking on White</h2>
+
+<p>Personally, I have been on a rather large WPF project on and off for the past 2.5 years and rely on UI Automation very heavily. When we started the project, White was the most mature UI Automation framework.</p>
+
+<p>This is a snapshot of some of our builds, every CI build that succeeds with kick-off many UI automation test runs for different configurations.<br/>
+<img src="/assets/posts/2012-10-28-teststack-white/UIAutomationTests.png" alt="TeamCity" /></p>
+
+<p>Over the last few years, we have wrapped White and have been running a custom builds and have learnt a lot about UI automation.</p>
+
+<p>I would like to put some of the learnings and improvements back into White to make it easier for everyone to use UI automation without paying for one of the commercial offerings.</p>
+
+<p>One of my colleagues at <a href="http://www.readify.net">Readify</a>, <a href="http://www.mehdi-khalili.com/">Mehdi Khalili</a> did a presentation at Perth .NET usergroup on UI Automation, he was suggesting many things that we were already doing on this project except he was focusing on Web Automation.
+Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="http://kozmic.pl/">Krzysztof Koźmic</a> formed <a href="http://teststack.github.com/">TestStack</a>.</p>
+
+<p>After talking with Mehdi in the pub, he convinced me that I should restart White, and also join TestStack so we can keep some great testing related projects together!</p>
+
+<h2>TestStack.White</h2>
+
+<p>I have been doing some updates and cleanups on White over the past month or two in a private repo, but I have now opened it up at <a href="https://github.com/TestStack/White">https://github.com/TestStack/White</a>.</p>
+
+<p>I am looking forward to working on White some more, and I welcome pull requests :P</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[UI TDD - UI Automation Experiment]]></title>
+    <link href="http://JakeGinnivan.github.io/uitdd/"/>
+    <updated>2011-07-12T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/uitdd</id>
+    <content type="html"><![CDATA[<p>Yesterday the project I have been working on for close to a year now went live! We have had very minimal issues and apart from working with an Amazing team of Readify people we have made use of an extensive suite of UI Automation and Integration tests.</p>
+
+<p>Our UI Automation suite was originally supposed to simply be &lsquo;Smoke Tests&rsquo; which run through all UI processes in our application and makes sure it works end to end, not really asserting much, just that the process worked and the expected result was there at the end.</p>
+
+<p>This grew&hellip; we now verify all application logs, have helpers which wait for our message processors to send and receive all messages, then assert everything from audit messages, to financial movements to report data. It has given us amazing confidence in our product and allowed us to go live with maybe a dozen medium priority bugs which has taken us &frac12; a day to get on top of.</p>
+
+<p>I have started breaking out the framework we built into a CodedUI contrib project which lives in the MSTestContrib project on codeplex (<a href="http://mstestcontrib.codeplex.com">http://mstestcontrib.codeplex.com</a>)</p>
+
+<p>I will be creating a WPF Todo application using the framework, writing my UI Automation tests first, refactoring, making mistakes, improving the code etc. It will be the first time I have used EF, so this whole thing will be a learning experience.</p>
+
+<!-- more -->
+
+
+<h1>Ready&hellip; Go</h1>
+
+<p>For the purposes of the demo app, I will simply have an in memory repository. We can always add proper persistence and such later.</p>
+
+<p>With that basic criteria in mind off I go, I start with two project, WpfTodo, and WpfTodo.Tests.</p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/UITddStart.PNG" alt="Start" /></p>
+
+<p>and I want to build something like this:</p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/TodoList.png" alt="My Awesome App" /></p>
+
+<p>Now I add my first CodedUI test (to add all references and such).</p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/NewCodedUI.png" alt="Add new coded UI Test" /></p>
+
+<p>And then I will cancel out of the generate code dialogue because I want to lovingly craft all my UI Automation code so I don&rsquo;t get bitten when trying to maintain it..</p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/GenerateCodeForTest.png" alt="Generate Code? Nope!" /></p>
+
+<p>After getting rid of all the generated crap, we are left with:</p>
+
+<pre><code>using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace WpfTodo.Tests
+{
+    [CodedUITest]
+    public class CodedUITest1
+    {
+        [TestMethod]
+        public void CodedUITestMethod1()
+        {
+
+        }
+    }
+}
+</code></pre>
+
+<h1>Some Setup</h1>
+
+<p>Now that we have the CodedUI assemblies referenced it is time to set everything up.</p>
+
+<p><code>NOTE:</code> If you have resharper, disable shadow copy on unit tests otherwise it makes it pretty hard to run your tests locally.</p>
+
+<p>We start off defining our application, this is a nice bootstrapper to abstract starting our app and handling shutdown. You should use Name, then the name will be the window title.</p>
+
+<pre><code>public class TodoApp : WpfApplicationBase
+{
+    protected override WpfWindow GetMainWindow()
+    {
+        return new WpfWindow
+                    {
+                        SearchProperties =
+                            {
+                                {UITestControl.PropertyNames.Name, "Wpf Todo List"}
+                            },
+                        TechnologyName = "UIA"
+                    };
+    }
+
+    protected override string ApplicationExeLocation
+    {
+        get { return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "WpfTodo.exe"); }
+    }
+}
+</code></pre>
+
+<p>Now we have our application bootstrapper, we define our CodedUITestBase class which all our tests will inherit from!</p>
+
+<pre><code>public class CodedUITestBase : CodedUITestBase&lt;TodoApp&gt;
+{
+}
+</code></pre>
+
+<p>Notice that we are inheriting from <code>CodedUITestBase&lt;T&gt; where T : ICodedUIApplication, new()</code></p>
+
+<p>It is the job of CodedUITestBase to bootstrap your application. The reason we create your own is so you can extend it.</p>
+
+<p>One more thing is if you use the r# test runner, make sure you compile your test project as x86 otherwise I have found things go a bit strange.</p>
+
+<h1>Writing our first test!</h1>
+
+<p>When using mstestcontrib to write Coded UI Tests (CUIT&rsquo;s) our tests will always start with a screen.</p>
+
+<p>If you do not have ReSharper, then skip down to the code</p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/CreateMainScreen.png" alt="Main Screen" /></p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/CreateMainScreenClass.PNG" alt="Create Main Screen Class" /></p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/GenerateMainScreenCtor.PNG" alt="Generate Main Screen Ctor" /></p>
+
+<pre><code>protected MainScreen MainScreen()
+{
+    return new MainScreen(Application, Application.MainWindow);
+}
+
+public class MainScreen : WpfScreen
+{
+    public MainScreen(WpfApplicationBase application, WpfWindow window) : base(application, window)
+    {
+    }
+}
+</code></pre>
+
+<p>Now move (<code>ctrl + r, ctrl + o</code>) the screen into a Screens directory.</p>
+
+<p>Next we start building our screens up. I want to add a task, it is an action I perform on my main screen, so I will add a method with a few parameters which will end up creating my task for me.</p>
+
+<pre><code>    [TestMethod]
+    public void CodedUITestMethod1()
+    {
+        var mainScreen = MainScreen();
+
+        var newTaskScreen = mainScreen.NewTask();
+    }
+</code></pre>
+
+<p>Get R# or visual studio do generate that method on your MainScreen class, then we can start writing some UI Automation!</p>
+
+<pre><code>public NewTaskScreen NewTask()
+{
+    var addTaskButton = Window.Get&lt;WpfButton&gt;("AddTaskButton");
+    addTaskButton.Click();
+
+    return new NewTaskScreen(Application, Window.GetWindow("AddTask"));
+}
+</code></pre>
+
+<p>There is a few things you may notice with this, I am using a Get<T> extension method on my WPF window, I feel this is a cleaner syntax than the out of the box syntax with CodedUI.
+Click is also an extension method (I think it reads better than <code>Mouse.Click(addTaskButton);</code>)</p>
+
+<p>We then return a NewTaskScreen, in the second parameter we find the child/modal window and pass it into the screen.</p>
+
+<p>After a little bit more coding our test looks like this</p>
+
+<pre><code>[TestMethod]
+public void CodedUITestMethod1()
+{
+    var mainScreen = MainScreen();
+    var newTaskScreen = mainScreen.NewTask();
+
+    newTaskScreen.Title = "Write some tests";
+    newTaskScreen.Description = "for MSTestContrib";
+    newTaskScreen.DueDate = DateTime.Now.AddDays(3);
+
+    newTaskScreen.Create();
+}
+</code></pre>
+
+<h1>Run the test</h1>
+
+<p>Obviously our test will fail, we have not created any UI yet, only our UI Automation Test.</p>
+
+<p>Test method WpfTodo.Tests.CanAddTaskTest.CodedUITestMethod1 threw exception:
+Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException: The playback failed to find the control with the given search properties. Additional Details:
+TechnologyName:  &lsquo;UIA&rsquo;
+ControlType:  &lsquo;Button&rsquo;
+AutomationId:  &lsquo;AddTaskButton&rsquo;</p>
+
+<p>So, lets create the UI making sure that we AutomationIds to the controls as we go so they will be picked up by the test we have written. I won&rsquo;t post all the code as you can get at this sample in the MsTestContrib project on codeplex.</p>
+
+<pre><code>&lt;Window x:Class="WpfTodo.View.NewTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New Task"
+        Height="300"
+        Width="300"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ViewModel="clr-namespace:WpfTodo.ViewModel"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance ViewModel:NewTaskViewModel}"&gt;
+    &lt;Grid&gt;
+        &lt;Grid.RowDefinitions&gt;
+            &lt;RowDefinition Height="Auto" /&gt;
+            &lt;RowDefinition Height="Auto" /&gt;
+            &lt;RowDefinition Height="Auto" /&gt;
+            &lt;RowDefinition Height="Auto" /&gt;
+            &lt;RowDefinition Height="*" /&gt;
+        &lt;/Grid.RowDefinitions&gt;
+        &lt;Grid.ColumnDefinitions&gt;
+            &lt;ColumnDefinition Width="Auto" /&gt;
+            &lt;ColumnDefinition Width="*" /&gt;
+        &lt;/Grid.ColumnDefinitions&gt;
+
+        &lt;Label Content="Title: " /&gt;
+        &lt;TextBox Text="{Binding Task.Title}"
+                 AutomationProperties.AutomationId="Title"
+                 Grid.Column="1" /&gt;
+
+        &lt;Label Content="Description: "
+               Grid.Row="1" /&gt;
+        &lt;TextBox Text="{Binding Task.Description}"
+                 AutomationProperties.AutomationId="Description"
+                 Grid.Column="1"
+                 Grid.Row="1" /&gt;
+
+        &lt;Label Content="Due Date: "
+               Grid.Row="2" /&gt;
+        &lt;DatePicker SelectedDate="{Binding Task.DueDate}"
+                    AutomationProperties.AutomationId="DueDate"
+                    Grid.Column="1"
+                    Grid.Row="2" /&gt;
+
+        &lt;StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="3"&gt;
+            &lt;Button Content="Create"
+                    AutomationProperties.AutomationId="CreateButton"
+                    Command="{Binding CreateTaskCommand}" /&gt;
+            &lt;Button Content="Cancel"
+                    AutomationProperties.AutomationId="CancelButton"
+                    Command="{Binding CancelCommand}" /&gt;
+        &lt;/StackPanel&gt;
+    &lt;/Grid&gt;
+&lt;/Window&gt;
+</code></pre>
+
+<p>Which looks like this (I will make pretty later:P)</p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/NewTask.png" alt="New Task Window" /></p>
+
+<p>Lets run our test:</p>
+
+<p><img src="/assets/posts/2011-07-12-uitdd/TodoAppTestResult.PNG" alt="Test Results" /></p>
+
+<p>Awesome! It has automated our app, and put a task in. The test is still not much use as we are not verifying that our app is actually working. To verify we start off extending out test.</p>
+
+<pre><code>var tasks = mainScreen.Tasks.ToList();
+Assert.AreEqual(1, tasks.Count);
+Assert.AreEqual(title, tasks[0].Title);
+</code></pre>
+
+<p>Notice we have abstracted the UI of the lists behind a Tasks collection. Which you can see how the UI is put together below.</p>
+
+<p>One thing to point out is you MUST use a Label not a TextBlock, because the TextBlock has no Automation Peer, and is not discoverable by UIA. ItemsControls also suffer from the same issue.</p>
+
+<p>I will post the source for a UITextBlock control which is a TextBlock with an Automation Peer which allows much nicer formatting. But for now, Label&rsquo;s will do.</p>
+
+<pre><code>&lt;ListBox ItemsSource="{Binding Tasks}"
+                AutomationProperties.AutomationId="TasksList"
+                Grid.Row="1"&gt;
+    &lt;ListBox.ItemTemplate&gt;
+        &lt;DataTemplate&gt;
+            &lt;StackPanel&gt;
+                &lt;StackPanel Orientation="Horizontal"&gt;
+                    &lt;Label Content="{Binding Title}"
+                           AutomationProperties.AutomationId="Title" /&gt;
+                    &lt;Label Content=" (" /&gt;
+                    &lt;Label Content="{Binding DueDate, StringFormat=d}"
+                           AutomationProperties.AutomationId="DueDate" /&gt;
+                    &lt;Label Content=")" /&gt;
+                &lt;/StackPanel&gt;
+                &lt;Label Content="{Binding Description}"
+                       AutomationProperties.AutomationId="Description" /&gt;
+            &lt;/StackPanel&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/ListBox.ItemTemplate&gt;
+&lt;/ListBox&gt;
+</code></pre>
+
+<p>And finally we fill in the UI Automation code for the Tasks property on MainScreen.</p>
+
+<pre><code>public IEnumerable&lt;Task&gt; Tasks
+{
+    get
+    {
+        var tasks = Window.Get&lt;WpfList&gt;("TasksList");
+        return from WpfListItem item in tasks.Items
+                select new Task
+                            {
+                                Title = item.Get&lt;WpfText&gt;("Title").DisplayText,
+                                Description = item.Get&lt;WpfText&gt;("Description").DisplayText,
+                                DueDate = DateTime.Parse(item.Get&lt;WpfText&gt;("DueDate").DisplayText)
+                            };
+    }
+}
+</code></pre>
+
+<p>Run our test again, success!</p>
+
+<h1>Resources &amp; Source Code</h1>
+
+<p>The sample project I built in this post is available from the <a href="http://mstestcontrib.codeplex.com/SourceControl/list/changesets">MSTestContrib</a> project on CodePlex.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
+    <link href="http://JakeGinnivan.github.io/dddsydney/"/>
+    <updated>2011-06-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/dddsydney</id>
+    <content type="html"><![CDATA[<h1>Rich Client UI Automation, without shooting yourself in the foot</h1>
+
+<p>When you talk to most people that have tried Coded UI Tests or other UI Automation they tell you it was great, then it caused them way too much pain to be worth it. This phenomenon is also known as the Sine of Death by UI Test Automation. In this session Jake will show you how to avoid the Sine of Death and make UI Automation an invaluable part of your testing with a great ROI which reducing risk in the project.</p>
+
+<p>After watching this session you will talk away knowing how UI Automation works, what each of the Frameworks (White, Coded UI) give you, and the techniques you can apply to succeed with UI Automation. These techniques are used in production right now and you will see a demo of that applications test suite.</p>
+
+<h2>Resources</h2>
+
+<p>I will post resources on Rich Client Automation after my talk, or early next week.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Retry.For]]></title>
+    <link href="http://JakeGinnivan.github.io/retry-for-class/"/>
+    <updated>2011-03-20T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/retry-for-class</id>
+    <content type="html"><![CDATA[<p>With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put a lot of good helpers in place (WaitWhileBusy etc), there are still times where a button does not enable quick enough, or a windows is opening and if you do not have automatic retry enabled you will have quite fragile UI automation tests.</p>
+
+<p>This is where my Retry static class comes in handy.</p>
+
+<!-- more -->
+
+
+<h2>Usage</h2>
+
+<pre><code>var element = Retry.ForDefault(
+                  () =&gt; screen.WhiteWindow.Get(searchCriteria),
+                  b =&gt; (bool)b.AutomationElement.GetCurrentPropertyValue(AutomationElement.IsOffscreenProperty, false));
+</code></pre>
+
+<p>or for retrying if a locked log file is encountered (app still shutting down, or in middle of a write)</p>
+
+<pre><code>Retry.For(() =&gt; File.Exists(@"C:\Logs\Terminal.log"), 5)
+</code></pre>
+
+<p>It will automatically retry if a value type is default, i.e if you call</p>
+
+<pre><code>Retry.For&lt;int&gt;(()=&gt;default(int), 5); //Will retry for 5 seconds, then return default(int)
+</code></pre>
+
+<p>And some more of the default conditions that cause retry</p>
+
+<ul>
+<li>Exception thrown</li>
+<li>Value type == default(type)</li>
+<li>Reference type == null</li>
+<li>bool == false</li>
+</ul>
+
+
+<p>You can also override the default conditions with a predicate.</p>
+
+<h2>Code</h2>
+
+<p>public static class Retry</p>
+
+<pre><code>{
+    public const int WindowWaitDefault = 30;
+    public const int ElementWaitDefault = 10;
+
+    public static Window ForDefault(Func&lt;Window&gt; getMethod)
+    {
+        return For(getMethod, WindowWaitDefault);
+    }
+
+    public static T ForDefault&lt;T&gt;(Func&lt;T&gt; getMethod)
+    {
+        return For(getMethod, ElementWaitDefault);
+    }
+
+    public static Window ForDefault(Func&lt;Window&gt; getMethod, Predicate&lt;Window&gt; shouldRetry)
+    {
+        return For(getMethod, shouldRetry, WindowWaitDefault);
+    }
+
+    public static T ForDefault&lt;T&gt;(Func&lt;T&gt; getMethod, Predicate&lt;T&gt; shouldRetry)
+    {
+        return For(getMethod, shouldRetry, ElementWaitDefault);
+    }
+
+    /// &lt;summary&gt;
+    /// Retrys until action does not throw an exception
+    /// &lt;/summary&gt;
+    /// &lt;param name="action"&gt;The action.&lt;/param&gt;
+    /// &lt;param name="retryForSeconds"&gt;The retry for seconds.&lt;/param&gt;
+    public static void For(Action action, int retryForSeconds)
+    {
+        var startTime = DateTime.Now;
+        while (DateTime.Now.Subtract(startTime).TotalSeconds &lt; retryForSeconds)
+        {
+            try
+            {
+                action();
+                return;
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(500);
+                continue;
+            }
+        }
+
+        action();
+    }
+
+    public static bool For(Func&lt;bool&gt; getMethod, int retryForSeconds)
+    {
+        return For(getMethod, g =&gt; !g, retryForSeconds);
+    }
+
+    public static T For&lt;T&gt;(Func&lt;T&gt; getMethod, int retryForSeconds)
+    {
+        //If T is a value type, by default we should retry if the value is default
+        //Reference types will return fase, so our predecate will always pass
+        return For(getMethod, IsValueTypeAndDefault, retryForSeconds);
+    }
+
+    public static T For&lt;T&gt;(Func&lt;T&gt; getMethod, Predicate&lt;T&gt; shouldRetry, int retryForSeconds)
+    {
+        var startTime = DateTime.Now;
+        T element;
+        while (DateTime.Now.Subtract(startTime).TotalSeconds &lt; retryForSeconds)
+        {
+            try
+            {
+                element = getMethod();
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(500);
+                continue;
+            }
+
+            //Making it safe for bool and value types and reference types
+            if (typeof(T) == typeof(bool) &amp;&amp; !shouldRetry(element))
+                return element;
+
+            if (typeof(T) != typeof(bool) &amp;&amp;
+                !IsReferenceTypeAndIsNull(element) &amp;&amp;
+                !shouldRetry(element))
+            {
+                return element;
+            }
+
+            Thread.Sleep(500);
+        }
+
+        element = getMethod();
+        return element;
+    }
+
+    private static bool IsReferenceTypeAndIsNull&lt;T&gt;(T element)
+    {
+        return (!(typeof(T).IsValueType) &amp;&amp; ReferenceEquals(element, null));
+    }
+
+    private static bool IsValueTypeAndDefault&lt;T&gt;(T element)
+    {
+        return (typeof(T).IsValueType &amp;&amp; element.Equals(default(T)));
+    }
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

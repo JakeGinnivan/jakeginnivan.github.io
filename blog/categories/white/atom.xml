@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: White | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/white/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <updated>2013-08-01T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
+
+<p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
+
+<p>The previous test suite was often red, which meant that it was hard to know if there were regressions as other issues were fixed.</p>
+
+<p>You can see the CI status at <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;branch_TestStack_White=__all_branches__">http://teamcity.ginnivan.net/project.html?projectId=TestStack_White</a></p>
+
+<!-- more -->
+
+
+<h2>TestStack.White.ScreenObjects</h2>
+
+<p>Also released is <a href="https://www.nuget.org/packages/TestStack.White.ScreenObjects">https://www.nuget.org/packages/TestStack.White.ScreenObjects</a></p>
+
+<p>This is the old White.Repository project, finally released on NuGet. Hopefully there should be some updates to this project coming up as well!</p>
+
+<h2>Namespace Change</h2>
+
+<p>Being part of TestStack now, we wanted to bring White&rsquo;s namespace into line with the other TestStack projects.</p>
+
+<p>White&rsquo;s namespace has changed from <code>White.Core</code> to <code>TestStack.White</code>. Once you upgrade just run <code>Fix-WhiteNamespaces</code> from your NuGet console and we will fix all your namespace references for you!</p>
+
+<h2>Change Log</h2>
+
+<p>The change log is available at <a href="http://teststack.azurewebsites.net/White/ChangeLog.html">http://teststack.azurewebsites.net/White/ChangeLog.html</a></p>
+
+<p>You may notice the website (which we will have a domain for very shortly), this is the new TestStack documentation site/wiki.</p>
+
+<p>Please have a look around, post comments, contribute and give us feedback!</p>
+
+<h2>Pull Requests</h2>
+
+<p>Whenever you submit a pull request for White, we will automatically do a CI build, then a full UI Test run.
+This means if you do not want to wait for the test suite to run on your machine, you can just submit your pull request, then wait for the status to be reported back (which sometimes fails for some reason, but you should be able to see it on the build server).</p>
+
+<h2>Whats next</h2>
+
+<p>The next step for White is upgrading to v3 of the UIA Library, this will likely break a few things (which is why it was important to get the tests running properly).</p>
+
+<h2>Reporting Issues</h2>
+
+<p>If you find an issue in White, create an issue on github, and even better, create a failing UI tests. I do not mind pull requests with a failing test, I can fix the underlying issue without you getting involved in the inner workings of White.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Announcing TestStack.White]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white/"/>
+    <updated>2012-10-28T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white</id>
+    <content type="html"><![CDATA[<h1>Project White</h1>
+
+<p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>
+
+<p>The goal of White was to create a nice abstraction over Microsoft&rsquo;s UI Automation framework in a consistent and object orientated way.</p>
+
+<p>White reached a nice maturity level and active development stopped about 2 years ago, since then things have moved on.</p>
+
+<p><a href="https://github.com/petmongrels">Vivek Singh</a> has given me permission to take this project over and try and increase the activity on this project again.</p>
+
+<h2>Why I&rsquo;m taking on White</h2>
+
+<p>Personally, I have been on a rather large WPF project on and off for the past 2.5 years and rely on UI Automation very heavily. When we started the project, White was the most mature UI Automation framework.</p>
+
+<p>This is a snapshot of some of our builds, every CI build that succeeds with kick-off many UI automation test runs for different configurations.<br/>
+<img src="/assets/posts/2012-10-28-teststack-white/UIAutomationTests.png" alt="TeamCity" /></p>
+
+<p>Over the last few years, we have wrapped White and have been running a custom builds and have learnt a lot about UI automation.</p>
+
+<p>I would like to put some of the learnings and improvements back into White to make it easier for everyone to use UI automation without paying for one of the commercial offerings.</p>
+
+<p>One of my colleagues at <a href="http://www.readify.net">Readify</a>, <a href="http://www.mehdi-khalili.com/">Mehdi Khalili</a> did a presentation at Perth .NET usergroup on UI Automation, he was suggesting many things that we were already doing on this project except he was focusing on Web Automation.
+Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="http://kozmic.pl/">Krzysztof Koźmic</a> formed <a href="http://teststack.github.com/">TestStack</a>.</p>
+
+<p>After talking with Mehdi in the pub, he convinced me that I should restart White, and also join TestStack so we can keep some great testing related projects together!</p>
+
+<h2>TestStack.White</h2>
+
+<p>I have been doing some updates and cleanups on White over the past month or two in a private repo, but I have now opened it up at <a href="https://github.com/TestStack/White">https://github.com/TestStack/White</a>.</p>
+
+<p>I am looking forward to working on White some more, and I welcome pull requests :P</p>
+]]></content>
+  </entry>
+  
+</feed>

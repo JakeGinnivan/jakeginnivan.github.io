@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My Octopress Blog</title>
-  <meta name="author" content="Your Name">
+  <title>Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content=" Blog Archives Recent Posts ">
+  <meta name="description" content="I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +21,7 @@
   <link rel="canonical" href="http://JakeGinnivan.github.io">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -31,14 +31,26 @@
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">My Octopress Blog</a></h1>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
-    <h2>A blogging framework for hackers.</h2>
+    <h2>Things I find useful</h2>
   
 </hgroup>
 
@@ -66,7 +78,515 @@
       <div class="blog-index">
   
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T00:00:00+00:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
+
+<p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>
+
+<p>GitReleaseNotes was another project I kicked off about the same time that <a href="https://github.com/simoncropp">Simon Cropp</a> and <a href="https://github.com/andreasohlund">Andreas Öhlund</a> were kicking off similar projects, see <a href="https://github.com/Particular/ReleaseNotesCompiler">https://github.com/Particular/ReleaseNotesCompiler</a>. We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/gitreleasenotes/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/git-flow-versioning/">Git Flow Versioning</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-02T00:00:00+01:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
+
+<p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
+
+<p>Much to my surpise, it is actually very light-weight and you can drop much of it if your process is simpler (say for open source).</p>
+
+<p><a href="https://github.com/TestStack/ConventionTests">https://github.com/TestStack/ConventionTests</a> is my guinea pig!</p>
+
+<p>To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, &lsquo;upstream&rsquo; is the main repository, &lsquo;origin&rsquo; is my fork.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/git-flow-versioning/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-28T00:00:00+01:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
+
+<p>My goals were</p>
+
+<ul>
+<li>Use GitHubs releases feature &ndash; <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>I want to release from NuGet</li>
+<li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
+<li>Support SemVer, including pre-release packages</li>
+<li>Assembly versions should be stamped with informational version as well as a version</li>
+<li>Be able to link to the project GitHub releases from the NuSpec</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/release-nuget-semver-packages-from-teamcity/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/conventiontests-v2-released/">Convention Tests V2 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-19T00:00:00+01:00" pubdate data-updated="true">Sep 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>ConventionTests v2 Released</h2>
+
+<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
+
+<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
+
+<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
+
+<h2>What is ConventionTests?</h2>
+
+<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/conventiontests-v2-released/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-16T00:00:00+01:00" pubdate data-updated="true">Sep 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
+
+<h2>Exception 1</h2>
+
+<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
+
+<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
+
+<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
+</code></pre>
+
+<h2>Exception 2</h2>
+
+<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
+
+<p>This one is fixed by giving WPF the default resource assembly.</p>
+
+<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
+</code></pre>
+
+<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/verifying-logged-messages-with-log4net/">Verifying Logged Messages With Log4Net</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-13T00:00:00+01:00" pubdate data-updated="true">Sep 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
+
+<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
+</code></pre>
+
+<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
+
+<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
+</code></pre>
+
+<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/verifying-logged-messages-with-log4net/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/clickonce-signing-error/">ClickOnce Signing Error</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-13T00:00:00+01:00" pubdate data-updated="true">Sep 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
+
+<p>The command:</p>
+
+<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
+</code></pre>
+
+<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
+
+<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
+
+<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/resharper-xaml-attribute-ordering-plugin/">ReSharper Xaml Attribute Ordering Plug-in</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-09T00:00:00+01:00" pubdate data-updated="true">Sep 9<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
+
+<p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
+
+<p>Here are some screenshots</p>
+
+<p><img src="http://jake.ginnivan.net/get/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+
+<p><img src="http://jake.ginnivan.net/get/Capture2.PNG" alt="Options" /></p>
+
+<p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
+
+<p>Check out the code, report issues and submit pull requests at <a href="https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup">https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup</a> and install from <a href="https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/">ReSharper Extensions Site</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/clickonce-from-azure-blob-storage/">ClickOnce From Azure Blob Storage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-08T00:00:00+01:00" pubdate data-updated="true">Aug 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
+
+<h2>Creating the ClickOnce installer</h2>
+
+<p>I don&rsquo;t like using the publish feature in VS for my ClickOnce installers, it causes more problems than it solves. I tend to use Mage directly, but this is sometimes not that easy to figure out how to do it. Lets start by creating our installer.</p>
+
+<p>I am using MSBuild as my build platform, but these instructions can be adapted to anything really.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/clickonce-from-azure-blob-storage/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/automated-project-environment-setup/">Automated Project Environment Setup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-08T00:00:00+01:00" pubdate data-updated="true">Aug 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Web Project Dev Environment</h2>
+
+<p>A common problem projects have is when a new dev joins the team is they hopefully have to follow a bunch of instructions to set everything up. Most of the time, those instructions are out of date so another member of the team ends up setting everything up.</p>
+
+<p>Depending on the complexity of the project, this can be quite time consuming.</p>
+
+<p>The last project I was on was greenfields, so from day 1 we had a <code>Setup Dev Environment.ps1</code> file in the root of the project. This powershell script did the following:</p>
+
+<ul>
+<li>Installed IIS, and all the components we needed (windows auth, .net etc)</li>
+<li>Registered asp.net with IIS</li>
+<li>Created Websites with host headers for each of the sites in the project (we ended up having 3 different websites)</li>
+<li>Opened the HOSTS file in notepad (elevated) and printed out the lines you needed to paste into your HOSTS file</li>
+</ul>
+
+
+<p>Over time, this script gained more and more features. But when a new team member joined the team, they just ran this script which installed/configured everything.</p>
+
+<p>Why IIS you may ask, instead of say IIS Express. Well this approach means each site had it&rsquo;s own domain, so fiddler works out of the box. It also means that our UI Test suite doesn&rsquo;t have to fire up IIS Express to run it&rsquo;s tests.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/automated-project-environment-setup/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -78,7 +598,56 @@
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
   </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
 
@@ -91,12 +660,25 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Your Name -
+  Copyright &copy; 2014 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 

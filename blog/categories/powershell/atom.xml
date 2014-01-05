@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Powershell | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/powershell/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Quake Style Powershell Console V2]]></title>
+    <link href="http://JakeGinnivan.github.io/quake-style-powershell-console-v2/"/>
+    <updated>2010-09-01T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/quake-style-powershell-console-v2</id>
+    <content type="html"><![CDATA[<p>Edit: Updated to fix a problem when there are spaces in the path where Console2.exe is.</p>
+
+<p>I decided I would get this idea working again, when I did, it fell short a few times. I needed a few extra features:</p>
+
+<ul>
+<li>Elevated Powershell Console</li>
+<li>x64 Console</li>
+<li>I wanted it to work without adding anything to the %path% environmental variable</li>
+</ul>
+
+
+<h2>The goal</h2>
+
+<p>win + `</p>
+
+<p>=</p>
+
+<p><img src="/get/screenshots/powershellConsole.png" alt="Quake Mode Powershell" /></p>
+
+<!-- more -->
+
+
+<h2>What you need</h2>
+
+<ul>
+<li><a href="http://sourceforge.net/projects/console/files/">Console2 x64</a></li>
+<li><a href="http://jpassing.com/2007/12/08/launch-elevated-processes-from-the-command-line/">Elevate.exe, c version (Blog Post)</a></li>
+<li>or <a href="http://www.wintellect.com/cs/blogs/jrobbins/archive/2007/03/27/elevate-a-process-at-the-command-line-in-vista.aspx">Elevate.exe, c# version (Blog Post)</a></li>
+<li><a href="get/downloads/quakeconsolescripts.zip">AutoHotKey script, Console.xml config file, and launch.cmd</a></li>
+<li><a href="http://www.autohotkey.com/download/">AutoHotKey</a></li>
+</ul>
+
+
+<h2>Instructions</h2>
+
+<ol>
+<li>Download and install AutoHotKey (while you are at it, grab the autocorrect script <a href="http://www.autohotkey.com/docs/Hotstrings.htm#AutoCorrect">here</a></li>
+<li>Download and extract Console2 x64 to a folder.</li>
+<li>Extract my script file into the same folder</li>
+<li>Make sure all files are unblocked (right click, properties, unblock if they are).</li>
+<li>Create a shortcut to QuakeMode.ahk in the Startup folder in the start menu</li>
+</ol>
+
+
+<h2>How to use</h2>
+
+<p>Press the windows key + ` (tilde, above tab) to activate the console.
+You will see a few command windows run, and you will be prompted to put in your password (or press yes) to elevate the process. If you have UAC disabled, turn it back on :P</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Quake Style Powershell Console]]></title>
+    <link href="http://JakeGinnivan.github.io/quake-style-powershell-console/"/>
+    <updated>2010-01-27T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/quake-style-powershell-console</id>
+    <content type="html"><![CDATA[<p>I decided today that I wanted a quake style powershell console (with the classic win+` to activate or hide), and here is the end result:
+<img src="/get/screenshots/PowershellConsole.png" alt="Awesome powershell console" /></p>
+
+<p>I used <a href="http://www.instructables.com/id/%22Drop-Down%22,-Quake-style-command-prompt-for-Window/">http://www.instructables.com/id/&ldquo;Drop-Down&rdquo;,-Quake-style-command-prompt-for-Window/</a> as a template to get it all working, but wanted to use Console2 instead of v1.5 like this article uses.</p>
+
+<!-- more -->
+
+
+<h1>What you need?</h1>
+
+
+<p>Download <a href="http://www.autohotkey.com/download/">AutoHotKey</a> <br />
+Download <a href="http://sourceforge.net/projects/console/">Console2</a></p>
+
+<h1>Instructions</h1>
+
+
+<ol>
+<li>Extract the Console2 folder somewhere (I extract to %userprofile%\Console2).</li>
+<li>Add the directory to your %path% (<a href="http://support.microsoft.com/kb/310519">http://support.microsoft.com/kb/310519</a>) or create a shortcut to Console.exe and place it in your windows directory.</li>
+<li>In windows 7/Vista you can use the command &lsquo;setx PATH &ldquo;%PATH%;%userprofile%\Console2\&rdquo; /M&rsquo;</li>
+<li>Download <a href="/get/downloads/console.xml">console.xml</a> and <a href="/get/downloads/QuakeMode.ahk">QuakeMode.ahk</a> and overwrite the original console.xml. Then edit console.xml and set the startup directory.</li>
+<li>Right click on QuakeMode.ahk and run the script.</li>
+</ol>
+
+
+<p>Now you can press win + <code>to open the console, esc or win+</code> to close again. Also right click on the console to access the settings to modify things like colour, window size etc etc.</p>
+]]></content>
+  </entry>
+  
+</feed>

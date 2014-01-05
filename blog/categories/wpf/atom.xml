@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: WPF | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/wpf/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pack URI in Unit Tests]]></title>
+    <link href="http://JakeGinnivan.github.io/pack-uri-in-unit-tests/"/>
+    <updated>2013-09-16T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/pack-uri-in-unit-tests</id>
+    <content type="html"><![CDATA[<p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
+
+<h2>Exception 1</h2>
+
+<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
+
+<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
+
+<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
+</code></pre>
+
+<h2>Exception 2</h2>
+
+<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
+
+<p>This one is fixed by giving WPF the default resource assembly.</p>
+
+<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
+</code></pre>
+
+<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
+]]></content>
+  </entry>
+  
+</feed>

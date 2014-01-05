@@ -1,0 +1,516 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MVVM, Design Time vs IoC Usage - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="After a discussion via twitter I thought I would post my thoughts around how I would wire up views/viewmodels when not using a specific framework">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/wpf-mvvm-thoughs">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">MVVM, Design Time vs IoC Usage</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-21T00:00:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>The problems</h1>
+
+<p>Lets start with the problems we want to solve with our solution</p>
+
+<ul>
+<li>Blend Design time support</li>
+<li>Resharper binding validation support</li>
+<li>No using ServiceLocator, DI only</li>
+<li>ViewModels should be testable</li>
+</ul>
+
+
+<p>Frameworks like Magellan solve these sort of issues in other ways, but if you don&rsquo;t want to take on a framework then maybe an approach like this may help you get started.</p>
+
+<!-- more -->
+
+
+<h1>My approach</h1>
+
+<p>I find that once you progress past a basic application with simple interactions that often you need views to interact with each other, this could be returning data from a modal dialogue or anything.</p>
+
+<p>One thing we are often told is we should develop against interfaces, not implementations. I think this applies to views as well, so lets create an IView interface.</p>
+
+<pre><code>public interface IView
+{
+}
+</code></pre>
+
+<p>Now I want to be able to tell the calling viewmodel if I was cancelled, or possibly return data, so we will create three more interfaces and a few classes:</p>
+
+<pre><code>public interface IDialogueView : IView
+{
+    void DialogueDisplayed();
+    void DialogueClosed();
+}
+
+public interface IDialogueView&lt;TResult&gt; : IDialogueView
+{
+    event EventHandler&lt;DialogueResultEventArgs&lt;TResult&gt;&gt; Finished;
+}
+
+public interface IDialogueViewWithoutResult : IDialogueView
+{
+    event EventHandler&lt;DialogueResultEventArgs&gt; Finished;
+}
+
+public class DialogueResultEventArgs : EventArgs
+{
+    public DialogueResultEventArgs(bool cancelled)
+    {
+        Cancelled = cancelled;
+    }
+
+    public bool Cancelled { get; private set; }
+
+    public static DialogueResultEventArgs EmptyResult = new DialogueResultEventArgs(false);
+    public static DialogueResultEventArgs CancelledResult = new DialogueResultEventArgs(true);
+}
+
+public class DialogueResultEventArgs&lt;T&gt; : EventArgs
+{
+    public DialogueResultEventArgs(Exception error)
+    {
+        Result = new DialogueResult&lt;T&gt;(error);
+    }
+
+    public DialogueResultEventArgs(T result)
+    {
+        Result = new DialogueResult&lt;T&gt;(result);
+    }
+
+    public static DialogueResultEventArgs&lt;T&gt; Cancelled()
+    {
+        return new DialogueResultEventArgs&lt;T&gt; { Result = DialogueResult&lt;T&gt;.CancelledResult() };
+    }
+
+    private DialogueResultEventArgs() { }
+
+    public DialogueResult&lt;T&gt; Result { get; private set; }
+}
+</code></pre>
+
+<p>Then we need some way for our ViewModels to interact with other Views using these interfaces, enter IUIService</p>
+
+<pre><code>public interface IUIService
+{
+    /// &lt;summary&gt;
+    /// Shows a view in dialogue mode. The view will return a result. This call is blocking.
+    /// &lt;/summary&gt;
+    /// &lt;param name="dialogueView"&gt;The dialogue view.&lt;/param&gt;
+    DialogueResult&lt;TResult&gt; ShowDialogue&lt;TResult&gt;(IDialogueView&lt;TResult&gt; dialogueView);
+
+    /// &lt;summary&gt;
+    /// Shows a view in dialogue mode. No result will be returend. This call is blocking.
+    /// &lt;/summary&gt;
+    /// &lt;param name="dialogueView"&gt;The dialogue view.&lt;/param&gt;
+    DialogueResult ShowDialogue(IDialogueViewWithoutResult dialogueView);
+}
+</code></pre>
+
+<h2>Creating a new view</h2>
+
+<p>One of our requirements is that we want to support blend, this is pretty easy but I think that the view shells should always be created by the developers. If you have designers, create the empty view for them, wire it up, then hand over to them for them to do their magic. As much as Microsoft has made the developer/designer story much better, you still have to weigh up the pros and cons of trying to get the designers to do too much. Either they learn a basic bit of coding to get a new view setup, or they rely on the devs to create and wire up the empty view.</p>
+
+<p>Start off and create a new &lsquo;WPF Window&rsquo;. Then we define an interface for it in the code behind.</p>
+
+<pre><code>public partial class MyView : IMyView
+{
+    public MyView(MyViewModel viewModel)
+    {
+        _viewModel = viewModel;
+        DataContext = _viewModel;
+        InitializeComponent();
+    }
+
+    public void DialogueDisplayed()
+    {
+        _viewModel.Initialise();
+    }
+
+    public void DialogueClosed()
+    {
+    }
+
+    public event EventHandler&lt;DialogueResultEventArgs&lt;SomeData&gt;&gt; Finished
+    {
+        add { _viewModel.Finished += value; }
+        remove { _viewModel.Finished -= value; }
+    }
+}
+
+public interface IMyView : IDialogueView&lt;SomeData&gt;
+{ }
+</code></pre>
+
+<p>Doing this requires some basic coding, but allows full IoC support, and allows the viewmodel to raise the finished event, which will cause the UIService to close the window and return to the caller. It also gives a nice place to hook into things.
+In my current projects, we actually define all windows as UserControls, and our UI server creates the window with custom chrome and gives us full control over everything. It is working very well.</p>
+
+<p>Then lets look at the Xaml.</p>
+
+<pre><code>&lt;Window x:Class="WpfApplication3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance MainViewModel, IsDesignTimeCreatable=True}"&gt;
+    &lt;Grid&gt;
+
+    &lt;/Grid&gt;
+&lt;/Window&gt;
+</code></pre>
+
+<p>In my current project we also have an attached behaviour which allows us to specify a provider to set the datacontext. We leave the d:DataContext in there so we get R# support for our bindings =)</p>
+
+<p>Next chance I get, I was thinking that doing something like this in the viewmodel might work quite well.</p>
+
+<h1>IoC &ndash; Putting it together</h1>
+
+<p>In our appliation startup, we need to register out IoC container, I am using Autofac. This is my registration</p>
+
+<pre><code>private void ApplicationStartup(object sender, StartupEventArgs e)
+{
+    var containerBuilder = new ContainerBuilder();
+    containerBuilder.RegisterType&lt;UIService&gt;().As&lt;IUIService&gt;();
+    containerBuilder.RegisterType&lt;SomeService&gt;().As&lt;ISomeService&gt;();
+    containerBuilder
+        .RegisterAssemblyTypes(typeof(App).Assembly)
+        .AssignableTo&lt;IView&gt;()
+        .AsImplementedInterfaces();
+    containerBuilder
+        .RegisterAssemblyTypes(typeof(App).Assembly)
+        .AssignableTo&lt;ViewModelBase&gt;()
+        .AsSelf();
+    var container = containerBuilder.Build();
+    container.Resolve&lt;IUIService&gt;().ShowDialogue(container.Resolve&lt;IMainView&gt;());
+}
+</code></pre>
+
+<p>I register my UIService, another random service, then use the assembly scanning features to register viewmodels and views. I then resolve my UIService, and show my IMainViewModel!</p>
+
+<h1>Design Time and Runtime ViewModel wireup</h1>
+
+<p><code>Note:</code> I have not used this technique in a production project, but think it would be cool to try out and think it would be better than the setup I am using now.</p>
+
+<p>We add default constructor to our viewmodel:</p>
+
+<pre><code>public MainWindow() : this(new MainViewModel())
+{
+}
+</code></pre>
+
+<p>We then setup our viewmodel, which will look like:</p>
+
+<pre><code>public class MainViewModel : ViewModelBase
+{
+    public MainViewModel()
+    {
+        this.PopulateDesignTimeData().With&lt;MainViewModelData&gt;();
+    }
+
+    public MainViewModel(ISomeService someService)
+    {
+        //To show some DI at runtime
+        SomeProperty = someService.GetAValue();
+    }
+
+    public string SomeProperty { get; set; }
+    public event EventHandler&lt;DialogueResultEventArgs&gt; Finished;
+
+    protected void OnFinished(DialogueResultEventArgs e)
+    {
+        var handler = Finished;
+        if (handler != null) handler(this, e);
+    }
+}
+</code></pre>
+
+<p>Notice in our default contructor we call <code>this.PopulateDesignTimeData().With&lt;MainViewModelData&gt;()</code>? Here is the MainViewModelData class:</p>
+
+<pre><code>public class MainViewModelData : IDesignTimeViewModelPopulator&lt;MainViewModel&gt;
+{
+    public void Populate(MainViewModel viewModel)
+    {
+        viewModel.SomeProperty = "blah";
+    }
+}
+</code></pre>
+
+<p>Because of the way our IoC containers work, they will always choose the most specific constructor they can. If it cannot find the dependencies it will default back to the default constructor, which will throw a Debug.Assert because it is not in design time mode.</p>
+
+<h1>Source</h1>
+
+<p><a href="/get/downloads/WpfApplication3.zip">Download example project</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-21T00:00:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-number/'>c#</a>, <a class='category' href='/blog/categories/wpf/'>wpf</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/wpf-mvvm-thoughs/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/wpf-mvvm-thoughs/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/nhibernate-alias-warnings/" title="Previous Post: No more R# warnings for nHibernate aliases">&laquo; No more R# warnings for nHibernate aliases</a>
+      
+      
+        <a class="basic-alignment right" href="/wpmvc/" title="Next Post: Windows Phone MVC - Released">Windows Phone MVC - Released &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/wpf-mvvm-thoughs/';
+        var disqus_url = 'http://JakeGinnivan.github.io/wpf-mvvm-thoughs/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

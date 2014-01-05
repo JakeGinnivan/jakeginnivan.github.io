@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Open-source | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Documentation Site With Pretzel]]></title>
+    <link href="http://JakeGinnivan.github.io/documentation-site-with-pretzel/"/>
+    <updated>2013-07-27T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/documentation-site-with-pretzel</id>
+    <content type="html"><![CDATA[<p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
+
+<p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
+
+<!-- more -->
+
+
+<h2>Create the site in pretzel</h2>
+
+<p>This assumes you already have pretzel and it is in your PATH.</p>
+
+<pre><code>C:\PretzelDemo&gt;pretzel.exe create -t=Razor --wiki --azure
+</code></pre>
+
+<p>There are a few things we are saying:
+ &ndash; Create me a pretzel site
+ &ndash; We are not specifying a directory, so pretzel will create the site in the current directory
+ &ndash; We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
+ &ndash; The <em>&mdash;wiki</em> switch says we want a wiki template rather than the default blog setup
+ &ndash; The <em>&mdash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
+
+<pre><code>C:\PretzelDemo&gt; pretzel.exe create -t=razor --wiki --azure
+starting pretzel...
+create - configure a new site
+Using razor Engine
+Pretzel site template has been created
+Shim project added to allow deployment to azure websites
+Press any key to continue...
+</code></pre>
+
+<p>A file you may be interested in is <code>_source\_layouts\layout.cshtml</code>, this file has all the logic for your Wiki, feel free to edit this, make improvements, style changes, structural changes. What pretzel gives you is just a starting point!</p>
+
+<h2>The Wiki</h2>
+
+<p>To view your wiki, run
+<code>C:\PretzelDemo&gt; pretzel taste _source</code></p>
+
+<p>This will fire up pretzel&rsquo;s web server, and launch your wiki.</p>
+
+<p><img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument.png" alt="NewDocument" /></p>
+
+<p>Lets create a few files</p>
+
+<p><img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument1.png" alt="NewDocument1" /></p>
+
+<p>Notice the items circled in blue are new files, each file we create must have what is called yaml front matter (circled in red).</p>
+
+<p>Yaml front matter contains metadata about the file, like the title, permalink (a fixed url) and order among other things.</p>
+
+<p>If you refresh your browser, you will get this</p>
+
+<p><img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument2.png" alt="NewDocument2" /></p>
+
+<p>Pretzel has detected changes to files in the site, then rebuilt our site for us.</p>
+
+<h2>Deploying to Azure Wesbites</h2>
+
+<p>Create the website
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument3.png" alt="NewDocument3" />
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument4.png" alt="NewDocument4" />
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument5.png" alt="NewDocument5" /></p>
+
+<p>Now our site and deployment is setup, lets deploy. First copy the git deployment url
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument6.png" alt="NewDocument6" /></p>
+
+<p>Now we head back to our powershell console and run the following commands:</p>
+
+<pre><code>git init
+"_site" | Out-File .gitignore
+git add -A
+git commit -m "Committed wiki"
+git remote add azure &lt;deploymenturl&gt;
+git push azure master
+</code></pre>
+
+<p>And that should deploy our site, if everything went well, you should have an output looking something like this</p>
+
+<pre><code>C:\PretzelDemo [master]&gt; git push azure master
+Counting objects: 33, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (29/29), done.
+Writing objects: 100% (33/33), 716.65 KiB | 0 bytes/s, done.
+Total 33 (delta 10), reused 0 (delta 0)
+remote: Updating branch 'master'.
+remote: Updating submodules.
+remote: Preparing deployment for commit id '6476560e7e'.
+remote: Generating deployment script.
+remote: .
+remote: info:    Executing command site deploymentscript
+remote: info:    Solution file path: .\Shim.sln
+remote: info:    The site directory path: .\_source\_site
+remote: info:    Generating deployment script for .NET Web Site
+remote: info:    Generated deployment script files
+remote: info:    site deploymentscript command OK
+remote: Running deployment command...
+remote: Handling .NET Web Site deployment.
+remote: C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln.metaproj : warning MSB4121: The project configuration for project "Sham" was not specified in the solution file for the solution configuration "Release|Any CPU". [C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln]
+remote:   Shim -&gt; C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\bin\Release\Shim.dll
+remote:   starting pretzel...
+remote:   bake - transforming content into a website
+remote:   Recommended engine for directory: 'razor'
+remote:   done - took 2943ms
+remote:   Press any key to continue...
+remote: KuduSync.NET from: 'C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\_source\_site' to: 'C:\DWAS Files\Sites\pretzeldemo\VirtualDirectory0\site\wwwroot'
+remote: Deleting file: 'hostingstart.html'
+remote: Copying file: 'index.html'
+remote: Copying file: 'MainTopic.html'
+remote: Copying file: 'Topic.html'
+remote: Copying file: 'topic2.html'
+remote: Copying file: 'css\default.css'
+remote: Copying file: 'css\style.css'
+remote: Copying file: 'Feature\index - Copy.html'
+remote: Copying file: 'Feature\index.html'
+remote: Copying file: 'Feature\Topic - Copy.html'
+remote: Copying file: 'Feature\Topic 2.html'
+remote: Copying file: 'Feature\Topic.html'
+remote: Copying file: 'img\favicon.ico'
+remote: Finished successfully.
+remote: Deployment successful.
+To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
+ * [new branch]      master -&gt; master
+</code></pre>
+
+<p>Check the azure management console
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument8.png" alt="NewDocument8" /></p>
+
+<p>Head to your website
+<img src="/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument7.png" alt="NewDocument7" /></p>
+
+<p>Job done! You have a new wiki for documentation.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Announcing TestStack.White]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white/"/>
+    <updated>2012-10-28T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white</id>
+    <content type="html"><![CDATA[<h1>Project White</h1>
+
+<p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>
+
+<p>The goal of White was to create a nice abstraction over Microsoft&rsquo;s UI Automation framework in a consistent and object orientated way.</p>
+
+<p>White reached a nice maturity level and active development stopped about 2 years ago, since then things have moved on.</p>
+
+<p><a href="https://github.com/petmongrels">Vivek Singh</a> has given me permission to take this project over and try and increase the activity on this project again.</p>
+
+<h2>Why I&rsquo;m taking on White</h2>
+
+<p>Personally, I have been on a rather large WPF project on and off for the past 2.5 years and rely on UI Automation very heavily. When we started the project, White was the most mature UI Automation framework.</p>
+
+<p>This is a snapshot of some of our builds, every CI build that succeeds with kick-off many UI automation test runs for different configurations.<br/>
+<img src="/assets/posts/2012-10-28-teststack-white/UIAutomationTests.png" alt="TeamCity" /></p>
+
+<p>Over the last few years, we have wrapped White and have been running a custom builds and have learnt a lot about UI automation.</p>
+
+<p>I would like to put some of the learnings and improvements back into White to make it easier for everyone to use UI automation without paying for one of the commercial offerings.</p>
+
+<p>One of my colleagues at <a href="http://www.readify.net">Readify</a>, <a href="http://www.mehdi-khalili.com/">Mehdi Khalili</a> did a presentation at Perth .NET usergroup on UI Automation, he was suggesting many things that we were already doing on this project except he was focusing on Web Automation.
+Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="http://kozmic.pl/">Krzysztof Koźmic</a> formed <a href="http://teststack.github.com/">TestStack</a>.</p>
+
+<p>After talking with Mehdi in the pub, he convinced me that I should restart White, and also join TestStack so we can keep some great testing related projects together!</p>
+
+<h2>TestStack.White</h2>
+
+<p>I have been doing some updates and cleanups on White over the past month or two in a private repo, but I have now opened it up at <a href="https://github.com/TestStack/White">https://github.com/TestStack/White</a>.</p>
+
+<p>I am looking forward to working on White some more, and I welcome pull requests :P</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ApiApprover]]></title>
+    <link href="http://JakeGinnivan.github.io/apiapprover/"/>
+    <updated>2012-02-19T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/apiapprover</id>
+    <content type="html"><![CDATA[<p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
+
+<p>The interesting thing about Semantic versioning is that often people accidently break the semantic version. So I wrote a unit test which solves this problem</p>
+
+<pre><code>[Fact]
+public void phoenix_has_no_public_api_changes()
+{
+    // arrange
+    var phoenix = typeof(IPhoenixHost).Assembly;
+
+    // act
+    var publicApi = CodeGen.CreatePublicApiForAssembly(phoenix);
+
+    // assert
+    var reporter = new DiffReporter();
+    Approvals.Approve(new ApprovalTextWriter(publicApi), new XUnitTestFrameworkNamer(), reporter);
+}
+</code></pre>
+
+<!-- more -->
+
+
+<h1>What it does</h1>
+
+<p>This test is actually quite simple, we grab the assembly, I then have a class which generates the public API for that assembly as a string. I then use Approval Tests to approve any API changes with a diff tool.</p>
+
+<p>So what does that actually look like:<br/>
+<img src="/assets/posts/2012-02-19-apiapprover/ApiChange.png" alt="ApiChange" /></p>
+
+<h1>How do I use it?</h1>
+
+<p>Add the <a href="https://nuget.org/packages/ApiApprover/1.0.0"><strong><code>ApiApprover</code></strong></a> NuGet package</p>
+
+<p>It will drop a few files into your test project<br/>
+PublicApiGenerator.cs<br/>
+PublicApiApprovalTest.cs</p>
+
+<p>Open up PublicApiApprovalTest and fix up the compilation error (specify assembly, and properly attribute up the test for your framework of choice. Then get started!</p>
+
+<p>The source is also available at <a href="https://github.com/JakeGinnivan/ApiApprover">https://github.com/JakeGinnivan/ApiApprover</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WP7 MVC Debug and Tracing]]></title>
+    <link href="http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging/"/>
+    <updated>2011-09-22T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging</id>
+    <content type="html"><![CDATA[<h2>WP7 Essentials Tracing</h2>
+
+<p>A new feature coming in the next release is a super easy to use Trace class to allow you to debug your app really easily.</p>
+
+<!-- more -->
+
+
+<p>In your App.xaml.cs constructor simply put:</p>
+
+<pre><code>#if DEBUG
+    Trace.Appenders.Add(s=&gt;Debug.WriteLine(s));
+    Trace.TraceLevel = TraceLevel.Debug;
+#endif
+</code></pre>
+
+<p>Then the following code will output <code>9/23/2011 8:10 PM - Debug   [MyClass] - Some  Trace Message</code> in your Debug output window. You can add your own trace appenders too if you want to implement logging in your app.</p>
+
+<pre><code>// this.GetType() == typeof(MyClass)
+Trace.WriteInfo(this, TraceLevel.Debug, ()=&gt;"Some Trace Message");
+</code></pre>
+
+<p>Notice that we pass a lambda into the WriteInfo class, this is so the Trace class can be super lazy and if the message is not going to be written to the Trace appenders, it will not even construct that string (useful if you are doing more complex logging like checking memory usage etc).</p>
+
+<h2>WP7 MVC Tracing</h2>
+
+<p>I have been using this tracing ability in vNext of Windows Phone MVC to measure performance and start optimising. Here is an example of the full debug log when running</p>
+
+<pre><code>9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - Scanning for and Registering Autofac Modules
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - {
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] -     Registering module ApplicationModule... 1ms
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - } 46ms
+9/23/2011 8:46 PM - Debug   [AutofacNavigationApplication] - Building Container... 72ms
+9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] - Handling WP7 Navigation Event to /Shell.xaml
+9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] - {
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 8.54296875
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to Home.MainPage
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller Home
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -             Scanning assemblies for controllers and building lookup... 2ms
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         } 10ms
+9/23/2011 8:46 PM - Debug   [NavigationApplicationActivator] -     } 45ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action MainPage on Home... 28ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.MainPage... 52ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.MainPage
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultViewLocator            ] -         Scanning assemblies for views and building lookup... 3ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     } 214ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.MainPage added to Journal
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 1ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 9.15234375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 526ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - Parsing Navigation Expression
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - {
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 9.23046875
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to AnotherController.Example
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller AnotherController... 0ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] -     } 14ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action Example on AnotherController... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for AnotherController.Example... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for AnotherController.Example... 44ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     AnotherController.Example added to Journal
+9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel MainViewModel... 1ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 10.90234375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 101ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] - AnotherController.Example popped from Journal
+9/23/2011 8:46 PM - Debug   [Journal                       ] - Home.MainPage popped from Journal
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Memory usage before navigation: 9.1640625
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Navigating Backward to Home.MainPage
+9/23/2011 8:46 PM - Info    [Navigator                     ] - {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action MainPage on Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.MainPage... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.MainPage... 22ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.MainPage added to Journal
+9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel ExampleViewModel... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 1ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 10.55859375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 82ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Memory usage before navigation: 9.8359375
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Navigating Forward to Home.DebugPage
+9/23/2011 8:46 PM - Info    [Navigator                     ] - {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action DebugPage on Home... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Home.DebugPage... 4ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for Home.DebugPage... 104ms
+9/23/2011 8:46 PM - Debug   [Journal                       ] -     Home.DebugPage added to Journal
+9/23/2011 8:46 PM - Debug   [PageResult                    ] -     Cleaning up ViewModel MainViewModel... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 13.82421875
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 267ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] - Loading partial view Debug.DemoPartial
+9/23/2011 8:46 PM - Info    [Navigator                     ] - {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -     Locating controller Debug... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action DemoPartial on Debug... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for Debug.DemoPartial... 2002ms
+Partial Activated
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PartialViewResult completion steps... 2ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 2040ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - Parsing Navigation Expression
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] - {
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage before navigation: 15.98828125
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Navigating Forward to DebugController.PageWithResult
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     {
+9/23/2011 8:46 PM - Debug   [DefaultControllerLocator      ] -         Locating controller DebugController... 0ms
+9/23/2011 8:46 PM - Debug   [ControllerActions`1           ] -     } 12ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Resolving best matching action PageWithResult on DebugController... 0ms
+9/23/2011 8:46 PM - Debug   [DefaultActionInvoker          ] -     Invoking controller action for DebugController.PageWithResult... 0ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult for DebugController.PageWithResult... 35ms
+9/23/2011 8:46 PM - Debug   [Navigator                     ] -     Executing WindowsPhoneMVC.ActionResults.PageResult completion steps... 0ms
+9/23/2011 8:46 PM - Info    [Navigator                     ] -     Memory usage after navigation: 17
+9/23/2011 8:46 PM - Info    [Navigator                     ] - } 103ms
+</code></pre>
+
+<p>Now you may be saying one of two things, OMG that is way better than the OOTB profiler or you will be saying now my output window will be spammed!</p>
+
+<p>Say we want to silence the Navigator because it logs a lot, we simply do:</p>
+
+<pre><code>Trace.Filters.Add(typeof(Navigator));
+</code></pre>
+
+<p>And all Trace events from the Navigator class will be ignored. So you can find out useful information when you need it, and ignore it other times!</p>
+
+<p>Keen to know what everyone thinks.</p>
+
+<h2>Check it out at <a href="http://windowsphonemvc.codeplex.com/">http://windowsphonemvc.codeplex.com/</a></h2>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WP7 Essentials Settings Provider]]></title>
+    <link href="http://JakeGinnivan.github.io/wp7-essentials-settings-provider/"/>
+    <updated>2011-09-09T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/wp7-essentials-settings-provider</id>
+    <content type="html"><![CDATA[<p>Update: This project has been superseeded by <a href="https://github.com/JakeGinnivan/SettingsProvider.net">SettingsProvider.net</a></p>
+
+<!-- more -->
+
+
+<h1>Settings Provider?</h1>
+
+<p>The settings provider is a port from the FunnelWeb settings provider to Windows Phone. It is a really simple interface</p>
+
+<pre><code>public interface ISettingsProvider
+{
+    T GetSettings&lt;T&gt;() where T : ISettings, new();
+    void SaveSettings&lt;T&gt;(T settings) where T : ISettings;
+}
+</code></pre>
+
+<p>So what does <code>T</code> actually look like:</p>
+
+<pre><code>public class ApplicationSettings : NotifyPropertyChanged, ISettings
+{
+    [DefaultValue(5)]
+    [DisplayName("Number Results")]
+    public int NumberResults { get; set; }
+
+    public string Nickname { get; set; }
+
+    [DefaultValue(true)]
+    [DisplayName("Enable Stuff")]
+    public bool EnableStuff { get; set; }
+
+    public DateTime? Birthday { get; set; }
+
+    [DisplayName("Some Options")]
+    public Options SomeOptions { get; set; }
+}
+
+public enum Options
+{
+    Value1, 
+    Value2
+}
+</code></pre>
+
+<p>Pretty easy right? We can use NotifyPropertyWeaver to keep the class nice and clean. Then to fetch or persist our settings we just need to do</p>
+
+<pre><code>var applicationSettings = settingsProvider.GetSettings&lt;ApplicationSettings&gt;();
+applicationSettings.SomeOptions = Options.Value2;
+settingsProvider.SaveSettings(applicationSettings);
+</code></pre>
+
+<p>The Settings Provider is limited to types supported by the Convert.ChangeType method (for a number of reasons, if this is too restrictive, let me know and why).</p>
+
+<p>So in the last release we added the SettingsList control, which will generate this for you (just the settings control, not the page, highlighted in red is what you get generated)</p>
+
+<p><img src="/assets/posts/2011-09-09-wp7-essentials-settings-provider/SettingsProvider.png" alt="Settings Provider control" /></p>
+
+<p>This is a first cut, and over time I will polish this page, and add support for ordering the properties and stuff (or feel free to submit pull requests :)). But I recon this is pretty cool for a first cut.</p>
+
+<p>Also the reason I am using a combobox instead of the ListPicker is there is a bug where the control simply doesn&rsquo;t work inside a scroll viewer. Bah. Anyone interested in doing a community fork which simply fixes bugs in the toolkit and doesn&rsquo;t add any new features?</p>
+
+<h1>Get it</h1>
+
+<p>This control is in a separate package (to keep the essentials package lean and mean :P).</p>
+
+<pre><code>Install-Package WindowsPhoneEssentials.Controls.Settings
+</code></pre>
+
+<p><a href="http://wp7essentials.codeplex.com/">Codeplex</a><br/>
+<a href="http://nuget.org/List/Search?searchTerm=WindowsPhoneEssentials">NuGet</a></p>
+]]></content>
+  </entry>
+  
+</feed>

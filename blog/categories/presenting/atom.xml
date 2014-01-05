@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Presenting | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/presenting/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
+    <link href="http://JakeGinnivan.github.io/dddsydney/"/>
+    <updated>2011-06-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/dddsydney</id>
+    <content type="html"><![CDATA[<h1>Rich Client UI Automation, without shooting yourself in the foot</h1>
+
+<p>When you talk to most people that have tried Coded UI Tests or other UI Automation they tell you it was great, then it caused them way too much pain to be worth it. This phenomenon is also known as the Sine of Death by UI Test Automation. In this session Jake will show you how to avoid the Sine of Death and make UI Automation an invaluable part of your testing with a great ROI which reducing risk in the project.</p>
+
+<p>After watching this session you will talk away knowing how UI Automation works, what each of the Frameworks (White, Coded UI) give you, and the techniques you can apply to succeed with UI Automation. These techniques are used in production right now and you will see a demo of that applications test suite.</p>
+
+<h2>Resources</h2>
+
+<p>I will post resources on Rich Client Automation after my talk, or early next week.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Windows Phone 7 Frameworks Presentation]]></title>
+    <link href="http://JakeGinnivan.github.io/presentations/perth-dotnet-wp7-frameworks/"/>
+    <updated>2011-02-25T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/presentations/perth-dotnet-wp7-frameworks</id>
+    <content type="html"><![CDATA[<h1>Windows Phone 7 Frameworks</h1>
+
+<p>Windows phone 7 frameworks have been popping up quite rapidly, and I have found each has benefits and drawbacks. You may be asking questions like, do I need a framework? What will it give me over rolling my own?</p>
+
+<p>In this session I will be giving an introduction to windows phone development, and they diving into a few key area&rsquo;s in windows phone development like lifecycle (tombstoning etc), navigation and general mvvm support.</p>
+
+<p>You will leave knowing much more about Windows Phone 7 dev, and how to select the framework for your application</p>
+
+<h1>The Talk Details</h1>
+
+<p>Talk Link: <a href="http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx">http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx</a></p>
+
+<p><strong>When:</strong> Thursday, Mar 3rd, 5:30pm &ndash; 7:00pm<br/>
+<strong>Where:</strong> Enex 100 Seminar Room, Level 3, 100 St Georges Terrace, Perth</p>
+
+<h1>The frameworks</h1>
+
+<p>So far the frameworks I am aware of:</p>
+
+<p><a href="http://columbus.codeplex.com/">Columbus</a> &ndash; written by Artem Govorov<br/>
+<a href="http://windowsphonemvp.codeplex.com/">Windows Phone MVP</a> &ndash; written by <a href="http://www.kowitz.net/">Brendan Kowitz</a><br/>
+<a href="http://caliburnmicro.codeplex.com/">Calburn Micro</a> &ndash; written by <a href="http://robeisenberg.com/Work.aspx">Rob Eisenberg</a><br/>
+<a href="http://mvvmlight.codeplex.com/">MVVM Light</a> &ndash; written by <a href="http://www.galasoft.ch/contact_en.html">Laurent Bugnion (GalaSoft)</a></p>
+
+<p>If you know of others let me know, and tell me what is your favourite thing in that framework.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Microsoft Evangelism Academy]]></title>
+    <link href="http://JakeGinnivan.github.io/evangeloz2010/"/>
+    <updated>2011-01-01T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/evangeloz2010</id>
+    <content type="html"><![CDATA[<p>I am a little late blogging about this, by last month I attended the inaugural Microsoft Evangelism Academy (<a href="http://twitter.com/#search?q=%23EvangelOz">#EvangelOz</a>) which was organised by Andrew Coates (<a href="http://twitter.com/coatsy">@coatsy</a>) and Sarah Vaughan (<a href="http://twitter.com/sarahvaughan">@sarahvaughan</a>) at Microsoft DPE. The goal of this program is to take 8 of us to the next level with our presenting! It started with 3 days of coaching, it will continue until August 2011 and will include:</p>
+
+<ul>
+<li>Monthly conference calls</li>
+<li>Monthly 1 on 1 catchup over the phone with a mentor</li>
+<li>1 day of group training in Melbourne every 2-3 months</li>
+<li>Talk at UserGroups, Conferences and whatever we can!</li>
+</ul>
+
+
+<p>I was lucky enough to attend with:</p>
+
+<ul>
+<li><a href="http://demonictalkingskull.com/">James Bannan</a> (<a href="http://twitter.com/jamesbannan">@JamesBannan</a>)</li>
+<li>Windows Desktop Experience MVP</li>
+<li><a href="http://azure.snagy.name/blog/">Steven Nagy</a> (<a href="http://twitter.com/snagy">@snagy</a>)</li>
+<li>Windows Azure MVP</li>
+<li><a href="http://www.soulsolutions.com.au/Blog.aspx">John O’Brien</a> (<a href="http://twitter.com/soulsolutions">@soulsolutions</a>)</li>
+<li>Windows Live MVP</li>
+<li><a href="http://www.made4the.net/default.aspx">Jeremy Thake</a> (<a href="http://twitter.com/jthake">@jthake</a>)</li>
+<li>SharePoint MVP</li>
+<li><a href="http://blog.walshie.me/">Chris Walsh</a> (<a href="http://twitter.com/ChrisWalshie">@ChrisWalshie</a>)</li>
+<li>Windows Phone 7 guru</li>
+<li><a href="http://www.soulsolutions.com.au/Blog.aspx">Bronwen Zande</a> (<a href="http://twitter.com/BronwenZ">@BronwenZ</a>)</li>
+<li>Windows Live MVP</li>
+<li><a href="http://mrhodes.net/">Mark Rhodes</a> (<a href="http://twitter.com/MRhodes">@MRhodes</a>)</li>
+<li>SharePoint Infrastructure guru</li>
+</ul>
+
+
+<p>Over the three days I made some new friends, and learnt a lot about the art of presenting. We covered many areas including Motion, Gestures, Eye Contact, Voice, Stance, Visuals, Content and much more.</p>
+
+<p>I found the whole exercise quite challenging and have to say thanks to  Steve Herzberg (<a href="http://twitter.com/nrgsteve">@nrgsteve</a>) and Melony Dos Remedios from NRG Solutions. They were great mentors, and I look forward to catching up with them again in February!</p>
+
+<p>Hopefully I will post some video&rsquo;s/pictures of the course over the few weeks, but in the meantime you can have a look at any of the others blog posts about EvangelOz =)</p>
+
+<ul>
+<li><a href="http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/">http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/</a></li>
+<li><a href="http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/">http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/</a></li>
+<li><a href="http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx">http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx</a></li>
+<li><a href="http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx">http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TechEd DEV332 Resources]]></title>
+    <link href="http://JakeGinnivan.github.io/dev332-resources/"/>
+    <updated>2010-08-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/dev332-resources</id>
+    <content type="html"><![CDATA[<h1>DEV332</h1>
+
+<p>Thanks to everyone that attended my session, any feedback you have would be great!</p>
+
+<h1>Resources</h1>
+
+<ul>
+<li><a href="/get/downloads/dev332.zip">Demos</a></li>
+<li><a href="/get/downloads/dev332_Ginnivan.zip">Powerpoint</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TechEd 2010]]></title>
+    <link href="http://JakeGinnivan.github.io/tech-ed-2010/"/>
+    <updated>2010-08-21T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/tech-ed-2010</id>
+    <content type="html"><![CDATA[<p>I have been lucky enough to be selected to speak at TechEd this year, and it is only 2 days away!</p>
+
+<p>The backend of my blog blew up a few weeks ago and have been trying to find the time to rebuild it, and I have managed to get it done while fine tuning my talk.</p>
+
+<p>I will be speaking about how to use VSTO as a platform, it is a level 300 talk so expect a lot of code, demo&rsquo;s and hopefully you will be able to take a few things away. I am really looking forward to this talk and I think that people will be surprised at what you can achieve with VSTO if you know what path to take.</p>
+
+<p>My talk is DEV332 at 8.15 am Thursday morning in Meeting Room 8.</p>
+
+<p><img src="http://australia.msteched.com/p/TEAU10/resources/BB_100_hearMe.JPG" alt="Come listen to DEV332 at TechEd" /></p>
+]]></content>
+  </entry>
+  
+</feed>

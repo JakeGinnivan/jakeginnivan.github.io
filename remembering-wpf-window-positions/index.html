@@ -1,0 +1,739 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Remembering WPF Window Positions - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Want a WPF window to open up where it was last closed? It is as simple at WindowsSettings.Save="True"">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/remembering-wpf-window-positions">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Remembering WPF Window Positions</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-04T00:00:00+01:00" pubdate data-updated="true">Aug 4<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A few of my apps require opening the same window for a lot of different items and I wanted each WPF window to remember its size, position and state all the time. Nothing annoys me more than closing a window, opening the same window and its back on my second monitor.</p>
+
+<p>So I went in search of a solution that someone else had written first, I found a example on the <a href="http://msdn.microsoft.com/en-us/library/aa972163.aspx">MSDN website</a>.What makes this sample good is it makes use of the Win32 API’s, specifically GetWindowPlacement and SetWindowPlacement in User32.dll. Because of this our code doesn&rsquo;t have to worry about missing second monitors, reduced resolution and other edge cases that can cause the normal headaches.</p>
+
+<p>The <a href="http://bloggingabout.net/blogs/erwyn/archive/2007/02/01/remembering-window-positions-in-wpf.aspx">second example</a> I found has the idea of using attached properties, which I liked a lot.</p>
+
+<p>The problem with the MSDN sample is you need to set up each window manually by overriding some of the Windows methods, the second solution did not cater for the edge cases.</p>
+
+<!-- more -->
+
+
+<h1>How do we do it?</h1>
+
+
+<p>The first problem is persisting the data, I wanted to be able to store the position across sessions for multiple windows AND store the class in a reusable library. So I decided to create a internal ApplicationSettings class within my class to store each window, passing the Type.FullName of the window to the ApplicationSettings constructor to make sure settings names are not doubled up.</p>
+
+<pre><code>internal class WindowApplicationSettings : ApplicationSettingsBase
+{
+    public WindowApplicationSettings(WindowSettings windowSettings)
+        : base(windowSettings._window.GetType().FullName) 
+    {
+    }
+
+    [UserScopedSetting]
+    public WINDOWPLACEMENT? Placement
+    {
+        get
+        {
+            if (this["Placement"] != null)
+            {
+                return ((WINDOWPLACEMENT)this["Placement"]);
+            }
+            return null;
+        }
+        set
+        {
+            this["Placement"] = value;
+        }
+    }
+}
+</code></pre>
+
+<p>Next we can create the attached property which when set to True hooks into the window it is attaching to and subscribes to the needed events.</p>
+
+<pre><code>/// &lt;summary&gt;
+/// Register the "Save" attached property and the "OnSaveInvalidated" callback 
+/// &lt;/summary&gt;
+public static readonly DependencyProperty SaveProperty
+    = DependencyProperty.RegisterAttached("Save", typeof(bool), typeof(WindowSettings),
+                                          new FrameworkPropertyMetadata(new PropertyChangedCallback(OnSaveInvalidated)));
+
+public static void SetSave(DependencyObject dependencyObject, bool enabled)
+{
+    dependencyObject.SetValue(SaveProperty, enabled);
+}
+
+/// &lt;summary&gt;
+/// Called when Save is changed on an object.
+/// &lt;/summary&gt;
+private static void OnSaveInvalidated(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+{
+    var window = dependencyObject as Window;
+    if (window == null || !((bool) e.NewValue)) return;
+    var settings = new WindowSettings(window);
+    settings.Attach();
+}
+
+/// &lt;summary&gt;
+/// Save the Window Size, Location and State to the settings object
+/// &lt;/summary&gt;
+protected virtual void SaveWindowState()
+{
+    WINDOWPLACEMENT wp;
+    var hwnd = new WindowInteropHelper(_window).Handle;
+    GetWindowPlacement(hwnd, out wp);
+    Settings.Placement = wp;
+    Settings.Save();
+}
+
+private void Attach()
+{
+    if (_window == null) return;
+    _window.Closing += WindowClosing;
+    _window.SourceInitialized += WindowSourceInitialized;
+}
+
+void WindowSourceInitialized(object sender, EventArgs e)
+{
+    LoadWindowState();
+}
+
+private void WindowClosing(object sender, CancelEventArgs e)
+{
+    SaveWindowState();
+    _window.Closing -= WindowClosing;
+    _window.SourceInitialized -= WindowSourceInitialized;
+    _window = null;
+}
+</code></pre>
+
+<p>The key is the SourceInitialized event, it lets us know when the underlying Win32 Window is ready and we can make a call to SetWindowPlacement.</p>
+
+<pre><code>/// &lt;summary&gt;
+/// Load the Window Size Location and State from the settings object
+/// &lt;/summary&gt;
+protected virtual void LoadWindowState()
+{
+    Settings.Reload();
+
+    if (Settings.Placement == null) return;
+    try
+    {
+        // Load window placement details for previous application session from application settings
+        // if window was closed on a monitor that is now disconnected from the computer,
+        // SetWindowPlacement will place the window onto a visible monitor.
+        var wp = Settings.Placement.Value;
+
+        wp.length = Marshal.SizeOf(typeof (WINDOWPLACEMENT));
+        wp.flags = 0;
+        wp.showCmd = (wp.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : wp.showCmd);
+        var hwnd = new WindowInteropHelper(_window).Handle;
+        SetWindowPlacement(hwnd, ref wp);
+    }
+    catch (Exception ex)
+    {
+        Debug.WriteLine(string.Format("Failed to load window state:\r\n{0}", ex));
+    }
+}
+</code></pre>
+
+<p>After we close the window we get this in our user.config file.</p>
+
+<pre><code>&lt;userSettings&gt; 
+    &lt;ioWpf.WindowSettings_x002B_WindowApplicationSettings.ParameterPopulator.Views.MainView&gt;
+        &lt;setting name="Placement" serializeAs="Xml"&gt; 
+            &lt;value&gt; 
+                &lt;WINDOWPLACEMENT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt; 
+                    &lt;length&gt;44&lt;/length&gt; 
+                    &lt;flags&gt;0&lt;/flags&gt; 
+                    &lt;showCmd&gt;1&lt;/showCmd&gt; 
+                    &lt;minPosition&gt; 
+                        &lt;X&gt;-1&lt;/X&gt; 
+                        &lt;Y&gt;-1&lt;/Y&gt; 
+                    &lt;/minPosition&gt; 
+                    &lt;maxPosition&gt; 
+                        &lt;X&gt;-1&lt;/X&gt; 
+                        &lt;Y&gt;-1&lt;/Y&gt; 
+                    &lt;/maxPosition&gt; 
+                    &lt;normalPosition&gt; 
+                        &lt;Left&gt;93&lt;/Left&gt; 
+                        &lt;Top&gt;371&lt;/Top&gt; 
+                        &lt;Right&gt;893&lt;/Right&gt; 
+                        &lt;Bottom&gt;771&lt;/Bottom&gt; 
+                    &lt;/normalPosition&gt; 
+                &lt;/WINDOWPLACEMENT&gt; 
+            &lt;/value&gt; 
+        &lt;/setting&gt; 
+    &lt;/ioWpf.WindowSettings_x002B_WindowApplicationSettings.ParameterPopulator.Views.MainView&gt;
+&lt;/userSettings&gt;
+</code></pre>
+
+<p>There you have it, both a simple and very robust way to remember WPF windows positions.</p>
+
+<h1>Complete Source</h1>
+
+
+<pre><code>/// &lt;summary&gt;
+/// Persists a Window's Size, Location and WindowState to UserScopeSettings 
+/// &lt;/summary&gt;
+public class WindowSettings
+{
+    [DllImport("user32.dll")]
+    static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl);
+
+    [DllImport("user32.dll")]
+    static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
+
+    // ReSharper disable InconsistentNaming
+    const int SW_SHOWNORMAL = 1;
+    const int SW_SHOWMINIMIZED = 2;
+    // ReSharper restore InconsistentNaming
+
+    internal class WindowApplicationSettings : ApplicationSettingsBase
+    {
+        public WindowApplicationSettings(WindowSettings windowSettings)
+            : base(windowSettings._window.GetType().FullName) 
+        {
+        }
+
+        [UserScopedSetting]
+        public WINDOWPLACEMENT? Placement
+        {
+            get
+            {
+                if (this["Placement"] != null)
+                {
+                    return ((WINDOWPLACEMENT)this["Placement"]);
+                }
+                return null;
+            }
+            set
+            {
+                this["Placement"] = value;
+            }
+        }
+    }
+    private Window _window;
+
+    public WindowSettings(Window window)
+    {
+        _window = window;
+    }
+
+    /// &lt;summary&gt;
+    /// Register the "Save" attached property and the "OnSaveInvalidated" callback 
+    /// &lt;/summary&gt;
+    public static readonly DependencyProperty SaveProperty
+        = DependencyProperty.RegisterAttached("Save", typeof(bool), typeof(WindowSettings),
+                                              new FrameworkPropertyMetadata(new PropertyChangedCallback(OnSaveInvalidated)));
+
+    public static void SetSave(DependencyObject dependencyObject, bool enabled)
+    {
+        dependencyObject.SetValue(SaveProperty, enabled);
+    }
+
+    /// &lt;summary&gt;
+    /// Called when Save is changed on an object.
+    /// &lt;/summary&gt;
+    private static void OnSaveInvalidated(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+    {
+        var window = dependencyObject as Window;
+        if (window == null || !((bool) e.NewValue)) return;
+        var settings = new WindowSettings(window);
+        settings.Attach();
+    }
+
+    /// &lt;summary&gt;
+    /// Load the Window Size Location and State from the settings object
+    /// &lt;/summary&gt;
+    protected virtual void LoadWindowState()
+    {
+        Settings.Reload();
+
+        if (Settings.Placement == null) return;
+        try
+        {
+            // Load window placement details for previous application session from application settings
+            // if window was closed on a monitor that is now disconnected from the computer,
+            // SetWindowPlacement will place the window onto a visible monitor.
+            var wp = Settings.Placement.Value;
+
+            wp.length = Marshal.SizeOf(typeof (WINDOWPLACEMENT));
+            wp.flags = 0;
+            wp.showCmd = (wp.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : wp.showCmd);
+            var hwnd = new WindowInteropHelper(_window).Handle;
+            SetWindowPlacement(hwnd, ref wp);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(string.Format("Failed to load window state:\r\n{0}", ex));
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Save the Window Size, Location and State to the settings object
+    /// &lt;/summary&gt;
+    protected virtual void SaveWindowState()
+    {
+        WINDOWPLACEMENT wp;
+        var hwnd = new WindowInteropHelper(_window).Handle;
+        GetWindowPlacement(hwnd, out wp);
+        Settings.Placement = wp;
+        Settings.Save();
+    }
+
+    private void Attach()
+    {
+        if (_window == null) return;
+        _window.Closing += WindowClosing;
+        _window.SourceInitialized += WindowSourceInitialized;
+    }
+
+    void WindowSourceInitialized(object sender, EventArgs e)
+    {
+        LoadWindowState();
+    }
+
+    private void WindowClosing(object sender, CancelEventArgs e)
+    {
+        SaveWindowState();
+        _window.Closing -= WindowClosing;
+        _window.SourceInitialized -= WindowSourceInitialized;
+        _window = null;
+    }
+
+    private WindowApplicationSettings _windowApplicationSettings;
+
+    internal virtual WindowApplicationSettings CreateWindowApplicationSettingsInstance()
+    {
+        return new WindowApplicationSettings(this);
+    }
+
+    [Browsable(false)]
+    internal WindowApplicationSettings Settings
+    {
+        get
+        {
+            if (_windowApplicationSettings == null)
+            {
+                _windowApplicationSettings = CreateWindowApplicationSettingsInstance();
+            }
+            return _windowApplicationSettings;
+        }
+    }
+}
+
+
+[Serializable]
+[StructLayout(LayoutKind.Sequential)]
+public struct RECT
+{
+    private int _left;
+    private int _top;
+    private int _right;
+    private int _bottom;
+
+    public RECT(int left, int top, int right, int bottom)
+    {
+        _left = left;
+        _top = top;
+        _right = right;
+        _bottom = bottom;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is RECT)
+        {
+            var rect = (RECT)obj;
+
+            return rect._bottom == _bottom &amp;&amp;
+                   rect._left == _left &amp;&amp;
+                   rect._right == _right &amp;&amp;
+                   rect._top == _top;
+        }
+        return base.Equals(obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return _bottom.GetHashCode() ^
+               _left.GetHashCode() ^
+               _right.GetHashCode() ^
+               _top.GetHashCode();
+    }
+
+    public static bool operator ==(RECT a, RECT b)
+    {
+        return a._bottom == b._bottom &amp;&amp;
+               a._left == b._left &amp;&amp;
+               a._right == b._right &amp;&amp;
+               a._top == b._top;
+    }
+
+    public static bool operator !=(RECT a, RECT b)
+    {
+        return !(a == b);
+    }
+
+    public int Left
+    {
+        get { return _left; }
+        set { _left = value; }
+    }
+
+    public int Top
+    {
+        get { return _top; }
+        set { _top = value; }
+    }
+
+    public int Right
+    {
+        get { return _right; }
+        set { _right = value; }
+    }
+
+    public int Bottom
+    {
+        get { return _bottom; }
+        set { _bottom = value; }
+    }
+}
+
+[Serializable]
+[StructLayout(LayoutKind.Sequential)]
+public struct POINT
+{
+    private int _x;
+    private int _y;
+
+    public POINT(int x, int y)
+    {
+        _x = x;
+        _y = y;
+    }
+
+    public int X
+    {
+        get { return _x; }
+        set { _x = value; }
+    }
+
+    public int Y
+    {
+        get { return _y; }
+        set { _y = value; }
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is POINT)
+        {
+            var point = (POINT) obj;
+
+            return point._x == _x &amp;&amp; point._y == _y;
+        }
+        return base.Equals(obj);
+    }
+    public override int GetHashCode()
+    {
+        return _x.GetHashCode() ^ _y.GetHashCode();
+    }
+
+    public static bool operator ==(POINT a, POINT b)
+    {
+        return a._x == b._x &amp;&amp; a._y == b._y;
+    }
+
+    public static bool operator !=(POINT a, POINT b)
+    {
+        return !(a == b);
+    }
+}
+
+[Serializable]
+[StructLayout(LayoutKind.Sequential)]
+public struct WINDOWPLACEMENT
+{
+    public int length;
+    public int flags;
+    public int showCmd;
+    public POINT minPosition;
+    public POINT maxPosition;
+    public RECT normalPosition;
+}
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-04T00:00:00+01:00" pubdate data-updated="true">Aug 4<span>th</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wpf/'>wpf</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/remembering-wpf-window-positions/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/remembering-wpf-window-positions/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/joining-the-blogosphere/" title="Previous Post: Joining the Blogosphere">&laquo; Joining the Blogosphere</a>
+      
+      
+        <a class="basic-alignment right" href="/clickonce-deployment-in-teamcity/" title="Next Post: ClickOnce Deployment in TeamCity">ClickOnce Deployment in TeamCity &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/remembering-wpf-window-positions/';
+        var disqus_url = 'http://JakeGinnivan.github.io/remembering-wpf-window-positions/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

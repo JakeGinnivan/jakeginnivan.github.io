@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Msbuild | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/msbuild/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MultiTargeted WP7 Project]]></title>
+    <link href="http://JakeGinnivan.github.io/multitargeted-windows-phone-project/"/>
+    <updated>2011-08-22T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/multitargeted-windows-phone-project</id>
+    <content type="html"><![CDATA[<p>I saw Shawn Wildermuth&rsquo;s post on maintaining a project targeting multiple versions of windows phone, I thought I would share the way I do it as I think it is far easier than the alternatives.
+<a href="http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions">http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions</a></p>
+
+<!-- more -->
+
+
+<h1>Multi-Targeted .csproj file</h1>
+
+<p>First off I open up my .csproj file and add this under the initial property group</p>
+
+<pre><code>&lt;TargetFrameworkProfile Condition="'$(TargetFrameworkProfile)' == ''"&gt;WindowsPhone71&lt;/TargetFrameworkProfile&gt;
+</code></pre>
+
+<p>This means I target Windows Phone 71 by default, then I modify the define constants property under each build configuration to be conditional:</p>
+
+<pre><code>&lt;DefineConstants Condition="'$(TargetFrameworkProfile)' == 'WindowsPhone'"&gt;TRACE;SILVERLIGHT;WINDOWS_PHONE&lt;/DefineConstants&gt;
+&lt;DefineConstants Condition="'$(TargetFrameworkProfile)' == 'WindowsPhone71'"&gt;TRACE;SILVERLIGHT;WINDOWS_PHONE71&lt;/DefineConstants&gt;
+</code></pre>
+
+<p>Now I can easily include files in only my mango build, for example:</p>
+
+<pre><code>#if WINDOWS_PHONE71
+namespace WindowsPhoneMVC.Navigation
+{
+    public static class DeepLink
+    {
+        public static string UriFor(string controller, string action, IDictionary&lt;string, string&gt; parameters)
+        {
+            var parametersString = string.Join("&amp;", parameters.Select(p =&gt; p.Key + "=" + p.Value));
+            return string.Format("/Shell.xaml?controller={0}&amp;action={1}{2}{3}", controller, action, 
+                string.IsNullOrEmpty(parametersString) ?  string.Empty : "&amp;", parametersString);
+        }
+
+        public static NavigationRequest DecodeUri(string navigationFrame, string deepLink)
+        {
+            var kvp = deepLink.Split(new[] {'&amp;'})
+                .Select(o =&gt; o.Split(new[] {'='}))
+                .ToDictionary(k =&gt; k[0], k =&gt; k[1]);
+
+            string controller = null;
+            if (kvp.ContainsKey("controller"))
+            {
+                controller = kvp["controller"];
+                kvp.Remove("controller");
+            }
+
+            string action = null;
+            if (kvp.ContainsKey("action"))
+            {
+                action = kvp["action"];
+                kvp.Remove("action");
+            }
+
+            return new NavigationRequest(navigationFrame, controller, action, new NavigationParameter(kvp));
+        }
+    }
+}
+#endif
+</code></pre>
+
+<p>This way in visual studio I always build for 71, then my build.cmd which looks like this</p>
+
+<pre><code>@echo off
+call "%VS100COMNTOOLS%vsvars32.bat"
+mkdir .\build\log\
+
+msbuild.exe /ToolsVersion:4.0 "WindowsPhoneMVC.msbuild" 
+
+pause
+</code></pre>
+
+<p>Then the important part of that msbuild script, which builds my project as 7.0 and 7.1. After it builds it goes on to create my NuGet packages and releases meaning I can make a fix and test the new NuGet package locally within minutes, it works quite nice.</p>
+
+<pre><code>&lt;Target Name="Compile" DependsOnTargets="Version"&gt;
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC\WindowsPhoneMVC.csproj"
+             Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;TargetFrameworkProfile=WindowsPhone;" /&gt;
+
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC\WindowsPhoneMVC.csproj"
+             Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build_71;TargetFrameworkProfile=WindowsPhone71;" /&gt;
+&lt;/Target&gt;
+</code></pre>
+
+<h3>Complete build script</h3>
+
+<p>Here is my complete build script if you are interested, or just go to <a href="http://windowsphonemvc.codeplex.com">http://windowsphonemvc.codeplex.com</a> to grab the latest version out of source control.</p>
+
+<pre><code>&lt;Project DefaultTargets="Package" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
+  &lt;PropertyGroup&gt;
+    &lt;MSBuildCommunityTasksPath&gt;$(MSBuildProjectDirectory)\build\lib\&lt;/MSBuildCommunityTasksPath&gt;
+    &lt;Root&gt;$(MSBuildProjectDirectory)\&lt;/Root&gt;
+    &lt;Major&gt;0&lt;/Major&gt;
+    &lt;Minor&gt;4&lt;/Minor&gt;
+    &lt;Build&gt;0&lt;/Build&gt;
+    &lt;Revision&gt;0&lt;/Revision&gt;
+
+    &lt;NuGet&gt;$(Root)build\lib\NuGet.exe&lt;/NuGet&gt;
+    &lt;ContentSource&gt;$(Root)src\SampleProjects\NuGetContentSource\&lt;/ContentSource&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/&gt;
+  &lt;Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Deployment.Tasks.Targets"/&gt;
+  &lt;Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Mercurial.tasks"/&gt;
+
+  &lt;Target Name="GetVersion"&gt;
+    &lt;Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" /&gt;
+    &lt;Error Condition="$(Root) == ''" Text="Root variable must be defined" /&gt;
+
+    &lt;HgVersion LocalPath="."&gt;
+      &lt;Output TaskParameter="Revision" PropertyName="Revision" /&gt;
+    &lt;/HgVersion&gt;
+    &lt;!-- Diagnostics --&gt;
+    &lt;Message Text="Diagnostics:"/&gt;
+    &lt;Message Text="Build Number:    $(Major).$(Minor).$(Build).$(Revision)" /&gt;
+    &lt;Message Text="Project root:    $(Root)" /&gt;
+    &lt;Message Text="Drop path:       build\Artifacts" /&gt;
+
+    &lt;!-- Clean up --&gt;
+    &lt;ItemGroup&gt;
+      &lt;FilesToDelete Include="$(Root)**\bin\**\*.*" /&gt;
+      &lt;FilesToDelete Include="$(Root)**\obj\**\*.*" /&gt;
+    &lt;/ItemGroup&gt;
+    &lt;Delete Files="@(FilesToDelete)" /&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="Version" DependsOnTargets="GetVersion"&gt;
+    &lt;RemoveDir Directories="build\artifacts\" /&gt;
+    &lt;RemoveDir Directories="build\temp\" /&gt;
+
+    &lt;AssemblyInfo CodeLanguage="CS"
+          OutputFile="$(Root)src\WindowsPhoneMVC\Properties\VersionInfo.cs"
+          AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+          AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
+          Condition="$(Revision) != '-1' "/&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="Compile" DependsOnTargets="Version"&gt;
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC\WindowsPhoneMVC.csproj"
+         Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;TargetFrameworkProfile=WindowsPhone;" /&gt;
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC.Extensions.Transitions\WindowsPhoneMVC.Extensions.Transitions.csproj"
+         Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;TargetFrameworkProfile=WindowsPhone;" /&gt;
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC.Extensions.AutofacIntegration\WindowsPhoneMVC.Extensions.AutofacIntegration.csproj"
+         Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;TargetFrameworkProfile=WindowsPhone;" /&gt;
+
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC\WindowsPhoneMVC.csproj"
+         Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build_71;TargetFrameworkProfile=WindowsPhone71;" /&gt;
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC.Extensions.Transitions\WindowsPhoneMVC.Extensions.Transitions.csproj"
+         Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build_71;TargetFrameworkProfile=WindowsPhone71;" /&gt;
+    &lt;MSBuild Projects="$(Root)src\WindowsPhoneMVC.Extensions.AutofacIntegration\WindowsPhoneMVC.Extensions.AutofacIntegration.csproj"
+         Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build_71;TargetFrameworkProfile=WindowsPhone71;" /&gt;
+
+    &lt;MSBuild Projects="$(Root)src\Templates\WPMvcTemplatesExtension\WPMvcTemplatesExtension.csproj"
+         Properties="Configuration=Release;OutputPath=bin\Build" /&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="NuGet" DependsOnTargets="Compile"&gt;
+    &lt;MakeDir Directories="$(Root)build\artifacts" /&gt;
+
+    &lt;ItemGroup&gt;
+      &lt;AutofacContent Include="$(Root)build\autofaccontent\**\*.*" /&gt;
+      &lt;TransitionsContent Include="$(Root)build\transitionscontent\**\*.*" /&gt;
+    &lt;/ItemGroup&gt;
+
+    &lt;!--Main NuGet package--&gt;
+    &lt;CallTarget Targets="MvcNuGet" /&gt;
+    &lt;CallTarget Targets="MvcLibsNuGet" /&gt;
+    &lt;CallTarget Targets="AutofacNuGet" /&gt;
+    &lt;CallTarget Targets="TransitionsNuGet" /&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="MvcNuGet"&gt;
+    &lt;PropertyGroup&gt;
+      &lt;NuGetManifest&gt;$(Root)build\temp\WindowsPhoneMVC.nuspec&lt;/NuGetManifest&gt;
+      &lt;MainNuGetContent&gt;$(Root)build\temp\NuGet\content\&lt;/MainNuGetContent&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;MakeDir Directories="$(Root)build\temp\NuGet\WindowsPhoneMVC\lib" /&gt;
+    &lt;Copy SourceFiles="$(Root)build\WindowsPhoneMVC.nuspec"
+              DestinationFiles="$(NuGetManifest)" /&gt;
+
+    &lt;FileUpdate Files="$(NuGetManifest)"
+                    Regex="0.0.0.1"
+                    ReplacementText="$(Major).$(Minor).$(Build).$(Revision)"/&gt;
+
+    &lt;Copy SourceFiles="$(ContentSource)Controllers\HomeController.cs" DestinationFolder="$(MainNuGetContent)Controllers\" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)ViewModels\Home\AboutViewModel.cs" DestinationFolder="$(MainNuGetContent)ViewModels\Home\" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)ViewModels\Home\MainViewModel.cs" DestinationFolder="$(MainNuGetContent)ViewModels\Home\" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)Views\Home\MainPage.xaml" DestinationFolder="$(MainNuGetContent)Views\Home\" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)Views\Home\MainPage.xaml.cs" DestinationFolder="$(MainNuGetContent)Views\Home\" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)Shell.xaml" DestinationFolder="$(MainNuGetContent)" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)Shell.xaml.cs" DestinationFolder="$(MainNuGetContent)" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)WindowsPhoneMVC_GettingStarted.htm" DestinationFolder="$(MainNuGetContent)" /&gt;
+
+    &lt;ItemGroup&gt;
+      &lt;MvcContentFiles Include="$(MainNuGetContent)\**\*.*" /&gt;
+    &lt;/ItemGroup&gt;
+    &lt;FileUpdate Files="@(MvcContentFiles)"
+                    Regex="NuGetContentSource"
+                    ReplacementText="$rootnamespace$"/&gt;
+    &lt;Move SourceFiles="@(MvcContentFiles)"
+              DestinationFiles="@(MvcContentFiles-&gt;'$(MainNuGetContent)%(RecursiveDir)%(Filename)%(Extension).pp')" /&gt;
+
+    &lt;!--SL3--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC\bin\Build\WindowsPhoneMVC.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL3-WP\WindowsPhoneMVC.dll"/&gt;
+    &lt;!--SL4--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC\bin\Build\WindowsPhoneMVC.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone\WindowsPhoneMVC.dll"/&gt;
+    &lt;!--SL4_71--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC\bin\Build_71\WindowsPhoneMVC.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone71\WindowsPhoneMVC.dll"/&gt;
+    &lt;Exec Command='"$(NuGet)" pack "$(NuGetManifest)" -BasePath "$(Root)build\temp\NuGet" -OutputDirectory "$(Root)build\artifacts"' /&gt;
+    &lt;RemoveDir Directories="build\temp\" /&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="MvcLibsNuGet"&gt;
+    &lt;PropertyGroup&gt;
+      &lt;NuGetManifest&gt;$(Root)build\temp\WindowsPhoneMVC.Libs.nuspec&lt;/NuGetManifest&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;MakeDir Directories="$(Root)build\temp\NuGet\WindowsPhoneMVC\lib" /&gt;
+    &lt;Copy SourceFiles="$(Root)build\WindowsPhoneMVC.nuspec"
+              DestinationFiles="$(NuGetManifest)" /&gt;
+
+    &lt;FileUpdate Files="$(NuGetManifest)"
+                    Regex="0.0.0.1"
+                    ReplacementText="$(Major).$(Minor).$(Build).$(Revision)"/&gt;
+
+    &lt;!--SL3--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC\bin\Build\WindowsPhoneMVC.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL3-WP\WindowsPhoneMVC.dll"/&gt;
+    &lt;!--SL4--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC\bin\Build\WindowsPhoneMVC.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone\WindowsPhoneMVC.dll"/&gt;
+    &lt;!--SL4_71--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC\bin\Build_71\WindowsPhoneMVC.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone71\WindowsPhoneMVC.dll"/&gt;
+    &lt;Exec Command='"$(NuGet)" pack "$(NuGetManifest)" -BasePath "$(Root)build\temp\NuGet" -OutputDirectory "$(Root)build\artifacts"' /&gt;
+    &lt;RemoveDir Directories="build\temp\" /&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="AutofacNuGet"&gt;
+    &lt;PropertyGroup&gt;
+      &lt;NuGetAutofacManifest&gt;$(Root)build\temp\WindowsPhoneMVC.Extensions.AutofacIntegration.nuspec&lt;/NuGetAutofacManifest&gt;
+      &lt;MainNuGetContent&gt;$(Root)build\temp\NuGet\content\&lt;/MainNuGetContent&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;MakeDir Directories="$(Root)build\temp\NuGet\WindowsPhoneMVC.Extensions.AutofacIntegration\lib" /&gt;
+    &lt;Copy SourceFiles="$(Root)build\WindowsPhoneMVC.Extensions.AutofacIntegration.nuspec"
+              DestinationFiles="$(NuGetAutofacManifest)" /&gt;
+
+    &lt;FileUpdate Files="$(NuGetAutofacManifest)"
+                    Regex="0.0.0.1"
+                    ReplacementText="$(Major).$(Minor).$(Build).$(Revision)"/&gt;
+
+    &lt;Copy SourceFiles="$(ContentSource)To_Enable_Autofac.txt" DestinationFolder="$(MainNuGetContent)" /&gt;
+    &lt;Copy SourceFiles="$(ContentSource)ApplicationModule.cs" DestinationFolder="$(MainNuGetContent)" /&gt;
+
+    &lt;ItemGroup&gt;
+      &lt;AutofacContentFiles Include="$(MainNuGetContent)\**\*.*" /&gt;
+    &lt;/ItemGroup&gt;
+    &lt;FileUpdate Files="@(AutofacContentFiles)"
+                    Regex="NuGetContentSource"
+                    ReplacementText="$rootnamespace$"/&gt;
+    &lt;Move SourceFiles="@(AutofacContentFiles)"
+              DestinationFiles="@(AutofacContentFiles-&gt;'$(MainNuGetContent)%(RecursiveDir)%(Filename)%(Extension).pp')" /&gt;
+
+    &lt;!--SL3--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC.Extensions.AutofacIntegration\bin\Build\WindowsPhoneMVC.Extensions.AutofacIntegration.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL3-WP\WindowsPhoneMVC.Extensions.AutofacIntegration.dll"/&gt;
+    &lt;!--SL4--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC.Extensions.AutofacIntegration\bin\Build\WindowsPhoneMVC.Extensions.AutofacIntegration.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone\WindowsPhoneMVC.Extensions.AutofacIntegration.dll"/&gt;
+    &lt;!--SL4_71--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC.Extensions.AutofacIntegration\bin\Build_71\WindowsPhoneMVC.Extensions.AutofacIntegration.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone71\WindowsPhoneMVC.Extensions.AutofacIntegration.dll"/&gt;
+    &lt;Exec Command='"$(NuGet)" pack "$(NuGetAutofacManifest)" -BasePath "$(Root)build\temp\NuGet" -OutputDirectory "$(Root)build\artifacts"' /&gt;
+    &lt;RemoveDir Directories="build\temp\" /&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="TransitionsNuGet"&gt;
+    &lt;PropertyGroup&gt;
+      &lt;NuGetTransitionsManifest&gt;$(Root)build\temp\WindowsPhoneMVC.Extensions.Transitions.nuspec&lt;/NuGetTransitionsManifest&gt;
+      &lt;MainNuGetContent&gt;$(Root)build\temp\NuGet\content\&lt;/MainNuGetContent&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;MakeDir Directories="$(Root)build\temp\NuGet\WindowsPhoneMVC.Extensions.Transitions\lib" /&gt;
+    &lt;Copy SourceFiles="$(Root)build\WindowsPhoneMVC.Extensions.Transitions.nuspec"
+              DestinationFiles="$(NuGetTransitionsManifest)" /&gt;
+
+    &lt;FileUpdate Files="$(NuGetTransitionsManifest)"
+                    Regex="0.0.0.1"
+                    ReplacementText="$(Major).$(Minor).$(Build).$(Revision)"/&gt;
+
+    &lt;Copy SourceFiles="$(ContentSource)To_Enable_Transitions.txt" DestinationFolder="$(MainNuGetContent)" /&gt;
+
+    &lt;ItemGroup&gt;
+      &lt;TransitionsContentFiles Include="$(MainNuGetContent)\**\*.*" /&gt;
+    &lt;/ItemGroup&gt;
+    &lt;FileUpdate Files="@(TransitionsContentFiles)"
+                    Regex="NuGetContentSource"
+                    ReplacementText="$rootnamespace$"/&gt;
+    &lt;Move SourceFiles="@(TransitionsContentFiles)"
+              DestinationFiles="@(TransitionsContentFiles-&gt;'$(MainNuGetContent)\%(RecursiveDir)%(Filename)%(Extension).pp')" /&gt;
+
+    &lt;!--SL3--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC.Extensions.Transitions\bin\Build\WindowsPhoneMVC.Extensions.Transitions.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL3-WP\WindowsPhoneMVC.Extensions.Transitions.dll"/&gt;
+    &lt;!--SL4--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC.Extensions.Transitions\bin\Build\WindowsPhoneMVC.Extensions.Transitions.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone\WindowsPhoneMVC.Extensions.Transitions.dll"/&gt;
+    &lt;!--SL4_71--&gt;
+    &lt;Copy SourceFiles="$(Root)src\WindowsPhoneMVC.Extensions.Transitions\bin\Build_71\WindowsPhoneMVC.Extensions.Transitions.dll"
+              DestinationFiles="$(Root)build\temp\NuGet\lib\SL4-WindowsPhone71\WindowsPhoneMVC.Extensions.Transitions.dll"/&gt;
+    &lt;Exec Command='"$(NuGet)" pack "$(NuGetTransitionsManifest)" -BasePath "$(Root)build\temp\NuGet" -OutputDirectory "$(Root)build\artifacts"' /&gt;
+    &lt;RemoveDir Directories="build\temp\" /&gt;
+  &lt;/Target&gt;
+
+  &lt;Target Name="Test" DependsOnTargets="NuGet"&gt;
+
+  &lt;/Target&gt;
+
+  &lt;Target Name="Package" DependsOnTargets="Test"&gt;
+    &lt;Copy SourceFiles="$(Root)src\Templates\WPMvcTemplatesExtension\bin\Build\WindowsPhoneMvcTemplatesExtension.vsix"
+              DestinationFiles="$(Root)build\artifacts\WindowsPhoneMvcTemplates.vsix" /&gt;
+  &lt;/Target&gt;
+&lt;/Project&gt;
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-bootstrapping-errors/"/>
+    <updated>2011-07-20T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-bootstrapping-errors</id>
+    <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
+
+<p>When trying to publish my clickonce installer I am getting the error:</p>
+
+<pre><code>[14:55:16]: [_DeploymentGenerateBootstrapper] GenerateBootstrapper
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item 'Microsoft.Windows.Installer.3.1' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item '.NETFramework,Version=v4.0' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): error MSB3147: Could not find required file 'setup.bin' in 'C:\TeamCity\buildAgent\work\63190f273e745a25\ProjectName\Engine'.
+</code></pre>
+
+<p>If your build server is a <strong>x64</strong> operating system copy <code>'C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bootstrapper\'</code> to the same directory on the build server, then copy the blow code into a file called FixBootstrapper.reg, then run it.</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+
+<p>If you have a <strong>x86</strong> build server, upgrade. Otherwise copy &lsquo;<code>C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bootstrapper\</code>&rsquo; to the same directory, then copy the blow into a registry file</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

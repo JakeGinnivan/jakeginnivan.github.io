@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Git | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
+    <link href="http://JakeGinnivan.github.io/gitreleasenotes/"/>
+    <updated>2013-12-17T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/gitreleasenotes</id>
+    <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
+
+<p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>
+
+<p>GitReleaseNotes was another project I kicked off about the same time that <a href="https://github.com/simoncropp">Simon Cropp</a> and <a href="https://github.com/andreasohlund">Andreas Öhlund</a> were kicking off similar projects, see <a href="https://github.com/Particular/ReleaseNotesCompiler">https://github.com/Particular/ReleaseNotesCompiler</a>. We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.</p>
+
+<!-- more -->
+
+
+<h2>What does it do</h2>
+
+<p>The concept is quite simple, you can optionally specify a Git tag (it will select the newest tag if you do not specify one). It will then scan all newer commits for references to issues.</p>
+
+<p>Once it has all the referenced commits, it will connect the issue tracker you specify, currently GitHub or Jira (and soon YouTrack, TFS and BitBucket) and fetch all the closed issues which have been referenced.
+It will then output your release notes in <a href="http://www.semanticreleasenotes.org/">Semantic Release Notes</a> format (which is also markdown) to a file you specify.</p>
+
+<p>It can also publish a release on GitHub, including the generated release notes.</p>
+
+<p>Here are some examples of the types of release notes it can generate:</p>
+
+<p><a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.ApproveSimpleTests.approved.txt">Simple single issue release</a><br/>
+<a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.MultipleReleases.approved.txt">Multiple releases</a></p>
+
+<h2>How to use it</h2>
+
+<p>GitReleaseNotes is a .NET exe, but can be used on ALL project types (JavaScript, Ruby, Java, whatever) because it simply works with Git and whatever issue tracker you use.</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /OutputFile ReleaseNotes.md
+</code></pre>
+
+<p>To Publish, just add the <code>/Publish</code> switch and specify the version you want to publish with the <code>/Version</code> switch. Like so</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /Publish /Version 0.2.0
+</code></pre>
+
+<h2>How to setup on TeamCity</h2>
+
+<p>TeamCity is not required, but I like being able to press a button and my latest CI build gets published.</p>
+
+<p>Well, I am using <a href="https://github.com/JakeGinnivan/GitHubFlowVersion">GitHubFlowVersion</a> which helps me do Semantic Versioning with ease, but if you have another versioning strategy most of the instructions are the same.</p>
+
+<p>Assuming you have a CI build which creates the artifacts, or you have an existing build you will be adding to.</p>
+
+<ol>
+<li>Head to <a href="https://github.com/settings/applications">https://github.com/settings/applications</a> and create an access token</li>
+<li>Create a new configuration parameter in teamcity called <code>GitHubToken</code>, set the value to the access token you have just created and edit the spec field and paste in <code>password display='hidden'</code>, which will mean your GitHub access token will not be published into any build logs and will just be ####ed out.</li>
+<li>Your VCS root must be set to checkout <code>Automatically on Agent</code>, otherwise GitReleaseNotes will not run</li>
+<li>Make sure you check GitReleaseNotes.exe into source control so you can access it</li>
+<li>Create a new build step which is running a command line application, and make it look something like this<br/>
+ <code>GitReleaseNotes\GitReleaseNotes.exe /IssueTracker GitHub /Publish /Token %GitHubToken% /Repo JakeGinnivan/GitReleaseNotes /Version %dep.OpenSourceProjects_GitReleaseNotes_CI.system.GitHubFlowVersion.SemVer%</code></li>
+</ol>
+
+
+<p>My version number is the SemVer of my CI build, if you are using GitHubFlowVersion you will have to create a dummy system.GitHubFlowVersion.SemVer variable, otherwise you cannot reference it across builds (doesn&rsquo;t exist at configure time, it is created when you run GitHubFlowVersion).</p>
+
+<p>And thats it, you can have a build publishing your release notes to GitHub and this will also tag master with the version you have just published.</p>
+
+<p>There are still plenty of issues with this project and heaps of work to do, but I like the way it is shaping up. Feedback/contributions are welcome.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git Flow Versioning]]></title>
+    <link href="http://JakeGinnivan.github.io/git-flow-versioning/"/>
+    <updated>2013-10-02T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/git-flow-versioning</id>
+    <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
+
+<p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
+
+<p>Much to my surpise, it is actually very light-weight and you can drop much of it if your process is simpler (say for open source).</p>
+
+<p><a href="https://github.com/TestStack/ConventionTests">https://github.com/TestStack/ConventionTests</a> is my guinea pig!</p>
+
+<p>To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, &lsquo;upstream&rsquo; is the main repository, &lsquo;origin&rsquo; is my fork.</p>
+
+<!-- more -->
+
+
+<h2>1. Convert the repo over to git-flow</h2>
+
+<p>From your git command line</p>
+
+<pre><code>git checkout master
+git fetch upstream
+git merge upstream/master
+git checkout develop
+git push upstream develop
+</code></pre>
+
+<p>This pushes the <code>develop</code> branch into your repo, then head to the project settings in github and change the default branch to <code>develop</code>.</p>
+
+<h2>2. Install GitFlowVersion</h2>
+
+<p>I am a big fan on Simon Cropp&rsquo;s (<a href="https://twitter.com/SimonCropp">https://twitter.com/SimonCropp</a>) work. He has been working on <a href="https://github.com/Particular/GitFlowVersion">https://github.com/Particular/GitFlowVersion</a> with Andreas Öhlund.</p>
+
+<p>Basically GitFlowVersion uses the conventions in place in git-flow to make it really easy to version your software.</p>
+
+<p>Once up and running, tags off <code>master</code> get a normal version, say <code>v2.1.0</code> (assume this is the LAST tagged release), develop CI builds get the version <code>v2.2.0-unstable20</code> where the minor is LASTMINOR + 1 and there has been 20 commits since the last tag on master. Or <code>v&lt;major&gt;.&lt;minor+1&gt;.0-unstable&lt;#commitssincelastrelease&gt;</code>
+Release branches have a version of <code>v2.2.0-beta</code> where 2.2.0 is the version you have put in the release branch name (in this case <code>release-2.2.0</code>)
+You can also tag a release branch as <code>rc1</code> or <code>rc2</code> and the version will become <code>v2.2.0-&lt;tag&gt;</code>.</p>
+
+<p>If this sounds confusing, its not, and it is all pretty automatic, read on to see what it actually means for you maintaining a project.</p>
+
+<h2>3. Contributing/Pull Requests</h2>
+
+<p>I always use feature branches, but not for an entire feature. I use very short lived branches, which I put up as a pull request as soon as I am done. I am known to submit 3+ pull requests all within the space of an hour when I work on a project because I just fix a bunch of small things.</p>
+
+<p>Nothing much changes here, except you take you branch from <code>develop</code>. So</p>
+
+<pre><code>git checkout develop
+git fetch upstream
+git merge upstream/develop
+git checkout -b FixingSomething
+</code></pre>
+
+<p>Pull requests now target <code>develop</code>, so I do my commits, push to origin like normal and submit my pull request targeting <code>develop</code></p>
+
+<p>Your CI build (assuming you are building pull requests) will trigger with build number <code>v2.2.0-PullRequest50</code>, where the version is the last release, with the minor bumped, just like develop version numbers, except the semver tag is PullRequest&lt;PR#>.
+I think that is pretty neat.</p>
+
+<h2>4. Releasing a new version</h2>
+
+<p>When you decide you want to release, or start preparing a release you can either take a release branch, or merge develop straight into master and tag master with the release (afaik this doesn&rsquo;t cause any issues :P)</p>
+
+<p>In my mind there are two styles to run a project,</p>
+
+<ol>
+<li>every checkin builds, then if tests pass autodeploys. These projects cannot adhere to semantic versioning, but the changes are often so tiny that upgrades pose little risk.</li>
+<li>At some point in time, the decision to release is made, this could be as soon as a pull request is merged, or after a particular milestone is reached. All the projects I am currently contributing to work in this way.</li>
+</ol>
+
+
+<h3>4.1 Using a release branch</h3>
+
+<p>Using a release branch allows you to make the decision I am going to release, there may be a few things I know I have to do before releasing (DbUp is a great example of this). But I don&rsquo;t want to stop being able to merge pull requests. To release using a branch (assume develop is up to date), and I am only fixing a bug in the current v2.1.0 release</p>
+
+<pre><code>git checkout -b release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release start 2.1.1
+</code></pre>
+
+<p>I can now leave this branch open for a bit, do the work I need to do to release 2.1.1 or send it to someone else on the team to OK. I could even release the 2.1.1 build as a pre-release package on NuGet. It would have version 2.1.1-beta1 remember.</p>
+
+<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &mdash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
+
+<pre><code>git checkout develop
+git merge release-2.1.1 --no-ff
+git checkout master
+git merge release-2.1.1 --no-ff
+git tag 2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release finish 2.1.1
+</code></pre>
+
+<p>Then publish</p>
+
+<pre><code>git push upstream master
+git push --tags
+git branch -d release-2.1.1
+git push upstream :release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release publish 2.1.1
+</code></pre>
+
+<h3>4.2 Skip release branch</h3>
+
+<p>If you don&rsquo;t want to bother with the release branch, you could also just go</p>
+
+<pre><code>git checkout master
+git merge develop --no-ff
+git tag 2.1.1
+git push upstream master
+git push --tags
+</code></pre>
+
+<h2>5. Publish the build</h2>
+
+<p>Now you have the release build from your CI you can progress through your build pipeline and release to NuGet or publish to a test environment or whatever the first step is in your Continuous Delivery pipeline.</p>
+
+<h2>That&rsquo;s it</h2>
+
+<p>I think Git-Flow is actually not too bad for releasing projects using semantic versioning, most of the time in this is writing the release notes, seeing what has changed since the last release (which is really easy due to the conventions in place!) and checking to see if you have any breaking changes which would mean a major version bump.</p>
+
+<p>As a summary. Here is me fixing and releasing a feature as a pre-release package. The current version on NuGet is currently v2.2.0</p>
+
+<pre><code>git fetch upstream
+git checkout develop
+git merge upstream/develop
+git checkout -b SomeFeature
+
+# Work..
+git commit -am "Some experimental feature"
+git push origin SomeFeature
+
+# Submit pull request, so NOTHING has changed yet, this PR is merged
+git fetch upstream
+git checkout develop
+git merge upstream/develop # to get my changes into my local develop branch
+
+# So now I am starting the release, nothing before here is new if you are using GitHub flow
+git checkout -b release-2.3.0
+git push upstream release-2.3.0
+</code></pre>
+
+<p>Now my CI builds, and I click the button to promote the last CI build as a pre-release NuGet package. Once I am happy, I have got my feedback</p>
+
+<pre><code>git checkout master
+git merge release-2.3.0 --no-ff
+git tag 2.3.0
+git push upstream master
+git push upstream --tags
+</code></pre>
+
+<p>My CI will build, and I can click the publish button on teamcity to release to NuGet.</p>
+
+<p>Thoughts? Do you know of an easier way. I am REALLY open to suggestions and willing to try stuff out at the moment :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setting Up Git]]></title>
+    <link href="http://JakeGinnivan.github.io/setting-up-git/"/>
+    <updated>2013-07-27T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/setting-up-git</id>
+    <content type="html"><![CDATA[<p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
+
+<p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
+
+<!-- more -->
+
+
+<h2>Required Software</h2>
+
+<p>Tick both boxes (MsysGit and KDiff3)</p>
+
+<h2>Feature selection</h2>
+
+<p>I tend to disable Visual Studio integration. With VS 2013 you get native git support which will continue to get better over time. And I don&rsquo;t need more menus&hellip;</p>
+
+<h2>Select SSH Agent</h2>
+
+<p>I prefer to go with OpenSSH, it is more work to setup, but once you have generated your ssh keys, put the .ssh folder into your dropbox or back it up, then you can just drop it back into your user profile when you reinstall windows or move to another computer.</p>
+
+<h1>KDiff Installation</h1>
+
+<p>Next Next Next Finish etc. :)</p>
+
+<h1>Git Installation</h1>
+
+<h2>Select components</h2>
+
+<p>I leave this as the default</p>
+
+<h2>Adjust your PATH environment</h2>
+
+<p>I go for option 2 (Run git from the Windows Command Prompt), this sets up a reasonable default so you can access git from the command line anywhere</p>
+
+<h2>Line Endings</h2>
+
+<p>Option 3, Checkout as is, commit as is. Nobody likes it when you mess with their line endings.</p>
+
+<h1>Install PoshGit</h1>
+
+<p>Now you have git installed, open up a PowerShell console as Administrator and change directories to somewhere sensible that you want to put your code.</p>
+
+<p>Then run:</p>
+
+<ul>
+<li><code>Set-ExecutionPolicy RemoteSigned</code>, this will allow you to run powershell scripts</li>
+<li><code>git clone https://github.com/dahlbyk/posh-git</code></li>
+<li><code>cd posh-git</code></li>
+<li><code>.\install.ps1</code> &ndash; this will install posh-git into your profile.</li>
+<li><code>. $PROFILE</code> &ndash; this will run your profile, now you should see [master] in blue on the command line</li>
+</ul>
+
+
+<p>You may have noticed a warning when you ran your profile
+<strong>WARNING: Could not find ssh-agent</strong></p>
+
+<p>To fix this, we need to change our PATH settings.
+Run <code>control sysdm.cpl</code> on the command line, go to the Advanced tab, click Environmental Variables
+The edit your PATH variable. When you click edit, you should see <code>C:\Program Files (x86)\Git\cmd</code> right at the end. Change this to <code>C:\Program Files (x86)\Git\bin</code></p>
+
+<p>Now when you restart your powershell console, you shouldn&rsquo;t get a warning.</p>
+
+<h1>Creating your SSH Key</h1>
+
+<p><a href="https://help.github.com/articles/generating-ssh-keys">https://help.github.com/articles/generating-ssh-keys</a> is a great resource for creating your SSH key, after you are done you should have a folder in your user profile called .ssh, and two files in that folder, id_rsa and id_rsa.pub.</p>
+
+<p>Simply copy the contents of id_rsa.pub to your GitHub keys under your profile, now you can push/pull from github easily!</p>
+
+<h1>Git Config</h1>
+
+<p>And finally, here is my .gitconfig</p>
+
+<pre><code>[core]
+autocrlf = false
+editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe'
+[diff]
+    tool = kdiff3
+    guitool = kdiff3
+[merge]
+    tool = kdiff3
+[mergetool "kdiff3"]
+    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
+    keepBackup = false
+    trustExitCode = false
+[difftool]
+    prompt = false
+[mergetool]
+    keepBackup = false
+[difftool "kdiff3"]
+    path = c:/Program Files (x86)/KDiff3/kdiff3.exe
+[alias]
+    st = status
+    rc = rebase --continue
+</code></pre>
+
+<p>Hope that helps someone get started with Git</p>
+]]></content>
+  </entry>
+  
+</feed>

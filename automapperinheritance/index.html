@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Adding Inheritance to AutoMapper - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Jake shares a modified version of AutoMapper which inherits mappings when you include Derived types">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/automapperinheritance">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Adding Inheritance to AutoMapper</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-31T00:00:00+01:00" pubdate data-updated="true">Oct 31<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><strong>Update:</strong> This is currently in the Automapper master, and will be included in the v2 release (hopefully Before/After map will also get included, patch submitted).</p>
+
+<p>In my current project, we are leveraging AutoMapper a lot to map our Domain to Dto&rsquo;s. The major problem we are facing is that our mappings are getting quite complex and bloated, especially for flattened Dtos or Summaries which have properties that cover all the properties from the concrete types they come from.
+It seemed unnatural that I could define a mapping that looked like:</p>
+
+<!-- more -->
+
+
+<pre><code>Mapper.CreateMap&lt;ItemBase, ItemSummaryDto&gt;()
+    .ForMember(d =&gt; d.Description, m =&gt; m.MapFrom(s =&gt; s.ItemSummary))
+    .Include&lt;GeneralItem, GeneralItemSummaryDto&gt;()
+    .Include&lt;SpecificItem, SpecificItemSummaryDto&gt;();
+Mapper.CreateMap&lt;GeneralItem, GeneralItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.GeneralProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.SpecificProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+</code></pre>
+
+<p>And have the rest of the properties map by convention. The problem is that the .Include function is only used for type resolution. i.e.</p>
+
+<pre><code>var dto = Mapper.Map&lt;ItemBase, ItemSummaryDto&gt;(new GeneralItem());
+Assert.IsInstanceOfType&lt;GeneralItemSummaryDto&gt;(dto); // Passes
+</code></pre>
+
+<p>If we validate our mapping we will find that Description is not mapped on GeneralItemSummaryDto and SpecificItemSummaryDto. This means out mapping ends up being:</p>
+
+<pre><code>Mapper.CreateMap&lt;ItemBase, ItemSummaryDto&gt;()
+    .Include&lt;GeneralItem, GeneralItemSummaryDto&gt;()
+    .Include&lt;SpecificItem, SpecificItemSummaryDto&gt;();
+Mapper.CreateMap&lt;GeneralItem, GeneralItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.Description, m =&gt; m.MapFrom(s =&gt; s.ItemSummary))
+    .ForMember(d =&gt; d.GeneralProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
+    .ForMember(d =&gt; d.Description, m =&gt; m.MapFrom(s =&gt; s.ItemSummary))
+    .ForMember(d =&gt; d.SpecificProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
+</code></pre>
+
+<p>We have to duplicate the mapping of the Description property on both the items. For my current project this means our mappings are far more complicated than they need to be, and have massive amounts of duplicated ForMember(d=>d.Blah, m=>m.Ignore()) mappings because we have many flattened summary dtos which have properties from many of the concrete types that are mapped.</p>
+
+<p>Unfortunately it ended up being quite a difficult task, and with our complex mappings my initial implementations resulted in a few issues. I am pretty sure I have got most of them and have created quite a few unit tests covering it. Especially with collections of a base type, holding different concrete types.</p>
+
+<p>Is anyone interested in this functionality? If so let me know and I will create a proper Fork on Github and share my changes. I still need to cleanup the unit tests and the code a little bit as the AutoMapper codebase is really nice and I don&rsquo;t want to make it messy.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-31T00:00:00+01:00" pubdate data-updated="true">Oct 31<span>st</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/automapper/'>automapper</a>, <a class='category' href='/blog/categories/inheritance/'>inheritance</a>, <a class='category' href='/blog/categories/open-source/'>open-source</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/automapperinheritance/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/automapperinheritance/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/quake-style-powershell-console-v2/" title="Previous Post: Quake Style Powershell Console v2">&laquo; Quake Style Powershell Console v2</a>
+      
+      
+        <a class="basic-alignment right" href="/ccoz2010/" title="Next Post: Code Camp Oz 2010">Code Camp Oz 2010 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/automapperinheritance/';
+        var disqus_url = 'http://JakeGinnivan.github.io/automapperinheritance/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Teamcity | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/teamcity/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Release NuGet SemVer Packages From Teamcity]]></title>
+    <link href="http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity/"/>
+    <updated>2013-09-28T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity</id>
+    <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
+
+<p>My goals were</p>
+
+<ul>
+<li>Use GitHubs releases feature &ndash; <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>I want to release from NuGet</li>
+<li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
+<li>Support SemVer, including pre-release packages</li>
+<li>Assembly versions should be stamped with informational version as well as a version</li>
+<li>Be able to link to the project GitHub releases from the NuSpec</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h1>My Solution</h1>
+
+<h2>1. Setup the VCS Root to be authenticated</h2>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/ReleaseNuGetSemVerpackagesfromTeamcity.png" alt="ReleaseNuGetSemVerpackagesfromTeamcity" /></p>
+
+<p>Then tell TeamCity to Label Successful builds
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity11_635160285120295000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity11" /></p>
+
+<h2>2. Setup some additional build parameters</h2>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity_635160285057326250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity" /></p>
+
+<h3>2.1. AssemblyVersion</h3>
+
+<p>This is the assembly version, only change this for major releases, this will save people adding binding redirects when different projects rely on different versions
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity1_635160285061232500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity1" /><br/>
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity2_635160285065138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity2" /></p>
+
+<p>If you want the text version of the spec, it is</p>
+
+<pre><code>text description='The assembly version which will be stamped (assembly info version/nuget version will be the build number)' display='prompt' label='AssemblyVersion' validationMode='not_empty'
+</code></pre>
+
+<h3>2.2. Prerelease</h3>
+
+<p>This is a checkbox, when ticked it&rsquo;s value is <code>-pre</code> so we can just use it in the version
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity3_635160285069201250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity3" /><br/>
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity4_635160285073263750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity4" /></p>
+
+<p>Once again the text version of the spec is</p>
+
+<pre><code>checkbox checkedValue='-pre' description='Check this box if you want a pre-release' display='prompt' label='PreRelease?'
+</code></pre>
+
+<h3>2.3. Version</h3>
+
+<p>This is the version which you will pass to NuGet when you are creating your package
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity5_635160285077170000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity5" /><br/>
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity6_635160285081076250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity6" /></p>
+
+<pre><code>text description='This is the version number, adjust the major/minor as needed to conform to semver' display='prompt' label='VersionNumber' validationMode='not_empty'
+</code></pre>
+
+<h3>2.4. env.Version</h3>
+
+<p>This is just so the version gets set as an environmental variable so my build scripts can pick it up</p>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity7_635160285084513750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity7" /></p>
+
+<p>I am not sure if this is actually needed.</p>
+
+<h2>3. Build Steps</h2>
+
+<p>I always have a <code>.proj</code> file checked in for all of my projects which contain all logic to build the solution, I just have to tell teamcity what targets to invoke. If you want to view my build script, check out <a href="https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj">https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj</a></p>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity8_635160285101388750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity8" /></p>
+
+<p>The Test target builds and runs my unit tests, then the Publish Target builds the NuGet packages, step 2 of my TeamCity build is Publish to NuGet</p>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity9_635160285112638750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity9" /></p>
+
+<p>Finally, the assembly info stamping build feature. Click <strong>Add build feature</strong></p>
+
+<p>We want to use two different versions from our config, remember from above we have</p>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity10_635160285116545000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity10" /></p>
+
+<h2>4. Update the build version</h2>
+
+<p>Finally go to the General Settings of your build, and update the build number format to be: <code>%Version%</code> and we set the build counter to 0</p>
+
+<h1>Releasing a new version</h1>
+
+<p>So now, we have to stick to SemVer, let us run through a scenario of releasing a minor release (new non-breaking feature) of TestStack.ConventionTests. The current release is v2.0.0. I first need to reset the build counter back to 0, if you don&rsquo;t want to mess with the build counter, just change the VersionNumber variable to have a manually updated patch version. This actually is probably better because then the version numbers are more predictable.</p>
+
+<h2>Create release definition in GitHub</h2>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity16_635160285172951250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity16" />
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity17_635160285176857500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity17" /></p>
+
+<p>Specify the release notes for this release
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity18_635160285180763750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity18" /></p>
+
+<p>Do not have the Publish Release box ticked, otherwise GitHub will create the tag for you.</p>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity19_635160285184670000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity19" /></p>
+
+<h2>Release from TeamCity</h2>
+
+<p>I click <em>Run</em> in TeamCity, and I will be prompted to confirm everything</p>
+
+<p><img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity14_635160285165138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity14" /></p>
+
+<p>Because this is a minor release, I increment the minor version number
+<img src="/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity15_635160285169045000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity15" /></p>
+
+<p>Now hit run, this will publish to NuGet and create the tag in Git. The final step is to go back to GitHub and publish the release (this is not done automatically, and I&rsquo;m sure it could be automated through the GitHub API).</p>
+
+<p>This is my first attempt at making it easy for me to release my open source projects with SemVer and GitHub Releases</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
+    <link href="http://JakeGinnivan.github.io/teamcity-ui-test-agent/"/>
+    <updated>2013-07-31T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teamcity-ui-test-agent</id>
+    <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
+
+<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
+This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
+
+<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
+
+<!-- more -->
+
+
+<h2>Create our VM on Azure</h2>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
+I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS&rsquo;s are all that are available in Azure. This also means you don&rsquo;t have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop.</p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
+
+<p>Now we are ready to go, lets remote desktop into our VM</p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
+
+<p>Enter your remote desktop credentials which we you setup when creating your VM
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
+
+<h2>Setting up your VM</h2>
+
+<p>On first login, make sure you tell the initial configuration and server manager to not open on start
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
+
+<p>Before you close server manager you want to click on <code>Configure IE ESC</code>, then turn it off. Otherwise downloading everything will be rather painful (unless you just want to download firefox or chrome, then don&rsquo;t worry.</p>
+
+<p>Next, we need our VM to login automatically, if our VM restarts, it needs to come straight back up and logs in.</p>
+
+<p>To do this, download Sysinternals Autologon for Windows from <a href="http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx">http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx</a>. Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
+The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
+
+<p>Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
+TeamViewer will also work.</p>
+
+<p>Personally I use TightVNC.</p>
+
+<h3>Installing/Configuring TightVNC</h3>
+
+<ol>
+<li>Download from <a href="http://www.tightvnc.com/download.php">http://www.tightvnc.com/download.php</a></li>
+<li>Do a complete install, leave all options ticked when presented with them.</li>
+<li>Set your passwords, I am happy to not have a separate administration password.<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
+<li>Install the DFMirage driver, available from the TightVNC download page</li>
+<li>If using azure you need to open up the port (Manage VM, EndPoints, Add, Next)<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
+</ol>
+
+
+<h3>Finishing VM Setup</h3>
+
+<p>Reconnect using something other than remote desktop<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
+
+<p>Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).</p>
+
+<h4>Disable WER</h4>
+
+<p>Windows error reporting causes issues when running UI automation, if you app crashes (which is why we have UI automation, to find that sort fo thing) then you want it to exit straight away, not popup the Windows Error Reporting Dialog
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
+
+<p>Save the following text into a .reg file i.e DisableWER.reg then run</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows]
+"ErrorMode"="2"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting]
+"DontShowUI"="1"
+</code></pre>
+
+<h3>Installing the teamcity build agent</h3>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
+
+<p>Fill in your teamcity server URL, and note the port number the agent is running on
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
+
+<p>Now we go back into Azure Management, and add the port<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
+
+<h4>Open Filewall Ports</h4>
+
+<p>Once we have added the port on azure, we need to open the windows firewall for that port on the VM itself<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
+Put in port 9090, or whatever you set your teamcity server to<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
+Next, Next, Next, give it a good name &lsquo;TeamCity Build Agent&rsquo;, Finish</p>
+
+<h4>Set to automatic startup</h4>
+
+<p>Now open explorer, and go to <code>%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code> and create a new shortcut<br/>
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
+
+<p>Browse to your TeamCity build agent folder, and select <code>agent.bat</code></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
+Then add the parameter <code>start</code> onto the path. You should end up with
+<code>"C:\UITestsBuildAgent\bin\agent.bat" start</code>
+Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. Then Run the shortcut. Your TeamCity build agent should startup and connect to TeamCity
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
+
+<p>Authorise the build agent, then the agent should update itself and restart, after a few minutes you should have another build controller online!
+<img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
+
+<p><img src="/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
+
+<h2>Conclusion</h2>
+
+<p>There you have it, a build agent that runs UI Tests on an unlocked desktop in Azure</p>
+
+<h3>NOTE: TeamCity is not setup for SSL, so everything is unencrypted. This would be another blog post in itself, please leave a comment if that would be useful for you?</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-bootstrapping-errors/"/>
+    <updated>2011-07-20T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-bootstrapping-errors</id>
+    <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
+
+<p>When trying to publish my clickonce installer I am getting the error:</p>
+
+<pre><code>[14:55:16]: [_DeploymentGenerateBootstrapper] GenerateBootstrapper
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item 'Microsoft.Windows.Installer.3.1' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item '.NETFramework,Version=v4.0' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): error MSB3147: Could not find required file 'setup.bin' in 'C:\TeamCity\buildAgent\work\63190f273e745a25\ProjectName\Engine'.
+</code></pre>
+
+<p>If your build server is a <strong>x64</strong> operating system copy <code>'C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bootstrapper\'</code> to the same directory on the build server, then copy the blow code into a file called FixBootstrapper.reg, then run it.</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+
+<p>If you have a <strong>x86</strong> build server, upgrade. Otherwise copy &lsquo;<code>C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bootstrapper\</code>&rsquo; to the same directory, then copy the blow into a registry file</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce Deployment in TeamCity]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity/"/>
+    <updated>2009-08-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity</id>
+    <content type="html"><![CDATA[<p>I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server.</p>
+
+<p>This blog post was very useful for getting the initial build working <a href="http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html">http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html</a> it also mentions how to fix the error MSB3147: Could not find required file &lsquo;setup.bin&rsquo; in &lsquo;ProjectFolder\Engine&rsquo; error I was getting.</p>
+
+<p>According to the post we just have to copy the Generic Bootstrapper across to our build machine and create a registry key to let .net know where to find it.</p>
+
+<p>What all the resources (I have seen the same fix posted in a lot of places) fail to mention is the registry key that you need to modify if you are running a x64 system is HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\3.5.</p>
+
+<p>This Wow6432Node key has got me a few times before…</p>
+]]></content>
+  </entry>
+  
+</feed>

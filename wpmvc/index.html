@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Windows Phone MVC - Released - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="I have been working on a MVC framework for Windows Phone 7 for a while. It is up on codeplex and it is slowly maturing.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/wpmvc">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Windows Phone MVC - Released</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-23T00:00:00+01:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the <a href="http://windowsphonefoundations.net/">http://windowsphonefoundations.net/</a> website which is home to Windows Phone Essentials, Windows Phone MVC and Windows Phone MVP (and more projects in the future).</p>
+
+<h1>Features</h1>
+
+<p>This will change over time, so check out the change log.</p>
+
+<ul>
+<li>Strongly Typed Navigation</li>
+<li>Custom Shell, Navigator and Journal to give better control over navigation of WP7</li>
+<li>TransitionFrame comes out of the box, for nice navigation animations</li>
+<li>Ability to pass arguments in navigation, rather than uri query strings</li>
+<li>Modal Dialog support</li>
+<li>Easy access to Obscured and Activated events on your view model</li>
+<li>Full Testable! All major WP7 classes (WindowsPhoneFrame, WindowsPhoneApplication etc) all have Interfaces and are wrapped to allow you to test</li>
+<li>Some helpers around Async. Execute.AsyncPattern or Execute.AsyncPatternWithResult synchronise async calls</li>
+<li>Task/Chooser support, in a testable way</li>
+<li>Convention based Controller and View discovery</li>
+<li>Autofac Support Via an Extension</li>
+<li>Easy access to page or application transient storage</li>
+<li>Simple tombstoning support</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h1>Other cool stuff</h1>
+
+<h2>Nice small/clean app.xaml/app.xaml.cs</h2>
+
+<pre><code>&lt;Application x:Class="HelloWindowsPhoneMVC.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:WindowsPhoneMVC="clr-namespace:WindowsPhoneMVC;assembly=WindowsPhoneMVC"
+             UnhandledException="ApplicationUnhandledException"&gt;
+
+    &lt;Application.ApplicationLifetimeObjects&gt;
+        &lt;WindowsPhoneMVC:NavigationApplication DefaultController="SomeController" DefaultAction="Blah" /&gt;
+    &lt;/Application.ApplicationLifetimeObjects&gt;
+&lt;/Application&gt;
+</code></pre>
+
+<h2>Type safe navigation</h2>
+
+<pre><code>//Simple ICommand creation
+ShowAboutDialogCommand = Controller&lt;HomeController&gt;().NavigationCommand(c =&gt; c.AboutDialog);
+ShowAboutDialogCommand = Controller&lt;HomeController&gt;().NavigationCommand(c =&gt; c.AboutDialog, "A parameter");
+
+//And normal navigation
+Controller&lt;HomeController&gt;().NavigateTo(c =&gt; c.AboutDialog)
+
+//And from xaml (not type safe)
+&lt;Button commands:Navigate.To="Home.About" Content="About" /&gt;
+</code></pre>
+
+<h2>Easy lifecycle management</h2>
+
+<pre><code>public SomeViewModel()
+{
+    Transient(() =&gt; Name); //Will be restored after tombstone
+}
+</code></pre>
+
+<p>Also have the <code>IObscuredAware</code> and <code>IActivationAware</code> to easily get notified about view activation/deactivation and when your app is obscured.</p>
+
+<h2>Autofac support via extension</h2>
+
+<p>Simple add the NuGet package for Autofac support, then change in your <code>App.xaml</code> from <code>&lt;WindowsPhoneMvc:NavigationApplication /&gt;</code> to <code>&lt;AutofacIntegration:AutofacNavigationApplication /&gt;</code></p>
+
+<p>The NuGet package will create you a Autofac module to do all your registrations of services.</p>
+
+<h1>Check it out</h1>
+
+<p>Head over to <a href="http://windowsphonefoundations.net/windowsphonemvc">http://windowsphonefoundations.net/windowsphonemvc</a> or download via NuGet at
+<a href="http://nuget.org/List/Packages/WindowsPhoneMVC">http://nuget.org/List/Packages/WindowsPhoneMVC</a></p>
+
+<p>Feedback welcome! I think it makes WP7 development really enjoyable.</p>
+
+<p>Project templates on their way.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-23T00:00:00+01:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>mvc</a>, <a class='category' href='/blog/categories/open-source/'>open-source</a>, <a class='category' href='/blog/categories/wp7/'>wp7</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/wpmvc/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/wpmvc/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/wpf-mvvm-thoughs/" title="Previous Post: MVVM, Design Time vs IoC usage">&laquo; MVVM, Design Time vs IoC usage</a>
+      
+      
+        <a class="basic-alignment right" href="/phone-test-project/" title="Next Post: Phone Test Project Template">Phone Test Project Template &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/wpmvc/';
+        var disqus_url = 'http://JakeGinnivan.github.io/wpmvc/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

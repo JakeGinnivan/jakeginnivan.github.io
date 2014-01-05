@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Jira | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/jira/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
+    <link href="http://JakeGinnivan.github.io/gitreleasenotes/"/>
+    <updated>2013-12-17T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/gitreleasenotes</id>
+    <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
+
+<p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>
+
+<p>GitReleaseNotes was another project I kicked off about the same time that <a href="https://github.com/simoncropp">Simon Cropp</a> and <a href="https://github.com/andreasohlund">Andreas Öhlund</a> were kicking off similar projects, see <a href="https://github.com/Particular/ReleaseNotesCompiler">https://github.com/Particular/ReleaseNotesCompiler</a>. We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.</p>
+
+<!-- more -->
+
+
+<h2>What does it do</h2>
+
+<p>The concept is quite simple, you can optionally specify a Git tag (it will select the newest tag if you do not specify one). It will then scan all newer commits for references to issues.</p>
+
+<p>Once it has all the referenced commits, it will connect the issue tracker you specify, currently GitHub or Jira (and soon YouTrack, TFS and BitBucket) and fetch all the closed issues which have been referenced.
+It will then output your release notes in <a href="http://www.semanticreleasenotes.org/">Semantic Release Notes</a> format (which is also markdown) to a file you specify.</p>
+
+<p>It can also publish a release on GitHub, including the generated release notes.</p>
+
+<p>Here are some examples of the types of release notes it can generate:</p>
+
+<p><a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.ApproveSimpleTests.approved.txt">Simple single issue release</a><br/>
+<a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.MultipleReleases.approved.txt">Multiple releases</a></p>
+
+<h2>How to use it</h2>
+
+<p>GitReleaseNotes is a .NET exe, but can be used on ALL project types (JavaScript, Ruby, Java, whatever) because it simply works with Git and whatever issue tracker you use.</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /OutputFile ReleaseNotes.md
+</code></pre>
+
+<p>To Publish, just add the <code>/Publish</code> switch and specify the version you want to publish with the <code>/Version</code> switch. Like so</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /Publish /Version 0.2.0
+</code></pre>
+
+<h2>How to setup on TeamCity</h2>
+
+<p>TeamCity is not required, but I like being able to press a button and my latest CI build gets published.</p>
+
+<p>Well, I am using <a href="https://github.com/JakeGinnivan/GitHubFlowVersion">GitHubFlowVersion</a> which helps me do Semantic Versioning with ease, but if you have another versioning strategy most of the instructions are the same.</p>
+
+<p>Assuming you have a CI build which creates the artifacts, or you have an existing build you will be adding to.</p>
+
+<ol>
+<li>Head to <a href="https://github.com/settings/applications">https://github.com/settings/applications</a> and create an access token</li>
+<li>Create a new configuration parameter in teamcity called <code>GitHubToken</code>, set the value to the access token you have just created and edit the spec field and paste in <code>password display='hidden'</code>, which will mean your GitHub access token will not be published into any build logs and will just be ####ed out.</li>
+<li>Your VCS root must be set to checkout <code>Automatically on Agent</code>, otherwise GitReleaseNotes will not run</li>
+<li>Make sure you check GitReleaseNotes.exe into source control so you can access it</li>
+<li>Create a new build step which is running a command line application, and make it look something like this<br/>
+ <code>GitReleaseNotes\GitReleaseNotes.exe /IssueTracker GitHub /Publish /Token %GitHubToken% /Repo JakeGinnivan/GitReleaseNotes /Version %dep.OpenSourceProjects_GitReleaseNotes_CI.system.GitHubFlowVersion.SemVer%</code></li>
+</ol>
+
+
+<p>My version number is the SemVer of my CI build, if you are using GitHubFlowVersion you will have to create a dummy system.GitHubFlowVersion.SemVer variable, otherwise you cannot reference it across builds (doesn&rsquo;t exist at configure time, it is created when you run GitHubFlowVersion).</p>
+
+<p>And thats it, you can have a build publishing your release notes to GitHub and this will also tag master with the version you have just published.</p>
+
+<p>There are still plenty of issues with this project and heaps of work to do, but I like the way it is shaping up. Feedback/contributions are welcome.</p>
+]]></content>
+  </entry>
+  
+</feed>

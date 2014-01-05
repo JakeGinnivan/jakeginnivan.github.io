@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Codecampoz | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/codecampoz/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Code Camp Oz 2010]]></title>
+    <link href="http://JakeGinnivan.github.io/ccoz2010/"/>
+    <updated>2010-11-21T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/ccoz2010</id>
+    <content type="html"><![CDATA[<p>Due to time restraints at the moment this will be a very short blog post.</p>
+
+<p>I have pushed all my latest changes to the VSTO contrib project to codeplex. The url is <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a>.</p>
+
+<p>I will upload my powerpoint deck and release my LinqPad example scripts soon as well.</p>
+
+<p>But to sum up my talk, the VSTO Contrib project makes it easy to:</p>
+
+<ul>
+<li>Cleanup your COM References deterministically without cluttering your code</li>
+<li>Use Ribbon XML ribbons with IoC, view model binding (listens to INotifyPropertyChanged and invalidates ribbon controls when needed) and wires up the current Explorer or Inspector to your ribbon view model.</li>
+<li>Makes it really easy to use custom task panes, and relate them to ribbons</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

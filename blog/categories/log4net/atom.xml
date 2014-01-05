@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Log4net | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/log4net/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Verifying Logged Messages With Log4Net]]></title>
+    <link href="http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net/"/>
+    <updated>2013-09-13T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net</id>
+    <content type="html"><![CDATA[<p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
+
+<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
+</code></pre>
+
+<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
+
+<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
+</code></pre>
+
+<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
+
+<!-- more -->
+
+
+<pre><code>[TestFixture]
+public class RecordTest
+{
+    [Test]
+    public void DoTest()
+    {
+        var testing = Log4NetTestHelper.RecordLog(() =&gt;
+        {
+            var log = LogManager.GetLogger(typeof (RecordTest));
+            log.Error("Testing!");
+        });
+
+        Assert.AreEqual("ERROR - RecordTest | Testing!", testing[0]);
+    }
+}
+</code></pre>
+
+<p>Pretty easy, you record the logs which are logged inside a lambda. This means you don&rsquo;t have to inject logs and modify your code if you decide you want to assert on a logged message</p>
+
+<p>The class to do this is pretty simple</p>
+
+<pre><code>public static class Log4NetTestHelper
+{
+    public static string[] RecordLog(Action action)
+    {
+        if (!LogManager.GetRepository().Configured)
+            BasicConfigurator.Configure();
+        var logMessages = new List&lt;string&gt;();
+        var root = ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root;
+        var attachable = root as IAppenderAttachable;
+
+        var appender = new MemoryAppender();
+        if (attachable != null)
+            attachable.AddAppender(appender);
+
+        try
+        {           
+            action();
+        }
+        finally
+        {
+            var loggingEvents = appender.GetEvents();
+            foreach (var loggingEvent in loggingEvents)
+            {
+                var stringWriter = new StringWriter();
+                loggingEvent.WriteRenderedMessage(stringWriter);
+                logMessages.Add(string.Format("{0} - {1} | {2}", loggingEvent.Level.DisplayName, loggingEvent.LoggerName, stringWriter.ToString()));
+            }
+            if (attachable != null)
+                attachable.RemoveAppender(appender);
+        }
+
+        return logMessages.ToArray();
+    }
+}
+</code></pre>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+</feed>

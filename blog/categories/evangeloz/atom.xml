@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Evangeloz | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/evangeloz/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
+    <link href="http://JakeGinnivan.github.io/dddsydney/"/>
+    <updated>2011-06-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/dddsydney</id>
+    <content type="html"><![CDATA[<h1>Rich Client UI Automation, without shooting yourself in the foot</h1>
+
+<p>When you talk to most people that have tried Coded UI Tests or other UI Automation they tell you it was great, then it caused them way too much pain to be worth it. This phenomenon is also known as the Sine of Death by UI Test Automation. In this session Jake will show you how to avoid the Sine of Death and make UI Automation an invaluable part of your testing with a great ROI which reducing risk in the project.</p>
+
+<p>After watching this session you will talk away knowing how UI Automation works, what each of the Frameworks (White, Coded UI) give you, and the techniques you can apply to succeed with UI Automation. These techniques are used in production right now and you will see a demo of that applications test suite.</p>
+
+<h2>Resources</h2>
+
+<p>I will post resources on Rich Client Automation after my talk, or early next week.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Microsoft Evangelism Academy]]></title>
+    <link href="http://JakeGinnivan.github.io/evangeloz2010/"/>
+    <updated>2011-01-01T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/evangeloz2010</id>
+    <content type="html"><![CDATA[<p>I am a little late blogging about this, by last month I attended the inaugural Microsoft Evangelism Academy (<a href="http://twitter.com/#search?q=%23EvangelOz">#EvangelOz</a>) which was organised by Andrew Coates (<a href="http://twitter.com/coatsy">@coatsy</a>) and Sarah Vaughan (<a href="http://twitter.com/sarahvaughan">@sarahvaughan</a>) at Microsoft DPE. The goal of this program is to take 8 of us to the next level with our presenting! It started with 3 days of coaching, it will continue until August 2011 and will include:</p>
+
+<ul>
+<li>Monthly conference calls</li>
+<li>Monthly 1 on 1 catchup over the phone with a mentor</li>
+<li>1 day of group training in Melbourne every 2-3 months</li>
+<li>Talk at UserGroups, Conferences and whatever we can!</li>
+</ul>
+
+
+<p>I was lucky enough to attend with:</p>
+
+<ul>
+<li><a href="http://demonictalkingskull.com/">James Bannan</a> (<a href="http://twitter.com/jamesbannan">@JamesBannan</a>)</li>
+<li>Windows Desktop Experience MVP</li>
+<li><a href="http://azure.snagy.name/blog/">Steven Nagy</a> (<a href="http://twitter.com/snagy">@snagy</a>)</li>
+<li>Windows Azure MVP</li>
+<li><a href="http://www.soulsolutions.com.au/Blog.aspx">John O’Brien</a> (<a href="http://twitter.com/soulsolutions">@soulsolutions</a>)</li>
+<li>Windows Live MVP</li>
+<li><a href="http://www.made4the.net/default.aspx">Jeremy Thake</a> (<a href="http://twitter.com/jthake">@jthake</a>)</li>
+<li>SharePoint MVP</li>
+<li><a href="http://blog.walshie.me/">Chris Walsh</a> (<a href="http://twitter.com/ChrisWalshie">@ChrisWalshie</a>)</li>
+<li>Windows Phone 7 guru</li>
+<li><a href="http://www.soulsolutions.com.au/Blog.aspx">Bronwen Zande</a> (<a href="http://twitter.com/BronwenZ">@BronwenZ</a>)</li>
+<li>Windows Live MVP</li>
+<li><a href="http://mrhodes.net/">Mark Rhodes</a> (<a href="http://twitter.com/MRhodes">@MRhodes</a>)</li>
+<li>SharePoint Infrastructure guru</li>
+</ul>
+
+
+<p>Over the three days I made some new friends, and learnt a lot about the art of presenting. We covered many areas including Motion, Gestures, Eye Contact, Voice, Stance, Visuals, Content and much more.</p>
+
+<p>I found the whole exercise quite challenging and have to say thanks to  Steve Herzberg (<a href="http://twitter.com/nrgsteve">@nrgsteve</a>) and Melony Dos Remedios from NRG Solutions. They were great mentors, and I look forward to catching up with them again in February!</p>
+
+<p>Hopefully I will post some video&rsquo;s/pictures of the course over the few weeks, but in the meantime you can have a look at any of the others blog posts about EvangelOz =)</p>
+
+<ul>
+<li><a href="http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/">http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/</a></li>
+<li><a href="http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/">http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/</a></li>
+<li><a href="http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx">http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx</a></li>
+<li><a href="http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx">http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nHibernate | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/nhibernate/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[No More R# Warnings for nHibernate Aliases]]></title>
+    <link href="http://JakeGinnivan.github.io/nhibernate-alias-warnings/"/>
+    <updated>2011-07-21T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/nhibernate-alias-warnings</id>
+    <content type="html"><![CDATA[<p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
+
+<p>Here is a scenario</p>
+
+<pre><code>var entryAlias = default(Entry);
+var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
+</code></pre>
+
+<p>In the above scenario R# will warn that entryAlias is always null, which is is, but I don&rsquo;t care, nHibernate is simply getting the type from the expression.</p>
+
+<!-- more -->
+
+
+<p>So I have created a simple static class:</p>
+
+<pre><code>/// &lt;summary&gt;
+/// Simple helper class to remove r# warnings when using nHibernate aliases
+/// &lt;/summary&gt;
+public static class Alias
+{
+    public static T For&lt;T&gt;()
+    {
+        return default(T);
+    }
+}
+</code></pre>
+
+<p>And we turn the above code into:</p>
+
+<pre><code>var entryAlias = Alias.For&lt;Entry&gt;();
+var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
+</code></pre>
+
+<p>Which does not warn.</p>
+
+<p>Happy Resharpering</p>
+]]></content>
+  </entry>
+  
+</feed>

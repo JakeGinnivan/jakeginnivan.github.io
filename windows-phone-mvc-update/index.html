@@ -1,0 +1,710 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Windows Phone MVC Update - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="I have just pushed a MASSIVE update! So many enhancements, bug fixes, and maturity is in this release.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/windows-phone-mvc-update">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Windows Phone MVC Update</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-21T00:00:00+01:00" pubdate data-updated="true">Aug 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>Windows Phone MVC?</h1>
+
+<p>So to get started, let me explain what it is.<br/>
+It is a MVC + MVVM Hybrid framework, I think MVVM falls down in a few area&rsquo;s, and by teaming up with the MVC pattern we can achieve great testability, performance, navigation, lifecycle etc..</p>
+
+<p>The aim of Windows Phone MVC is to make windows phone development quicker, easier, more enjoyable and most of all help you build a nice performant app which gives an awesome user experience.</p>
+
+<p>This is going to be quite a long post going through many features of Windows Phone MVC, I hope it gets across what I am trying to do with the framework, and how it can help you out!<br/>
+I am still a little way from v1, so there will be API changes, but I am more than happy to field some questions about how to use it.</p>
+
+<p>Many of the improvements on this release are due to <a href="http://transhub.wordpress.com/">http://transhub.wordpress.com/</a> using Windows Phone MVC and I have been working close with the transub team to make sure the framework helped them deliver a killer app!</p>
+
+<!-- more -->
+
+
+<h2>Important Links</h2>
+
+<p>NuGet Package Name: <a href="http://nuget.org/List/Search?packageType=Packages&amp;searchTerm=WindowsPhoneMVC">WindowsPhoneMVC</a><br/>
+Codeplex URL: <a href="http://windowsphonemvc.codeplex.com/">http://windowsphonemvc.codeplex.com/</a><br/>
+Documentation: <a href="http://windowsphonefoundations.net/windowsphonemvc">http://windowsphonefoundations.net/windowsphonemvc</a></p>
+
+<h2>MVC</h2>
+
+<p>First off it is important to understand how a MVC framework works.</p>
+
+<p>It all starts off with a Controller, and an Action.</p>
+
+<pre><code>public class HomeController : Controller
+{
+    public ActionResult Main()
+    {
+        return Page(new MainViewModel());
+    }
+}
+</code></pre>
+
+<p>An <strong>action</strong> is simply a method on a class which inherits from Controller. The Controller returns an ActionResult, there are helper methods in the controller base class which let you do this with ease.</p>
+
+<p><strong>Note:</strong> is actions are invoked on a <code>background thread</code> and you should do work synchronously, we have made this easy with:</p>
+
+<pre><code>public ActionResult GetWebData()
+{
+    var request = WebRequest.CreateHttp(url);
+    var response = (HttpWebResponse)Execute.AsyncPatternWithResult(request.BeginGetResponse, request.EndGetResponse);
+    return Result(response.GetResponseString());
+}
+</code></pre>
+
+<p>Will talk a bit more about threading later..</p>
+
+<h3>ActionResults</h3>
+
+<p>We have a few different action results, they include:</p>
+
+<ul>
+<li>PageResult (Navigates to a new page, the parameter you pass becomes the datacontext for that page)</li>
+<li>DialogResult (Shows a dialog over the top of your current page)</li>
+<li>NothingResult (Allows you to finish a controller action without doing anything. i.e if (TrialExpired) <code>return Nothing();</code></li>
+<li>BackResult (navigates back)</li>
+<li>BackToResult (navigates back to a particular view. i.e to go back to home, no matter how many between <code>return BackTo&lt;HomeController&gt;("Main");</code>)</li>
+<li>DataResult (used to return data to the previous view, more info below!)</li>
+</ul>
+
+
+<p>Using these, you can do most things you need to pretty easily.</p>
+
+<h3>Invoking actions</h3>
+
+<p>Generally you will invoke ALL actions from the viewmodel, currently all the API&rsquo;s are named around navigation, this may change in the future. What do you think?</p>
+
+<pre><code>//MainViewModel ctor
+public MainViewModel()
+{
+    SearchCommand = Controller&lt;SearchController&gt;.NavigationCommand(c=&gt;c.SearchLocations(SearchCriteria));
+}
+
+public SearchCriteria SearchCriteria { get { return searchCriteria; } }
+public ICommand SearchCommand { get; private set; }
+</code></pre>
+
+<h2>Performance</h2>
+
+<p>One of the first things that people say to me when I say I am building <em>another</em> framework for windows phone is, &lsquo;I don&rsquo;t use frameworks, they are too slow&rsquo;.<br/>
+Something to keep in mind is that there are two types of performance, actual performance and perceived performance. The latter is actually the more important of the two, because it is how the user perceives how fast the application is.
+I remember reading in a book the story about how back in the day Microsoft got told that their c++ compiler was slow vs the borland one, even though it WAS faster, so they then made it output everything that it was happening onto the console and the users congratulated them on the improvement. It was about 5% slower because of the output.</p>
+
+<p>Windows Phone MVC tries to achieve both by default, I am trying to optimise the framework as much as I can, the overhead in startup time &amp; memory usages is 15-20% at the moment based on some initial testing, I hope to drop this over time and put some neat perf tricks in.</p>
+
+<p><img src="/assets/posts/2011-08-21-windows-phone-mvc-update/ProgressBar.png" alt="Progress Screen" /></p>
+
+<p>There is a few things to note here, Windows Phone MVC has a rich navigation system, so you can do work, load data, THEN navigate. You can also invoke an action which simply returns you data, or navigates to a page, then returns you the result from that page!</p>
+
+<ol>
+<li>Performance Progress Bar included out of the box (original, if you add transitions extension which needs Silverlight Toolkit, we switch to using the new one from Silverlight Toolkit).</li>
+<li>As soon as you invoke any action the Progress bar will be shown, and the screen grayed. You can also easily show text by just going <code>LoadingMessage("Search in progress..");</code> from your controller action.</li>
+<li>The app bar buttons are all disabled (we also give you full Commanding support in the app bar! more info on that later).</li>
+</ol>
+
+
+<p>I still have some tuning and plan on rounding up some WP7 performance experts at TechEd to give me more tips about how I can improve the performance of this, but it feels and looks nice at the moment.</p>
+
+<h2>MVVM/Commanding Support</h2>
+
+<p>Out of the box there are some really nice helpers for you.</p>
+
+<h3>Buttons</h3>
+
+<pre><code>&lt;Button commands:Click.Command="{Binding AboutPageCommand}"
+        Content="About" /&gt;
+&lt;Button commands:Navigate.To="Home.ViewItem"
+        DataContext="{Binding }" &lt;!--Action can be ViewItem(ItemViewModel item)--&gt;
+        Content="View Item" /&gt;
+</code></pre>
+
+<p>The second can optionally pass the datacontext to the controller action, really useful when you have a button in a list of items.</p>
+
+<h3>App Bar</h3>
+
+<p>As you probably know, the Application Bar is not a DependencyObject, so we can&rsquo;t use any of the nice silverlight goodness we are used to. I have taken the following approach:</p>
+
+<pre><code>&lt;phone:PhoneApplicationPage.ApplicationBar&gt;
+    &lt;shell:ApplicationBar IsVisible="True"
+                          IsMenuEnabled="True"&gt;
+        &lt;shell:ApplicationBarIconButton IconUri="/Icons/dark/appbar.add.rest.png"
+                                        Text="new[AddCommand]" /&gt;
+        &lt;shell:ApplicationBar.MenuItems&gt;
+            &lt;shell:ApplicationBarMenuItem Text="settings[ShowSettingsPageCommand]" /&gt;
+            &lt;shell:ApplicationBarMenuItem Text="about[ShowAboutPageCommand]" /&gt;
+        &lt;/shell:ApplicationBar.MenuItems&gt;
+    &lt;/shell:ApplicationBar&gt;
+&lt;/phone:PhoneApplicationPage.ApplicationBar&gt;
+</code></pre>
+
+<p>Simply put the command name in square brackets in your appbar text, and they will be wired up to your viewmodel. Including listening to CanExecuteChanged to enable and disable appbar buttons!</p>
+
+<h3>ListBoxes</h3>
+
+<p>Another handy addition is if you have a list of items, and you want to view details when any one of them is selected.</p>
+
+<pre><code>&lt;ListBox ItemsSource="{Binding Items}"
+            Commands:Navigate.OnItemSelected="AnotherController.ItemAction"
+            DisplayMemberPath="Title" /&gt;
+</code></pre>
+
+<h3>On the ViewModel</h3>
+
+<p>How often do you write something like <code>new DelegateCommand(()=&gt;DoStuff())</code> in the case of MVC it would be <code>new DelegateCommand(()=&gt;Controller&lt;HomeController&gt;().DoStuff())</code>. That is kinda ugly, so I have provided a nicer API for defining Commands:</p>
+
+<pre><code>ShowGreetingPageCommand = Controller&lt;HomeController&gt;().NavigationCommand(c =&gt; c.SayHelloTo(Name));
+//or if you want to fetch some data/refresh the page: 
+RefreshCommand = Controller&lt;AnotherController&gt;().NavigationCommandWithResult&lt;ObservableCollection&lt;SearchResult&gt;&gt;(c =&gt; c.PerformSearch(Parameter), HandleCallback);
+</code></pre>
+
+<h2>Navigation</h2>
+
+<p>I mentioned earlier that Windows Phone MVC has a really powerful navigation system. It actually does not use the inbuild NavigationService, it navigates once at the start of the all to your <code>Shell.xaml</code>, which hosts your app, the framework then takes care of switching out the content, and maintaining it&rsquo;s own journal. This has a number of advantages.</p>
+
+<p>Be aware that Navigation with Windows Phone MVC is equivilent to Tombstoning that view, when you navigate the controller action will ALWAYS be executed. The advantage of this is that your views/viewmodels can be garbage collected as soon as you navigate away from that view.</p>
+
+<h3>Type safe navigation WITH arguments</h3>
+
+<p>Take this navigation:</p>
+
+<pre><code>Controller&lt;HomeController&gt;().NavigateTo(c =&gt; c.MyAction(ComplexProperty)); 
+</code></pre>
+
+<p>This is all type safe, and I am passing any class as an argument to my action, I don&rsquo;t need to know the view name, and I get full intellisense on the arguments.</p>
+
+<p><strong>NOTE:</strong> Due to WP7 limitations around reflection, you cannot pass local variables (declare in the same method), method arguments, or protected/private fields. All of these things require reflection on non public types, which is not supported. <br/>
+Never fear!</p>
+
+<p>If you try and do this:</p>
+
+<pre><code>private void NavigateWithPrivate()
+{
+    var local = new SomeClass();
+    Controller&lt;AnotherController&gt;().NavigateTo(c=&gt;c.PerformSearch(local));
+}
+</code></pre>
+
+<p>You will get a nice helpful error message:</p>
+
+<p><img src="/assets/posts/2011-08-21-windows-phone-mvc-update/NavNotSupported.png" alt="Useful exception message" /></p>
+
+<p>You can literally copy and paste the suggested syntax (check it first, and let me know if I get any cases wrong) over your code, then it will start working!</p>
+
+<h3>Back stack manipulation (without Mango :P)</h3>
+
+<p>At any time in a viewmodel or a controller you can write:</p>
+
+<pre><code>Navigator.RemoveBackEntry();
+</code></pre>
+
+<p>That is pretty cool, and works without mango. But to go one better than what you get in Mango:</p>
+
+<pre><code>Navigator.NavigateBackTo&lt;HomeController&gt;("Main");
+// or in controller:
+return BackTo&lt;HomeController&gt;("Main");
+</code></pre>
+
+<p>This will unwind the backstack until you get to the matching controller and action! If it can&rsquo;t find it, it will let you know.</p>
+
+<h3>Returning data to previous page</h3>
+
+<p>A great example of this is the DateTimePicker in the toolkit, when you click on it, it actually hijacks the navigation service, navigates to a page inside the toolkit, then when you click on one of the appbar buttons it navigates back, then updates the control. Sound useful? It really is..</p>
+
+<h4>Without a navigation</h4>
+
+<p>This performs a search in a controller action, then returns the data without navigating.</p>
+
+<pre><code>private void PerformSearch()
+{
+    Controller&lt;SearchController&gt;().NavigateToWithResult&lt;JourneyPlanningResponse&gt;(c =&gt; c.PerformSearch(SearchCriteria), SearchComplete);
+}
+
+private void SearchComplete(JourneyPlanningResponse response)
+{
+     ....
+}
+</code></pre>
+
+<h4>With navigation</h4>
+
+<p>What about the datepicker example:</p>
+
+<pre><code>GetValueCommand = Controller&lt;DebugController&gt;().NavigationCommandWithResult&lt;string&gt;(c =&gt; c.PageWithResult(), HandleCallback);
+</code></pre>
+
+<p>Then on our viewmodel looks like this:</p>
+
+<pre><code>public class PageWithResultViewModel : ViewModelBase
+{
+    private string valueToReturn;
+
+    public PageWithResultViewModel()
+    {
+        OkCommand = new DelegateCommand(() =&gt; Navigator.NavigationResult(ValueToReturn));
+        CancelCommand = new DelegateCommand(() =&gt; Navigator.NavigateBack());
+    }
+
+    public string ValueToReturn
+    {
+        get { return valueToReturn; }
+        set
+        {
+            valueToReturn = value;
+            OnPropertyChanged(()=&gt;ValueToReturn);
+        }
+    }
+
+    public ICommand OkCommand { get; private set; }
+    public ICommand CancelCommand { get; private set; }
+}
+</code></pre>
+
+<p>I recon that is pretty cool! And super easy to use&hellip;.</p>
+
+<h2>Threading</h2>
+
+<p>Mentioned earlier, actions are invoked on a background thread, and the Controller&rsquo;s lifetime scope (if using autofac) is disposed as soon as the action is invoked, so you shouldn&rsquo;t <code>return</code> from the  action before you have fully setup the new view&rsquo;s viewmodel and you shouldn&rsquo;t be waiting for any callbacks. The way we have solved this is with the <code>Execute</code> class.</p>
+
+<pre><code>var response = (HttpWebResponse)Execute.AsyncPatternWithResult(svc.BeginGetResponse, someArg, request.EndGetResponse);
+</code></pre>
+
+<p>   //or if the call doesnt return anything
+   Execute.AsyncPattern(svc.BeginDoSomething, someArg, svc.EndDoSomething);</p>
+
+<p>This will turn the async pattern Begin/End pair into a synchronous call. You should not use this class on the UI Thread obviously&hellip;</p>
+
+<p>Talking about the UI Thread, what happens if you want to do stuff on the UI Thread?</p>
+
+<pre><code>Execute.OnUIThread(()=&gt;{/*dostuff*/});
+Execute.OnUIThreadSync(()=&gt;{/*do stuff synchronously*/});
+</code></pre>
+
+<p>These two methods invoke an action(or func<T> with the synchronous option) on the UI Thread asynchronously and synchronously respectively.</p>
+
+<h2>WP7 Lifecycle</h2>
+
+<p>Another very important part of developing for WP7 is the lifecycle management. We do a fair bit here to help you out.</p>
+
+<p>If you want a property to be saved between navigations, and tomb-stoning simply mark it as transient like follows:</p>
+
+<pre><code>public RegisterViewModel()
+{
+    Transient(() =&gt; Name);
+    Transient(() =&gt; Username);
+    Transient(() =&gt; Password);
+}
+</code></pre>
+
+<p>Because we recreate the view each time you navigate (I may possibly introduce caching of the view so it doesn&rsquo;t have to be recreated, but memory pressure is tight pre-mango so will investigate in the future), Panoramas will not restore to the same panel that was selected. This is easily fixed with an attached property</p>
+
+<pre><code>&lt;toolkit:Panorama Title="my application"
+                  Phone:Restore.PanoramaPosition="True"&gt;
+</code></pre>
+
+<p>Let me know if there any other things that you would like restored.</p>
+
+<h3>OnActivate/OnDeactivate</h3>
+
+<p>Windows Phone MVC changes the behaviour slightly from the default experience. When a view is navigated away from, OnDeactivate will be called, and whenever it is shown OnActivate will be executed. Simply override one/both of these methods to do anything you need to for tombstoning.</p>
+
+<h3>PageState</h3>
+
+<p>Earlier I mentioned that Windows Phone MVC has it&rsquo;s own NavigationService, and Journal. This means I cannot use the included PageState from the framework as it is tightly coupled with the phones NavigationService. So I have rolled my own.</p>
+
+<pre><code>public interface IPageTransientStore
+{
+    void Save&lt;T&gt;(string key, T obj) where T : class;
+    T Load&lt;T&gt;(string key) where T : class;
+    bool Contains(string key);
+    void Remove(string key);
+}
+</code></pre>
+
+<p>All serialisation in Windows Phone MVC is done using Mike Talbot&rsquo;s <a href="http://whydoidoit.com/silverlight-serializer/">Silverlight Serializer</a>. This means I can serialise complex types, without specifying known types very fast.</p>
+
+<h3>Obscured</h3>
+
+<p>If you are interested in being notified when your app is obscured, simple make your ViewModel inherit from <code>IObscuredAware</code>, like so:</p>
+
+<pre><code>public class ViewResultTestViewModel : ViewModelBase, IObscuredAware
+{
+    public void Unobscured(object sender, EventArgs e)
+    {
+    }
+
+    public void Obscured(object sender, ObscuredEventArgs e)
+    {
+    }
+}
+</code></pre>
+
+<h2>Deep Linking</h2>
+
+<p>We also support Mango features! If you want to create a deep link into your Windows Phone MVC application, that is really easy too.. It is also type safe =)</p>
+
+<pre><code>private void CreateDeepLink()
+{
+    var deepLinkUri = Controller&lt;HomeController&gt;().UriFor(c =&gt; c.DeepLinkPage, new Dictionary&lt;string, string&gt;());
+    ShellTile.Create(new Uri(deepLinkUri, UriKind.Relative), new StandardTileData
+                                                {
+                                                    BackgroundImage = new Uri("/ApplicationIcon.png", UriKind.Relative),
+                                                    Title = "MVC Deep Link"
+                                                });
+}
+</code></pre>
+
+<p>Deep links can only take a collection of KeyValuePair&lt;string, string> for the parameters.</p>
+
+<h2>Transitions</h2>
+
+<p>Everyone loves a nice sexy app that has transitions. Jeff and the guys behind the Silverlight have made it pretty easy to get nice transitions working in your app. You will be happy to know it is just as easy for Windows Phone MVC. Simple run in your NuGet console <code>Install-Package WindowsPhoneMVC.Extensions.Transitions</code>. This relies on the Silverlight toolkit and will drop a <code>To_Enable_Transitions.txt</code> file into your project with the code required to wire it up (super easy).
+The usage is exactly the same after the setup.</p>
+
+<h2>IoC Container Support</h2>
+
+<p>By default, Windows Phone MVC has a DefaultControllerFactory, this isn&rsquo;t very interesting. So you can just run this in your NuGet console <code>Install-Package WindowsPhoneMVC.Extensions.AutofacIntegration</code> and you will get two files and a reference added to your project, the first is <code>To_Enable_Autofac.txt</code>, it will have code in it which you can copy/paste into App.xaml to enable the integration. The next is <code>ApplicationModule.cs</code> which is where you can register everything.</p>
+
+<h3>Performance</h3>
+
+<p>Once again, as soon as you mention an IoC container on the phone, people freak out. The performance penalty is next to nothing if you do a bit of work in your ApplicationModule class.</p>
+
+<p>Use Register(()=>) rather than RegisterType. Out of the box (so it works by default) you have this in your ApplicationModule.</p>
+
+<pre><code>builder
+    .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+    .AssignableTo&lt;Controller&gt;()
+    .AsSelf();
+</code></pre>
+
+<p>This has the cost of reflecting your assembly when starting your app, then the reflection cost of construcing the object. A more performant alternative is:</p>
+
+<pre><code>builder
+    .Register(c=&gt;new MainController(c.Resolve&lt;ISomeService&gt;()))
+    .AsSelf();
+builder
+    .Register(c=&gt;new SomeService())
+    .As&lt;ISomeService&gt;()
+    .SingleInstance(); //Lightweight services can be left as SingleInstance
+</code></pre>
+
+<p>Sure this has more maintenance costs, but the performance different is substantial. On my phone the a object graph of ~90 object constructions took about 30% of the time vs letting the container do the hard work.</p>
+
+<h2>Debugging</h2>
+
+<p>To make diagnosing issues, and to give warnings and suggestions, simply handle the Trace event on the NavigationApplication and write the message out to Debug.Write. Internally no logging will be executed if the debugger is not attached.</p>
+
+<pre><code>&lt;Application.ApplicationLifetimeObjects&gt;
+    &lt;AutofacIntegration:AutofacNavigationApplication Activated="AutofacNavigationApplicationActivated"
+                                                     Deactivated="AutofacNavigationApplicationDeactivated"
+                                                     Closing="NavigationApplication_OnClosing"
+                                                     Trace="AutofacNavigationApplication_Trace"/&gt;
+&lt;/Application.ApplicationLifetimeObjects&gt;
+</code></pre>
+
+<p>In the HelloWorld application this produces an output like this:</p>
+
+<pre><code>Navigator: Memory usage before navigation: 8.359375
+Navigator: Memory usage after navigation: 9.42578125
+Navigator: Memory usage before navigation: 9.46484375
+Navigator: Memory usage after navigation: 15.55859375
+Navigator: Memory usage before navigation: 13.84765625
+Navigator: Passing ViewModels as parameters may cause memory pressure as they are not disposed! Consider using base type of NotifyPropertyChanged if the parameter is actually an entity, not a ViewModel.
+Navigator: Memory usage after navigation: 19.08203125
+Navigator: Memory usage before navigation: 11.46875
+Navigator: Memory usage after navigation: 12.62890625
+Navigator: Memory usage before navigation: 11.828125
+Navigator: Memory usage after navigation: 16.98828125
+TimerScope: Beginning Parsing Navigation Expression
+Navigator: Memory usage before navigation: 15.3203125
+TimerScope: Ending Parsing Navigation Expression. Took 13ms
+Navigator: Memory usage after navigation: 19.84765625
+</code></pre>
+
+<p>Logging is pretty light at the moment, as I try and identify performance bottlenecks and other things I will likely introduce logging levels and lots more of it. I also hope to add helpful warnings for best practices as I have done with the note about ViewModels.</p>
+
+<p>The downside of such a rich navigation model, is that you can pass very large things around, and parameters are always kept in memory, and viewmodels often have a lot more data than actually needs to be kept in memory.</p>
+
+<h1>Conclusion</h1>
+
+<p>I hope this is a useful post as a introduction to Windows Phone MVC, and shows off many of the features which make it really easy to write WP7 applications.</p>
+
+<p>Please leave feedback, ping me on twitter (@JakeGinnivan), or email me at <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6a;&#x61;&#107;&#x65;&#64;&#x67;&#x69;&#110;&#x6e;&#x69;&#x76;&#97;&#110;&#x2e;&#110;&#101;&#116;">&#x6a;&#97;&#x6b;&#101;&#x40;&#103;&#105;&#110;&#x6e;&#105;&#x76;&#x61;&#x6e;&#46;&#110;&#x65;&#x74;</a> with suggestions/issues. I want to power towards v1.0 when I will lock down API&rsquo;s and consider the framework stable. The framework is reasonably stable now, and is being used in a decent size app. But there will likely be situations I haven&rsquo;t thought of, or haven&rsquo;t tested.</p>
+
+<h1>Go get it!</h1>
+
+<p>Simply add <code>WindowsPhoneMVC</code> to your project via NuGet to get started, there will be a readme added to your project and a sample controller/ViewModels etc. If you don&rsquo;t want the files to get you started, choose the libs project</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-21T00:00:00+01:00" pubdate data-updated="true">Aug 21<span>st</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvc/'>mvc</a>, <a class='category' href='/blog/categories/open-source/'>open-source</a>, <a class='category' href='/blog/categories/wp7/'>wp7</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/windows-phone-mvc-update/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/windows-phone-mvc-update/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/phone-test-project/" title="Previous Post: Phone Test Project Template">&laquo; Phone Test Project Template</a>
+      
+      
+        <a class="basic-alignment right" href="/multitargeted-windows-phone-project/" title="Next Post: MultiTargeted WP7 Project">MultiTargeted WP7 Project &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/windows-phone-mvc-update/';
+        var disqus_url = 'http://JakeGinnivan.github.io/windows-phone-mvc-update/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

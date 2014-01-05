@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Outlook Items, Repositories & Data Access - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Data Access in VSTO can be hard, I will discuss some ways to avoid performance issues, leaky abstractions and make it much easier.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/vsto-data-access-repositories">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Outlook Items, Repositories & Data Access</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-04-23T00:00:00+01:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>If we want to do anything interesting with VSTO and Outlook we will have to access data from Outlook. That will normally be Contacts, or Appointments or Emails? When you do this you will probably leak items, then Outlook will stop behaving normally, you can get ghost inspectors (click save &amp; close, and the window stays open, but ribbon is grayed out), or errors when you try to edit a item through the Outlook UI. There can be many side effects, most are not fun to track down the cause.</p>
+
+<!-- more -->
+
+
+<h1>Repository Pattern</h1>
+
+
+<p>This seems as good a place as any to cover the repository pattern, it is REALLY important if you want a stable VSTO app. If you are unsure what it is then have a read of <a href="http://martinfowler.com/eaaCatalog/repository.html">http://martinfowler.com/eaaCatalog/repository.html</a>.</p>
+
+<p>Essentially my repository interfaces will expose methods like GetAppointments(), SaveAppointment(), NewAppointment() etc. I will use repositories rather than interacting with the Outlook session directly. This prevents me accidently leaking COM objects.</p>
+
+<p>To achieve a non leaking high performance repository no matter what thread you call from we have to use a few patterns and Automapper to put it all together. Here is a class diagram of the end goal.</p>
+
+<p><img src="/get/screenshots/OutlookEventRepository.png" alt="Outlook Event Repository" /></p>
+
+<p>Notice that my repository returns a basic CLR interface, not appointment items.</p>
+
+<p>FacebookEventAdapter – uses the adapter pattern to adapt the ugly and HUGE <em>AppointmentItem interface to something that is useful to us. It is essentially a wrapper class that adapts the </em>AppointmentItem interface to our own interface.</p>
+
+<p><img src="/get/screenshots/IOutlookFacebookEvent.png" alt="Outlook event interface" /></p>
+
+<p>The next step is we do not want our repository to leak. For the moment trust me that we do not want to leak COM objects. I will cover why it is bad in a later post.</p>
+
+<p>This is the point that AutoMapper is essential:</p>
+
+<pre><code>public IList&lt;IOutlookFacebookEvent&gt; GetEvents()
+{
+    var events = new List&lt;IOutlookFacebookEvent&gt;();
+    using (var calendar = _session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar).WithComCleanup())
+    using (var items = calendar.Resource.Items.WithComCleanup())
+    {
+        events.AddRange(
+            items.Resource
+                .ComLinq&lt;AppointmentItem&gt;()
+                .Select(appointment =&gt; new FacebookEventAdapter(appointment))
+                .Select(adapter =&gt; Mapper.Map(adapter, new OutlookFacebookEvent(adapter.RsvpStatus, adapter.EntryId)))
+                .Where(e =&gt; e.EventId != -1));
+    }
+
+    return events;
+}
+</code></pre>
+
+<p>Ignore the WithComCleanup and ComLinq extension methods for now, I will cover them in a later post (or check out Outlook.Utility which contains those extensions). They simply make sure that the COM objects are cleanly disposed of and stop COM object leaks.</p>
+
+<p>What is important is that we wrap our appointmentItem in the adapter, then we map the adapter to our CLR implmentation of our interface. And there is only 1 line of code need to make the mapping work:</p>
+
+<pre><code>Mapper.CreateMap&lt;FacebookEventAdapter, OutlookFacebookEvent&gt;();
+</code></pre>
+
+<p>Here is a step by step description of what is happening:</p>
+
+<ol>
+<li>Get the Calendar folder from Outlook</li>
+<li>Get all Items in the collection</li>
+<li>ComLinq exposes a custom IEnumerable<T> which returns a custom IEnumerator<T> which releases the COM objects as soon as the enumerator moves onto the next item. And has the added advantage that it gives is Linq to Object support on the COM collection =)</li>
+<li>For each _AppointmentItem in the calendar, wrap it in a FacebookEventAdapter</li>
+<li>Then Map the adapter to a new CLR implementation of our IOutlookFacebookItem interface.</li>
+<li>Filter any items that are not Facebook events.</li>
+<li>Add the resulting items to the events list and return it.</li>
+</ol>
+
+
+<p>The end result is that we return clean CLR objects which have no COM references and all the COM objects that were brought into .NET have been released before we return.</p>
+
+<h1>Dispatching Repository</h1>
+
+
+<p>As I said before Outlook runs in a STA. This means that if we call our repository from a background thread (which you will do if you are doing synchronisation or some other expensive operation) every time we interact with the Outlook Interop API we cause the call to be marshalled across threads.</p>
+
+<p>The solution – a repository <a href="http://en.wikipedia.org/wiki/Decorator_pattern">decorator</a> which makes any repository calls on the Outlook STA thread, so we have only a single call that has to be marshalled across threads, then all Outlook calls will already be in the STA so no marshalling required.</p>
+
+<p>I setup a small test app to test my theory that I would actually get performance gains by doing this, and I was amazed at the results.</p>
+
+<p><strong>Mapping ~1000 Appointments to CLR objects</strong></p>
+
+<blockquote><p>Background repository mapped in ~10 seconds <br />
+Dispatched repository mapped in ~4 seconds</p></blockquote>
+
+<p><strong>Mapping 16 Appointments to CLR objects</strong></p>
+
+<blockquote><p>Background repository mapped in ~1.6 seconds <br />
+Dispatched repository mapped in ~0.6 seconds</p></blockquote>
+
+<p>So large or small data sets, there is still a massive performance gain by invoking the call on the STA thread before doing the COM interop work. Here is the code to do that (In production more error handling is probably needed):</p>
+
+<pre><code>public IList&lt;IOutlookFacebookEvent&gt; GetEvents()
+{
+    var getEvents = ((Func&lt;IList&lt;IOutlookFacebookEvent&gt;&gt;)(() =&gt; _outlookEventRepository.GetEvents()));
+
+    return (IList&lt;IOutlookFacebookEvent&gt;)_outlookStaDispatcher.Invoke(getEvents);
+}
+</code></pre>
+
+<h1>Wrapping Up</h1>
+
+
+<p>So we have used quite a few patterns together to achieve a very solid repository that performs well from any thread you call it from. We used the Repository Pattern, the Adapter Pattern and the Decorator Pattern to make it all work.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-04-23T00:00:00+01:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/patternsandpractices/'>patternsandpractices</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/vsto-data-access-repositories/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/vsto-data-access-repositories/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/ioc-dependencyinjection-vsto/" title="Previous Post: IoC, Dependency Injection and VSTO">&laquo; IoC, Dependency Injection and VSTO</a>
+      
+      
+        <a class="basic-alignment right" href="/vsto-project-structure/" title="Next Post: How to Structure a new VSTO Project">How to Structure a new VSTO Project &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/vsto-data-access-repositories/';
+        var disqus_url = 'http://JakeGinnivan.github.io/vsto-data-access-repositories/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

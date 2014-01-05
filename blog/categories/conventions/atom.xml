@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Conventions | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/conventions/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Convention Tests V2 Released]]></title>
+    <link href="http://JakeGinnivan.github.io/conventiontests-v2-released/"/>
+    <updated>2013-09-19T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/conventiontests-v2-released</id>
+    <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
+
+<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
+
+<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
+
+<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
+
+<h2>What is ConventionTests?</h2>
+
+<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
+
+<!-- more -->
+
+
+<h2>Getting Started</h2>
+
+<p>It is really easy to get started with Convention Tests, we have included a bunch of conventions out of the box. The included conventions are:</p>
+
+<ul>
+<li>All Classes Have Default Constructor</li>
+<li>All Methods are Virtual</li>
+<li>Class type has specific namespace (for example, all dtos must live in the ProjectName.Dtos namespace)</li>
+<li>Files are Embedded Resources</li>
+<li>Project does not reference dlls from Bin or Obj directory</li>
+<li>Plus others will be added!</li>
+</ul>
+
+
+<h3>Writing your first Convention test</h3>
+
+<h4>1. Using your favourite testing framework, create a new test. Lets call it <code>nhibernate_entities_must_have_default_constructor</code></h4>
+
+<h4>2. Define some data</h4>
+
+<p>At the moment there is minimal support for type scanning, but better support will be added soon!</p>
+
+<pre><code>var itemsToVerify = typeof (SampleDomainClass).Assembly.GetTypes();
+var nhibernateEntities = new Types("nHibernate Entitites")
+{
+    TypesToVerify = itemsToVerify
+};
+</code></pre>
+
+<h4>3. Assert the convention</h4>
+
+<p><code>Convention.Is(new AllClassesHaveDefaultConstructor(), nhibernateEntities);</code></p>
+
+<h4>That&rsquo;s it!</h4>
+
+<p>When you run this convention, if it fails an exception will be thrown, which will look something like this:</p>
+
+<pre><code>ConventionFailedException
+Message = Failed: 'Types must have a default constructor' for 'nHibernate Entitites'
+--------------------------------------------------------------------------
+
+TestAssembly.ClassWithNoDefaultCtor
+TestAssembly.ClassWithPrivateDefaultCtor
+</code></pre>
+
+<p>How cool is that!</p>
+
+<h3>Reporting</h3>
+
+<p>If you would like to use ConventionTests reporting features, you just have to opt in by specifying the reporter you want. This makes it easy to add your own reporters, for example a WikiReporter may be better than the <code>HtmlReporter</code></p>
+
+<p>In your <code>Properties\AssemblyInfo.cs</code> file add the reporters you want. This are global reporters which will report the results of all conventions.</p>
+
+<pre><code>[assembly: ConventionReporter(typeof(HtmlConventionResultsReporter))]
+[assembly: ConventionReporter(typeof(MarkdownConventionResultsReporter))]
+</code></pre>
+
+<p>Then if you look in the directory where your test assembly is, there will be an html report called <code>Conventions.htm</code>, serving as living documentation!</p>
+]]></content>
+  </entry>
+  
+</feed>

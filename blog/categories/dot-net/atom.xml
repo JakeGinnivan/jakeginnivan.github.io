@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: .net | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/dot-net/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Redirecting Process Output]]></title>
+    <link href="http://JakeGinnivan.github.io/redirecting-process-output/"/>
+    <updated>2013-04-05T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/redirecting-process-output</id>
+    <content type="html"><![CDATA[<p>I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.</p>
+
+<p>Based on a blog post that Lucian Wischik posted a while back at <a href="http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx">http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx</a> I have created a c# version of his code which makes it nice and easy.</p>
+
+<!-- more -->
+
+
+<h1>Usage</h1>
+
+<pre><code>string stdOut;
+string stdErr;
+var processStartInfo = new ProcessStartInfo(process, args)
+{
+    UseShellExecute = false,
+    RedirectStandardError = true,
+    RedirectStandardInput = true,
+    RedirectStandardOutput = true
+};
+Process.Start(processStartInfo).InputAndOutputToEnd(string.Empty, out stdOut, out stdErr);
+
+Console.Write(stdOut);
+Console.Write(stdErr);
+</code></pre>
+
+<h1>The Code</h1>
+
+<pre><code>public static class ProcessExtensions
+{
+    public static void InputAndOutputToEnd(this Process p, string standardInput, out string standardOutput, out string standardError)
+    {
+        if (p == null)
+            throw new ArgumentException("p must be non-null");
+        // Assume p has started. Alas there's no way to check.
+        if (p.StartInfo.UseShellExecute)
+            throw new ArgumentException("Set StartInfo.UseShellExecute to false");
+        if ((p.StartInfo.RedirectStandardInput != (standardInput != null)))
+            throw new ArgumentException("Provide a non-null Input only when StartInfo.RedirectStandardInput");
+        //
+        var outputData = new InputAndOutputToEndData();
+        var errorData = new InputAndOutputToEndData();
+
+        //
+        if (p.StartInfo.RedirectStandardOutput)
+        {
+            outputData.Stream = p.StandardOutput;
+            outputData.Thread = new System.Threading.Thread(InputAndOutputToEndProc);
+            outputData.Thread.Start(outputData);
+        }
+        if (p.StartInfo.RedirectStandardError)
+        {
+            errorData.Stream = p.StandardError;
+            errorData.Thread = new System.Threading.Thread(InputAndOutputToEndProc);
+            errorData.Thread.Start(errorData);
+        }
+        //
+        if (p.StartInfo.RedirectStandardInput)
+        {
+            p.StandardInput.Write(standardInput);
+            p.StandardInput.Close();
+        }
+        //
+        if (p.StartInfo.RedirectStandardOutput)
+        {
+            outputData.Thread.Join();
+            standardOutput = outputData.Output;
+        }
+        else
+            standardOutput = string.Empty;
+
+        if (p.StartInfo.RedirectStandardError)
+        {
+            errorData.Thread.Join();
+            standardError = errorData.Output;
+        }
+        else
+            standardError = string.Empty;
+
+        if (outputData.Exception != null)
+            throw outputData.Exception;
+        if (errorData.Exception != null)
+            throw errorData.Exception;
+    }
+
+    private class InputAndOutputToEndData
+    {
+        public System.Threading.Thread Thread;
+        public System.IO.StreamReader Stream;
+        public string Output;
+        public Exception Exception;
+    }
+
+    private static void InputAndOutputToEndProc(object data)
+    {
+        var ioData = (InputAndOutputToEndData)data;
+        try
+        {
+            ioData.Output = ioData.Stream.ReadToEnd();
+        }
+        catch (Exception e)
+        {
+            ioData.Exception = e;
+        }
+    }
+}
+</code></pre>
+
+<p>Hope this is useful</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-bootstrapping-errors/"/>
+    <updated>2011-07-20T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-bootstrapping-errors</id>
+    <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
+
+<p>When trying to publish my clickonce installer I am getting the error:</p>
+
+<pre><code>[14:55:16]: [_DeploymentGenerateBootstrapper] GenerateBootstrapper
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item 'Microsoft.Windows.Installer.3.1' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item '.NETFramework,Version=v4.0' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): error MSB3147: Could not find required file 'setup.bin' in 'C:\TeamCity\buildAgent\work\63190f273e745a25\ProjectName\Engine'.
+</code></pre>
+
+<p>If your build server is a <strong>x64</strong> operating system copy <code>'C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bootstrapper\'</code> to the same directory on the build server, then copy the blow code into a file called FixBootstrapper.reg, then run it.</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+
+<p>If you have a <strong>x86</strong> build server, upgrade. Otherwise copy &lsquo;<code>C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bootstrapper\</code>&rsquo; to the same directory, then copy the blow into a registry file</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TFS Merge Tools Configuration]]></title>
+    <link href="http://JakeGinnivan.github.io/tfsmergetools/"/>
+    <updated>2011-06-01T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/tfsmergetools</id>
+    <content type="html"><![CDATA[<p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
+
+<p>This blog post <a href="http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx">http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx</a> lists all common merge tools, and the command line arguments for each of them.</p>
+
+<p>I use KDiff, so the Compare arguments are <code>%1 --fname %6 %2 --fname %7</code> and Merge arguments are <code>%3 --fname %8 %2 --fname %7 %1 --fname %6 -o %4</code></p>
+
+<p>Great, except I have to register all the extensions that I want to use KDiff for. This is my list:</p>
+
+<pre><code>.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql,.rptproj,.rdl,.rss,.settings
+</code></pre>
+
+<p>What other extensions am I missing?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Blog Redesign]]></title>
+    <link href="http://JakeGinnivan.github.io/blog-redesign/"/>
+    <updated>2011-02-25T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/blog-redesign</id>
+    <content type="html"><![CDATA[<p>As part of my redesign, I have also changed web hosts. My apologies to anyone that has had their RSS feeds spammed by the process of me rebuilding my blog. I also have not transferred comments yet, I hopefully will get around to that shortly!</p>
+
+<p>If you have a spare moment, could you give some feedback on:</p>
+
+<p>What do you think of my new blog theme?
+What content do you like on my blog?
+What would you like to see?</p>
+
+<p>I am planning on blogging more and feedback would be great about the direction you would like me to go, or the content you enjoy seeing or what you do not want to see.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[C# Command Line Argument Parser]]></title>
+    <link href="http://JakeGinnivan.github.io/c-sharp-argument-parser/"/>
+    <updated>2010-08-21T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/c-sharp-argument-parser</id>
+    <content type="html"><![CDATA[<p>I know this has been done to death but nothing I found did the job for me so I started with the one that fitted my needs the most then edited from there.</p>
+
+<p>Original source: <a href="http://www.codeproject.com/KB/recipes/command_line.aspx">http://www.codeproject.com/KB/recipes/command_line.aspx</a></p>
+
+<p>I have a few specific requirements:</p>
+
+<ul>
+<li>It must support lists, or the same argument specified multiple times. If an argument has comma’s in it then it will be treated as a list and split on the comma.</li>
+<li>It must support paths with a trailing \ ie. –arg:&ldquo;c:\Users\ginnivanj\My Path\&rdquo;</li>
+<li>Has support for flags.</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p><img src="/get/screenshots/argPaserClassDiagram.png" alt="Class Diagram" /></p>
+
+<h1>Example Usage</h1>
+
+
+<p>There are two ways you can start using this class, I have created a SplitCommandLine function which ignores escaped quotes, this is needed for path support, the trailing \ on the path causes the quote to be taken literally.</p>
+
+<p>Using SplitCommandLine:</p>
+
+<pre><code>var commandLine = Environment.CommandLine;
+var splitCommandLine = Arguments.SplitCommandLine(commandLine);
+
+var arguments = new Arguments(splitCommandLine);
+</code></pre>
+
+<p>Letting windows do it:</p>
+
+<pre><code>static int Main(string[] args)
+{
+    _args = new Arguments(args);
+}
+</code></pre>
+
+<h2>Example Arguments</h2>
+
+
+<blockquote><p>Argument: –flag  <br />
+Usage: args.IsTrue(&ldquo;flag&rdquo;);  <br />
+Result: true <br /></p>
+
+<p>Argument: –arg:MyValue  <br />
+Usage: args.Single(&ldquo;arg&rdquo;);  <br />
+Result: MyValue <br /></p>
+
+<p><p>Argument: –arg &ldquo;My Value&rdquo; <br />
+Usage: args.Single(&ldquo;arg&rdquo;);  <br />
+Result: ‘My Value’ <br /></p>
+
+<p>Argument: /arg=Value /arg=Value2  <br />
+Usage: args[&ldquo;arg&rdquo;]  <br />
+Result: new string[] {&ldquo;Value&rdquo;, &ldquo;Value2&rdquo;} <br /></p>
+
+<p>Argument: /arg=&ldquo;Value,Value2&rdquo;  <br />
+Usage: args[&ldquo;arg&rdquo;]  <br />
+Result: new string[] {&ldquo;Value&rdquo;, &ldquo;Value2&rdquo;} <br /></p></blockquote>
+
+<p>As you can see it is very flexible, it support [–/]arg[:=<space>]value and with the list support it makes it really useful and adaptable.</p>
+
+<p>I have tried to cover as many of the different options with unit tests to make sure it is robust.</p>
+
+<h1>Arguments Class</h1>
+
+
+<pre><code>/// &lt;summary&gt;
+/// Arguments class
+/// &lt;/summary&gt;
+public class Arguments
+{ 
+    /// &lt;summary&gt;
+    /// Splits the command line. When main(string[] args) is used escaped quotes (ie a path "c:\folder\")
+    /// Will consume all the following command line arguments as the one argument. 
+    /// This function ignores escaped quotes making handling paths much easier.
+    /// &lt;/summary&gt;
+    /// &lt;param name="commandLine"&gt;The command line.&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    public static string[] SplitCommandLine(string commandLine)
+    {
+        var translatedArguments = new StringBuilder(commandLine);
+        var escaped = false;
+        for (var i = 0; i &lt; translatedArguments.Length; i++)
+        {
+            if (translatedArguments[i] == '"')
+            {
+                escaped = !escaped;
+            }
+            if (translatedArguments[i] == ' ' &amp;&amp; !escaped)
+            {
+                translatedArguments[i] = '\n';
+            }
+        }
+
+        var toReturn = translatedArguments.ToString().Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        for (var i = 0; i &lt; toReturn.Length; i++)
+        {
+            toReturn[i] = RemoveMatchingQuotes(toReturn[i]);
+        }
+        return toReturn;
+    }
+
+    public static string RemoveMatchingQuotes(string stringToTrim)
+    {
+        var firstQuoteIndex = stringToTrim.IndexOf('"');
+        var lastQuoteIndex = stringToTrim.LastIndexOf('"');
+        while (firstQuoteIndex != lastQuoteIndex)
+        {
+            stringToTrim = stringToTrim.Remove(firstQuoteIndex, 1);
+            stringToTrim = stringToTrim.Remove(lastQuoteIndex - 1, 1); //-1 because we've shifted the indicies left by one
+            firstQuoteIndex = stringToTrim.IndexOf('"');
+            lastQuoteIndex = stringToTrim.LastIndexOf('"');
+        }
+
+        return stringToTrim;
+    }
+
+    private readonly Dictionary&lt;string, Collection&lt;string&gt;&gt; _parameters;
+    private string _waitingParameter;
+
+    public Arguments(IEnumerable&lt;string&gt; arguments)
+    {
+        _parameters = new Dictionary&lt;string, Collection&lt;string&gt;&gt;();
+
+        string[] parts;
+
+        //Splits on beginning of arguments ( - and -- and / )
+        //And on assignment operators ( = and : )
+        var argumentSplitter = new Regex(@"^-{1,2}|^/|=|:",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        foreach (var argument in arguments)
+        {
+            parts = argumentSplitter.Split(argument, 3);
+            switch (parts.Length)
+            {
+                case 1:
+                    AddValueToWaitingArgument(parts[0]);
+                    break;
+                case 2:
+                    AddWaitingArgumentAsFlag();
+
+                    //Because of the split index 0 will be a empty string
+                    _waitingParameter = parts[1];
+                    break;
+                case 3:
+                    AddWaitingArgumentAsFlag();
+
+                    //Because of the split index 0 will be a empty string
+                    string valuesWithoutQuotes = RemoveMatchingQuotes(parts[2]);
+
+                    AddListValues(parts[1], valuesWithoutQuotes.Split(','));
+                    break;
+            }
+        }
+
+        AddWaitingArgumentAsFlag();
+    }
+
+    private void AddListValues(string argument, IEnumerable&lt;string&gt; values)
+    {
+        foreach (var listValue in values)
+        {
+            Add(argument, listValue);
+        }
+    }
+
+    private void AddWaitingArgumentAsFlag()
+    {
+        if (_waitingParameter == null) return;
+
+        AddSingle(_waitingParameter, "true");
+        _waitingParameter = null;
+    }
+
+    private void AddValueToWaitingArgument(string value)
+    {
+        if (_waitingParameter == null) return;
+
+        value = RemoveMatchingQuotes(value);
+
+        Add(_waitingParameter, value);
+        _waitingParameter = null;
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the count.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;The count.&lt;/value&gt;
+    public int Count
+    {
+        get
+        {
+            return _parameters.Count;
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Adds the specified argument.
+    /// &lt;/summary&gt;
+    /// &lt;param name="argument"&gt;The argument.&lt;/param&gt;
+    /// &lt;param name="value"&gt;The value.&lt;/param&gt;
+    public void Add(string argument, string value)
+    {
+        if (!_parameters.ContainsKey(argument))
+            _parameters.Add(argument, new Collection&lt;string&gt;());
+
+        _parameters[argument].Add(value);
+    }
+
+    public void AddSingle(string argument, string value)
+    {
+        if (!_parameters.ContainsKey(argument))
+            _parameters.Add(argument, new Collection&lt;string&gt;());
+        else
+            throw new ArgumentException(string.Format("Argument {0} has already been defined", argument));
+
+        _parameters[argument].Add(value);
+    }
+
+    public void Remove(string argument)
+    {
+        if (_parameters.ContainsKey(argument))
+            _parameters.Remove(argument);
+    }
+
+    /// &lt;summary&gt;
+    /// Determines whether the specified argument is true.
+    /// &lt;/summary&gt;
+    /// &lt;param name="argument"&gt;The argument.&lt;/param&gt;
+    /// &lt;returns&gt;
+    ///     &lt;c&gt;true&lt;/c&gt; if the specified argument is true; otherwise, &lt;c&gt;false&lt;/c&gt;.
+    /// &lt;/returns&gt;
+    public bool IsTrue(string argument)
+    {
+        AssertSingle(argument);
+
+        var arg = this[argument];
+
+        return arg != null &amp;&amp; arg[0].Equals("true", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void AssertSingle(string argument)
+    {
+        if (this[argument] != null &amp;&amp; this[argument].Count &gt; 1)
+            throw new ArgumentException(string.Format("{0} has been specified more than once, expecting single value", argument));
+    }
+
+    public string Single(string argument)
+    {
+        AssertSingle(argument);
+
+        //only return value if its NOT true, there is only a single item for that argument
+        //and the argument is defined
+        if (this[argument] != null &amp;&amp; !IsTrue(argument))
+            return this[argument][0];
+
+        return null;
+    }
+
+    public bool Exists(string argument)
+    {
+        return (this[argument] != null &amp;&amp; this[argument].Count &gt; 0);
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the &lt;see cref="System.Collections.ObjectModel.Collection&amp;lt;T&amp;gt;"/&gt; with the specified parameter.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;&lt;/value&gt;
+    public Collection&lt;string&gt; this[string parameter]
+    {
+        get
+        {
+            return _parameters.ContainsKey(parameter) ? _parameters[parameter] : null;
+        }
+    }
+}
+</code></pre>
+
+<h1>Unit Tests</h1>
+
+
+<p>Tests use xUnit as the unit testing framework</p>
+
+<pre><code>public class ArgumentsTests
+{
+    [Fact]
+    public void ArgumentBooleanTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-testBool"
+                                       };
+        var target = new Arguments(args);
+        Assert.True(target.IsTrue("testBool"));
+    }
+
+    [Fact]
+    public void IsTrueDoesntExist()
+    {
+        IEnumerable&lt;string&gt; args = new string[]{};
+        var target = new Arguments(args);
+        Assert.False(target.IsTrue("doesntExist"));
+    }
+
+    [Fact]
+    public void ArgumentDoubleDashesTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "--testArg=Value"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal("Value", target.Single("testArg"));
+    }
+
+    [Fact]
+    public void ArgumentSingleTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value", target.Single("test"));
+    }
+
+    [Fact]
+    public void ArgumentWithSpaceSeparatorTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-test Value");
+
+        var target = new Arguments(args);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value", target.Single("test"));
+    }
+
+    [Fact]
+    public void ArgumentWithSpaceSeparatorAndSpaceInValueTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-test \"Value With Space\"");
+
+        var target = new Arguments(args);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value With Space", target.Single("test"));
+    }
+
+    [Fact]
+    public void AddWaitingAsFlagTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag -test \"Value With Space\"");
+
+        var target = new Arguments(args);
+        Assert.Equal(2, target.Count);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value With Space", target.Single("test"));
+        Assert.True(target.IsTrue("flag"));
+    }
+
+    [Fact]
+    public void AddSingleTwiceTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag");
+
+        var target = new Arguments(args);
+
+        Assert.Throws&lt;ArgumentException&gt;(() =&gt; target.AddSingle("flag", "true"));
+    }
+
+    [Fact]
+    public void FlagsTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag1 -flag2");
+
+        var target = new Arguments(args);
+
+        Assert.True(target.IsTrue("flag1"));
+        Assert.True(target.IsTrue("flag2"));
+    }
+
+    [Fact]
+    public void RemoveTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag1 -flag2");
+
+        var target = new Arguments(args);
+
+        Assert.True(target.IsTrue("flag1"));
+        Assert.True(target.IsTrue("flag2"));
+        target.Remove("flag1");
+        Assert.False(target.Exists("flag1"));
+        Assert.True(target.IsTrue("flag2"));
+    }
+
+    [Fact]
+    public void SingleReturnsNullIfNotDefinedTest()
+    {
+
+        var target = new Arguments(new string[]{});
+
+        Assert.False(target.Exists("notDefined"));
+        Assert.Null(target.Single("notDefined"));
+    }
+
+    [Fact]
+    public void ExistsTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag1");
+
+        var target = new Arguments(args);
+
+        Assert.True(target.Exists("flag1"));
+    }
+
+    [Fact]
+    public void ArgumentListTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:Value2"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("Value2", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentPathTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           @"-test:C:\Folder\"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal(@"C:\Folder\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentQuotedPathTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:\"C:\\Folder\\\""
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("C:\\Folder\\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentQuotedPathWithSpaceTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:\"C:\\Folder Name\\\""
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("C:\\Folder Name\\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentQuotedPathWithSpaceAndFollowingArgTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:\"C:\\Folder Name\\\"",
+                                           "-testPath:\"C:\\Folder2\\\"",
+                                           "-boolArg"
+                                       };
+
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal(@"C:\Folder2\", target.Single("testPath"));
+        Assert.True(target.IsTrue("boolArg"));
+
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("C:\\Folder Name\\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentListRequestSingleThrowsExceptionTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:Value2"
+                                       };
+
+        var target = new Arguments(args);
+        //Should throw Argument exception because test is defined more than once
+        Assert.Throws&lt;ArgumentException&gt;(() =&gt; target.Single("test"));
+    }
+
+    [Fact]
+    public void ArgumentCommaListTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-testList:Value,Value2,Value3"
+                                       };
+
+        var target = new Arguments(args);
+        Assert.Equal(3, target["testList"].Count);
+
+        Assert.Equal("Value", target["testList"][0]);
+        Assert.Equal("Value2", target["testList"][1]);
+        Assert.Equal("Value3", target["testList"][2]);
+    }
+
+    [Fact]
+    public void BlogExample()
+    {
+        const string commandLine = "-u -d -mdb=\"c:\\entries.mdb\" -xml=\"j:\\\"";
+
+        var target = new Arguments(Arguments.SplitCommandLine(commandLine));
+
+        Assert.Equal("c:\\entries.mdb", target.Single("mdb"));
+        Assert.Equal("j:\\", target.Single("xml"));
+    }
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

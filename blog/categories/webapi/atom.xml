@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: WebApi | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/webapi/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Web Api Problem - 404s for Everything]]></title>
+    <link href="http://JakeGinnivan.github.io/web-api-problem-404s-for-everything/"/>
+    <updated>2012-08-20T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/web-api-problem-404s-for-everything</id>
+    <content type="html"><![CDATA[<h1>Scenario</h1>
+
+<p>So the scenario is that we are in the middle of migrating all our services into Azure, and there will be a time when our services will be running on premise and also in Azure.</p>
+
+<p>We added this class to our project and added a reference to <code>Microsoft.WindowsAzure.ServiceRuntime</code> (from the GAC):</p>
+
+<pre><code>public class WebRole : RoleEntryPoint
+{
+    public override bool OnStart()
+    {
+        //Start code
+        return base.OnStart();
+    }
+}
+</code></pre>
+
+<p>Our WebApi site starts 404'ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.</p>
+
+<!-- more -->
+
+
+<h2>The issue</h2>
+
+<p>So I started work this morning investigating why our UI automation tests were all hanging/broken. I noticed our message processor was logging errors &lsquo;Not Found&rsquo;, restarting everything I managed to get something which looked like:</p>
+
+<pre><code>{"Message":"No HTTP resource was found that matches the request URI 'http://localhost/TestSite/api/values'.","MessageDetail":"No type was found that matches the controller named 'values'."}
+</code></pre>
+
+<p>Remember that WebRole class we added, well RoleEntryPoint comes from <code>Microsoft.WindowsAzure.ServiceRuntime</code> is referenced from the GAC, and it seems that WebApi reflects over all types in the solution which would have caused a TypeLoadException to be thrown. This apparently causes Web Api to not work at all&hellip;. I also have no idea where this issue comes from, as I cannot see an exception at all when debugging.</p>
+
+<h2>To Reproduce</h2>
+
+<ol>
+<li>Create a new Web API project</li>
+<li><p>Add a new class called MyDbContext, inheriting from DbContext:</p>
+
+<p> public void MyDbContext : DbContext {}</p></li>
+<li><p>Change the entity framework dll to CopyLocal=False</p></li>
+</ol>
+
+
+<p>F5, and try and hit your api&rsquo;s.</p>
+
+<p>Any insights as to why this is happening and how to log the error would be awesome&hellip;.</p>
+]]></content>
+  </entry>
+  
+</feed>

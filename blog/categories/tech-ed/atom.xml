@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tech-ed | Jake Ginnivan's blog]]></title>
+  <link href="http://JakeGinnivan.github.io/blog/categories/tech-ed/atom.xml" rel="self"/>
+  <link href="http://JakeGinnivan.github.io/"/>
+  <updated>2014-01-05T16:26:22+00:00</updated>
+  <id>http://JakeGinnivan.github.io/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[TechEd DEV332 Resources]]></title>
+    <link href="http://JakeGinnivan.github.io/dev332-resources/"/>
+    <updated>2010-08-29T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/dev332-resources</id>
+    <content type="html"><![CDATA[<h1>DEV332</h1>
+
+<p>Thanks to everyone that attended my session, any feedback you have would be great!</p>
+
+<h1>Resources</h1>
+
+<ul>
+<li><a href="/get/downloads/dev332.zip">Demos</a></li>
+<li><a href="/get/downloads/dev332_Ginnivan.zip">Powerpoint</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

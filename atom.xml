@@ -1,16 +1,1762 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T10:04:09+00:00</updated>
+  <updated>2014-01-05T16:26:22+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
-    
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
+    <link href="http://JakeGinnivan.github.io/gitreleasenotes/"/>
+    <updated>2013-12-17T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/gitreleasenotes</id>
+    <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
+
+<p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>
+
+<p>GitReleaseNotes was another project I kicked off about the same time that <a href="https://github.com/simoncropp">Simon Cropp</a> and <a href="https://github.com/andreasohlund">Andreas Öhlund</a> were kicking off similar projects, see <a href="https://github.com/Particular/ReleaseNotesCompiler">https://github.com/Particular/ReleaseNotesCompiler</a>. We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.</p>
+
+<!-- more -->
+
+
+<h2>What does it do</h2>
+
+<p>The concept is quite simple, you can optionally specify a Git tag (it will select the newest tag if you do not specify one). It will then scan all newer commits for references to issues.</p>
+
+<p>Once it has all the referenced commits, it will connect the issue tracker you specify, currently GitHub or Jira (and soon YouTrack, TFS and BitBucket) and fetch all the closed issues which have been referenced.
+It will then output your release notes in <a href="http://www.semanticreleasenotes.org/">Semantic Release Notes</a> format (which is also markdown) to a file you specify.</p>
+
+<p>It can also publish a release on GitHub, including the generated release notes.</p>
+
+<p>Here are some examples of the types of release notes it can generate:</p>
+
+<p><a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.ApproveSimpleTests.approved.txt">Simple single issue release</a><br/>
+<a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.MultipleReleases.approved.txt">Multiple releases</a></p>
+
+<h2>How to use it</h2>
+
+<p>GitReleaseNotes is a .NET exe, but can be used on ALL project types (JavaScript, Ruby, Java, whatever) because it simply works with Git and whatever issue tracker you use.</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /OutputFile ReleaseNotes.md
+</code></pre>
+
+<p>To Publish, just add the <code>/Publish</code> switch and specify the version you want to publish with the <code>/Version</code> switch. Like so</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /Publish /Version 0.2.0
+</code></pre>
+
+<h2>How to setup on TeamCity</h2>
+
+<p>TeamCity is not required, but I like being able to press a button and my latest CI build gets published.</p>
+
+<p>Well, I am using <a href="https://github.com/JakeGinnivan/GitHubFlowVersion">GitHubFlowVersion</a> which helps me do Semantic Versioning with ease, but if you have another versioning strategy most of the instructions are the same.</p>
+
+<p>Assuming you have a CI build which creates the artifacts, or you have an existing build you will be adding to.</p>
+
+<ol>
+<li>Head to <a href="https://github.com/settings/applications">https://github.com/settings/applications</a> and create an access token</li>
+<li>Create a new configuration parameter in teamcity called <code>GitHubToken</code>, set the value to the access token you have just created and edit the spec field and paste in <code>password display='hidden'</code>, which will mean your GitHub access token will not be published into any build logs and will just be ####ed out.</li>
+<li>Your VCS root must be set to checkout <code>Automatically on Agent</code>, otherwise GitReleaseNotes will not run</li>
+<li>Make sure you check GitReleaseNotes.exe into source control so you can access it</li>
+<li>Create a new build step which is running a command line application, and make it look something like this<br/>
+ <code>GitReleaseNotes\GitReleaseNotes.exe /IssueTracker GitHub /Publish /Token %GitHubToken% /Repo JakeGinnivan/GitReleaseNotes /Version %dep.OpenSourceProjects_GitReleaseNotes_CI.system.GitHubFlowVersion.SemVer%</code></li>
+</ol>
+
+
+<p>My version number is the SemVer of my CI build, if you are using GitHubFlowVersion you will have to create a dummy system.GitHubFlowVersion.SemVer variable, otherwise you cannot reference it across builds (doesn&rsquo;t exist at configure time, it is created when you run GitHubFlowVersion).</p>
+
+<p>And thats it, you can have a build publishing your release notes to GitHub and this will also tag master with the version you have just published.</p>
+
+<p>There are still plenty of issues with this project and heaps of work to do, but I like the way it is shaping up. Feedback/contributions are welcome.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git Flow Versioning]]></title>
+    <link href="http://JakeGinnivan.github.io/git-flow-versioning/"/>
+    <updated>2013-10-02T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/git-flow-versioning</id>
+    <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
+
+<p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
+
+<p>Much to my surpise, it is actually very light-weight and you can drop much of it if your process is simpler (say for open source).</p>
+
+<p><a href="https://github.com/TestStack/ConventionTests">https://github.com/TestStack/ConventionTests</a> is my guinea pig!</p>
+
+<p>To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, &lsquo;upstream&rsquo; is the main repository, &lsquo;origin&rsquo; is my fork.</p>
+
+<!-- more -->
+
+
+<h2>1. Convert the repo over to git-flow</h2>
+
+<p>From your git command line</p>
+
+<pre><code>git checkout master
+git fetch upstream
+git merge upstream/master
+git checkout develop
+git push upstream develop
+</code></pre>
+
+<p>This pushes the <code>develop</code> branch into your repo, then head to the project settings in github and change the default branch to <code>develop</code>.</p>
+
+<h2>2. Install GitFlowVersion</h2>
+
+<p>I am a big fan on Simon Cropp&rsquo;s (<a href="https://twitter.com/SimonCropp">https://twitter.com/SimonCropp</a>) work. He has been working on <a href="https://github.com/Particular/GitFlowVersion">https://github.com/Particular/GitFlowVersion</a> with Andreas Öhlund.</p>
+
+<p>Basically GitFlowVersion uses the conventions in place in git-flow to make it really easy to version your software.</p>
+
+<p>Once up and running, tags off <code>master</code> get a normal version, say <code>v2.1.0</code> (assume this is the LAST tagged release), develop CI builds get the version <code>v2.2.0-unstable20</code> where the minor is LASTMINOR + 1 and there has been 20 commits since the last tag on master. Or <code>v&lt;major&gt;.&lt;minor+1&gt;.0-unstable&lt;#commitssincelastrelease&gt;</code>
+Release branches have a version of <code>v2.2.0-beta</code> where 2.2.0 is the version you have put in the release branch name (in this case <code>release-2.2.0</code>)
+You can also tag a release branch as <code>rc1</code> or <code>rc2</code> and the version will become <code>v2.2.0-&lt;tag&gt;</code>.</p>
+
+<p>If this sounds confusing, its not, and it is all pretty automatic, read on to see what it actually means for you maintaining a project.</p>
+
+<h2>3. Contributing/Pull Requests</h2>
+
+<p>I always use feature branches, but not for an entire feature. I use very short lived branches, which I put up as a pull request as soon as I am done. I am known to submit 3+ pull requests all within the space of an hour when I work on a project because I just fix a bunch of small things.</p>
+
+<p>Nothing much changes here, except you take you branch from <code>develop</code>. So</p>
+
+<pre><code>git checkout develop
+git fetch upstream
+git merge upstream/develop
+git checkout -b FixingSomething
+</code></pre>
+
+<p>Pull requests now target <code>develop</code>, so I do my commits, push to origin like normal and submit my pull request targeting <code>develop</code></p>
+
+<p>Your CI build (assuming you are building pull requests) will trigger with build number <code>v2.2.0-PullRequest50</code>, where the version is the last release, with the minor bumped, just like develop version numbers, except the semver tag is PullRequest&lt;PR#>.
+I think that is pretty neat.</p>
+
+<h2>4. Releasing a new version</h2>
+
+<p>When you decide you want to release, or start preparing a release you can either take a release branch, or merge develop straight into master and tag master with the release (afaik this doesn&rsquo;t cause any issues :P)</p>
+
+<p>In my mind there are two styles to run a project,</p>
+
+<ol>
+<li>every checkin builds, then if tests pass autodeploys. These projects cannot adhere to semantic versioning, but the changes are often so tiny that upgrades pose little risk.</li>
+<li>At some point in time, the decision to release is made, this could be as soon as a pull request is merged, or after a particular milestone is reached. All the projects I am currently contributing to work in this way.</li>
+</ol>
+
+
+<h3>4.1 Using a release branch</h3>
+
+<p>Using a release branch allows you to make the decision I am going to release, there may be a few things I know I have to do before releasing (DbUp is a great example of this). But I don&rsquo;t want to stop being able to merge pull requests. To release using a branch (assume develop is up to date), and I am only fixing a bug in the current v2.1.0 release</p>
+
+<pre><code>git checkout -b release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release start 2.1.1
+</code></pre>
+
+<p>I can now leave this branch open for a bit, do the work I need to do to release 2.1.1 or send it to someone else on the team to OK. I could even release the 2.1.1 build as a pre-release package on NuGet. It would have version 2.1.1-beta1 remember.</p>
+
+<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &mdash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
+
+<pre><code>git checkout develop
+git merge release-2.1.1 --no-ff
+git checkout master
+git merge release-2.1.1 --no-ff
+git tag 2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release finish 2.1.1
+</code></pre>
+
+<p>Then publish</p>
+
+<pre><code>git push upstream master
+git push --tags
+git branch -d release-2.1.1
+git push upstream :release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release publish 2.1.1
+</code></pre>
+
+<h3>4.2 Skip release branch</h3>
+
+<p>If you don&rsquo;t want to bother with the release branch, you could also just go</p>
+
+<pre><code>git checkout master
+git merge develop --no-ff
+git tag 2.1.1
+git push upstream master
+git push --tags
+</code></pre>
+
+<h2>5. Publish the build</h2>
+
+<p>Now you have the release build from your CI you can progress through your build pipeline and release to NuGet or publish to a test environment or whatever the first step is in your Continuous Delivery pipeline.</p>
+
+<h2>That&rsquo;s it</h2>
+
+<p>I think Git-Flow is actually not too bad for releasing projects using semantic versioning, most of the time in this is writing the release notes, seeing what has changed since the last release (which is really easy due to the conventions in place!) and checking to see if you have any breaking changes which would mean a major version bump.</p>
+
+<p>As a summary. Here is me fixing and releasing a feature as a pre-release package. The current version on NuGet is currently v2.2.0</p>
+
+<pre><code>git fetch upstream
+git checkout develop
+git merge upstream/develop
+git checkout -b SomeFeature
+
+# Work..
+git commit -am "Some experimental feature"
+git push origin SomeFeature
+
+# Submit pull request, so NOTHING has changed yet, this PR is merged
+git fetch upstream
+git checkout develop
+git merge upstream/develop # to get my changes into my local develop branch
+
+# So now I am starting the release, nothing before here is new if you are using GitHub flow
+git checkout -b release-2.3.0
+git push upstream release-2.3.0
+</code></pre>
+
+<p>Now my CI builds, and I click the button to promote the last CI build as a pre-release NuGet package. Once I am happy, I have got my feedback</p>
+
+<pre><code>git checkout master
+git merge release-2.3.0 --no-ff
+git tag 2.3.0
+git push upstream master
+git push upstream --tags
+</code></pre>
+
+<p>My CI will build, and I can click the publish button on teamcity to release to NuGet.</p>
+
+<p>Thoughts? Do you know of an easier way. I am REALLY open to suggestions and willing to try stuff out at the moment :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Release NuGet SemVer Packages From Teamcity]]></title>
+    <link href="http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity/"/>
+    <updated>2013-09-28T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity</id>
+    <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
+
+<p>My goals were</p>
+
+<ul>
+<li>Use GitHubs releases feature &ndash; <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>I want to release from NuGet</li>
+<li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
+<li>Support SemVer, including pre-release packages</li>
+<li>Assembly versions should be stamped with informational version as well as a version</li>
+<li>Be able to link to the project GitHub releases from the NuSpec</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h1>My Solution</h1>
+
+<h2>1. Setup the VCS Root to be authenticated</h2>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/ReleaseNuGetSemVerpackagesfromTeamcity.png" alt="ReleaseNuGetSemVerpackagesfromTeamcity" /></p>
+
+<p>Then tell TeamCity to Label Successful builds
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity11_635160285120295000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity11" /></p>
+
+<h2>2. Setup some additional build parameters</h2>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity_635160285057326250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity" /></p>
+
+<h3>2.1. AssemblyVersion</h3>
+
+<p>This is the assembly version, only change this for major releases, this will save people adding binding redirects when different projects rely on different versions
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity1_635160285061232500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity1" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity2_635160285065138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity2" /></p>
+
+<p>If you want the text version of the spec, it is</p>
+
+<pre><code>text description='The assembly version which will be stamped (assembly info version/nuget version will be the build number)' display='prompt' label='AssemblyVersion' validationMode='not_empty'
+</code></pre>
+
+<h3>2.2. Prerelease</h3>
+
+<p>This is a checkbox, when ticked it&rsquo;s value is <code>-pre</code> so we can just use it in the version
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity3_635160285069201250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity3" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity4_635160285073263750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity4" /></p>
+
+<p>Once again the text version of the spec is</p>
+
+<pre><code>checkbox checkedValue='-pre' description='Check this box if you want a pre-release' display='prompt' label='PreRelease?'
+</code></pre>
+
+<h3>2.3. Version</h3>
+
+<p>This is the version which you will pass to NuGet when you are creating your package
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity5_635160285077170000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity5" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity6_635160285081076250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity6" /></p>
+
+<pre><code>text description='This is the version number, adjust the major/minor as needed to conform to semver' display='prompt' label='VersionNumber' validationMode='not_empty'
+</code></pre>
+
+<h3>2.4. env.Version</h3>
+
+<p>This is just so the version gets set as an environmental variable so my build scripts can pick it up</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity7_635160285084513750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity7" /></p>
+
+<p>I am not sure if this is actually needed.</p>
+
+<h2>3. Build Steps</h2>
+
+<p>I always have a <code>.proj</code> file checked in for all of my projects which contain all logic to build the solution, I just have to tell teamcity what targets to invoke. If you want to view my build script, check out <a href="https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj">https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj</a></p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity8_635160285101388750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity8" /></p>
+
+<p>The Test target builds and runs my unit tests, then the Publish Target builds the NuGet packages, step 2 of my TeamCity build is Publish to NuGet</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity9_635160285112638750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity9" /></p>
+
+<p>Finally, the assembly info stamping build feature. Click <strong>Add build feature</strong></p>
+
+<p>We want to use two different versions from our config, remember from above we have</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity10_635160285116545000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity10" /></p>
+
+<h2>4. Update the build version</h2>
+
+<p>Finally go to the General Settings of your build, and update the build number format to be: <code>%Version%</code> and we set the build counter to 0</p>
+
+<h1>Releasing a new version</h1>
+
+<p>So now, we have to stick to SemVer, let us run through a scenario of releasing a minor release (new non-breaking feature) of TestStack.ConventionTests. The current release is v2.0.0. I first need to reset the build counter back to 0, if you don&rsquo;t want to mess with the build counter, just change the VersionNumber variable to have a manually updated patch version. This actually is probably better because then the version numbers are more predictable.</p>
+
+<h2>Create release definition in GitHub</h2>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity16_635160285172951250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity16" />
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity17_635160285176857500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity17" /></p>
+
+<p>Specify the release notes for this release
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity18_635160285180763750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity18" /></p>
+
+<p>Do not have the Publish Release box ticked, otherwise GitHub will create the tag for you.</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity19_635160285184670000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity19" /></p>
+
+<h2>Release from TeamCity</h2>
+
+<p>I click <em>Run</em> in TeamCity, and I will be prompted to confirm everything</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity14_635160285165138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity14" /></p>
+
+<p>Because this is a minor release, I increment the minor version number
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity15_635160285169045000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity15" /></p>
+
+<p>Now hit run, this will publish to NuGet and create the tag in Git. The final step is to go back to GitHub and publish the release (this is not done automatically, and I&rsquo;m sure it could be automated through the GitHub API).</p>
+
+<p>This is my first attempt at making it easy for me to release my open source projects with SemVer and GitHub Releases</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convention Tests V2 Released]]></title>
+    <link href="http://JakeGinnivan.github.io/conventiontests-v2-released/"/>
+    <updated>2013-09-19T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/conventiontests-v2-released</id>
+    <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
+
+<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
+
+<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
+
+<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
+
+<h2>What is ConventionTests?</h2>
+
+<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
+
+<!-- more -->
+
+
+<h2>Getting Started</h2>
+
+<p>It is really easy to get started with Convention Tests, we have included a bunch of conventions out of the box. The included conventions are:</p>
+
+<ul>
+<li>All Classes Have Default Constructor</li>
+<li>All Methods are Virtual</li>
+<li>Class type has specific namespace (for example, all dtos must live in the ProjectName.Dtos namespace)</li>
+<li>Files are Embedded Resources</li>
+<li>Project does not reference dlls from Bin or Obj directory</li>
+<li>Plus others will be added!</li>
+</ul>
+
+
+<h3>Writing your first Convention test</h3>
+
+<h4>1. Using your favourite testing framework, create a new test. Lets call it <code>nhibernate_entities_must_have_default_constructor</code></h4>
+
+<h4>2. Define some data</h4>
+
+<p>At the moment there is minimal support for type scanning, but better support will be added soon!</p>
+
+<pre><code>var itemsToVerify = typeof (SampleDomainClass).Assembly.GetTypes();
+var nhibernateEntities = new Types("nHibernate Entitites")
+{
+    TypesToVerify = itemsToVerify
+};
+</code></pre>
+
+<h4>3. Assert the convention</h4>
+
+<p><code>Convention.Is(new AllClassesHaveDefaultConstructor(), nhibernateEntities);</code></p>
+
+<h4>That&rsquo;s it!</h4>
+
+<p>When you run this convention, if it fails an exception will be thrown, which will look something like this:</p>
+
+<pre><code>ConventionFailedException
+Message = Failed: 'Types must have a default constructor' for 'nHibernate Entitites'
+--------------------------------------------------------------------------
+
+TestAssembly.ClassWithNoDefaultCtor
+TestAssembly.ClassWithPrivateDefaultCtor
+</code></pre>
+
+<p>How cool is that!</p>
+
+<h3>Reporting</h3>
+
+<p>If you would like to use ConventionTests reporting features, you just have to opt in by specifying the reporter you want. This makes it easy to add your own reporters, for example a WikiReporter may be better than the <code>HtmlReporter</code></p>
+
+<p>In your <code>Properties\AssemblyInfo.cs</code> file add the reporters you want. This are global reporters which will report the results of all conventions.</p>
+
+<pre><code>[assembly: ConventionReporter(typeof(HtmlConventionResultsReporter))]
+[assembly: ConventionReporter(typeof(MarkdownConventionResultsReporter))]
+</code></pre>
+
+<p>Then if you look in the directory where your test assembly is, there will be an html report called <code>Conventions.htm</code>, serving as living documentation!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pack URI in Unit Tests]]></title>
+    <link href="http://JakeGinnivan.github.io/pack-uri-in-unit-tests/"/>
+    <updated>2013-09-16T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/pack-uri-in-unit-tests</id>
+    <content type="html"><![CDATA[<p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
+
+<h2>Exception 1</h2>
+
+<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
+
+<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
+
+<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
+</code></pre>
+
+<h2>Exception 2</h2>
+
+<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
+
+<p>This one is fixed by giving WPF the default resource assembly.</p>
+
+<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
+</code></pre>
+
+<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Verifying Logged Messages With Log4Net]]></title>
+    <link href="http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net/"/>
+    <updated>2013-09-13T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net</id>
+    <content type="html"><![CDATA[<p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
+
+<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
+</code></pre>
+
+<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
+
+<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
+</code></pre>
+
+<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
+
+<!-- more -->
+
+
+<pre><code>[TestFixture]
+public class RecordTest
+{
+    [Test]
+    public void DoTest()
+    {
+        var testing = Log4NetTestHelper.RecordLog(() =&gt;
+        {
+            var log = LogManager.GetLogger(typeof (RecordTest));
+            log.Error("Testing!");
+        });
+
+        Assert.AreEqual("ERROR - RecordTest | Testing!", testing[0]);
+    }
+}
+</code></pre>
+
+<p>Pretty easy, you record the logs which are logged inside a lambda. This means you don&rsquo;t have to inject logs and modify your code if you decide you want to assert on a logged message</p>
+
+<p>The class to do this is pretty simple</p>
+
+<pre><code>public static class Log4NetTestHelper
+{
+    public static string[] RecordLog(Action action)
+    {
+        if (!LogManager.GetRepository().Configured)
+            BasicConfigurator.Configure();
+        var logMessages = new List&lt;string&gt;();
+        var root = ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root;
+        var attachable = root as IAppenderAttachable;
+
+        var appender = new MemoryAppender();
+        if (attachable != null)
+            attachable.AddAppender(appender);
+
+        try
+        {           
+            action();
+        }
+        finally
+        {
+            var loggingEvents = appender.GetEvents();
+            foreach (var loggingEvent in loggingEvents)
+            {
+                var stringWriter = new StringWriter();
+                loggingEvent.WriteRenderedMessage(stringWriter);
+                logMessages.Add(string.Format("{0} - {1} | {2}", loggingEvent.Level.DisplayName, loggingEvent.LoggerName, stringWriter.ToString()));
+            }
+            if (attachable != null)
+                attachable.RemoveAppender(appender);
+        }
+
+        return logMessages.ToArray();
+    }
+}
+</code></pre>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce Signing Error]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-signing-error/"/>
+    <updated>2013-09-13T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-signing-error</id>
+    <content type="html"><![CDATA[<p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
+
+<p>The command:</p>
+
+<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
+</code></pre>
+
+<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
+
+<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
+
+<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
+    <link href="http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin/"/>
+    <updated>2013-09-09T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin</id>
+    <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
+
+<p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
+
+<p>Here are some screenshots</p>
+
+<p><img src="http://jake.ginnivan.net/get/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+
+<p><img src="http://jake.ginnivan.net/get/Capture2.PNG" alt="Options" /></p>
+
+<p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
+
+<p>Check out the code, report issues and submit pull requests at <a href="https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup">https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup</a> and install from <a href="https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/">ReSharper Extensions Site</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce From Azure Blob Storage]]></title>
+    <link href="http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage/"/>
+    <updated>2013-08-08T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage</id>
+    <content type="html"><![CDATA[<p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
+
+<h2>Creating the ClickOnce installer</h2>
+
+<p>I don&rsquo;t like using the publish feature in VS for my ClickOnce installers, it causes more problems than it solves. I tend to use Mage directly, but this is sometimes not that easy to figure out how to do it. Lets start by creating our installer.</p>
+
+<p>I am using MSBuild as my build platform, but these instructions can be adapted to anything really.</p>
+
+<!-- more -->
+
+
+<h3>Properties</h3>
+
+<pre><code>&lt;PropertyGroup&gt;
+  &lt;Version Condition="$(VERSION)==''"&gt;0.0.0.1&lt;/Version&gt;
+  &lt;ClickOnceFolder&gt;$(MSBuildProjectDirectory)artifacts\ClickOnce\&lt;/ClickOnceFolder&gt;
+  &lt;ClickOnceFiles&gt;$(ClickOnceFolder)$(Version)\&lt;/ClickOnceFiles&gt;
+  &lt;Mage&gt;$(MSBuildProjectDirectory)tools\mage.exe&lt;/Mage&gt;
+  &lt;ProviderUrlArg Condition="$(ProviderUrl)!=''"&gt;-ProviderURL $(ProviderUrl)&lt;/ProviderUrlArg&gt;
+  &lt;ClickOnceName Condition="$(ClickOnceName)==''"&gt;MarkPad&lt;/ClickOnceName&gt;
+&lt;/PropertyGroup&gt;
+&lt;ItemGroup&gt;
+  &lt;SourceFiles Include="$(MSBuildProjectDirectory)src\My.App\bin\$(Configuration)\**\*.*" /&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+
+<p>The provider URL is so we can embed the installation URL into the installer, this will make ClickOnce work in Chrome and other browsers. Chrome downloads the .application file, then the user runs it from the <code>Downloads</code> folder, at that point ClickOnce has no idea where it was downloaded from, so the install fails.
+With the provider url embedded, it will work as expected.</p>
+
+<p>Most of the properties above should be easy to understand what they are for.</p>
+
+<h3>Creating the installer</h3>
+
+<h4>1. Copy the application binaries into a Version folder</h4>
+
+<pre><code>&lt;Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ClickOnceFiles)%(SourceFiles.RecursiveDir)"/&gt;
+</code></pre>
+
+<h4>2. Create the .manifest file for the application</h4>
+
+<pre><code>&lt;Exec Command="$(Mage) -New Application -ToFile $(ClickOnceFiles)MyApp.exe.manifest -Processor x86 -name &amp;quot;$(ClickOnceName)&amp;quot; -Version $(Version) -FromDirectory $(ClickOnceFiles) -IconFile icon.ico" /&gt;
+</code></pre>
+
+<p>This creates the .manifest file, which is information about that particular version of the software. It lives inside the folder with all the binaries.</p>
+
+<h4>3. Perform updates to manifest (optional)</h4>
+
+<pre><code>&lt;Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -NoProfile $(Root)tools\UpdateManifest.ps1 -ManifestFile $(ClickOnceFiles)MyApp.exe.manifest" /&gt;
+</code></pre>
+
+<p>If you have issues with certain assemblies failing the checksum (normally because of native dlls), I have used this code to fix the issue:</p>
+
+<pre><code>Param($ManifestFile) 
+write-host "Fixing up Manifest File"
+write-host $ManifestFile
+
+[xml]$xml = get-content $ManifestFile
+
+$elementsToRewrite = $xml.assembly.dependency | where {$_.dependentAssembly.codebase -ne $null -and ($_.dependentAssembly.codebase.Contains("CefSharp") -or $_.dependentAssembly.codebase.Contains("NHunspell")) }
+foreach ($elementToRewrite in $elementsToRewrite)
+{
+    $fileNode = $xml.CreateElement("file", "urn:schemas-microsoft-com:asm.v2")
+    $fileNode.SetAttribute("name", $elementToRewrite.dependentAssembly.codebase)    
+    $fileNode.SetAttribute("size", $elementToRewrite.dependentAssembly.size)
+    $fileNode.AppendChild($elementToRewrite.dependentAssembly.hash) 
+    $xml.assembly.AppendChild($fileNode)
+    [Void]$xml.assembly.RemoveChild($elementToRewrite)
+}
+
+$xml.Save($ManifestFile)
+
+write-host "Fixed Manfiest File"
+</code></pre>
+
+<p>Skip this step by default, introduce if you need it.</p>
+
+<h4>4. Sign the .manifest file (optional)</h4>
+
+<p>If you want to sign your installer, this is where you do that.</p>
+
+<pre><code>&lt;Exec Command="$(Mage) -sign MyApp.manifest -CertFile $(Certificate) -Password $(CertPassword)" /&gt;
+</code></pre>
+
+<h4>5. Create the .application file</h4>
+
+<pre><code>&lt;Exec Command="$(Mage) -New Deployment -ToFile $(ClickOnceFolder)MyApp.application -name &amp;quot;$(ClickOnceName)&amp;quot; -Processor x86 -Install true -Version $(Version) -Publisher &amp;quot;Your Company&amp;quot; -AppManifest $(ClickOnceFiles)MyApp.exe.manifest $(ProviderUrlArg)" /&gt;
+</code></pre>
+
+<p>This generates your deployment</p>
+
+<h4>7. Update your deployment settings (optional)</h4>
+
+<pre><code>&lt;Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -NoProfile $(Root)tools\UpdateApplicationManifest.ps1 -ManifestFile $(ClickOnceFolder)MyApp.application" /&gt;
+</code></pre>
+
+<p>The powershell script looks like this</p>
+
+<pre><code>Param($ManifestFile) 
+write-host "Fixing up Manifest File"
+write-host $ManifestFile
+
+[xml]$xml = get-content $ManifestFile
+
+$xml.assembly.deployment.SetAttribute("trustURLParameters", "true")
+$xml.assembly.deployment.SetAttribute("mapFileExtensions", "true")
+
+# Uncomment to tell your app to update before startup
+#$xml.assembly.deployment.subscription.update.RemoveAll()
+#$updateNode = $xml.CreateElement("beforeApplicationStartup", "urn:schemas-microsoft-com:asm.v2")
+#$xml.assembly.deployment.subscription.Item("update").AppendChild($updateNode)
+
+$xml.Save($ManifestFile)
+
+write-host "Fixed Manfiest File"
+</code></pre>
+
+<p>This is where you can change when you want your app to check for updates, and modify deployment settings. More information about this file available at <a href="http://msdn.microsoft.com/en-us/library/k26e96zf.aspx">http://msdn.microsoft.com/en-us/library/k26e96zf.aspx</a></p>
+
+<h4>7. Sign your deployment (optional)</h4>
+
+<pre><code>&lt;Exec Command="$(Mage) -update MyApp.application -appmanifest MyApp.manifest -CertFile $(Certificate) -Password $(CertPassword)" /&gt;
+</code></pre>
+
+<p>This signs your deployment.</p>
+
+<h4>8. Rename binaries to have the .deploy extension</h4>
+
+<pre><code>&lt;ItemGroup&gt;
+  &lt;DeploymentFiles Include="$(ClickOnceFiles)**\*.*" Exclude="$(ClickOnceFiles)MarkPad.exe.manifest" /&gt;
+&lt;/ItemGroup&gt;
+
+&lt;Move SourceFiles="@(DeploymentFiles)" DestinationFiles="@(DeploymentFiles-&gt;'%(RootDir)%(Directory)%(FileName)%(Extension).deploy')" /&gt;
+</code></pre>
+
+<p>This is so webservers will serve all the files, some extensions will not be served on some web servers, this gets around that issue.</p>
+
+<p>To see it all working together, check out MarkPad&rsquo;s build script at <a href="https://github.com/Code52/DownmarkerWPF/blob/master/Markpad.msbuild#L31">https://github.com/Code52/DownmarkerWPF/blob/master/Markpad.msbuild#L31</a></p>
+
+<h2>Deploying to Azure</h2>
+
+<h3>Setup a storage account</h3>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure.png" alt="Create Storage Account" /></p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure1.png" alt="Create Storage Account 2" /></p>
+
+<p>Once created, go to the <code>containers</code> tab, then add a new container.
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure2.png" alt="Create Container" /></p>
+
+<p>Make sure you choose <code>Public Container</code> as the access level, otherwise things will not work!</p>
+
+<h3>Uploading deployment to Azure Storage</h3>
+
+<p>For this I use a utility from the Azure team called AzCopy. See the blog post at <a href="http://blogs.msdn.com/b/windowsazurestorage/archive/2013/04/01/azcopy-using-cross-account-copy-blob.aspx">http://blogs.msdn.com/b/windowsazurestorage/archive/2013/04/01/azcopy-using-cross-account-copy-blob.aspx</a> and download it from <a href="http://go.microsoft.com/fwlink/?LinkId=287086">http://go.microsoft.com/fwlink/?LinkId=287086</a></p>
+
+<p>Upload steps</p>
+
+<pre><code>&lt;!--$(BlobTargetUrl) = https://myaccount.blob.core.windows.net/mycontainer/ --&gt;
+
+&lt;!--Upload everything except the application manifest as it should be done last (once everything else is uploaded)--&gt;
+&lt;Move SourceFiles="$(ClickOnceFolder)MyApp.application" DestinationFolder="$(ClickOnceFolder)ClickOnceApplicationFile\" /&gt;
+&lt;Exec Command="$(Root)tools\AzCopy.exe $(ClickOnceFolder) $(BlobTargetUrl) /destkey:$(BlobTargetKey) /S /V /Y" /&gt;
+&lt;Exec Command="$(Root)tools\AzCopy.exe $(ClickOnceFolder)ClickOnceApplicationFile\ $(BlobTargetUrl) /destkey:$(BlobTargetKey) /S /V /Y" /&gt;
+</code></pre>
+
+<p>What we are doing here is moving all the files, except the .application file, and uploading them first. Then finally uploading the .application file once all the other files are uploaded. This is so you do not have a corrupted installer while you are uploading the new version.</p>
+
+<h3>Install from Azure</h3>
+
+<p>Now you just point at the .application file, for example MarkPad&rsquo;s nightly is available from <a href="http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application">http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application</a></p>
+
+<p>Hope this helps you out, I have found this is a really cheap and easy way to get ClickOnce installers out there!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Automated Project Environment Setup]]></title>
+    <link href="http://JakeGinnivan.github.io/automated-project-environment-setup/"/>
+    <updated>2013-08-08T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/automated-project-environment-setup</id>
+    <content type="html"><![CDATA[<h2>Web Project Dev Environment</h2>
+
+<p>A common problem projects have is when a new dev joins the team is they hopefully have to follow a bunch of instructions to set everything up. Most of the time, those instructions are out of date so another member of the team ends up setting everything up.</p>
+
+<p>Depending on the complexity of the project, this can be quite time consuming.</p>
+
+<p>The last project I was on was greenfields, so from day 1 we had a <code>Setup Dev Environment.ps1</code> file in the root of the project. This powershell script did the following:</p>
+
+<ul>
+<li>Installed IIS, and all the components we needed (windows auth, .net etc)</li>
+<li>Registered asp.net with IIS</li>
+<li>Created Websites with host headers for each of the sites in the project (we ended up having 3 different websites)</li>
+<li>Opened the HOSTS file in notepad (elevated) and printed out the lines you needed to paste into your HOSTS file</li>
+</ul>
+
+
+<p>Over time, this script gained more and more features. But when a new team member joined the team, they just ran this script which installed/configured everything.</p>
+
+<p>Why IIS you may ask, instead of say IIS Express. Well this approach means each site had it&rsquo;s own domain, so fiddler works out of the box. It also means that our UI Test suite doesn&rsquo;t have to fire up IIS Express to run it&rsquo;s tests.</p>
+
+<!-- more -->
+
+
+<h3>The script</h3>
+
+<p>This is what our script looked like</p>
+
+<pre><code>&amp; DISM /Online /Enable-Feature /All `
+/FeatureName:IIS-ApplicationDevelopment `
+/FeatureName:IIS-ASPNET `
+/FeatureName:IIS-BasicAuthentication `
+/FeatureName:IIS-CommonHttpFeatures `
+/FeatureName:IIS-DefaultDocument `
+/FeatureName:IIS-DirectoryBrowsing `
+/FeatureName:IIS-HttpErrors `
+/FeatureName:IIS-HttpLogging `
+/FeatureName:IIS-HttpRedirect `
+/FeatureName:IIS-HttpTracing `
+/FeatureName:IIS-ISAPIFilter `
+/FeatureName:IIS-ISAPIExtensions `
+/FeatureName:IIS-IIS6ManagementCompatibility `
+/FeatureName:IIS-ManagementConsole `
+/FeatureName:IIS-ManagementScriptingTools `
+/FeatureName:IIS-Metabase `
+/FeatureName:IIS-NetFxExtensibility `
+/FeatureName:IIS-ASPNET45 `
+/FeatureName:IIS-NetFxExtensibility45 `
+/FeatureName:NetFx4Extended-ASPNET45 `
+/FeatureName:IIS-Security `
+/FeatureName:IIS-ServerSideIncludes `
+/FeatureName:IIS-StaticContent `
+/FeatureName:IIS-WebServer `
+/FeatureName:IIS-WebServerManagementTools `
+/FeatureName:IIS-WebServerRole `
+/FeatureName:IIS-WindowsAuthentication `
+/FeatureName:IIS-WMICompatibility `
+/FeatureName:WAS-ConfigurationAPI `
+/FeatureName:WAS-NetFxEnvironment `
+/FeatureName:WAS-ProcessModel `
+/FeatureName:WAS-WindowsActivationService
+
+&amp; C:\Windows\Microsoft.NET\Framework\v4.0.30319\aspnet_regiis.exe -i
+
+$invocation = (Get-Variable MyInvocation).Value
+$directorypath = Split-Path $invocation.MyCommand.Path
+$physicalPath = Join-Path $directorypath "src\SampleWebSite"
+$adminWebPhysicalPath = Join-Path $directorypath "src\Project.AdminWeb"
+$guestServicesPhysicalPath = Join-Path $directorypath "src\Project.GuestServices"
+$fakeApiPhysicalPath = Join-Path $directorypath "src\FakeSiteApi"
+$elevate = Join-Path $directorypath "tools\Elevate.exe"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:SampleWebSiteAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='SampleWebSiteAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:SampleWebSite /physicalPath:$physicalPath /bindings:http/*:80:samplewebsite.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "SampleWebSite/" /applicationPool:"SampleWebSiteAppPool"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:AdminSiteAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='AdminWebAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"AdminSite" /physicalpath:"$adminWebPhysicalPath" /bindings:http/*:80:adminsite.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "AdminSite/" /applicationPool:"AdminSiteAppPool"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:GuestServicesAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='GuestServicesAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"GuestServices" /physicalPath:$guestServicesPhysicalPath /bindings:http/*:80:guestservices.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "GuestServices/" /applicationPool:"GuestServicesAppPool"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:FakeApiAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='FakeEmbedApiAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"FakeApi" /physicalPath:$fakeEmbedApiPhysicalPath /bindings:http/*:80:siteapi.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "FakeApi/" /applicationPool:"FakeApiAppPool"
+
+Write-Host "Add the following lines to your hosts file:" -ForegroundColor red
+Write-Host "127.0.0.1      samplewebsite.net" -ForegroundColor yellow
+Write-Host "127.0.0.1      adminsite.net" -ForegroundColor yellow
+Write-Host "127.0.0.1      guestservices.net" -ForegroundColor yellow
+Write-Host "127.0.0.1      siteapi.net" -ForegroundColor yellow
+Write-Host ""
+
+Start-Process $elevate -ArgumentList "notepad c:\Windows\system32\drivers\etc\hosts"
+</code></pre>
+
+<p>You can also put unattended installs for SQL, or any other dependencies your project has.</p>
+
+<h2>Build Server considerations</h2>
+
+<p>We also were running UI Tests using <a href="http://teststack.net/TestStack.Seleno/">http://teststack.net/TestStack.Seleno/</a></p>
+
+<p>This meant we needed our build server setup to be able to run the project, as well as build it. The great thing about this script, is you can reuse it to set up your build server.</p>
+
+<p>For the build server, we had another script, which would re-map the IIS sites to the correct folder (as teamcity can checkout your code to different folders, we didn&rsquo;t want to set things up over and over).</p>
+
+<p>The script looked like this</p>
+
+<pre><code>$invocation = (Get-Variable MyInvocation).Value
+$directorypath = Split-Path $invocation.MyCommand.Path
+$physicalPath = Join-Path $directorypath "src\SampleWebSite"
+$adminWebPhysicalPath = Join-Path $directorypath "src\AdminWeb"
+$guestServicesPhysicalPath = Join-Path $directorypath "src\GuestServices"
+$fakeApiPhysicalPath = Join-Path $directorypath "src\FakeApi"
+$elevate = Join-Path $directorypath "tools\Elevate.exe"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "SampleWebSite/" /physicalPath:"$physicalPath"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "AdminSite/" /physicalpath:"$adminWebPhysicalPath"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "GuestServices/" /physicalpath:"$guestServicesPhysicalPath"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "FakeApi/" /physicalpath:"$fakeApiPhysicalPath"
+</code></pre>
+
+<p>Just execute this as part of your build process before you run your UI Automation tests.</p>
+
+<h2>Wrapping up</h2>
+
+<p>I encourage you to create your own SetupEnvironment.ps1 script on the project you are on at the moment, it will be well worth the time investment over the lifetime of the project (we found it had saved us time within a few weeks).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
+    <link href="http://JakeGinnivan.github.io/vsto-contrib/v0-12-released/"/>
+    <updated>2013-08-06T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/vsto-contrib/v0-12-released</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
+
+<p>This release is aimed at fixing a bunch of bugs, like some callbacks not working, creating a viewmodel instance for when no documents are open and supporting Office 2013!
+Due to the complexities of supporting multiple versions, I have dropped Office 2007 support. Please let me know if this is a major issue, and I might try to add it back in next release.</p>
+
+<p>I have also released a getting started video. This is one of the first screencasts I have done, so I will likely do it again next release. Also when you install VSTO Contrib, a readme will popup, this will help you get started.</p>
+
+<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://JakeGinnivan.github.io//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+
+
+<p>I will try to produce some documentation/blog posts on VSTO Contrib over the next few weeks.</p>
+
+<p>From now, I will be tracking changes/fixes a lot better. Please report any issues at <a href="https://github.com/JakeGinnivan/VSTOContrib/issues">https://github.com/JakeGinnivan/VSTOContrib/issues</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <updated>2013-08-01T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
+
+<p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
+
+<p>The previous test suite was often red, which meant that it was hard to know if there were regressions as other issues were fixed.</p>
+
+<p>You can see the CI status at <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;branch_TestStack_White=__all_branches__">http://teamcity.ginnivan.net/project.html?projectId=TestStack_White</a></p>
+
+<!-- more -->
+
+
+<h2>TestStack.White.ScreenObjects</h2>
+
+<p>Also released is <a href="https://www.nuget.org/packages/TestStack.White.ScreenObjects">https://www.nuget.org/packages/TestStack.White.ScreenObjects</a></p>
+
+<p>This is the old White.Repository project, finally released on NuGet. Hopefully there should be some updates to this project coming up as well!</p>
+
+<h2>Namespace Change</h2>
+
+<p>Being part of TestStack now, we wanted to bring White&rsquo;s namespace into line with the other TestStack projects.</p>
+
+<p>White&rsquo;s namespace has changed from <code>White.Core</code> to <code>TestStack.White</code>. Once you upgrade just run <code>Fix-WhiteNamespaces</code> from your NuGet console and we will fix all your namespace references for you!</p>
+
+<h2>Change Log</h2>
+
+<p>The change log is available at <a href="http://teststack.azurewebsites.net/White/ChangeLog.html">http://teststack.azurewebsites.net/White/ChangeLog.html</a></p>
+
+<p>You may notice the website (which we will have a domain for very shortly), this is the new TestStack documentation site/wiki.</p>
+
+<p>Please have a look around, post comments, contribute and give us feedback!</p>
+
+<h2>Pull Requests</h2>
+
+<p>Whenever you submit a pull request for White, we will automatically do a CI build, then a full UI Test run.
+This means if you do not want to wait for the test suite to run on your machine, you can just submit your pull request, then wait for the status to be reported back (which sometimes fails for some reason, but you should be able to see it on the build server).</p>
+
+<h2>Whats next</h2>
+
+<p>The next step for White is upgrading to v3 of the UIA Library, this will likely break a few things (which is why it was important to get the tests running properly).</p>
+
+<h2>Reporting Issues</h2>
+
+<p>If you find an issue in White, create an issue on github, and even better, create a failing UI tests. I do not mind pull requests with a failing test, I can fix the underlying issue without you getting involved in the inner workings of White.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
+    <link href="http://JakeGinnivan.github.io/teamcity-ui-test-agent/"/>
+    <updated>2013-07-31T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teamcity-ui-test-agent</id>
+    <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
+
+<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
+This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
+
+<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
+
+<!-- more -->
+
+
+<h2>Create our VM on Azure</h2>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
+I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS&rsquo;s are all that are available in Azure. This also means you don&rsquo;t have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop.</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
+
+<p>Now we are ready to go, lets remote desktop into our VM</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
+
+<p>Enter your remote desktop credentials which we you setup when creating your VM
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
+
+<h2>Setting up your VM</h2>
+
+<p>On first login, make sure you tell the initial configuration and server manager to not open on start
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
+
+<p>Before you close server manager you want to click on <code>Configure IE ESC</code>, then turn it off. Otherwise downloading everything will be rather painful (unless you just want to download firefox or chrome, then don&rsquo;t worry.</p>
+
+<p>Next, we need our VM to login automatically, if our VM restarts, it needs to come straight back up and logs in.</p>
+
+<p>To do this, download Sysinternals Autologon for Windows from <a href="http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx">http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx</a>. Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
+The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
+
+<p>Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
+TeamViewer will also work.</p>
+
+<p>Personally I use TightVNC.</p>
+
+<h3>Installing/Configuring TightVNC</h3>
+
+<ol>
+<li>Download from <a href="http://www.tightvnc.com/download.php">http://www.tightvnc.com/download.php</a></li>
+<li>Do a complete install, leave all options ticked when presented with them.</li>
+<li>Set your passwords, I am happy to not have a separate administration password.<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
+<li>Install the DFMirage driver, available from the TightVNC download page</li>
+<li>If using azure you need to open up the port (Manage VM, EndPoints, Add, Next)<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
+</ol>
+
+
+<h3>Finishing VM Setup</h3>
+
+<p>Reconnect using something other than remote desktop<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
+
+<p>Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).</p>
+
+<h4>Disable WER</h4>
+
+<p>Windows error reporting causes issues when running UI automation, if you app crashes (which is why we have UI automation, to find that sort fo thing) then you want it to exit straight away, not popup the Windows Error Reporting Dialog
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
+
+<p>Save the following text into a .reg file i.e DisableWER.reg then run</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows]
+"ErrorMode"="2"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting]
+"DontShowUI"="1"
+</code></pre>
+
+<h3>Installing the teamcity build agent</h3>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
+
+<p>Fill in your teamcity server URL, and note the port number the agent is running on
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
+
+<p>Now we go back into Azure Management, and add the port<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
+
+<h4>Open Filewall Ports</h4>
+
+<p>Once we have added the port on azure, we need to open the windows firewall for that port on the VM itself<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
+Put in port 9090, or whatever you set your teamcity server to<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
+Next, Next, Next, give it a good name &lsquo;TeamCity Build Agent&rsquo;, Finish</p>
+
+<h4>Set to automatic startup</h4>
+
+<p>Now open explorer, and go to <code>%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code> and create a new shortcut<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
+
+<p>Browse to your TeamCity build agent folder, and select <code>agent.bat</code></p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
+Then add the parameter <code>start</code> onto the path. You should end up with
+<code>"C:\UITestsBuildAgent\bin\agent.bat" start</code>
+Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. Then Run the shortcut. Your TeamCity build agent should startup and connect to TeamCity
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
+
+<p>Authorise the build agent, then the agent should update itself and restart, after a few minutes you should have another build controller online!
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
+
+<h2>Conclusion</h2>
+
+<p>There you have it, a build agent that runs UI Tests on an unlocked desktop in Azure</p>
+
+<h3>NOTE: TeamCity is not setup for SSL, so everything is unencrypted. This would be another blog post in itself, please leave a comment if that would be useful for you?</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setting Up Git]]></title>
+    <link href="http://JakeGinnivan.github.io/setting-up-git/"/>
+    <updated>2013-07-27T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/setting-up-git</id>
+    <content type="html"><![CDATA[<p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
+
+<p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
+
+<!-- more -->
+
+
+<h2>Required Software</h2>
+
+<p>Tick both boxes (MsysGit and KDiff3)</p>
+
+<h2>Feature selection</h2>
+
+<p>I tend to disable Visual Studio integration. With VS 2013 you get native git support which will continue to get better over time. And I don&rsquo;t need more menus&hellip;</p>
+
+<h2>Select SSH Agent</h2>
+
+<p>I prefer to go with OpenSSH, it is more work to setup, but once you have generated your ssh keys, put the .ssh folder into your dropbox or back it up, then you can just drop it back into your user profile when you reinstall windows or move to another computer.</p>
+
+<h1>KDiff Installation</h1>
+
+<p>Next Next Next Finish etc. :)</p>
+
+<h1>Git Installation</h1>
+
+<h2>Select components</h2>
+
+<p>I leave this as the default</p>
+
+<h2>Adjust your PATH environment</h2>
+
+<p>I go for option 2 (Run git from the Windows Command Prompt), this sets up a reasonable default so you can access git from the command line anywhere</p>
+
+<h2>Line Endings</h2>
+
+<p>Option 3, Checkout as is, commit as is. Nobody likes it when you mess with their line endings.</p>
+
+<h1>Install PoshGit</h1>
+
+<p>Now you have git installed, open up a PowerShell console as Administrator and change directories to somewhere sensible that you want to put your code.</p>
+
+<p>Then run:</p>
+
+<ul>
+<li><code>Set-ExecutionPolicy RemoteSigned</code>, this will allow you to run powershell scripts</li>
+<li><code>git clone https://github.com/dahlbyk/posh-git</code></li>
+<li><code>cd posh-git</code></li>
+<li><code>.\install.ps1</code> &ndash; this will install posh-git into your profile.</li>
+<li><code>. $PROFILE</code> &ndash; this will run your profile, now you should see [master] in blue on the command line</li>
+</ul>
+
+
+<p>You may have noticed a warning when you ran your profile
+<strong>WARNING: Could not find ssh-agent</strong></p>
+
+<p>To fix this, we need to change our PATH settings.
+Run <code>control sysdm.cpl</code> on the command line, go to the Advanced tab, click Environmental Variables
+The edit your PATH variable. When you click edit, you should see <code>C:\Program Files (x86)\Git\cmd</code> right at the end. Change this to <code>C:\Program Files (x86)\Git\bin</code></p>
+
+<p>Now when you restart your powershell console, you shouldn&rsquo;t get a warning.</p>
+
+<h1>Creating your SSH Key</h1>
+
+<p><a href="https://help.github.com/articles/generating-ssh-keys">https://help.github.com/articles/generating-ssh-keys</a> is a great resource for creating your SSH key, after you are done you should have a folder in your user profile called .ssh, and two files in that folder, id_rsa and id_rsa.pub.</p>
+
+<p>Simply copy the contents of id_rsa.pub to your GitHub keys under your profile, now you can push/pull from github easily!</p>
+
+<h1>Git Config</h1>
+
+<p>And finally, here is my .gitconfig</p>
+
+<pre><code>[core]
+autocrlf = false
+editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe'
+[diff]
+    tool = kdiff3
+    guitool = kdiff3
+[merge]
+    tool = kdiff3
+[mergetool "kdiff3"]
+    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
+    keepBackup = false
+    trustExitCode = false
+[difftool]
+    prompt = false
+[mergetool]
+    keepBackup = false
+[difftool "kdiff3"]
+    path = c:/Program Files (x86)/KDiff3/kdiff3.exe
+[alias]
+    st = status
+    rc = rebase --continue
+</code></pre>
+
+<p>Hope that helps someone get started with Git</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Documentation Site With Pretzel]]></title>
+    <link href="http://JakeGinnivan.github.io/documentation-site-with-pretzel/"/>
+    <updated>2013-07-27T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/documentation-site-with-pretzel</id>
+    <content type="html"><![CDATA[<p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
+
+<p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
+
+<!-- more -->
+
+
+<h2>Create the site in pretzel</h2>
+
+<p>This assumes you already have pretzel and it is in your PATH.</p>
+
+<pre><code>C:\PretzelDemo&gt;pretzel.exe create -t=Razor --wiki --azure
+</code></pre>
+
+<p>There are a few things we are saying:
+ &ndash; Create me a pretzel site
+ &ndash; We are not specifying a directory, so pretzel will create the site in the current directory
+ &ndash; We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
+ &ndash; The <em>&mdash;wiki</em> switch says we want a wiki template rather than the default blog setup
+ &ndash; The <em>&mdash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
+
+<pre><code>C:\PretzelDemo&gt; pretzel.exe create -t=razor --wiki --azure
+starting pretzel...
+create - configure a new site
+Using razor Engine
+Pretzel site template has been created
+Shim project added to allow deployment to azure websites
+Press any key to continue...
+</code></pre>
+
+<p>A file you may be interested in is <code>_source\_layouts\layout.cshtml</code>, this file has all the logic for your Wiki, feel free to edit this, make improvements, style changes, structural changes. What pretzel gives you is just a starting point!</p>
+
+<h2>The Wiki</h2>
+
+<p>To view your wiki, run
+<code>C:\PretzelDemo&gt; pretzel taste _source</code></p>
+
+<p>This will fire up pretzel&rsquo;s web server, and launch your wiki.</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument.png" alt="NewDocument" /></p>
+
+<p>Lets create a few files</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument1.png" alt="NewDocument1" /></p>
+
+<p>Notice the items circled in blue are new files, each file we create must have what is called yaml front matter (circled in red).</p>
+
+<p>Yaml front matter contains metadata about the file, like the title, permalink (a fixed url) and order among other things.</p>
+
+<p>If you refresh your browser, you will get this</p>
+
+<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument2.png" alt="NewDocument2" /></p>
+
+<p>Pretzel has detected changes to files in the site, then rebuilt our site for us.</p>
+
+<h2>Deploying to Azure Wesbites</h2>
+
+<p>Create the website
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument3.png" alt="NewDocument3" />
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument4.png" alt="NewDocument4" />
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument5.png" alt="NewDocument5" /></p>
+
+<p>Now our site and deployment is setup, lets deploy. First copy the git deployment url
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument6.png" alt="NewDocument6" /></p>
+
+<p>Now we head back to our powershell console and run the following commands:</p>
+
+<pre><code>git init
+"_site" | Out-File .gitignore
+git add -A
+git commit -m "Committed wiki"
+git remote add azure &lt;deploymenturl&gt;
+git push azure master
+</code></pre>
+
+<p>And that should deploy our site, if everything went well, you should have an output looking something like this</p>
+
+<pre><code>C:\PretzelDemo [master]&gt; git push azure master
+Counting objects: 33, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (29/29), done.
+Writing objects: 100% (33/33), 716.65 KiB | 0 bytes/s, done.
+Total 33 (delta 10), reused 0 (delta 0)
+remote: Updating branch 'master'.
+remote: Updating submodules.
+remote: Preparing deployment for commit id '6476560e7e'.
+remote: Generating deployment script.
+remote: .
+remote: info:    Executing command site deploymentscript
+remote: info:    Solution file path: .\Shim.sln
+remote: info:    The site directory path: .\_source\_site
+remote: info:    Generating deployment script for .NET Web Site
+remote: info:    Generated deployment script files
+remote: info:    site deploymentscript command OK
+remote: Running deployment command...
+remote: Handling .NET Web Site deployment.
+remote: C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln.metaproj : warning MSB4121: The project configuration for project "Sham" was not specified in the solution file for the solution configuration "Release|Any CPU". [C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln]
+remote:   Shim -&gt; C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\bin\Release\Shim.dll
+remote:   starting pretzel...
+remote:   bake - transforming content into a website
+remote:   Recommended engine for directory: 'razor'
+remote:   done - took 2943ms
+remote:   Press any key to continue...
+remote: KuduSync.NET from: 'C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\_source\_site' to: 'C:\DWAS Files\Sites\pretzeldemo\VirtualDirectory0\site\wwwroot'
+remote: Deleting file: 'hostingstart.html'
+remote: Copying file: 'index.html'
+remote: Copying file: 'MainTopic.html'
+remote: Copying file: 'Topic.html'
+remote: Copying file: 'topic2.html'
+remote: Copying file: 'css\default.css'
+remote: Copying file: 'css\style.css'
+remote: Copying file: 'Feature\index - Copy.html'
+remote: Copying file: 'Feature\index.html'
+remote: Copying file: 'Feature\Topic - Copy.html'
+remote: Copying file: 'Feature\Topic 2.html'
+remote: Copying file: 'Feature\Topic.html'
+remote: Copying file: 'img\favicon.ico'
+remote: Finished successfully.
+remote: Deployment successful.
+To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
+ * [new branch]      master -&gt; master
+</code></pre>
+
+<p>Check the azure management console
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument8.png" alt="NewDocument8" /></p>
+
+<p>Head to your website
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument7.png" alt="NewDocument7" /></p>
+
+<p>Job done! You have a new wiki for documentation.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TeamCity Build Results in TFS]]></title>
+    <link href="http://JakeGinnivan.github.io/teamcity-build-results-in-tfs/"/>
+    <updated>2013-04-13T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teamcity-build-results-in-tfs</id>
+    <content type="html"><![CDATA[<h1>Why?</h1>
+
+<p>Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our test tool, TFS for work items, GitHub for source control and TeamCity for our build server.</p>
+
+<p>All our tests are written using xUnit.net. When you start working with testers it becomes important to surface your automated and manual testing together, so testers can work more efficiently and have more confidence in the software the team is producing.</p>
+
+<p>Enter TFS. TFS is a great product that starts really value adding when you use different components together, the testing tools is an example of this. When you use Team Build with the testing tools, a heap of features and workflows start working way better!</p>
+
+<h1>What?</h1>
+
+<p>My goal is to have my automated regression tests (both UI and Integration tests) which are written in xUnit to report their results back into TFS (Builds) and Test Manager (Test Runs).</p>
+
+<p>This allows the Testers to use the planned automation features in TFS to mark certain Test Cases as &lsquo;Planned&rsquo; for automation, it also lights up a whole lot of reporting around test case readiness and other things.</p>
+
+<!-- more -->
+
+
+<h1>How?</h1>
+
+<p>There are a few parts to automatically marking test cases as passed/failed.</p>
+
+<ol>
+<li>Associated Automation<br/>
+If you open a test case up in Visual Studio, you can assign an MSTest test to a test case<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS1_635014894026562500.png" alt="TeamCityBuildResultsinTFS1" /></li>
+<li>Get a .trx file which can be published to TFS (By using VSTest.Console with the TeamCityAndTrx logger)
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS2_635014894036562500.png" alt="TeamCityBuildResultsinTFS2" /><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS3_635014894039375000.png" alt="TeamCityBuildResultsinTFS3" /></li>
+<li>Publish the build using TfsBuildResultPublisher (see <a href="https://github.com/JakeGinnivan/TfsBuildResultPublisher/blob/master/BuildAndPublish.msbuild">BuildAndPublish.msbuild</a> for an example)</li>
+<li>A test run created in Test Manager which can be linked to a test suite, this will automatically pass/fail a test.</li>
+</ol>
+
+
+<p>I have built a few projects which glue this all together.</p>
+
+<h2>1. VSTest.TeamCityLogger</h2>
+
+<p>The first step is I have xUnit tests, luckily Visual Studio 2012 has a new test runner, this introduces <a href="http://msdn.microsoft.com/en-us/library/hh598952.aspx">Unit Test Adapters</a> to support third party test frameworks.</p>
+
+<p>The new test runner has a command line version too called VSTest.Console.exe which allows you to specify which logger to use, out of the box there is a <code>trxLogger</code> to output a .trx file for any framework.</p>
+
+<p>VSTest.TeamCityLogger introduces two new loggers <code>TeamCityLogger</code> and <code>TeamCityAndTrxLogger</code>, the first simply exposes VSTest results to TeamCity, the second also outputs a .trx file.</p>
+
+<p>Now we have a TeamCity build, which exports a .trx file!</p>
+
+<p>More information available at <a href="https://github.com/JakeGinnivan/VSTest.TeamCityLogger">https://github.com/JakeGinnivan/VSTest.TeamCityLogger</a></p>
+
+<h2>2. TfsBuildResultPublisher</h2>
+
+<p>The next part of the puzzle is getting the build into TFS, this is where TfsBuildResultPublisher comes in.
+It is based off Based off <a href="http://blogs.msdn.com/b/jpricket/archive/2010/02/23/creating-fake-builds-in-tfs-build-2010.aspx">http://blogs.msdn.com/b/jpricket/archive/2010/02/23/creating-fake-builds-in-tfs-build-2010.aspx</a> and <a href="http://msmvps.com/blogs/vstsblog/archive/2011/04/26/creating-fake-builds-in-tfs-build-2010-using-the-command-line.aspx">http://msmvps.com/blogs/vstsblog/archive/2011/04/26/creating-fake-builds-in-tfs-build-2010-using-the-command-line.aspx</a> but it provides a heap of additional options, like:</p>
+
+<ul>
+<li>Publish Test Results, if you simply want to publish a .trx into your build, TfsCreateBuild will take care of that for you.</li>
+<li>Publish Test Run to MTM (Microsoft Test Manager)
+
+<ul>
+<li>In addition to this, VSTest.Console.exe generates different testId&rsquo;s to MSTest, this means that MTM will not recognise the associated tests (I am coming to this soon!). TfsCreateBuild has a flag to fix your .trx file and correct the testId&rsquo;s so the automation is matched.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>More information available at <a href="https://github.com/JakeGinnivan/TfsBuildResultPublisher">https://github.com/JakeGinnivan/TfsBuildResultPublisher</a></p>
+
+<h2>TestCaseAutomationAssigner</h2>
+
+<p>I mentioned earlier my tests are xUnit.net and that visual studio only lets you associate MSTest tests with Test Cases.</p>
+
+<p>This is where <a href="https://github.com/JakeGinnivan/TestCaseAutomationAssigner">https://github.com/JakeGinnivan/TestCaseAutomationAssigner</a> comes in. It is a simple WPF application which allows you to associate either xUnit.net or NUnit tests with Test Cases.</p>
+
+<p>You can install this from <a href="http://teamcity.ginnivan.net/guestAuth/repository/download/bt48/.lastSuccessful/ClickOnce/TestCaseAutomationAssigner.application">http://teamcity.ginnivan.net/guestAuth/repository/download/bt48/.lastSuccessful/ClickOnce/TestCaseAutomationAssigner.application</a></p>
+
+<h1>Summary</h1>
+
+<p>Using TestCaseAutomationAssigner, TfsCreateBuild and VSTest.TeamCityLogger you can use TeamCity as your build server, xUnit or NUnit as your unit test framework and report the results back into Test Manager and TFS giving you all the reportability and value that comes with TFS when you use all the features!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Redirecting Process Output]]></title>
+    <link href="http://JakeGinnivan.github.io/redirecting-process-output/"/>
+    <updated>2013-04-05T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/redirecting-process-output</id>
+    <content type="html"><![CDATA[<p>I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.</p>
+
+<p>Based on a blog post that Lucian Wischik posted a while back at <a href="http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx">http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx</a> I have created a c# version of his code which makes it nice and easy.</p>
+
+<!-- more -->
+
+
+<h1>Usage</h1>
+
+<pre><code>string stdOut;
+string stdErr;
+var processStartInfo = new ProcessStartInfo(process, args)
+{
+    UseShellExecute = false,
+    RedirectStandardError = true,
+    RedirectStandardInput = true,
+    RedirectStandardOutput = true
+};
+Process.Start(processStartInfo).InputAndOutputToEnd(string.Empty, out stdOut, out stdErr);
+
+Console.Write(stdOut);
+Console.Write(stdErr);
+</code></pre>
+
+<h1>The Code</h1>
+
+<pre><code>public static class ProcessExtensions
+{
+    public static void InputAndOutputToEnd(this Process p, string standardInput, out string standardOutput, out string standardError)
+    {
+        if (p == null)
+            throw new ArgumentException("p must be non-null");
+        // Assume p has started. Alas there's no way to check.
+        if (p.StartInfo.UseShellExecute)
+            throw new ArgumentException("Set StartInfo.UseShellExecute to false");
+        if ((p.StartInfo.RedirectStandardInput != (standardInput != null)))
+            throw new ArgumentException("Provide a non-null Input only when StartInfo.RedirectStandardInput");
+        //
+        var outputData = new InputAndOutputToEndData();
+        var errorData = new InputAndOutputToEndData();
+
+        //
+        if (p.StartInfo.RedirectStandardOutput)
+        {
+            outputData.Stream = p.StandardOutput;
+            outputData.Thread = new System.Threading.Thread(InputAndOutputToEndProc);
+            outputData.Thread.Start(outputData);
+        }
+        if (p.StartInfo.RedirectStandardError)
+        {
+            errorData.Stream = p.StandardError;
+            errorData.Thread = new System.Threading.Thread(InputAndOutputToEndProc);
+            errorData.Thread.Start(errorData);
+        }
+        //
+        if (p.StartInfo.RedirectStandardInput)
+        {
+            p.StandardInput.Write(standardInput);
+            p.StandardInput.Close();
+        }
+        //
+        if (p.StartInfo.RedirectStandardOutput)
+        {
+            outputData.Thread.Join();
+            standardOutput = outputData.Output;
+        }
+        else
+            standardOutput = string.Empty;
+
+        if (p.StartInfo.RedirectStandardError)
+        {
+            errorData.Thread.Join();
+            standardError = errorData.Output;
+        }
+        else
+            standardError = string.Empty;
+
+        if (outputData.Exception != null)
+            throw outputData.Exception;
+        if (errorData.Exception != null)
+            throw errorData.Exception;
+    }
+
+    private class InputAndOutputToEndData
+    {
+        public System.Threading.Thread Thread;
+        public System.IO.StreamReader Stream;
+        public string Output;
+        public Exception Exception;
+    }
+
+    private static void InputAndOutputToEndProc(object data)
+    {
+        var ioData = (InputAndOutputToEndData)data;
+        try
+        {
+            ioData.Output = ioData.Stream.ReadToEnd();
+        }
+        catch (Exception e)
+        {
+            ioData.Exception = e;
+        }
+    }
+}
+</code></pre>
+
+<p>Hope this is useful</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Awaitable DelegateCommand]]></title>
+    <link href="http://JakeGinnivan.github.io/awaitable-delegatecommand/"/>
+    <updated>2013-03-15T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/awaitable-delegatecommand</id>
+    <content type="html"><![CDATA[<p>Most of you would be aware of DelegateCommand, it allows you to turn a lambda (or two if you want to specify canexecute) into a WPF ICommand.</p>
+
+<p>This is pretty easy to unit test as well, you can simply go <code>viewModel.MyCommand.Execute(null)</code></p>
+
+<p>But this falls down when you start using async, because the lambda will end up being an <strong>async void</strong> method. This means your test can no longer observe what happens in that command. If the implementation throws, your unit test will not know about it and then your test process will crash (if using .net 4.0).</p>
+
+<p>Read <a href="http://blogs.msdn.com/b/lucian/archive/2013/02/18/talk-the-new-async-design-patterns.aspx">Lucians blog post</a> for more information about why async void is bad.</p>
+
+<p>So we introduced a new interface, called <code>IAsyncCommand</code> and it looks like this</p>
+
+<!-- more -->
+
+
+<pre><code>public interface IAsyncCommand : IAsyncCommand&lt;object&gt;
+{
+}
+
+public interface IAsyncCommand&lt;in T&gt; : IRaiseCanExecuteChanged
+{
+    Task ExecuteAsync(T obj);
+    bool CanExecute(object obj);
+    ICommand Command { get; }
+}
+</code></pre>
+
+<p>If you were wondering what IRaiseCanExecuteChanged is, it is a really simply interface which means we don&rsquo;t have to cast ICommands. See this <a href="https://gist.github.com/JakeGinnivan/5166866">Gist</a> for the code for that.</p>
+
+<p>You might notice that there is no <code>void Execute(object obj)</code> method on the command, this is to make it impossible to call the async void overload in your unit tests, unless you get the underlying ICommand from the Command property.</p>
+
+<h1>So how does WPF execute the command?</h1>
+
+<p>WPF actually doesnt care about what is exposed via the API, as long as the class implements ICommand, we are good. Introducing AwaitableDelegateCommand:</p>
+
+<pre><code>public class AwaitableDelegateCommand : AwaitableDelegateCommand&lt;object&gt;, IAsyncCommand
+{
+    public AwaitableDelegateCommand(Func&lt;Task&gt; executeMethod) 
+        : base(o=&gt;executeMethod())
+    {
+    }
+
+    public AwaitableDelegateCommand(Func&lt;Task&gt; executeMethod, Func&lt;bool&gt; canExecuteMethod) 
+        : base(o=&gt;executeMethod(), o=&gt;canExecuteMethod())
+    {
+    }
+}
+
+public class AwaitableDelegateCommand&lt;T&gt; : IAsyncCommand&lt;T&gt;, ICommand
+{
+    private readonly Func&lt;T, Task&gt; _executeMethod;
+    private readonly DelegateCommand&lt;T&gt; _underlyingCommand;
+    private bool _isExecuting;
+
+    public AwaitableDelegateCommand(Func&lt;T, Task&gt; executeMethod)
+        : this(executeMethod, _ =&gt; true)
+    {
+    }
+
+    public AwaitableDelegateCommand(Func&lt;T, Task&gt; executeMethod, Func&lt;T, bool&gt; canExecuteMethod)
+    {
+        _executeMethod = executeMethod;
+        _underlyingCommand = new DelegateCommand&lt;T&gt;(x =&gt; { }, canExecuteMethod);
+    }
+
+    public async Task ExecuteAsync(T obj)
+    {
+        try
+        {
+            _isExecuting = true;
+            RaiseCanExecuteChanged();
+            await _executeMethod(obj);
+        }
+        finally
+        {
+            _isExecuting = false;
+            RaiseCanExecuteChanged();
+        }
+    }
+
+    public ICommand Command { get { return this; } }
+
+    public bool CanExecute(object parameter)
+    {
+        return !_isExecuting &amp;&amp; _underlyingCommand.CanExecute((T)parameter);
+    }
+
+    public event EventHandler CanExecuteChanged
+    {
+        add { _underlyingCommand.CanExecuteChanged += value; }
+        remove { _underlyingCommand.CanExecuteChanged -= value; }
+    }
+
+    public async void Execute(object parameter)
+    {
+        await ExecuteAsync((T)parameter);
+    }
+
+    public void RaiseCanExecuteChanged()
+    {
+        _underlyingCommand.RaiseCanExecuteChanged();
+    }
+}
+</code></pre>
+
+<p>Notice that the AwaitableDelegateCommand implements ICommand, which makes WPF happy, but our viewmodels expose IAsyncCommand, which makes our tests happy. All in all, it works pretty well for me!</p>
+
+<p>If you need a <code>DelegateCommand</code> implementation, check out <a href="https://gist.github.com/JakeGinnivan/5166898">this gist</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Disable Narrator in Windows 8]]></title>
+    <link href="http://JakeGinnivan.github.io/diable-narrator-in-windows-8/"/>
+    <updated>2012-12-11T00:00:00+00:00</updated>
+    <id>http://JakeGinnivan.github.io/diable-narrator-in-windows-8</id>
+    <content type="html"><![CDATA[<p>I get rather annoyed with the narrator. Using <a href="http://blog.ostebaronen.dk/2012/08/disable-narrator-in-windows-8.html">this</a> as inspiration here is how you do it.</p>
+
+<p><strong>Update:</strong>  Another solution is available at <a href="http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/">http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/</a> which uses Image File Execution Options instead.</p>
+
+<!-- more -->
+
+
+<p>Note: You can just delete it, but windows will restore it every time an update is installed</p>
+
+<ul>
+<li>Open <code>C:\Windows\System32</code></li>
+<li>Open Properties of Narrator.exe, goto Security Tab, Click advanced<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator1.png" alt="Narrator 1" /></li>
+<li>Change the owner to yourself<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 2" /></li>
+<li>Click ok, and accept the warning</li>
+<li>Now back on the properties, click edit<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator3.png" alt="Narrator 3" /></li>
+<li>Add yourself, then explicitly deny <code>Read &amp; execute</code> and <code>Read</code>. Click yes on warning about modifying security on system files<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator4.png" alt="Narrator 4" /></li>
+<li>Change owner to <code>SYSTEM</code><br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 5" /></li>
+</ul>
+
+
+<p>Win+Enter now won&rsquo;t do anything :D</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Announcing TestStack.White]]></title>
+    <link href="http://JakeGinnivan.github.io/teststack-white/"/>
+    <updated>2012-10-28T00:00:00+01:00</updated>
+    <id>http://JakeGinnivan.github.io/teststack-white</id>
+    <content type="html"><![CDATA[<h1>Project White</h1>
+
+<p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>
+
+<p>The goal of White was to create a nice abstraction over Microsoft&rsquo;s UI Automation framework in a consistent and object orientated way.</p>
+
+<p>White reached a nice maturity level and active development stopped about 2 years ago, since then things have moved on.</p>
+
+<p><a href="https://github.com/petmongrels">Vivek Singh</a> has given me permission to take this project over and try and increase the activity on this project again.</p>
+
+<h2>Why I&rsquo;m taking on White</h2>
+
+<p>Personally, I have been on a rather large WPF project on and off for the past 2.5 years and rely on UI Automation very heavily. When we started the project, White was the most mature UI Automation framework.</p>
+
+<p>This is a snapshot of some of our builds, every CI build that succeeds with kick-off many UI automation test runs for different configurations.<br/>
+<img src="http://JakeGinnivan.github.io/assets/posts/2012-10-28-teststack-white/UIAutomationTests.png" alt="TeamCity" /></p>
+
+<p>Over the last few years, we have wrapped White and have been running a custom builds and have learnt a lot about UI automation.</p>
+
+<p>I would like to put some of the learnings and improvements back into White to make it easier for everyone to use UI automation without paying for one of the commercial offerings.</p>
+
+<p>One of my colleagues at <a href="http://www.readify.net">Readify</a>, <a href="http://www.mehdi-khalili.com/">Mehdi Khalili</a> did a presentation at Perth .NET usergroup on UI Automation, he was suggesting many things that we were already doing on this project except he was focusing on Web Automation.
+Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="http://kozmic.pl/">Krzysztof Koźmic</a> formed <a href="http://teststack.github.com/">TestStack</a>.</p>
+
+<p>After talking with Mehdi in the pub, he convinced me that I should restart White, and also join TestStack so we can keep some great testing related projects together!</p>
+
+<h2>TestStack.White</h2>
+
+<p>I have been doing some updates and cleanups on White over the past month or two in a private repo, but I have now opened it up at <a href="https://github.com/TestStack/White">https://github.com/TestStack/White</a>.</p>
+
+<p>I am looking forward to working on White some more, and I welcome pull requests :P</p>
+]]></content>
+  </entry>
   
 </feed>

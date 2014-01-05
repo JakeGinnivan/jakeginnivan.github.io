@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>C# Command Line Argument Parser - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Simple, Flexible and Robust command line argument parser">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://JakeGinnivan.github.io/c-sharp-argument-parser">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+    <h2>Things I find useful</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">C# Command Line Argument Parser</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-21T00:00:00+01:00" pubdate data-updated="true">Aug 21<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I know this has been done to death but nothing I found did the job for me so I started with the one that fitted my needs the most then edited from there.</p>
+
+<p>Original source: <a href="http://www.codeproject.com/KB/recipes/command_line.aspx">http://www.codeproject.com/KB/recipes/command_line.aspx</a></p>
+
+<p>I have a few specific requirements:</p>
+
+<ul>
+<li>It must support lists, or the same argument specified multiple times. If an argument has comma’s in it then it will be treated as a list and split on the comma.</li>
+<li>It must support paths with a trailing \ ie. –arg:&ldquo;c:\Users\ginnivanj\My Path\&rdquo;</li>
+<li>Has support for flags.</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p><img src="/get/screenshots/argPaserClassDiagram.png" alt="Class Diagram" /></p>
+
+<h1>Example Usage</h1>
+
+
+<p>There are two ways you can start using this class, I have created a SplitCommandLine function which ignores escaped quotes, this is needed for path support, the trailing \ on the path causes the quote to be taken literally.</p>
+
+<p>Using SplitCommandLine:</p>
+
+<pre><code>var commandLine = Environment.CommandLine;
+var splitCommandLine = Arguments.SplitCommandLine(commandLine);
+
+var arguments = new Arguments(splitCommandLine);
+</code></pre>
+
+<p>Letting windows do it:</p>
+
+<pre><code>static int Main(string[] args)
+{
+    _args = new Arguments(args);
+}
+</code></pre>
+
+<h2>Example Arguments</h2>
+
+
+<blockquote><p>Argument: –flag  <br />
+Usage: args.IsTrue(&ldquo;flag&rdquo;);  <br />
+Result: true <br /></p>
+
+<p>Argument: –arg:MyValue  <br />
+Usage: args.Single(&ldquo;arg&rdquo;);  <br />
+Result: MyValue <br /></p>
+
+<p><p>Argument: –arg &ldquo;My Value&rdquo; <br />
+Usage: args.Single(&ldquo;arg&rdquo;);  <br />
+Result: ‘My Value’ <br /></p>
+
+<p>Argument: /arg=Value /arg=Value2  <br />
+Usage: args[&ldquo;arg&rdquo;]  <br />
+Result: new string[] {&ldquo;Value&rdquo;, &ldquo;Value2&rdquo;} <br /></p>
+
+<p>Argument: /arg=&ldquo;Value,Value2&rdquo;  <br />
+Usage: args[&ldquo;arg&rdquo;]  <br />
+Result: new string[] {&ldquo;Value&rdquo;, &ldquo;Value2&rdquo;} <br /></p></blockquote>
+
+<p>As you can see it is very flexible, it support [–/]arg[:=<space>]value and with the list support it makes it really useful and adaptable.</p>
+
+<p>I have tried to cover as many of the different options with unit tests to make sure it is robust.</p>
+
+<h1>Arguments Class</h1>
+
+
+<pre><code>/// &lt;summary&gt;
+/// Arguments class
+/// &lt;/summary&gt;
+public class Arguments
+{ 
+    /// &lt;summary&gt;
+    /// Splits the command line. When main(string[] args) is used escaped quotes (ie a path "c:\folder\")
+    /// Will consume all the following command line arguments as the one argument. 
+    /// This function ignores escaped quotes making handling paths much easier.
+    /// &lt;/summary&gt;
+    /// &lt;param name="commandLine"&gt;The command line.&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    public static string[] SplitCommandLine(string commandLine)
+    {
+        var translatedArguments = new StringBuilder(commandLine);
+        var escaped = false;
+        for (var i = 0; i &lt; translatedArguments.Length; i++)
+        {
+            if (translatedArguments[i] == '"')
+            {
+                escaped = !escaped;
+            }
+            if (translatedArguments[i] == ' ' &amp;&amp; !escaped)
+            {
+                translatedArguments[i] = '\n';
+            }
+        }
+
+        var toReturn = translatedArguments.ToString().Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        for (var i = 0; i &lt; toReturn.Length; i++)
+        {
+            toReturn[i] = RemoveMatchingQuotes(toReturn[i]);
+        }
+        return toReturn;
+    }
+
+    public static string RemoveMatchingQuotes(string stringToTrim)
+    {
+        var firstQuoteIndex = stringToTrim.IndexOf('"');
+        var lastQuoteIndex = stringToTrim.LastIndexOf('"');
+        while (firstQuoteIndex != lastQuoteIndex)
+        {
+            stringToTrim = stringToTrim.Remove(firstQuoteIndex, 1);
+            stringToTrim = stringToTrim.Remove(lastQuoteIndex - 1, 1); //-1 because we've shifted the indicies left by one
+            firstQuoteIndex = stringToTrim.IndexOf('"');
+            lastQuoteIndex = stringToTrim.LastIndexOf('"');
+        }
+
+        return stringToTrim;
+    }
+
+    private readonly Dictionary&lt;string, Collection&lt;string&gt;&gt; _parameters;
+    private string _waitingParameter;
+
+    public Arguments(IEnumerable&lt;string&gt; arguments)
+    {
+        _parameters = new Dictionary&lt;string, Collection&lt;string&gt;&gt;();
+
+        string[] parts;
+
+        //Splits on beginning of arguments ( - and -- and / )
+        //And on assignment operators ( = and : )
+        var argumentSplitter = new Regex(@"^-{1,2}|^/|=|:",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        foreach (var argument in arguments)
+        {
+            parts = argumentSplitter.Split(argument, 3);
+            switch (parts.Length)
+            {
+                case 1:
+                    AddValueToWaitingArgument(parts[0]);
+                    break;
+                case 2:
+                    AddWaitingArgumentAsFlag();
+
+                    //Because of the split index 0 will be a empty string
+                    _waitingParameter = parts[1];
+                    break;
+                case 3:
+                    AddWaitingArgumentAsFlag();
+
+                    //Because of the split index 0 will be a empty string
+                    string valuesWithoutQuotes = RemoveMatchingQuotes(parts[2]);
+
+                    AddListValues(parts[1], valuesWithoutQuotes.Split(','));
+                    break;
+            }
+        }
+
+        AddWaitingArgumentAsFlag();
+    }
+
+    private void AddListValues(string argument, IEnumerable&lt;string&gt; values)
+    {
+        foreach (var listValue in values)
+        {
+            Add(argument, listValue);
+        }
+    }
+
+    private void AddWaitingArgumentAsFlag()
+    {
+        if (_waitingParameter == null) return;
+
+        AddSingle(_waitingParameter, "true");
+        _waitingParameter = null;
+    }
+
+    private void AddValueToWaitingArgument(string value)
+    {
+        if (_waitingParameter == null) return;
+
+        value = RemoveMatchingQuotes(value);
+
+        Add(_waitingParameter, value);
+        _waitingParameter = null;
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the count.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;The count.&lt;/value&gt;
+    public int Count
+    {
+        get
+        {
+            return _parameters.Count;
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Adds the specified argument.
+    /// &lt;/summary&gt;
+    /// &lt;param name="argument"&gt;The argument.&lt;/param&gt;
+    /// &lt;param name="value"&gt;The value.&lt;/param&gt;
+    public void Add(string argument, string value)
+    {
+        if (!_parameters.ContainsKey(argument))
+            _parameters.Add(argument, new Collection&lt;string&gt;());
+
+        _parameters[argument].Add(value);
+    }
+
+    public void AddSingle(string argument, string value)
+    {
+        if (!_parameters.ContainsKey(argument))
+            _parameters.Add(argument, new Collection&lt;string&gt;());
+        else
+            throw new ArgumentException(string.Format("Argument {0} has already been defined", argument));
+
+        _parameters[argument].Add(value);
+    }
+
+    public void Remove(string argument)
+    {
+        if (_parameters.ContainsKey(argument))
+            _parameters.Remove(argument);
+    }
+
+    /// &lt;summary&gt;
+    /// Determines whether the specified argument is true.
+    /// &lt;/summary&gt;
+    /// &lt;param name="argument"&gt;The argument.&lt;/param&gt;
+    /// &lt;returns&gt;
+    ///     &lt;c&gt;true&lt;/c&gt; if the specified argument is true; otherwise, &lt;c&gt;false&lt;/c&gt;.
+    /// &lt;/returns&gt;
+    public bool IsTrue(string argument)
+    {
+        AssertSingle(argument);
+
+        var arg = this[argument];
+
+        return arg != null &amp;&amp; arg[0].Equals("true", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void AssertSingle(string argument)
+    {
+        if (this[argument] != null &amp;&amp; this[argument].Count &gt; 1)
+            throw new ArgumentException(string.Format("{0} has been specified more than once, expecting single value", argument));
+    }
+
+    public string Single(string argument)
+    {
+        AssertSingle(argument);
+
+        //only return value if its NOT true, there is only a single item for that argument
+        //and the argument is defined
+        if (this[argument] != null &amp;&amp; !IsTrue(argument))
+            return this[argument][0];
+
+        return null;
+    }
+
+    public bool Exists(string argument)
+    {
+        return (this[argument] != null &amp;&amp; this[argument].Count &gt; 0);
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the &lt;see cref="System.Collections.ObjectModel.Collection&amp;lt;T&amp;gt;"/&gt; with the specified parameter.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;&lt;/value&gt;
+    public Collection&lt;string&gt; this[string parameter]
+    {
+        get
+        {
+            return _parameters.ContainsKey(parameter) ? _parameters[parameter] : null;
+        }
+    }
+}
+</code></pre>
+
+<h1>Unit Tests</h1>
+
+
+<p>Tests use xUnit as the unit testing framework</p>
+
+<pre><code>public class ArgumentsTests
+{
+    [Fact]
+    public void ArgumentBooleanTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-testBool"
+                                       };
+        var target = new Arguments(args);
+        Assert.True(target.IsTrue("testBool"));
+    }
+
+    [Fact]
+    public void IsTrueDoesntExist()
+    {
+        IEnumerable&lt;string&gt; args = new string[]{};
+        var target = new Arguments(args);
+        Assert.False(target.IsTrue("doesntExist"));
+    }
+
+    [Fact]
+    public void ArgumentDoubleDashesTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "--testArg=Value"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal("Value", target.Single("testArg"));
+    }
+
+    [Fact]
+    public void ArgumentSingleTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value", target.Single("test"));
+    }
+
+    [Fact]
+    public void ArgumentWithSpaceSeparatorTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-test Value");
+
+        var target = new Arguments(args);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value", target.Single("test"));
+    }
+
+    [Fact]
+    public void ArgumentWithSpaceSeparatorAndSpaceInValueTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-test \"Value With Space\"");
+
+        var target = new Arguments(args);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value With Space", target.Single("test"));
+    }
+
+    [Fact]
+    public void AddWaitingAsFlagTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag -test \"Value With Space\"");
+
+        var target = new Arguments(args);
+        Assert.Equal(2, target.Count);
+        Assert.Equal(1, target["test"].Count);
+        Assert.Equal("Value With Space", target.Single("test"));
+        Assert.True(target.IsTrue("flag"));
+    }
+
+    [Fact]
+    public void AddSingleTwiceTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag");
+
+        var target = new Arguments(args);
+
+        Assert.Throws&lt;ArgumentException&gt;(() =&gt; target.AddSingle("flag", "true"));
+    }
+
+    [Fact]
+    public void FlagsTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag1 -flag2");
+
+        var target = new Arguments(args);
+
+        Assert.True(target.IsTrue("flag1"));
+        Assert.True(target.IsTrue("flag2"));
+    }
+
+    [Fact]
+    public void RemoveTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag1 -flag2");
+
+        var target = new Arguments(args);
+
+        Assert.True(target.IsTrue("flag1"));
+        Assert.True(target.IsTrue("flag2"));
+        target.Remove("flag1");
+        Assert.False(target.Exists("flag1"));
+        Assert.True(target.IsTrue("flag2"));
+    }
+
+    [Fact]
+    public void SingleReturnsNullIfNotDefinedTest()
+    {
+
+        var target = new Arguments(new string[]{});
+
+        Assert.False(target.Exists("notDefined"));
+        Assert.Null(target.Single("notDefined"));
+    }
+
+    [Fact]
+    public void ExistsTest()
+    {
+        IEnumerable&lt;string&gt; args = Arguments.SplitCommandLine("-flag1");
+
+        var target = new Arguments(args);
+
+        Assert.True(target.Exists("flag1"));
+    }
+
+    [Fact]
+    public void ArgumentListTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:Value2"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("Value2", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentPathTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           @"-test:C:\Folder\"
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal(@"C:\Folder\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentQuotedPathTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:\"C:\\Folder\\\""
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("C:\\Folder\\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentQuotedPathWithSpaceTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:\"C:\\Folder Name\\\""
+                                       };
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("C:\\Folder Name\\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentQuotedPathWithSpaceAndFollowingArgTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:\"C:\\Folder Name\\\"",
+                                           "-testPath:\"C:\\Folder2\\\"",
+                                           "-boolArg"
+                                       };
+
+        var target = new Arguments(args);
+        Assert.Equal(2, target["test"].Count);
+        Assert.Equal(@"C:\Folder2\", target.Single("testPath"));
+        Assert.True(target.IsTrue("boolArg"));
+
+        Assert.Equal("Value", target["test"][0]);
+        Assert.Equal("C:\\Folder Name\\", target["test"][1]);
+    }
+
+    [Fact]
+    public void ArgumentListRequestSingleThrowsExceptionTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-test:Value",
+                                           "-test:Value2"
+                                       };
+
+        var target = new Arguments(args);
+        //Should throw Argument exception because test is defined more than once
+        Assert.Throws&lt;ArgumentException&gt;(() =&gt; target.Single("test"));
+    }
+
+    [Fact]
+    public void ArgumentCommaListTest()
+    {
+        IEnumerable&lt;string&gt; args = new[]
+                                       {
+                                           "-testList:Value,Value2,Value3"
+                                       };
+
+        var target = new Arguments(args);
+        Assert.Equal(3, target["testList"].Count);
+
+        Assert.Equal("Value", target["testList"][0]);
+        Assert.Equal("Value2", target["testList"][1]);
+        Assert.Equal("Value3", target["testList"][2]);
+    }
+
+    [Fact]
+    public void BlogExample()
+    {
+        const string commandLine = "-u -d -mdb=\"c:\\entries.mdb\" -xml=\"j:\\\"";
+
+        var target = new Arguments(Arguments.SplitCommandLine(commandLine));
+
+        Assert.Equal("c:\\entries.mdb", target.Single("mdb"));
+        Assert.Equal("j:\\", target.Single("xml"));
+    }
+}
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-21T00:00:00+01:00" pubdate data-updated="true">Aug 21<span>st</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/c-number/'>c#</a>, <a class='category' href='/blog/categories/command-line/'>command-line</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/c-sharp-argument-parser/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/c-sharp-argument-parser/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/vsto-contrib/" title="Previous Post: VSTO Contrib">&laquo; VSTO Contrib</a>
+      
+      
+        <a class="basic-alignment right" href="/tech-ed-2010/" title="Next Post: TechEd 2010">TechEd 2010 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/git-flow-versioning/">Git Flow Versioning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/conventiontests-v2-released/">Convention Tests V2 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'JakeGinnivan',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://JakeGinnivan.github.io/c-sharp-argument-parser/';
+        var disqus_url = 'http://JakeGinnivan.github.io/c-sharp-argument-parser/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
