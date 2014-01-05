@@ -5,7 +5,7 @@ metaTitle: Documentation Site with Pretzel
 description: How you can get a documentation site up and running really fast with Pretzel and Azure Websites
 revised: 2013-07-27
 date: 2013-07-27
-categories: [open-source,pretzel]
+categories: [Open Source]
 migrated: true
 comments: true
 sharing: true

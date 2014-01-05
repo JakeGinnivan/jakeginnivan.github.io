@@ -5,7 +5,7 @@ metaTitle: MultiTargeted WP7 Project
 description: After seeing Shaun Wildermuths post on this subject, I thought I would share how I do it
 revised: 2011-08-23
 date: 2011-08-22
-categories: [wp7,open-source,msbuild]
+categories: [Windows Phone, Open Source]
 migrated: true
 comments: true
 sharing: true

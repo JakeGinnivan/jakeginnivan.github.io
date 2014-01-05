@@ -5,7 +5,7 @@ metaTitle: Announcing TestStack.White
 description: White is a great rich client UI automation framework which has been inactive for a while. We are restarting the project!
 revised: 2012-10-28
 date: 2012-10-28
-categories: [ui-automation,white,open-source]
+categories: [UI Automation, White, Open Source]
 migrated: true
 comments: true
 sharing: true

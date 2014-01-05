@@ -5,7 +5,7 @@ metaTitle: GitReleaseNotes Initial Release!
 description: Need release notes for your GitHub project? It is easy with GitReleaseNotes
 revised: 2013-12-17
 date: 2013-12-17
-categories: [git,github,jira]
+categories: [Git,GitHub,Jira]
 migrated: true
 comments: true
 sharing: true

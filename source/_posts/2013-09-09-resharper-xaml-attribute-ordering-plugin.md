@@ -5,7 +5,7 @@ metaTitle: ReSharper Xaml Attribute Ordering Plug-in
 description: This is something I have wanted for a while, so I started this plugin over the weekend at JetBrains day
 revised: 2013-09-09
 date: 2013-09-09
-categories: [resharper]
+categories: [ReSharper, Open Source]
 migrated: true
 comments: true
 sharing: true

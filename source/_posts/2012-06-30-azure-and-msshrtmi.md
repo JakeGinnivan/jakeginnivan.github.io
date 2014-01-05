@@ -5,7 +5,7 @@ metaTitle: Azure and msshrtmi.dll
 description: When adding Azure support to FunnelWeb, I ran into issues with Azure and msshrtmi.dll. Here is my solutions
 revised: 2012-06-30
 date: 2012-06-30
-categories: [azure]
+categories: [Azure]
 migrated: true
 comments: true
 sharing: true

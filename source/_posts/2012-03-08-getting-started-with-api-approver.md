@@ -5,7 +5,7 @@ metaTitle: Getting Started with ApprovalTests without installing TortoiseSVN
 description: If you don't have TortoiseSVN installed the DiffReporter will fail, use Chocolatey to get started!
 revised: 2012-03-08
 date: 2012-03-08
-categories: []
+categories: [Testing]
 migrated: true
 comments: true
 sharing: true

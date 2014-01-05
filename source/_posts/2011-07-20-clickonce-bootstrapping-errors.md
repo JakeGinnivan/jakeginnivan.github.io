@@ -5,7 +5,7 @@ metaTitle: ClickOnce Bootstrapping Errors
 description: Once again I have wasted a heap of time trying to get ClickOnce publishing on a build server. Here is how to get it working.
 revised: 2011-07-21
 date: 2011-07-20
-categories: [teamcity,msbuild,.net]
+categories: [TeamCity, MSBuild, .NET]
 migrated: true
 comments: true
 sharing: true

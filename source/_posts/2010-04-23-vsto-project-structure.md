@@ -5,7 +5,7 @@ metaTitle: How to Structure a new VSTO Project
 description: How to Structure a new VSTO Project to make it easier to maintain and test.
 revised: 2011-02-19
 date: 2010-04-23
-categories: [vsto,patternsandpractices]
+categories: [VSTO]
 migrated: true
 comments: true
 sharing: true

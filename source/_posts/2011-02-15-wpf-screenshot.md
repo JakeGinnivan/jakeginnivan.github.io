@@ -5,7 +5,7 @@ metaTitle: Taking Screenshots of WPF apps
 description: During out UI Automation build, when an error occurs it takes a screenshot. We were getting a blank modal window. Here is code that works.
 revised: 2011-02-19
 date: 2011-02-15
-categories: [wpf]
+categories: [Wpf]
 migrated: true
 comments: true
 sharing: true

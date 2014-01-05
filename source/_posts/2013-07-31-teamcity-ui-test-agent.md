@@ -5,7 +5,7 @@ metaTitle: TeamCity UI Test Agent
 description: Instructions to setup a TeamCity build agent, in Azure to run UI Automation Tests
 revised: 2013-07-31
 date: 2013-07-31
-categories: [azure,teamcity,ui-automation]
+categories: [Azure, TeamCity, UI Automation]
 migrated: true
 comments: true
 sharing: true

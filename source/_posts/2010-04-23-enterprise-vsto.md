@@ -5,7 +5,7 @@ metaTitle: VSTO Add-ins which are maintainable and well designed
 description: VSTO Add-ins which are maintainable and well designed
 revised: 2011-02-19
 date: 2010-04-23
-categories: [vsto,.net,c#]
+categories: [VSTO]
 migrated: true
 comments: true
 sharing: true

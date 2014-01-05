@@ -3,9 +3,9 @@ layout: post
 title: TechEd DEV332 Resources
 metaTitle: Links, Demos and Resources from my TechEd talk
 description: TechEd DEV332, VSTO Resources
-revised: 2011-02-19
+revised: 2011-02-20
 date: 2010-08-29
-categories: [vsto,tech-ed,presenting]
+categories: [VSTO, Presenting]
 migrated: true
 comments: true
 sharing: true

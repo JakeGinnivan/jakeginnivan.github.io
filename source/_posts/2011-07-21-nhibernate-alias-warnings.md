@@ -5,7 +5,7 @@ metaTitle: No more R# warnings for nHibernate aliases
 description: When using QueryOver projections with type safe aliases, r# will warn that the value is always null. Here is a trick to remove the warning
 revised: 2011-07-22
 date: 2011-07-21
-categories: [nHibernate,resharper,c#]
+categories: [ReSharper]
 migrated: true
 comments: true
 sharing: true

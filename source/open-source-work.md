@@ -5,7 +5,7 @@ metaTitle: Open Source Work
 description: A collection of the open source projects I am currently contributing to, or have created.
 revised: 2012-06-30
 date: 2011-02-21
-categories: [open-source]
+categories: [Open Source]
 migrated: true
 comments: true
 sharing: true

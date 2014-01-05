@@ -5,7 +5,7 @@ metaTitle: Verifying logged messages with Log4Net
 description: Normally, if you wanted to do this you would try inject ILog. This is a cleaner alternative
 revised: 2013-09-13
 date: 2013-09-13
-categories: [log4net,testing]
+categories: [log4net,Testing]
 migrated: true
 comments: true
 sharing: true

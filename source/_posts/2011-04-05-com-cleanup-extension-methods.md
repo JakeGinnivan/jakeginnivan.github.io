@@ -5,7 +5,7 @@ metaTitle: Cleaning up Office COM Interop Code with Extension Methods
 description: Office Automation and COM interop code can be really ugly, this post show you how the extension methods in VSTO Contrib can help
 revised: 2011-04-05
 date: 2011-04-05
-categories: [vsto-contrib,com-interop,vsto]
+categories: [VSTO, Open Source]
 migrated: true
 comments: true
 sharing: true

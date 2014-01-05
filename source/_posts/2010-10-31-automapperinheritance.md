@@ -5,7 +5,7 @@ metaTitle: Adding Inheritance to AutoMapper
 description: Jake shares a modified version of AutoMapper which inherits mappings when you include Derived types
 revised: 2011-08-16
 date: 2010-10-31
-categories: [automapper,inheritance,open-source]
+categories: [Open Source, AutoMapper]
 migrated: true
 comments: true
 sharing: true

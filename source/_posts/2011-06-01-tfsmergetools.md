@@ -5,7 +5,7 @@ metaTitle: TFS Merge Tools Configuration
 description: Every time I format my machine, I have to think of all the different file extensions I work with. Here is my list.
 revised: 2011-09-23
 date: 2011-06-01
-categories: [tfs,.net]
+categories: [TFS, .NET]
 migrated: true
 comments: true
 sharing: true

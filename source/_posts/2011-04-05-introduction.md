@@ -5,7 +5,7 @@ metaTitle: Introduction to VSTO Contrib
 description: The release of VSTO Contrib is imminent, this will be a series covering various parts of VSTO Contrib.
 revised: 2011-04-20
 date: 2011-04-05
-categories: [open-source,vsto,vsto-contrib,wpf]
+categories: [Open Source, Wpf, VSTO]
 migrated: true
 comments: true
 sharing: true

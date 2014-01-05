@@ -5,7 +5,7 @@ metaTitle: Retry.For
 description: I have created a simple class to help with UI Automation, making it really easy to retry a action for a certain time
 revised: 2011-03-21
 date: 2011-03-20
-categories: [ui-automation,c#]
+categories: [UI Automation]
 migrated: true
 comments: true
 sharing: true

@@ -3,9 +3,9 @@ layout: post
 title: Windows Phone 7 Frameworks Presentation
 metaTitle: Windows Phone 7 Frameworks Presentation
 description: Choosing the right framework when starting a project is important! They can greatly help, or hinder you. Find out what each framework offers.
-revised: 2011-02-25
+revised: 2011-03-03
 date: 2011-02-25
-categories: [presenting,wp7,presentations]
+categories: [Presenting]
 migrated: true
 comments: true
 sharing: true

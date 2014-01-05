@@ -5,7 +5,7 @@ metaTitle: Quake Style Powershell Console
 description: Press the windows key + tilde (`) to open a powershell console
 revised: 2011-02-19
 date: 2010-01-27
-categories: [powershell]
+categories: []
 migrated: true
 comments: true
 sharing: true

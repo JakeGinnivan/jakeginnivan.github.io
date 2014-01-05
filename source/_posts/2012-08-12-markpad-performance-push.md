@@ -5,7 +5,7 @@ metaTitle: Markpad Performance Push
 description: 
 revised: 2012-08-12
 date: 2012-08-12
-categories: [wpf,code52]
+categories: [Wpf, Open Source]
 migrated: true
 comments: true
 sharing: true

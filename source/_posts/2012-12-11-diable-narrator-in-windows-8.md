@@ -2,10 +2,10 @@
 layout: post
 title: Disable Narrator in Windows 8
 metaTitle: Disable Narrator in Windows 8
-description: Use resharper and accidently hit win+enter rather than alt+enter and Narrator pops up? This is how you disable it
+description: Use ReSharper and accidentally hit win+enter rather than alt+enter and Narrator pops up? This is how you disable it
 revised: 2012-12-12
 date: 2012-12-11
-categories: [windows8]
+categories: []
 migrated: true
 comments: true
 sharing: true

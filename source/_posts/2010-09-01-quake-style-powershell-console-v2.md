@@ -5,7 +5,7 @@ metaTitle: Quake Style Powershell Console, v2
 description: I revisited this idea, and have improved it a lot =)
 revised: 2011-06-09
 date: 2010-09-01
-categories: [powershell,command-line]
+categories: []
 migrated: true
 comments: true
 sharing: true

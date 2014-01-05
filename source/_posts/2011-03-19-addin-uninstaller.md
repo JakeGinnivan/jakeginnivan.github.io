@@ -5,7 +5,7 @@ metaTitle: VSTO Add-in Uninstaller
 description: If you do VSTO work and have a heap of Addin2 extensions in all your office app, then this app is for you.
 revised: 2011-04-05
 date: 2011-03-19
-categories: [vsto,vsto-contrib]
+categories: [VSTO]
 migrated: true
 comments: true
 sharing: true

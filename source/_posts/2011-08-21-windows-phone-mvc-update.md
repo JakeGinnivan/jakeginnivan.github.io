@@ -5,7 +5,7 @@ metaTitle: Windows Phone MVC Update
 description: I have just pushed a MASSIVE update! So many enhancements, bug fixes, and maturity is in this release. 
 revised: 2011-08-23
 date: 2011-08-21
-categories: [wp7,mvc,open-source]
+categories: [Open Source, Windows Phone]
 migrated: true
 comments: true
 sharing: true

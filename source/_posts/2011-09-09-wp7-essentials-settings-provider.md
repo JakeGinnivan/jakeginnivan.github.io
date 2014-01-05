@@ -5,7 +5,7 @@ metaTitle: WP7 Essentials Settings Provider
 description: The WP7 Essentials library is constantly evolving, the most recent addition is a UI for settings used with the Settings Provider
 revised: 2011-09-10
 date: 2011-09-09
-categories: [wp7essentials,wp7,open-source]
+categories: [Windows Phone, Open Source]
 migrated: true
 comments: true
 sharing: true

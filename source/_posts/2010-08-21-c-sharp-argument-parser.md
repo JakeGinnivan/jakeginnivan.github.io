@@ -5,7 +5,7 @@ metaTitle: C# Command Line Argument Parser
 description: Simple, Flexible and Robust command line argument parser
 revised: 2011-02-19
 date: 2010-08-21
-categories: [.net,c#,command-line]
+categories: [.NET]
 migrated: true
 comments: true
 sharing: true

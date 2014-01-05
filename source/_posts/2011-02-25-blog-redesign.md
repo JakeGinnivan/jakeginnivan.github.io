@@ -3,9 +3,9 @@ layout: post
 title: Blog Redesign
 metaTitle: Blog Redesign
 description: I have just redesigned my blog, am have also changed web hosts.
-revised: 2011-02-25
+revised: 2011-02-28
 date: 2011-02-25
-categories: [.net]
+categories: []
 migrated: true
 comments: true
 sharing: true

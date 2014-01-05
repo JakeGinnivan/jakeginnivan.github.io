@@ -5,7 +5,7 @@ metaTitle: WPF SQL Connection User Control
 description: 
 revised: 2011-04-06
 date: 2010-04-19
-categories: [.net,c#,wpf]
+categories: [Wpf]
 migrated: true
 comments: true
 sharing: true

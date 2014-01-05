@@ -5,7 +5,7 @@ metaTitle: Awaitable DelegateCommand
 description: Use MVVM, DelegateCommand, testing and c# 5 async features. You want to see this
 revised: 2013-03-15
 date: 2013-03-15
-categories: [mvvm,async,delegatecommand]
+categories: [Async]
 migrated: true
 comments: true
 sharing: true

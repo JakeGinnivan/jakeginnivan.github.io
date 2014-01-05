@@ -5,7 +5,7 @@ metaTitle: MVVM, Design Time vs IoC usage
 description: After a discussion via twitter I thought I would post my thoughts around how I would wire up views/viewmodels when not using a specific framework
 revised: 2011-07-22
 date: 2011-07-21
-categories: [c#,wpf]
+categories: [Wpf]
 migrated: true
 comments: true
 sharing: true

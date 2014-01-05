@@ -5,7 +5,7 @@ metaTitle: Inversion of Control, Dependency Injection and VSTO
 description: How can you use DI and IoC containers within VSTO?
 revised: 2011-02-19
 date: 2010-04-23
-categories: [vsto,patternsandpractices,c#,.net]
+categories: [VSTO]
 migrated: true
 comments: true
 sharing: true

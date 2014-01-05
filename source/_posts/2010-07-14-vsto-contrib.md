@@ -5,7 +5,7 @@ metaTitle: Open Source VSTO Contrib project started
 description: VSTO Contrib project started with VSTO Helper classes, and Example Projects
 revised: 2011-02-19
 date: 2010-07-14
-categories: [vsto,.net,open-source]
+categories: [VSTO, .NET, Open Source]
 migrated: true
 comments: true
 sharing: true

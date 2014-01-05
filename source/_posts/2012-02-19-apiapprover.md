@@ -5,7 +5,7 @@ metaTitle: ApiApprover
 description: 
 revised: 2012-02-20
 date: 2012-02-19
-categories: [open-source,nuget,semanticversioning]
+categories: [Open Source, NuGet, Semantic Versioning]
 migrated: true
 comments: true
 sharing: true
@@ -17,7 +17,7 @@ summary: |
 ---
 Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.
 
-The interesting thing about Semantic versioning is that often people accidently break the semantic version. So I wrote a unit test which solves this problem
+The interesting thing about Semantic versioning is that often people accidentally break the semantic version. So I wrote a unit test which solves this problem
 
     [Fact]
     public void phoenix_has_no_public_api_changes()

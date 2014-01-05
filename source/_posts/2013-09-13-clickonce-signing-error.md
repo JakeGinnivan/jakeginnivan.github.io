@@ -5,7 +5,7 @@ metaTitle: ClickOnce Signing Error
 description: I had an error signing clickonce installers, thought I would blog about it
 revised: 2013-09-13
 date: 2013-09-13
-categories: [clickonce]
+categories: [ClickOnce]
 migrated: true
 comments: true
 sharing: true

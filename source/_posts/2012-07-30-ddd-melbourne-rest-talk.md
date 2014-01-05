@@ -5,7 +5,7 @@ metaTitle: DDD Melbourne Rest Talk
 description: I did a talk on REST and introduced RESTbeer. Here are my slides and links
 revised: 2012-07-30
 date: 2012-07-30
-categories: []
+categories: [Presenting]
 migrated: true
 comments: true
 sharing: true

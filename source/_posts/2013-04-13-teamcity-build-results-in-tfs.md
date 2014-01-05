@@ -5,7 +5,7 @@ metaTitle: TeamCity Build Results in TFS
 description: 
 revised: 2013-04-13
 date: 2013-04-13
-categories: []
+categories: [TeamCity, TFS]
 migrated: true
 comments: true
 sharing: true

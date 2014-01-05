@@ -3,9 +3,9 @@ layout: post
 title: Joining the Blogosphere
 metaTitle: Joining the Blogosphere
 description: Jake is joining the Blogosphere
-revised: 2011-02-19
+revised: 2011-02-21
 date: 2009-07-21
-categories: [.net]
+categories: [.NET]
 migrated: true
 comments: true
 sharing: true

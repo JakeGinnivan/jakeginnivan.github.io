@@ -5,7 +5,7 @@ metaTitle: RadioButton.IsChecked Bindings
 description: Today I had an issue with binding the IsChecked property of a radio button, and my bindings were being cleared. This is my solution.
 revised: 2011-02-19
 date: 2010-12-05
-categories: [wpf]
+categories: [Wpf]
 migrated: true
 comments: true
 sharing: true

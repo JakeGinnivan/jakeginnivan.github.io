@@ -5,7 +5,7 @@ metaTitle: DDD Sydney - Rich Client Automation
 description: I will be speaking at DDD Sydney this weekend. My topic is Rich Client UI Automation, without shooting yourself in the foot
 revised: 2011-06-30
 date: 2011-06-29
-categories: [evangeloz,ui-automation,ddd,presenting]
+categories: [Presenting, UI Automation]
 migrated: true
 comments: true
 sharing: true

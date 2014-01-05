@@ -5,7 +5,7 @@ metaTitle: Simple attached property to remember WPF window positions!
 description: Want a WPF window to open up where it was last closed? It is as simple at WindowsSettings.Save="True"
 revised: 2011-02-20
 date: 2009-08-04
-categories: [wpf]
+categories: [Wpf]
 migrated: true
 comments: true
 sharing: true

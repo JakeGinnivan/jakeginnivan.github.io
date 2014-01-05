@@ -5,7 +5,7 @@ metaTitle: New post
 description: 
 revised: 2012-10-16
 date: 2012-10-16
-categories: []
+categories: [Async, Testing]
 migrated: true
 comments: true
 sharing: true

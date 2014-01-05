@@ -5,7 +5,7 @@ metaTitle: ClickOnce from Azure Blob Storage
 description: How to create a ClickOnce installer, then host it in Azure Blob storage
 revised: 2013-08-08
 date: 2013-08-08
-categories: [ClickOnce,Azure]
+categories: [ClickOnce, Azure]
 migrated: true
 comments: true
 sharing: true

@@ -5,7 +5,7 @@ metaTitle: Convention Tests v2 Released
 description: ConventionTests is a TestStack project allowing you to easily validate and document your project conventions
 revised: 2013-09-19
 date: 2013-09-19
-categories: [TestStack,Conventions]
+categories: [TestStack]
 migrated: true
 comments: true
 sharing: true

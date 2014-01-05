@@ -5,7 +5,7 @@ metaTitle: WP7 Essentials Released!
 description: While at MobileCampOz, Brendan Kowitz and I were discussing the need for a essentials library for WP7, this library is focused on code issues, not UI
 revised: 2011-06-10
 date: 2011-06-09
-categories: [open-source,wp7,wp7essentials]
+categories: [Open Source, Windows Phone]
 migrated: true
 comments: true
 sharing: true

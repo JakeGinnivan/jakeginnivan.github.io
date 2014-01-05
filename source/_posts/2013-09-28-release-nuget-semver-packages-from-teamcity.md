@@ -5,7 +5,7 @@ metaTitle: Release NuGet SemVer packages from Teamcity
 description: I am involved in releasing quite a few open source projects and up until now I have not been happy with the release process. 
 revised: 2013-09-28
 date: 2013-09-28
-categories: [NuGet,teamcity,github,releases]
+categories: [NuGet,TeamCity,GitHub]
 migrated: true
 comments: true
 sharing: true

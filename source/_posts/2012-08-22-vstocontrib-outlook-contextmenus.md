@@ -5,7 +5,7 @@ metaTitle: New post
 description: An issue for VSTO Contrib was submitted, it was hard to wire up context menus, this is now fixed
 revised: 2012-08-22
 date: 2012-08-22
-categories: [vsto-contrib]
+categories: [VSTO]
 migrated: true
 comments: true
 sharing: true

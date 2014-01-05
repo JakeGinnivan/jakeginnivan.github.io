@@ -5,7 +5,7 @@ metaTitle: Automated Project Environment Setup
 description: Create a SetupEnvironment.ps1 for your project now, it will save you time in the long run
 revised: 2013-08-08
 date: 2013-08-08
-categories: []
+categories: [Continuous Delivery]
 migrated: true
 comments: true
 sharing: true

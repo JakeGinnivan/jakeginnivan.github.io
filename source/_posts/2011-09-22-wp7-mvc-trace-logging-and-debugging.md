@@ -5,7 +5,7 @@ metaTitle: WP7 MVC Debug and Tracing
 description: Now that WP MVC is maturing, it is important that when you have performance issues or any issues, you can find the problem easily!
 revised: 2011-09-23
 date: 2011-09-22
-categories: [wp7,mvc,open-source]
+categories: [Open Source, Windows Phone]
 migrated: true
 comments: true
 sharing: true

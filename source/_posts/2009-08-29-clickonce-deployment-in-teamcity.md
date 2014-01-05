@@ -5,7 +5,7 @@ metaTitle: ClickOnce Deployment in TeamCity Issues
 description: "How to fix MSB3147: Could not find required file 'setup.bin' in 'ProjectFolder\\Engine' error"
 revised: 2011-02-19
 date: 2009-08-29
-categories: [.net,clickonce,teamcity]
+categories: [TeamCity, ClickOnce, Continuous Delivery]
 migrated: true
 comments: true
 sharing: true

@@ -5,7 +5,7 @@ metaTitle: VSTO and COM Interop
 description: VSTO and COM Interop are two different things entirely, but you can't use VSTO without COM Interop. This post will help you do COM interop right.
 revised: 2011-02-19
 date: 2010-05-14
-categories: [vsto,com-interop,patternsandpractices,.net,c#]
+categories: [VSTO]
 migrated: true
 comments: true
 sharing: true

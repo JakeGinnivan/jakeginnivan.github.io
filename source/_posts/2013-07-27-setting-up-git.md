@@ -5,7 +5,7 @@ metaTitle: Setting up Git
 description: This is how I setup git on windows
 revised: 2013-07-27
 date: 2013-07-27
-categories: [git]
+categories: [Git]
 migrated: true
 comments: true
 sharing: true

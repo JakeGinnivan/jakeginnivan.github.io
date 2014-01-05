@@ -5,7 +5,7 @@ metaTitle: Phone Test Project Template
 description: I have released a phone test project to the visual studio gallery allowing you to File -> New Windows Phone Test Project
 revised: 2011-08-21
 date: 2011-08-20
-categories: [wp7,wp7essentials,open-source]
+categories: [Open Source, Windows Phone, Testing]
 migrated: true
 comments: true
 sharing: true

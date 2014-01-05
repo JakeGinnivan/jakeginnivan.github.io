@@ -5,7 +5,7 @@ metaTitle: Git Flow Versioning
 description: I just tried using git-flow to manage releases, I quite like it.
 revised: 2013-10-02
 date: 2013-10-02
-categories: [gitflow,git,github]
+categories: [Git,GitHub,GitFlow]
 migrated: true
 comments: true
 sharing: true

@@ -5,7 +5,7 @@ metaTitle: TestStack.White v0.11 Released!
 description: White is pushing towards v1, this is a bugfix release of White
 revised: 2013-08-01
 date: 2013-08-01
-categories: [white,teststack]
+categories: [TestStack, Testing, White, UI Automation]
 migrated: true
 comments: true
 sharing: true

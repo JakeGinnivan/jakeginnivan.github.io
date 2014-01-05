@@ -5,7 +5,7 @@ metaTitle: Redirecting Process Output
 description: When using Process.Start in .net it is actually not that easy to capture the output. Here is some code to help
 revised: 2013-04-05
 date: 2013-04-05
-categories: [c#,.net]
+categories: [.NET]
 migrated: true
 comments: true
 sharing: true

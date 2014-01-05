@@ -5,7 +5,7 @@ metaTitle: Pack URI in Unit Tests
 description: Some exceptions and solutions when you try to unit test around pack Uri's
 revised: 2013-09-16
 date: 2013-09-16
-categories: [WPF]
+categories: [Wpf]
 migrated: true
 comments: true
 sharing: true

@@ -5,7 +5,7 @@ metaTitle: VSTO Contrib RibbonFactory
 description: The Ribbon Factory in VSTO Contrib lets you create a view model for each Ribbon, with wpf like binding, context and DI/IoC support!
 revised: 2011-04-06
 date: 2011-04-05
-categories: [vsto,vsto-contrib,IoC,open-source]
+categories: [VSTO, Open Source]
 migrated: true
 comments: true
 sharing: true

@@ -5,7 +5,7 @@ metaTitle: Outlook Items, Repositories & Data Access
 description: Data Access in VSTO can be hard, I will discuss some ways to avoid performance issues, leaky abstractions and make it much easier.
 revised: 2011-02-19
 date: 2010-04-23
-categories: [patternsandpractices]
+categories: [VSTO]
 migrated: true
 comments: true
 sharing: true
