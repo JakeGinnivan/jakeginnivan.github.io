@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://JakeGinnivan.github.io/atom.xml" rel="self"/>
   <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-05T21:00:45+00:00</updated>
+  <updated>2014-01-05T21:29:53+00:00</updated>
   <id>http://JakeGinnivan.github.io/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -19,6 +19,8 @@
     <updated>2014-01-05T16:51:56+00:00</updated>
     <id>http://JakeGinnivan.github.io/blog/2014/01/05/blog-migration</id>
     <content type="html"><![CDATA[<p>I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site generators.</p>
+
+<p>Those of you subscribed to my RSS feeds will likely get duplications, sorry about that.</p>
 
 <h2>LinqPad Migration script</h2>
 
