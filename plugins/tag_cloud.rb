@@ -109,8 +109,36 @@ module Jekyll
       html
     end
   end
+  
+  class CategoryButtons < Liquid::Tag
+
+    def initialize(tag_name, markup, tokens)
+      @opts = {}
+      if markup.strip =~ /\s*counter:(\w+)/i
+        @opts['counter'] = ($1 == 'true')
+        markup = markup.strip.sub(/counter:\w+/i,'')
+      end
+      super
+    end
+
+    def render(context)
+      html = ""
+      config = context.registers[:site].config
+      category_dir = config['category_dir']
+      categories = context.registers[:site].categories
+      categories.keys.sort_by{ |str| str.downcase }.each do |category|
+        html << "<div class=\"category-button\"><a href=\"/#{category_dir}/#{category.to_url}/\">#{category}</a>"
+        if @opts['counter']
+          html << "<span class=\"category-count\">#{categories[category].count}</span>"
+        end
+        html << "</div>"
+      end
+      html
+    end
+  end
 
 end
 
 Liquid::Template.register_tag('tag_cloud', Jekyll::TagCloud)
 Liquid::Template.register_tag('category_list', Jekyll::CategoryList)
+Liquid::Template.register_tag('category_buttons', Jekyll::CategoryButtons)
