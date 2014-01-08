@@ -21,9 +21,9 @@ So over the weekend I was at [JetBrains Day][2] in Malmo, and Matt Ellis did a t
 
 Here are some screenshots
 
-![Moar Xaml Code Cleanups][3]
+![Moar Xaml Code Cleanups](/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture1.PNG)
 
-![Options][4]
+![Options](/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture2.PNG)
 
 Now, I don't expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.
 
@@ -32,7 +32,5 @@ Check out the code, report issues and submit pull requests at [https://github.co
 
   [1]: https://xamlstyler.codeplex.com/
   [2]: http://www.jetbrains.com/jetbrainsday/
-  [3]: http://jake.ginnivan.net/get/Capture1.PNG
-  [4]: http://jake.ginnivan.net/get/Capture2.PNG
   [5]: https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup
   [6]: https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/
