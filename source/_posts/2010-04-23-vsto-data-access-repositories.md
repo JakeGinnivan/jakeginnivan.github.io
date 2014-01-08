@@ -25,13 +25,13 @@ Essentially my repository interfaces will expose methods like GetAppointments(),
 
 To achieve a non leaking high performance repository no matter what thread you call from we have to use a few patterns and Automapper to put it all together. Here is a class diagram of the end goal.
 
-![Outlook Event Repository][2]
+![Outlook Event Repository](/assets/posts/2010-04-23-vsto-data-access-repositories/OutlookEventRepository.png)
 
 Notice that my repository returns a basic CLR interface, not appointment items.
 
 FacebookEventAdapter – uses the adapter pattern to adapt the ugly and HUGE _AppointmentItem interface to something that is useful to us. It is essentially a wrapper class that adapts the _AppointmentItem interface to our own interface.
 
-![Outlook event interface][3]
+![Outlook event interface](/assets/posts/2010-04-23-vsto-data-access-repositories/IOutlookFacebookEvent.png)
 
 The next step is we do not want our repository to leak. For the moment trust me that we do not want to leak COM objects. I will cover why it is bad in a later post.
 
@@ -104,6 +104,4 @@ So we have used quite a few patterns together to achieve a very solid repository
 
 
   [1]: http://martinfowler.com/eaaCatalog/repository.html
-  [2]: /get/screenshots/OutlookEventRepository.png
-  [3]: /get/screenshots/IOutlookFacebookEvent.png
   [4]: http://en.wikipedia.org/wiki/Decorator_pattern

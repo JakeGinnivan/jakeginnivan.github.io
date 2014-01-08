@@ -26,7 +26,7 @@ Hopefully you have a bit of a understanding about how it works, but I really wan
 For any .NET application to talk to unmanaged code we need a .NET Interop Assembly which contains meta data about the types exposed in the COM component. When you add a reference to a COM component through the Add References dialog, visual studio will call the command line tool Tlbimp.exe and generate us a type library for that COM component, then the reference will be added to that Interop Assembly that we have generated. Publishers will often provide Primary Inerop Assemblies (PIA’s) which are signed Interop Assemblies by the publisher which prevent conflicts between different applications having their own generated Interop assemblies. I will refer to both as PIA’s from now on.
 
 Once we have our PIA’s .NET makes it very easy for us to interact with the COM types. Whenever a COM object crosses into our .NET application the CLR creates a runtime callable wrapper (RCW) which consumes the IUnknown (which provides object identity, type coercion and lifetime management) and IDispatch (used for late binding through reflection) and gives us an instance of the RCW which implements the interface of the type we requested. See below where the .NET client is given a RCW implementing the INew interface.
-![RCW][1]
+![RCW](/assets/posts/2010-05-14-vsto-com-interop/rcw.png)
 
 There is a RCW created for every instance of a particular COM object. This means we can have references to a single RCW in multiple area’s of our application.
 
@@ -34,7 +34,7 @@ There is a RCW created for every instance of a particular COM object. This means
 So all sounds really easy for the moment, we add a reference to our PIA’s, then .NET will do its best to make it seem like we are talking to a managed library and try to take care of all the memory management itself, after all that is what we are used to as .NET developers.
 
 The problem is .NET memory management is non-deterministic, meaning we do not know when our memory will be cleaned up by the garbage collector. COM on the other hand is unmanaged and follows a deterministic memory cleanup model. These models do not work well together.
-![Memory Models][2]
+![Memory Models](/assets/posts/2010-05-14-vsto-com-interop/memorymodels.png)
 
 What is actually happening in the above diagram is when the garbage collector runs, it finds a RCW that has no references inside the managed process the garbage collector proceeds to clean up the RCW. The RCW actually implements a finaliser which releases all the associated COM references.
 
@@ -54,7 +54,7 @@ We have just lost the reference to a WorkBooks COM object. You can never force t
 
 <h3>Do not call Marshal.ReleaseComObject on an object that has left the current scope</h3>
 f you let a COM object leave the scope it was instantiated in you probably can no longer guarantee that you have the only reference in your application. If you call Marshal.ReleaseComObject, the next time another area of your app makes a call to that COM object you will get a InvalidComObjectException thrown.
-![InvalidComObjectException][4]
+![InvalidComObjectException](/assets/posts/2010-05-14-vsto-com-interop/invalidcomobjectException.png)
 
 The Visual Studio team posted on their blog a really interesting post titled “Marshal.ReleaseComObject Considered Dangerous“. Have a read at [http://blogs.msdn.com/visualstudio/archive/2010/03/01/marshal-releasecomobject-considered-dangerous.aspx][5]
 
@@ -79,7 +79,7 @@ If you have used Outlook a lot, you probably would have experienced this and jus
 
 Then I press Save & Close and am left with
 
-![Ghost Inspector][7]
+![Ghost Inspector](/assets/posts/2010-05-14-vsto-com-interop/ghostinspector.png)
 
 The ribbon gets greyed out. What has happened is the Inspector (the window) is no longer associated to the item it was displaying, but because of a leaked reference the Inspector did not close correctly. You CANNOT close this window through code (unless you find the window and close it through WIN32). I will cover this in more detail in another post, I still have not figured out how to not cause ghost inspectors sometimes when the inspector is opened modally.
 
@@ -310,13 +310,9 @@ If you would like to read more about this check out these links:
 [http://blogs.msdn.com/vcblog/archive/2006/09/20/762884.aspx][17] - Mixing deterministic and non-deterministic cleanup
 
 
-  [1]: /get/screenshots/rcw.png
-  [2]: /get/screenshots/memorymodels.png
   [3]: http://msdn.microsoft.com/en-us/magazine/bb985010.aspx
-  [4]: /get/screenshots/invalidcomobjectException.png
   [5]: http://blogs.msdn.com/visualstudio/archive/2010/03/01/marshal-releasecomobject-considered-dangerous.aspx
   [6]: /vsto-data-access-repositories
-  [7]: /get/screenshots/ghostinspector.png
   [8]: http://msdn.microsoft.com/en-us/library/f07c8z1c(VS.71).aspx
   [9]: /get/screenshots/outlookCustomerFolderProperty.png
   [10]: http://www.guidanceshare.com/wiki/Interop_(.NET_1.1)_Performance_Guidelines_-_Marshal.ReleaseComObject

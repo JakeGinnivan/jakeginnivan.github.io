@@ -25,7 +25,7 @@ While this is great, often it is hard to figure out why this happens, could be d
 
 The problem is the modal window that was often captured (and was blocking a button press on the main window) was coming out as a tiny little square with no contents:
 <!-- more -->
-![Blank Modal Dialogue][1]
+![Blank Modal Dialogue](/assets/posts/2011-02-15-wpf-screenshot/blankModal.png)
 
 I began digging, then realised that using GDI+ to take a screenshot of a WPF app doesn't seem to always work. It worked fine on my machine, but not our build machine.
 
@@ -86,8 +86,6 @@ The class that ended up working for me is this:
 
 And now I have:
 
-![Working modal screenshot][2]
+![Working modal screenshot](/assets/posts/2011-02-15-wpf-screenshot/properModal.png)
 
 
-  [1]: /get/screenshots/blankModal.png
-  [2]: /get/screenshots/properModal.png

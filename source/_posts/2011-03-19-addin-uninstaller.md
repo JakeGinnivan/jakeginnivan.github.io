@@ -17,10 +17,9 @@ summary: |
 ---
 I have just pushed up a simple app to uninstall VSTO add-ins, if the manifest file is present, it will use the VSTOInstaller.exe, otherwise it will remove the registry keys manually.
 
-![Addin Uninstaller][1]
+![Addin Uninstaller](/assets/posts/2011-03-19-addin-uninstaller/Add-inUninstaller.PNG)
 
 Grab it at [http://vstocontrib.codeplex.com/][2]
 
 
-  [1]: /get/screenshots/Add-inUninstaller.PNG
   [2]: http://vstocontrib.codeplex.com/

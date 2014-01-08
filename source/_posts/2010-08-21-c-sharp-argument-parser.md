@@ -25,7 +25,7 @@ I have a few specific requirements:
  - It must support paths with a trailing \ ie. –arg:"c:\Users\ginnivanj\My Path\"
  - Has support for flags.
 <!-- more -->
-![Class Diagram][2]
+![Class Diagram](/assets/posts/2010-08-21-c-sharp-argument-parser/argPaserClassDiagram.png)
 
 <h1>Example Usage</h1>
 
@@ -541,4 +541,3 @@ Tests use xUnit as the unit testing framework
 
 
   [1]: http://www.codeproject.com/KB/recipes/command_line.aspx
-  [2]: /get/screenshots/argPaserClassDiagram.png

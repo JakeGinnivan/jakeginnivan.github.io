@@ -16,7 +16,7 @@ summary: |
 
 ---
 I decided today that I wanted a quake style powershell console (with the classic win+` to activate or hide), and here is the end result:
-![Awesome powershell console][1]
+![Awesome powershell console](/assets/posts/2010-01-27-quake-style-powershell-console/PowershellConsole.png)
 
 I used [http://www.instructables.com/id/"Drop-Down",-Quake-style-command-prompt-for-Window/][2] as a template to get it all working, but wanted to use Console2 instead of v1.5 like this article uses.
 <!-- more -->
@@ -36,7 +36,6 @@ Download [Console2][4]
 Now you can press win + ` to open the console, esc or win+` to close again. Also right click on the console to access the settings to modify things like colour, window size etc etc.
 
 
-  [1]: /get/screenshots/PowershellConsole.png
   [2]: http://www.instructables.com/id/"Drop-Down",-Quake-style-command-prompt-for-Window/
   [3]: http://www.autohotkey.com/download/
   [4]: http://sourceforge.net/projects/console/

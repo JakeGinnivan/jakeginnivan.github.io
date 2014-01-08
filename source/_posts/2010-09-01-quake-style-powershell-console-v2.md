@@ -29,7 +29,7 @@ win + `
 
 = 
 
-![Quake Mode Powershell][1]
+![Quake Mode Powershell](/assets/posts/2010-09-01-quake-style-powershell-console-v2/powershellConsole.png)
 <!-- more -->
 ##What you need
 
@@ -53,7 +53,6 @@ Press the windows key + ` (tilde, above tab) to activate the console.
 You will see a few command windows run, and you will be prompted to put in your password (or press yes) to elevate the process. If you have UAC disabled, turn it back on :P
 
 
-  [1]: /get/screenshots/powershellConsole.png
   [2]: http://sourceforge.net/projects/console/files/
   [3]: http://jpassing.com/2007/12/08/launch-elevated-processes-from-the-command-line/
   [4]: http://www.wintellect.com/cs/blogs/jrobbins/archive/2007/03/27/elevate-a-process-at-the-command-line-in-vista.aspx

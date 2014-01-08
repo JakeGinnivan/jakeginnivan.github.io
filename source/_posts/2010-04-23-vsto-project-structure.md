@@ -19,7 +19,7 @@ Without a good project structure you will find you cannot test any of your code 
 <!-- more -->
 #File -> New
 
-![New Outlook Add-in][1]
+![New Outlook Add-in](/assets/posts/2010-04-23-vsto-project-structure/NewOutlookAddin.png)
 
 I am targeting .NET 4.0 (Full, not client profile) and Outlook 2010, but all the concepts can easily be transferred back to 3.5 and Office 2003/2007.
 
@@ -35,13 +35,11 @@ There are two main reasons for keeping ThisAddin.cs small.
  2. You cannot add references to VSTO projects, which makes any code within your VSTO project untestable.
 
 So now we have:
-![Solution Explorer][3]
+![Solution Explorer](/assets/posts/2010-04-23-vsto-project-structure/AddinSolutionExplorer.png)
 
 From here you should add all application specific code into the .Core project, and the only code you should add to the actual add-in itself is UI related items like Ribbons, Custom Task Panes, Toolbars (for Office 2007/2003) and Form regions.
 
 Now just create a test project to test our .Core project and we are off and racing. For my next post I will add IoC support into our application and show you how you can inject dependencies into Ribbons.
 
 
-  [1]: /get/screenshots/NewOutlookAddin.png
   [2]: /get/screenshots/EmbedInteropTypes.png
-  [3]: /get/screenshots/AddinSolutionExplorer.png

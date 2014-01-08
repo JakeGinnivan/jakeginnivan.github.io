@@ -216,11 +216,11 @@ This is really our model, and this is what you will bind the ConnectionString de
 Using this user control is pretty simple.
 
     <WpfApplication1:SqlConnectionStringBuilder ConnectionString="{Binding ElementName=_this, Path=TestConnection}" />
-![UserControl 1][2] <br />
+![UserControl 1](/assets/posts/2010-04-19-wpf-sql-connection-user-control/ConnectionBuilder1.PNG) <br />
 
-![UserControl 2][3] <br />
+![UserControl 2](/assets/posts/2010-04-19-wpf-sql-connection-user-control/ConnectionBuilder2.PNG) <br />
 
-![UserControl 3][4]
+![UserControl 3](/assets/posts/2010-04-19-wpf-sql-connection-user-control/ConnectionBuilder3.PNG)
 
 <h1>Other classes</h1>
 
@@ -243,7 +243,4 @@ Although not needed for this user control the GetTables method was already in th
 
 
   [1]: http://www.microsoft.com/Downloads/details.aspx?familyid=B33D2C78-1059-4CE2-B80D-2343C099BCB4&displaylang=en
-  [2]: /get/screenshots/ConnectionBuilder1.PNG
-  [3]: /get/screenshots/ConnectionBuilder2.PNG
-  [4]: /get/screenshots/ConnectionBuilder3.PNG
   [5]: /get/downloads/SqlConnectionSelector.zip
