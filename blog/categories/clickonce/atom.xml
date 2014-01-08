@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ClickOnce | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/clickonce/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/clickonce/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ClickOnce Signing Error]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-signing-error/"/>
+    <link href="http://jake.ginnivan.net/clickonce-signing-error/"/>
     <updated>2013-09-13T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-signing-error</id>
+    <id>http://jake.ginnivan.net/clickonce-signing-error</id>
     <content type="html"><![CDATA[<p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
 
 <p>The command:</p>
@@ -35,9 +35,9 @@
   
   <entry>
     <title type="html"><![CDATA[ClickOnce from Azure Blob Storage]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage/"/>
+    <link href="http://jake.ginnivan.net/clickonce-from-azure-blob-storage/"/>
     <updated>2013-08-08T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage</id>
+    <id>http://jake.ginnivan.net/clickonce-from-azure-blob-storage</id>
     <content type="html"><![CDATA[<p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
 
 <h2>Creating the ClickOnce installer</h2>
@@ -215,9 +215,9 @@ write-host "Fixed Manfiest File"
   
   <entry>
     <title type="html"><![CDATA[ClickOnce Deployment in TeamCity]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity/"/>
+    <link href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity/"/>
     <updated>2009-08-29T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity</id>
+    <id>http://jake.ginnivan.net/clickonce-deployment-in-teamcity</id>
     <content type="html"><![CDATA[<p>I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server.</p>
 
 <p>This blog post was very useful for getting the initial build working <a href="http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html">http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html</a> it also mentions how to fix the error MSB3147: Could not find required file &lsquo;setup.bin&rsquo; in &lsquo;ProjectFolder\Engine&rsquo; error I was getting.</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Windows Phone | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/windows-phone/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/windows-phone/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[WP7 MVC Debug and Tracing]]></title>
-    <link href="http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging/"/>
+    <link href="http://jake.ginnivan.net/wp7-mvc-trace-logging-and-debugging/"/>
     <updated>2011-09-22T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/wp7-mvc-trace-logging-and-debugging</id>
+    <id>http://jake.ginnivan.net/wp7-mvc-trace-logging-and-debugging</id>
     <content type="html"><![CDATA[<h2>WP7 Essentials Tracing</h2>
 
 <p>A new feature coming in the next release is a super easy to use Trace class to allow you to debug your app really easily.</p>
@@ -151,9 +151,9 @@ Partial Activated
   
   <entry>
     <title type="html"><![CDATA[WP7 Essentials Settings Provider]]></title>
-    <link href="http://JakeGinnivan.github.io/wp7-essentials-settings-provider/"/>
+    <link href="http://jake.ginnivan.net/wp7-essentials-settings-provider/"/>
     <updated>2011-09-09T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/wp7-essentials-settings-provider</id>
+    <id>http://jake.ginnivan.net/wp7-essentials-settings-provider</id>
     <content type="html"><![CDATA[<p>Update: This project has been superseeded by <a href="https://github.com/JakeGinnivan/SettingsProvider.net">SettingsProvider.net</a></p>
 
 <!-- more -->
@@ -228,9 +228,9 @@ settingsProvider.SaveSettings(applicationSettings);
   
   <entry>
     <title type="html"><![CDATA[My Sessions at TechEd 2011]]></title>
-    <link href="http://JakeGinnivan.github.io/teched-2011/"/>
+    <link href="http://jake.ginnivan.net/teched-2011/"/>
     <updated>2011-08-29T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teched-2011</id>
+    <id>http://jake.ginnivan.net/teched-2011</id>
     <content type="html"><![CDATA[<h1>DEV304 &ndash; Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
 
 <p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
@@ -259,9 +259,9 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   
   <entry>
     <title type="html"><![CDATA[MultiTargeted WP7 Project]]></title>
-    <link href="http://JakeGinnivan.github.io/multitargeted-windows-phone-project/"/>
+    <link href="http://jake.ginnivan.net/multitargeted-windows-phone-project/"/>
     <updated>2011-08-22T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/multitargeted-windows-phone-project</id>
+    <id>http://jake.ginnivan.net/multitargeted-windows-phone-project</id>
     <content type="html"><![CDATA[<p>I saw Shawn Wildermuth&rsquo;s post on maintaining a project targeting multiple versions of windows phone, I thought I would share the way I do it as I think it is far easier than the alternatives.
 <a href="http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions">http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions</a></p>
 
@@ -594,9 +594,9 @@ pause
   
   <entry>
     <title type="html"><![CDATA[Windows Phone MVC Update]]></title>
-    <link href="http://JakeGinnivan.github.io/windows-phone-mvc-update/"/>
+    <link href="http://jake.ginnivan.net/windows-phone-mvc-update/"/>
     <updated>2011-08-21T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/windows-phone-mvc-update</id>
+    <id>http://jake.ginnivan.net/windows-phone-mvc-update</id>
     <content type="html"><![CDATA[<h1>Windows Phone MVC?</h1>
 
 <p>So to get started, let me explain what it is.<br/>
@@ -1021,7 +1021,7 @@ Navigator: Memory usage after navigation: 19.84765625
 
 <p>I hope this is a useful post as a introduction to Windows Phone MVC, and shows off many of the features which make it really easy to write WP7 applications.</p>
 
-<p>Please leave feedback, ping me on twitter (@JakeGinnivan), or email me at <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#x6a;&#x61;&#107;&#x65;&#x40;&#103;&#x69;&#x6e;&#110;&#105;&#118;&#x61;&#110;&#x2e;&#110;&#x65;&#x74;">&#x6a;&#97;&#107;&#x65;&#64;&#x67;&#x69;&#110;&#110;&#105;&#x76;&#97;&#110;&#x2e;&#110;&#x65;&#116;</a> with suggestions/issues. I want to power towards v1.0 when I will lock down API&rsquo;s and consider the framework stable. The framework is reasonably stable now, and is being used in a decent size app. But there will likely be situations I haven&rsquo;t thought of, or haven&rsquo;t tested.</p>
+<p>Please leave feedback, ping me on twitter (@JakeGinnivan), or email me at <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x6a;&#97;&#107;&#x65;&#64;&#x67;&#x69;&#110;&#x6e;&#x69;&#x76;&#x61;&#x6e;&#x2e;&#x6e;&#x65;&#116;">&#x6a;&#x61;&#x6b;&#101;&#x40;&#103;&#x69;&#x6e;&#110;&#105;&#x76;&#97;&#x6e;&#x2e;&#x6e;&#101;&#116;</a> with suggestions/issues. I want to power towards v1.0 when I will lock down API&rsquo;s and consider the framework stable. The framework is reasonably stable now, and is being used in a decent size app. But there will likely be situations I haven&rsquo;t thought of, or haven&rsquo;t tested.</p>
 
 <h1>Go get it!</h1>
 

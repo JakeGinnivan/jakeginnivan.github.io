@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://JakeGinnivan.github.io/vsto-com-interop/">
+  <link rel="canonical" href="http://jake.ginnivan.net/vsto-com-interop/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -70,7 +70,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -126,7 +126,7 @@
 <p>For any .NET application to talk to unmanaged code we need a .NET Interop Assembly which contains meta data about the types exposed in the COM component. When you add a reference to a COM component through the Add References dialog, visual studio will call the command line tool Tlbimp.exe and generate us a type library for that COM component, then the reference will be added to that Interop Assembly that we have generated. Publishers will often provide Primary Inerop Assemblies (PIA’s) which are signed Interop Assemblies by the publisher which prevent conflicts between different applications having their own generated Interop assemblies. I will refer to both as PIA’s from now on.</p>
 
 <p>Once we have our PIA’s .NET makes it very easy for us to interact with the COM types. Whenever a COM object crosses into our .NET application the CLR creates a runtime callable wrapper (RCW) which consumes the IUnknown (which provides object identity, type coercion and lifetime management) and IDispatch (used for late binding through reflection) and gives us an instance of the RCW which implements the interface of the type we requested. See below where the .NET client is given a RCW implementing the INew interface.
-<img src="/get/screenshots/rcw.png" alt="RCW" /></p>
+<img src="/assets/posts/2010-05-14-vsto-com-interop/rcw.png" alt="RCW" /></p>
 
 <p>There is a RCW created for every instance of a particular COM object. This means we can have references to a single RCW in multiple area’s of our application.</p>
 
@@ -135,7 +135,7 @@
 <p>So all sounds really easy for the moment, we add a reference to our PIA’s, then .NET will do its best to make it seem like we are talking to a managed library and try to take care of all the memory management itself, after all that is what we are used to as .NET developers.</p>
 
 <p>The problem is .NET memory management is non-deterministic, meaning we do not know when our memory will be cleaned up by the garbage collector. COM on the other hand is unmanaged and follows a deterministic memory cleanup model. These models do not work well together.
-<img src="/get/screenshots/memorymodels.png" alt="Memory Models" /></p>
+<img src="/assets/posts/2010-05-14-vsto-com-interop/memorymodels.png" alt="Memory Models" /></p>
 
 <p>What is actually happening in the above diagram is when the garbage collector runs, it finds a RCW that has no references inside the managed process the garbage collector proceeds to clean up the RCW. The RCW actually implements a finaliser which releases all the associated COM references.</p>
 
@@ -159,7 +159,7 @@
 
 
 <p>f you let a COM object leave the scope it was instantiated in you probably can no longer guarantee that you have the only reference in your application. If you call Marshal.ReleaseComObject, the next time another area of your app makes a call to that COM object you will get a InvalidComObjectException thrown.
-<img src="/get/screenshots/invalidcomobjectException.png" alt="InvalidComObjectException" /></p>
+<img src="/assets/posts/2010-05-14-vsto-com-interop/invalidcomobjectException.png" alt="InvalidComObjectException" /></p>
 
 <p>The Visual Studio team posted on their blog a really interesting post titled “Marshal.ReleaseComObject Considered Dangerous“. Have a read at <a href="http://blogs.msdn.com/visualstudio/archive/2010/03/01/marshal-releasecomobject-considered-dangerous.aspx">http://blogs.msdn.com/visualstudio/archive/2010/03/01/marshal-releasecomobject-considered-dangerous.aspx</a></p>
 
@@ -188,7 +188,7 @@ foreach (var item in folder.Items) { }</p>
 
 <p>Then I press Save &amp; Close and am left with</p>
 
-<p><img src="/get/screenshots/ghostinspector.png" alt="Ghost Inspector" /></p>
+<p><img src="/assets/posts/2010-05-14-vsto-com-interop/ghostinspector.png" alt="Ghost Inspector" /></p>
 
 <p>The ribbon gets greyed out. What has happened is the Inspector (the window) is no longer associated to the item it was displaying, but because of a leaked reference the Inspector did not close correctly. You CANNOT close this window through code (unless you find the window and close it through WIN32). I will cover this in more detail in another post, I still have not figured out how to not cause ghost inspectors sometimes when the inspector is opened modally.</p>
 
@@ -462,7 +462,7 @@ foreach (var item in folder.Items) { }</p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/vsto-com-interop/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/vsto-com-interop/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/vsto-com-interop/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/vsto-com-interop/" >Tweet</a>
   
   
   
@@ -574,8 +574,8 @@ foreach (var item in folder.Items) { }</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://JakeGinnivan.github.io/vsto-com-interop/';
-        var disqus_url = 'http://JakeGinnivan.github.io/vsto-com-interop/';
+        var disqus_identifier = 'http://jake.ginnivan.net/vsto-com-interop/';
+        var disqus_url = 'http://jake.ginnivan.net/vsto-com-interop/';
         var disqus_script = 'embed.js';
       
     (function () {

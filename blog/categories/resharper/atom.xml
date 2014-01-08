@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ReSharper | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/resharper/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/resharper/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,18 +15,18 @@
   
   <entry>
     <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
-    <link href="http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin/"/>
+    <link href="http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin/"/>
     <updated>2013-09-09T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin</id>
+    <id>http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin</id>
     <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
 
 <p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
 
 <p>Here are some screenshots</p>
 
-<p><img src="http://jake.ginnivan.net/get/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
 
-<p><img src="http://jake.ginnivan.net/get/Capture2.PNG" alt="Options" /></p>
+<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture2.PNG" alt="Options" /></p>
 
 <p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
 
@@ -36,9 +36,9 @@
   
   <entry>
     <title type="html"><![CDATA[No more R# warnings for nHibernate aliases]]></title>
-    <link href="http://JakeGinnivan.github.io/nhibernate-alias-warnings/"/>
+    <link href="http://jake.ginnivan.net/nhibernate-alias-warnings/"/>
     <updated>2011-07-21T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/nhibernate-alias-warnings</id>
+    <id>http://jake.ginnivan.net/nhibernate-alias-warnings</id>
     <content type="html"><![CDATA[<p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
 
 <p>Here is a scenario</p>

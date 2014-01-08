@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://JakeGinnivan.github.io/sitemap.xml 
+Sitemap: http://jake.ginnivan.net/sitemap.xml 

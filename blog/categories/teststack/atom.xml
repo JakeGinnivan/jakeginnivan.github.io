@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: TestStack | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/teststack/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/teststack/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Convention Tests v2 Released]]></title>
-    <link href="http://JakeGinnivan.github.io/conventiontests-v2-released/"/>
+    <link href="http://jake.ginnivan.net/conventiontests-v2-released/"/>
     <updated>2013-09-19T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/conventiontests-v2-released</id>
+    <id>http://jake.ginnivan.net/conventiontests-v2-released</id>
     <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
 
 <p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
@@ -96,9 +96,9 @@ TestAssembly.ClassWithPrivateDefaultCtor
   
   <entry>
     <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
-    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <link href="http://jake.ginnivan.net/teststack-white-v0-11/"/>
     <updated>2013-08-01T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <id>http://jake.ginnivan.net/teststack-white-v0-11</id>
     <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
 
 <p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>

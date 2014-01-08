@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Open Source | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/open-source/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,18 +15,18 @@
   
   <entry>
     <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
-    <link href="http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin/"/>
+    <link href="http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin/"/>
     <updated>2013-09-09T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin</id>
+    <id>http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin</id>
     <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
 
 <p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
 
 <p>Here are some screenshots</p>
 
-<p><img src="http://jake.ginnivan.net/get/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
 
-<p><img src="http://jake.ginnivan.net/get/Capture2.PNG" alt="Options" /></p>
+<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture2.PNG" alt="Options" /></p>
 
 <p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
 
@@ -36,9 +36,9 @@
   
   <entry>
     <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
-    <link href="http://JakeGinnivan.github.io/vsto-contrib/v0-12-released/"/>
+    <link href="http://jake.ginnivan.net/vsto-contrib/v0-12-released/"/>
     <updated>2013-08-06T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/vsto-contrib/v0-12-released</id>
+    <id>http://jake.ginnivan.net/vsto-contrib/v0-12-released</id>
     <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
 
 <p>This release is aimed at fixing a bunch of bugs, like some callbacks not working, creating a viewmodel instance for when no documents are open and supporting Office 2013!
@@ -46,7 +46,7 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
 
 <p>I have also released a getting started video. This is one of the first screencasts I have done, so I will likely do it again next release. Also when you install VSTO Contrib, a readme will popup, this will help you get started.</p>
 
-<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://JakeGinnivan.github.io//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://jake.ginnivan.net//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
 
 
 <p>I will try to produce some documentation/blog posts on VSTO Contrib over the next few weeks.</p>
@@ -57,9 +57,9 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
   
   <entry>
     <title type="html"><![CDATA[Documentation Site with Pretzel]]></title>
-    <link href="http://JakeGinnivan.github.io/documentation-site-with-pretzel/"/>
+    <link href="http://jake.ginnivan.net/documentation-site-with-pretzel/"/>
     <updated>2013-07-27T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/documentation-site-with-pretzel</id>
+    <id>http://jake.ginnivan.net/documentation-site-with-pretzel</id>
     <content type="html"><![CDATA[<p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
 
 <p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
@@ -195,9 +195,9 @@ To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
   
   <entry>
     <title type="html"><![CDATA[Announcing TestStack.White]]></title>
-    <link href="http://JakeGinnivan.github.io/teststack-white/"/>
+    <link href="http://jake.ginnivan.net/teststack-white/"/>
     <updated>2012-10-28T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teststack-white</id>
+    <id>http://jake.ginnivan.net/teststack-white</id>
     <content type="html"><![CDATA[<h1>Project White</h1>
 
 <p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>
@@ -234,9 +234,9 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   
   <entry>
     <title type="html"><![CDATA[Markpad Performance Push]]></title>
-    <link href="http://JakeGinnivan.github.io/markpad-performance-push/"/>
+    <link href="http://jake.ginnivan.net/markpad-performance-push/"/>
     <updated>2012-08-12T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/markpad-performance-push</id>
+    <id>http://jake.ginnivan.net/markpad-performance-push</id>
     <content type="html"><![CDATA[<p>If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files.</p>
 
 <p><img src="/assets/posts/2012-08-12-markpad-performance-push/screenshot.png" alt="MarkPad" /></p>

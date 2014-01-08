@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Async | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/async/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/async/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Awaitable DelegateCommand]]></title>
-    <link href="http://JakeGinnivan.github.io/awaitable-delegatecommand/"/>
+    <link href="http://jake.ginnivan.net/awaitable-delegatecommand/"/>
     <updated>2013-03-15T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/awaitable-delegatecommand</id>
+    <id>http://jake.ginnivan.net/awaitable-delegatecommand</id>
     <content type="html"><![CDATA[<p>Most of you would be aware of DelegateCommand, it allows you to turn a lambda (or two if you want to specify canexecute) into a WPF ICommand.</p>
 
 <p>This is pretty easy to unit test as well, you can simply go <code>viewModel.MyCommand.Execute(null)</code></p>
@@ -129,9 +129,9 @@ public class AwaitableDelegateCommand&lt;T&gt; : IAsyncCommand&lt;T&gt;, IComman
   
   <entry>
     <title type="html"><![CDATA[Async warning with nSubstitute]]></title>
-    <link href="http://JakeGinnivan.github.io/async-warning-with-nsubstitute/"/>
+    <link href="http://jake.ginnivan.net/async-warning-with-nsubstitute/"/>
     <updated>2012-10-16T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/async-warning-with-nsubstitute</id>
+    <id>http://jake.ginnivan.net/async-warning-with-nsubstitute</id>
     <content type="html"><![CDATA[<p>I got sick of a heap of warnings in VS which look like this:</p>
 
 <pre><code>Warning 1   Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.

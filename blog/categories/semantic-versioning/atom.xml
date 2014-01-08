@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Semantic Versioning | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/semantic-versioning/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/semantic-versioning/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ApiApprover]]></title>
-    <link href="http://JakeGinnivan.github.io/apiapprover/"/>
+    <link href="http://jake.ginnivan.net/apiapprover/"/>
     <updated>2012-02-19T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/apiapprover</id>
+    <id>http://jake.ginnivan.net/apiapprover</id>
     <content type="html"><![CDATA[<p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
 
 <p>The interesting thing about Semantic versioning is that often people accidentally break the semantic version. So I wrote a unit test which solves this problem</p>

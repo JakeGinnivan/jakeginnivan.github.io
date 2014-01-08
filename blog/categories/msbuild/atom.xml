@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: MSBuild | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/msbuild/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/msbuild/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-bootstrapping-errors/"/>
+    <link href="http://jake.ginnivan.net/clickonce-bootstrapping-errors/"/>
     <updated>2011-07-20T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-bootstrapping-errors</id>
+    <id>http://jake.ginnivan.net/clickonce-bootstrapping-errors</id>
     <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
 
 <p>When trying to publish my clickonce installer I am getting the error:</p>

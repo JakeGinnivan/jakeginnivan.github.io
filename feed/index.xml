@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Blog Migration]]></title>
-    <link href="http://JakeGinnivan.github.io/blog/2014/01/05/blog-migration/"/>
+    <link href="http://jake.ginnivan.net/blog/2014/01/05/blog-migration/"/>
     <updated>2014-01-05T16:51:56+00:00</updated>
-    <id>http://JakeGinnivan.github.io/blog/2014/01/05/blog-migration</id>
+    <id>http://jake.ginnivan.net/blog/2014/01/05/blog-migration</id>
     <content type="html"><![CDATA[<p>I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site generators.</p>
 
 <p>Those of you subscribed to my RSS feeds will likely get duplications, sorry about that.</p>
@@ -36,9 +36,9 @@
   
   <entry>
     <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
-    <link href="http://JakeGinnivan.github.io/gitreleasenotes/"/>
+    <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
     <updated>2013-12-17T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/gitreleasenotes</id>
+    <id>http://jake.ginnivan.net/gitreleasenotes</id>
     <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
 
 <p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>
@@ -102,9 +102,9 @@ It will then output your release notes in <a href="http://www.semanticreleasenot
   
   <entry>
     <title type="html"><![CDATA[Git Flow Versioning]]></title>
-    <link href="http://JakeGinnivan.github.io/git-flow-versioning/"/>
+    <link href="http://jake.ginnivan.net/git-flow-versioning/"/>
     <updated>2013-10-02T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/git-flow-versioning</id>
+    <id>http://jake.ginnivan.net/git-flow-versioning</id>
     <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
 
 <p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
@@ -270,9 +270,9 @@ git push upstream --tags
   
   <entry>
     <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
-    <link href="http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity/"/>
+    <link href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity/"/>
     <updated>2013-09-28T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity</id>
+    <id>http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</id>
     <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
 
 <p>My goals were</p>
@@ -294,20 +294,20 @@ git push upstream --tags
 
 <h2>1. Setup the VCS Root to be authenticated</h2>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/ReleaseNuGetSemVerpackagesfromTeamcity.png" alt="ReleaseNuGetSemVerpackagesfromTeamcity" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/ReleaseNuGetSemVerpackagesfromTeamcity.png" alt="ReleaseNuGetSemVerpackagesfromTeamcity" /></p>
 
 <p>Then tell TeamCity to Label Successful builds
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity11_635160285120295000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity11" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity11_635160285120295000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity11" /></p>
 
 <h2>2. Setup some additional build parameters</h2>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity_635160285057326250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity_635160285057326250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity" /></p>
 
 <h3>2.1. AssemblyVersion</h3>
 
 <p>This is the assembly version, only change this for major releases, this will save people adding binding redirects when different projects rely on different versions
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity1_635160285061232500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity1" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity2_635160285065138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity2" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity1_635160285061232500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity1" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity2_635160285065138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity2" /></p>
 
 <p>If you want the text version of the spec, it is</p>
 
@@ -317,8 +317,8 @@ git push upstream --tags
 <h3>2.2. Prerelease</h3>
 
 <p>This is a checkbox, when ticked it&rsquo;s value is <code>-pre</code> so we can just use it in the version
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity3_635160285069201250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity3" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity4_635160285073263750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity4" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity3_635160285069201250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity3" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity4_635160285073263750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity4" /></p>
 
 <p>Once again the text version of the spec is</p>
 
@@ -328,8 +328,8 @@ git push upstream --tags
 <h3>2.3. Version</h3>
 
 <p>This is the version which you will pass to NuGet when you are creating your package
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity5_635160285077170000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity5" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity6_635160285081076250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity6" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity5_635160285077170000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity5" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity6_635160285081076250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity6" /></p>
 
 <pre><code>text description='This is the version number, adjust the major/minor as needed to conform to semver' display='prompt' label='VersionNumber' validationMode='not_empty'
 </code></pre>
@@ -338,7 +338,7 @@ git push upstream --tags
 
 <p>This is just so the version gets set as an environmental variable so my build scripts can pick it up</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity7_635160285084513750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity7" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity7_635160285084513750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity7" /></p>
 
 <p>I am not sure if this is actually needed.</p>
 
@@ -346,17 +346,17 @@ git push upstream --tags
 
 <p>I always have a <code>.proj</code> file checked in for all of my projects which contain all logic to build the solution, I just have to tell teamcity what targets to invoke. If you want to view my build script, check out <a href="https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj">https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj</a></p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity8_635160285101388750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity8" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity8_635160285101388750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity8" /></p>
 
 <p>The Test target builds and runs my unit tests, then the Publish Target builds the NuGet packages, step 2 of my TeamCity build is Publish to NuGet</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity9_635160285112638750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity9" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity9_635160285112638750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity9" /></p>
 
 <p>Finally, the assembly info stamping build feature. Click <strong>Add build feature</strong></p>
 
 <p>We want to use two different versions from our config, remember from above we have</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity10_635160285116545000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity10" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity10_635160285116545000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity10" /></p>
 
 <h2>4. Update the build version</h2>
 
@@ -368,24 +368,24 @@ git push upstream --tags
 
 <h2>Create release definition in GitHub</h2>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity16_635160285172951250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity16" />
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity17_635160285176857500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity17" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity16_635160285172951250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity16" />
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity17_635160285176857500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity17" /></p>
 
 <p>Specify the release notes for this release
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity18_635160285180763750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity18" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity18_635160285180763750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity18" /></p>
 
 <p>Do not have the Publish Release box ticked, otherwise GitHub will create the tag for you.</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity19_635160285184670000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity19" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity19_635160285184670000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity19" /></p>
 
 <h2>Release from TeamCity</h2>
 
 <p>I click <em>Run</em> in TeamCity, and I will be prompted to confirm everything</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity14_635160285165138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity14" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity14_635160285165138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity14" /></p>
 
 <p>Because this is a minor release, I increment the minor version number
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity15_635160285169045000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity15" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity15_635160285169045000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity15" /></p>
 
 <p>Now hit run, this will publish to NuGet and create the tag in Git. The final step is to go back to GitHub and publish the release (this is not done automatically, and I&rsquo;m sure it could be automated through the GitHub API).</p>
 
@@ -395,9 +395,9 @@ git push upstream --tags
   
   <entry>
     <title type="html"><![CDATA[Convention Tests v2 Released]]></title>
-    <link href="http://JakeGinnivan.github.io/conventiontests-v2-released/"/>
+    <link href="http://jake.ginnivan.net/conventiontests-v2-released/"/>
     <updated>2013-09-19T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/conventiontests-v2-released</id>
+    <id>http://jake.ginnivan.net/conventiontests-v2-released</id>
     <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
 
 <p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
@@ -476,9 +476,9 @@ TestAssembly.ClassWithPrivateDefaultCtor
   
   <entry>
     <title type="html"><![CDATA[Pack URI in Unit Tests]]></title>
-    <link href="http://JakeGinnivan.github.io/pack-uri-in-unit-tests/"/>
+    <link href="http://jake.ginnivan.net/pack-uri-in-unit-tests/"/>
     <updated>2013-09-16T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/pack-uri-in-unit-tests</id>
+    <id>http://jake.ginnivan.net/pack-uri-in-unit-tests</id>
     <content type="html"><![CDATA[<p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
 
 <h2>Exception 1</h2>
@@ -505,9 +505,9 @@ TestAssembly.ClassWithPrivateDefaultCtor
   
   <entry>
     <title type="html"><![CDATA[Verifying logged messages with Log4Net]]></title>
-    <link href="http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net/"/>
+    <link href="http://jake.ginnivan.net/verifying-logged-messages-with-log4net/"/>
     <updated>2013-09-13T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/verifying-logged-messages-with-log4net</id>
+    <id>http://jake.ginnivan.net/verifying-logged-messages-with-log4net</id>
     <content type="html"><![CDATA[<p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
 
 <pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
@@ -586,9 +586,9 @@ public class RecordTest
   
   <entry>
     <title type="html"><![CDATA[ClickOnce Signing Error]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-signing-error/"/>
+    <link href="http://jake.ginnivan.net/clickonce-signing-error/"/>
     <updated>2013-09-13T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-signing-error</id>
+    <id>http://jake.ginnivan.net/clickonce-signing-error</id>
     <content type="html"><![CDATA[<p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
 
 <p>The command:</p>
@@ -606,18 +606,18 @@ public class RecordTest
   
   <entry>
     <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
-    <link href="http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin/"/>
+    <link href="http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin/"/>
     <updated>2013-09-09T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/resharper-xaml-attribute-ordering-plugin</id>
+    <id>http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin</id>
     <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
 
 <p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
 
 <p>Here are some screenshots</p>
 
-<p><img src="http://jake.ginnivan.net/get/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
 
-<p><img src="http://jake.ginnivan.net/get/Capture2.PNG" alt="Options" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture2.PNG" alt="Options" /></p>
 
 <p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
 
@@ -627,9 +627,9 @@ public class RecordTest
   
   <entry>
     <title type="html"><![CDATA[ClickOnce from Azure Blob Storage]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage/"/>
+    <link href="http://jake.ginnivan.net/clickonce-from-azure-blob-storage/"/>
     <updated>2013-08-08T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-from-azure-blob-storage</id>
+    <id>http://jake.ginnivan.net/clickonce-from-azure-blob-storage</id>
     <content type="html"><![CDATA[<p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
 
 <h2>Creating the ClickOnce installer</h2>
@@ -772,12 +772,12 @@ write-host "Fixed Manfiest File"
 
 <h3>Setup a storage account</h3>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure.png" alt="Create Storage Account" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure.png" alt="Create Storage Account" /></p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure1.png" alt="Create Storage Account 2" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure1.png" alt="Create Storage Account 2" /></p>
 
 <p>Once created, go to the <code>containers</code> tab, then add a new container.
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure2.png" alt="Create Container" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure2.png" alt="Create Container" /></p>
 
 <p>Make sure you choose <code>Public Container</code> as the access level, otherwise things will not work!</p>
 
@@ -807,9 +807,9 @@ write-host "Fixed Manfiest File"
   
   <entry>
     <title type="html"><![CDATA[Automated Project Environment Setup]]></title>
-    <link href="http://JakeGinnivan.github.io/automated-project-environment-setup/"/>
+    <link href="http://jake.ginnivan.net/automated-project-environment-setup/"/>
     <updated>2013-08-08T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/automated-project-environment-setup</id>
+    <id>http://jake.ginnivan.net/automated-project-environment-setup</id>
     <content type="html"><![CDATA[<h2>Web Project Dev Environment</h2>
 
 <p>A common problem projects have is when a new dev joins the team is they hopefully have to follow a bunch of instructions to set everything up. Most of the time, those instructions are out of date so another member of the team ends up setting everything up.</p>
@@ -947,9 +947,9 @@ $elevate = Join-Path $directorypath "tools\Elevate.exe"
   
   <entry>
     <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
-    <link href="http://JakeGinnivan.github.io/vsto-contrib/v0-12-released/"/>
+    <link href="http://jake.ginnivan.net/vsto-contrib/v0-12-released/"/>
     <updated>2013-08-06T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/vsto-contrib/v0-12-released</id>
+    <id>http://jake.ginnivan.net/vsto-contrib/v0-12-released</id>
     <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
 
 <p>This release is aimed at fixing a bunch of bugs, like some callbacks not working, creating a viewmodel instance for when no documents are open and supporting Office 2013!
@@ -957,7 +957,7 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
 
 <p>I have also released a getting started video. This is one of the first screencasts I have done, so I will likely do it again next release. Also when you install VSTO Contrib, a readme will popup, this will help you get started.</p>
 
-<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://JakeGinnivan.github.io//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://jake.ginnivan.net//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
 
 
 <p>I will try to produce some documentation/blog posts on VSTO Contrib over the next few weeks.</p>
@@ -968,9 +968,9 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
   
   <entry>
     <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
-    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <link href="http://jake.ginnivan.net/teststack-white-v0-11/"/>
     <updated>2013-08-01T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <id>http://jake.ginnivan.net/teststack-white-v0-11</id>
     <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
 
 <p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
@@ -1019,9 +1019,9 @@ This means if you do not want to wait for the test suite to run on your machine,
   
   <entry>
     <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
-    <link href="http://JakeGinnivan.github.io/teamcity-ui-test-agent/"/>
+    <link href="http://jake.ginnivan.net/teamcity-ui-test-agent/"/>
     <updated>2013-07-31T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teamcity-ui-test-agent</id>
+    <id>http://jake.ginnivan.net/teamcity-ui-test-agent</id>
     <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
 
 <p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
@@ -1034,25 +1034,25 @@ This means that you need a fully unlocked desktop for things to work correctly. 
 
 <h2>Create our VM on Azure</h2>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
 I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS&rsquo;s are all that are available in Azure. This also means you don&rsquo;t have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop.</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
 
 <p>Now we are ready to go, lets remote desktop into our VM</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
 
 <p>Enter your remote desktop credentials which we you setup when creating your VM
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
 
 <h2>Setting up your VM</h2>
 
 <p>On first login, make sure you tell the initial configuration and server manager to not open on start
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
 
 <p>Before you close server manager you want to click on <code>Configure IE ESC</code>, then turn it off. Otherwise downloading everything will be rather painful (unless you just want to download firefox or chrome, then don&rsquo;t worry.</p>
 
@@ -1060,8 +1060,8 @@ I choose Windows Server 2008 R2 as the Operating System, it is preferable to use
 
 <p>To do this, download Sysinternals Autologon for Windows from <a href="http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx">http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx</a>. Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
 The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
 
 <p>Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
 TeamViewer will also work.</p>
@@ -1074,24 +1074,24 @@ TeamViewer will also work.</p>
 <li>Download from <a href="http://www.tightvnc.com/download.php">http://www.tightvnc.com/download.php</a></li>
 <li>Do a complete install, leave all options ticked when presented with them.</li>
 <li>Set your passwords, I am happy to not have a separate administration password.<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
 <li>Install the DFMirage driver, available from the TightVNC download page</li>
 <li>If using azure you need to open up the port (Manage VM, EndPoints, Add, Next)<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
 </ol>
 
 
 <h3>Finishing VM Setup</h3>
 
 <p>Reconnect using something other than remote desktop<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
 
 <p>Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).</p>
 
 <h4>Disable WER</h4>
 
 <p>Windows error reporting causes issues when running UI automation, if you app crashes (which is why we have UI automation, to find that sort fo thing) then you want it to exit straight away, not popup the Windows Error Reporting Dialog
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
 
 <p>Save the following text into a .reg file i.e DisableWER.reg then run</p>
 
@@ -1106,44 +1106,44 @@ TeamViewer will also work.</p>
 
 <h3>Installing the teamcity build agent</h3>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
 
 <p>Fill in your teamcity server URL, and note the port number the agent is running on
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
 
 <p>Now we go back into Azure Management, and add the port<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
 
 <h4>Open Filewall Ports</h4>
 
 <p>Once we have added the port on azure, we need to open the windows firewall for that port on the VM itself<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
 Put in port 9090, or whatever you set your teamcity server to<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
 Next, Next, Next, give it a good name &lsquo;TeamCity Build Agent&rsquo;, Finish</p>
 
 <h4>Set to automatic startup</h4>
 
 <p>Now open explorer, and go to <code>%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code> and create a new shortcut<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
 
 <p>Browse to your TeamCity build agent folder, and select <code>agent.bat</code></p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
 Then add the parameter <code>start</code> onto the path. You should end up with
 <code>"C:\UITestsBuildAgent\bin\agent.bat" start</code>
 Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. Then Run the shortcut. Your TeamCity build agent should startup and connect to TeamCity
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
 
 <p>Authorise the build agent, then the agent should update itself and restart, after a few minutes you should have another build controller online!
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
 
 <h2>Conclusion</h2>
 
@@ -1155,9 +1155,9 @@ Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. T
   
   <entry>
     <title type="html"><![CDATA[Setting up Git]]></title>
-    <link href="http://JakeGinnivan.github.io/setting-up-git/"/>
+    <link href="http://jake.ginnivan.net/setting-up-git/"/>
     <updated>2013-07-27T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/setting-up-git</id>
+    <id>http://jake.ginnivan.net/setting-up-git</id>
     <content type="html"><![CDATA[<p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
 
 <p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
@@ -1258,9 +1258,9 @@ editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe'
   
   <entry>
     <title type="html"><![CDATA[Documentation Site with Pretzel]]></title>
-    <link href="http://JakeGinnivan.github.io/documentation-site-with-pretzel/"/>
+    <link href="http://jake.ginnivan.net/documentation-site-with-pretzel/"/>
     <updated>2013-07-27T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/documentation-site-with-pretzel</id>
+    <id>http://jake.ginnivan.net/documentation-site-with-pretzel</id>
     <content type="html"><![CDATA[<p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
 
 <p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
@@ -1300,11 +1300,11 @@ Press any key to continue...
 
 <p>This will fire up pretzel&rsquo;s web server, and launch your wiki.</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument.png" alt="NewDocument" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument.png" alt="NewDocument" /></p>
 
 <p>Lets create a few files</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument1.png" alt="NewDocument1" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument1.png" alt="NewDocument1" /></p>
 
 <p>Notice the items circled in blue are new files, each file we create must have what is called yaml front matter (circled in red).</p>
 
@@ -1312,19 +1312,19 @@ Press any key to continue...
 
 <p>If you refresh your browser, you will get this</p>
 
-<p><img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument2.png" alt="NewDocument2" /></p>
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument2.png" alt="NewDocument2" /></p>
 
 <p>Pretzel has detected changes to files in the site, then rebuilt our site for us.</p>
 
 <h2>Deploying to Azure Wesbites</h2>
 
 <p>Create the website
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument3.png" alt="NewDocument3" />
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument4.png" alt="NewDocument4" />
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument5.png" alt="NewDocument5" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument3.png" alt="NewDocument3" />
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument4.png" alt="NewDocument4" />
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument5.png" alt="NewDocument5" /></p>
 
 <p>Now our site and deployment is setup, lets deploy. First copy the git deployment url
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument6.png" alt="NewDocument6" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument6.png" alt="NewDocument6" /></p>
 
 <p>Now we head back to our powershell console and run the following commands:</p>
 
@@ -1385,10 +1385,10 @@ To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
 </code></pre>
 
 <p>Check the azure management console
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument8.png" alt="NewDocument8" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument8.png" alt="NewDocument8" /></p>
 
 <p>Head to your website
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument7.png" alt="NewDocument7" /></p>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument7.png" alt="NewDocument7" /></p>
 
 <p>Job done! You have a new wiki for documentation.</p>
 ]]></content>
@@ -1396,9 +1396,9 @@ To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
   
   <entry>
     <title type="html"><![CDATA[TeamCity Build Results in TFS]]></title>
-    <link href="http://JakeGinnivan.github.io/teamcity-build-results-in-tfs/"/>
+    <link href="http://jake.ginnivan.net/teamcity-build-results-in-tfs/"/>
     <updated>2013-04-13T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teamcity-build-results-in-tfs</id>
+    <id>http://jake.ginnivan.net/teamcity-build-results-in-tfs</id>
     <content type="html"><![CDATA[<h1>Why?</h1>
 
 <p>Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our test tool, TFS for work items, GitHub for source control and TeamCity for our build server.</p>
@@ -1423,10 +1423,10 @@ To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
 <ol>
 <li>Associated Automation<br/>
 If you open a test case up in Visual Studio, you can assign an MSTest test to a test case<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS1_635014894026562500.png" alt="TeamCityBuildResultsinTFS1" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS1_635014894026562500.png" alt="TeamCityBuildResultsinTFS1" /></li>
 <li>Get a .trx file which can be published to TFS (By using VSTest.Console with the TeamCityAndTrx logger)
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS2_635014894036562500.png" alt="TeamCityBuildResultsinTFS2" /><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS3_635014894039375000.png" alt="TeamCityBuildResultsinTFS3" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS2_635014894036562500.png" alt="TeamCityBuildResultsinTFS2" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-04-13-teamcity-build-results-in-tfs/TeamCityBuildResultsinTFS3_635014894039375000.png" alt="TeamCityBuildResultsinTFS3" /></li>
 <li>Publish the build using TfsBuildResultPublisher (see <a href="https://github.com/JakeGinnivan/TfsBuildResultPublisher/blob/master/BuildAndPublish.msbuild">BuildAndPublish.msbuild</a> for an example)</li>
 <li>A test run created in Test Manager which can be linked to a test suite, this will automatically pass/fail a test.</li>
 </ol>
@@ -1480,9 +1480,9 @@ It is based off Based off <a href="http://blogs.msdn.com/b/jpricket/archive/2010
   
   <entry>
     <title type="html"><![CDATA[Redirecting Process Output]]></title>
-    <link href="http://JakeGinnivan.github.io/redirecting-process-output/"/>
+    <link href="http://jake.ginnivan.net/redirecting-process-output/"/>
     <updated>2013-04-05T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/redirecting-process-output</id>
+    <id>http://jake.ginnivan.net/redirecting-process-output</id>
     <content type="html"><![CDATA[<p>I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.</p>
 
 <p>Based on a blog post that Lucian Wischik posted a while back at <a href="http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx">http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx</a> I have created a c# version of his code which makes it nice and easy.</p>
@@ -1595,9 +1595,9 @@ Console.Write(stdErr);
   
   <entry>
     <title type="html"><![CDATA[Awaitable DelegateCommand]]></title>
-    <link href="http://JakeGinnivan.github.io/awaitable-delegatecommand/"/>
+    <link href="http://jake.ginnivan.net/awaitable-delegatecommand/"/>
     <updated>2013-03-15T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/awaitable-delegatecommand</id>
+    <id>http://jake.ginnivan.net/awaitable-delegatecommand</id>
     <content type="html"><![CDATA[<p>Most of you would be aware of DelegateCommand, it allows you to turn a lambda (or two if you want to specify canexecute) into a WPF ICommand.</p>
 
 <p>This is pretty easy to unit test as well, you can simply go <code>viewModel.MyCommand.Execute(null)</code></p>
@@ -1709,9 +1709,9 @@ public class AwaitableDelegateCommand&lt;T&gt; : IAsyncCommand&lt;T&gt;, IComman
   
   <entry>
     <title type="html"><![CDATA[Disable Narrator in Windows 8]]></title>
-    <link href="http://JakeGinnivan.github.io/diable-narrator-in-windows-8/"/>
+    <link href="http://jake.ginnivan.net/diable-narrator-in-windows-8/"/>
     <updated>2012-12-11T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/diable-narrator-in-windows-8</id>
+    <id>http://jake.ginnivan.net/diable-narrator-in-windows-8</id>
     <content type="html"><![CDATA[<p>I get rather annoyed with the narrator. Using <a href="http://blog.ostebaronen.dk/2012/08/disable-narrator-in-windows-8.html">this</a> as inspiration here is how you do it.</p>
 
 <p><strong>Update:</strong>  Another solution is available at <a href="http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/">http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/</a> which uses Image File Execution Options instead.</p>
@@ -1724,16 +1724,16 @@ public class AwaitableDelegateCommand&lt;T&gt; : IAsyncCommand&lt;T&gt;, IComman
 <ul>
 <li>Open <code>C:\Windows\System32</code></li>
 <li>Open Properties of Narrator.exe, goto Security Tab, Click advanced<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator1.png" alt="Narrator 1" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator1.png" alt="Narrator 1" /></li>
 <li>Change the owner to yourself<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 2" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 2" /></li>
 <li>Click ok, and accept the warning</li>
 <li>Now back on the properties, click edit<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator3.png" alt="Narrator 3" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator3.png" alt="Narrator 3" /></li>
 <li>Add yourself, then explicitly deny <code>Read &amp; execute</code> and <code>Read</code>. Click yes on warning about modifying security on system files<br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator4.png" alt="Narrator 4" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator4.png" alt="Narrator 4" /></li>
 <li>Change owner to <code>SYSTEM</code><br/>
-<img src="http://JakeGinnivan.github.io/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 5" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 5" /></li>
 </ul>
 
 

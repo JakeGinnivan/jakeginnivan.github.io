@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Presenting | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/presenting/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/presenting/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[DDD Melbourne Rest Talk]]></title>
-    <link href="http://JakeGinnivan.github.io/ddd-melbourne-rest-talk/"/>
+    <link href="http://jake.ginnivan.net/ddd-melbourne-rest-talk/"/>
     <updated>2012-07-30T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/ddd-melbourne-rest-talk</id>
+    <id>http://jake.ginnivan.net/ddd-melbourne-rest-talk</id>
     <content type="html"><![CDATA[<p>Over the weekend I presented at <a href="http://www.dddmelbourne.com/">http://www.dddmelbourne.com/</a> on building RESTful web services.</p>
 
 <p>I wanted to do it a bit different to the REST talks I had been to, and really try to cover how it all fits together, as well as the theory and covering the <a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a> I put together a RESTful beer API, which I want to evolve over time as a cool example. My intention is to release WebApi.Hal as a NuGet package once it matures a little more and I figure out the API and conventions.</p>
@@ -32,9 +32,9 @@
   
   <entry>
     <title type="html"><![CDATA[My Sessions at TechEd 2011]]></title>
-    <link href="http://JakeGinnivan.github.io/teched-2011/"/>
+    <link href="http://jake.ginnivan.net/teched-2011/"/>
     <updated>2011-08-29T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teched-2011</id>
+    <id>http://jake.ginnivan.net/teched-2011</id>
     <content type="html"><![CDATA[<h1>DEV304 &ndash; Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
 
 <p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
@@ -63,9 +63,9 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   
   <entry>
     <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
-    <link href="http://JakeGinnivan.github.io/dddsydney/"/>
+    <link href="http://jake.ginnivan.net/dddsydney/"/>
     <updated>2011-06-29T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/dddsydney</id>
+    <id>http://jake.ginnivan.net/dddsydney</id>
     <content type="html"><![CDATA[<h1>Rich Client UI Automation, without shooting yourself in the foot</h1>
 
 <p>When you talk to most people that have tried Coded UI Tests or other UI Automation they tell you it was great, then it caused them way too much pain to be worth it. This phenomenon is also known as the Sine of Death by UI Test Automation. In this session Jake will show you how to avoid the Sine of Death and make UI Automation an invaluable part of your testing with a great ROI which reducing risk in the project.</p>
@@ -80,9 +80,9 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   
   <entry>
     <title type="html"><![CDATA[Windows Phone 7 Frameworks Presentation]]></title>
-    <link href="http://JakeGinnivan.github.io/presentations/perth-dotnet-wp7-frameworks/"/>
+    <link href="http://jake.ginnivan.net/presentations/perth-dotnet-wp7-frameworks/"/>
     <updated>2011-02-25T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/presentations/perth-dotnet-wp7-frameworks</id>
+    <id>http://jake.ginnivan.net/presentations/perth-dotnet-wp7-frameworks</id>
     <content type="html"><![CDATA[<h1>Windows Phone 7 Frameworks</h1>
 
 <p>Windows phone 7 frameworks have been popping up quite rapidly, and I have found each has benefits and drawbacks. You may be asking questions like, do I need a framework? What will it give me over rolling my own?</p>
@@ -113,9 +113,9 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   
   <entry>
     <title type="html"><![CDATA[Microsoft Evangelism Academy]]></title>
-    <link href="http://JakeGinnivan.github.io/evangeloz2010/"/>
+    <link href="http://jake.ginnivan.net/evangeloz2010/"/>
     <updated>2011-01-01T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/evangeloz2010</id>
+    <id>http://jake.ginnivan.net/evangeloz2010</id>
     <content type="html"><![CDATA[<p>I am a little late blogging about this, by last month I attended the inaugural Microsoft Evangelism Academy (<a href="http://twitter.com/#search?q=%23EvangelOz">#EvangelOz</a>) which was organised by Andrew Coates (<a href="http://twitter.com/coatsy">@coatsy</a>) and Sarah Vaughan (<a href="http://twitter.com/sarahvaughan">@sarahvaughan</a>) at Microsoft DPE. The goal of this program is to take 8 of us to the next level with our presenting! It started with 3 days of coaching, it will continue until August 2011 and will include:</p>
 
 <ul>

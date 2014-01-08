@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: White | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/white/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/white/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
-    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <link href="http://jake.ginnivan.net/teststack-white-v0-11/"/>
     <updated>2013-08-01T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <id>http://jake.ginnivan.net/teststack-white-v0-11</id>
     <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
 
 <p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
@@ -66,9 +66,9 @@ This means if you do not want to wait for the test suite to run on your machine,
   
   <entry>
     <title type="html"><![CDATA[Announcing TestStack.White]]></title>
-    <link href="http://JakeGinnivan.github.io/teststack-white/"/>
+    <link href="http://jake.ginnivan.net/teststack-white/"/>
     <updated>2012-10-28T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teststack-white</id>
+    <id>http://jake.ginnivan.net/teststack-white</id>
     <content type="html"><![CDATA[<h1>Project White</h1>
 
 <p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>

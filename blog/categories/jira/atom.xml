@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Jira | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/jira/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/jira/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
-    <link href="http://JakeGinnivan.github.io/gitreleasenotes/"/>
+    <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
     <updated>2013-12-17T00:00:00+00:00</updated>
-    <id>http://JakeGinnivan.github.io/gitreleasenotes</id>
+    <id>http://jake.ginnivan.net/gitreleasenotes</id>
     <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
 
 <p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>

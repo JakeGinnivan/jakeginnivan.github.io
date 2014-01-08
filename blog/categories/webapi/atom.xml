@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: WebApi | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/webapi/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/webapi/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Web Api Problem - 404s for everything]]></title>
-    <link href="http://JakeGinnivan.github.io/web-api-problem-404s-for-everything/"/>
+    <link href="http://jake.ginnivan.net/web-api-problem-404s-for-everything/"/>
     <updated>2012-08-20T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/web-api-problem-404s-for-everything</id>
+    <id>http://jake.ginnivan.net/web-api-problem-404s-for-everything</id>
     <content type="html"><![CDATA[<h1>Scenario</h1>
 
 <p>So the scenario is that we are in the middle of migrating all our services into Azure, and there will be a time when our services will be running on premise and also in Azure.</p>

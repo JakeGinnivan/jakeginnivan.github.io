@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: UI Automation | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/ui-automation/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/ui-automation/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
-    <link href="http://JakeGinnivan.github.io/teststack-white-v0-11/"/>
+    <link href="http://jake.ginnivan.net/teststack-white-v0-11/"/>
     <updated>2013-08-01T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teststack-white-v0-11</id>
+    <id>http://jake.ginnivan.net/teststack-white-v0-11</id>
     <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
 
 <p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
@@ -66,9 +66,9 @@ This means if you do not want to wait for the test suite to run on your machine,
   
   <entry>
     <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
-    <link href="http://JakeGinnivan.github.io/teamcity-ui-test-agent/"/>
+    <link href="http://jake.ginnivan.net/teamcity-ui-test-agent/"/>
     <updated>2013-07-31T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teamcity-ui-test-agent</id>
+    <id>http://jake.ginnivan.net/teamcity-ui-test-agent</id>
     <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
 
 <p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
@@ -202,9 +202,9 @@ Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. T
   
   <entry>
     <title type="html"><![CDATA[Announcing TestStack.White]]></title>
-    <link href="http://JakeGinnivan.github.io/teststack-white/"/>
+    <link href="http://jake.ginnivan.net/teststack-white/"/>
     <updated>2012-10-28T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teststack-white</id>
+    <id>http://jake.ginnivan.net/teststack-white</id>
     <content type="html"><![CDATA[<h1>Project White</h1>
 
 <p>For those that don&rsquo;t know, project white has been around for ages. It has gone from Google Code (<a href="https://code.google.com/p/white-project/">https://code.google.com/p/white-project/</a>) to Codeplex (<a href="http://white.codeplex.com/">http://white.codeplex.com/</a>) then GitHub (<a href="https://github.com/petmongrels/white">https://github.com/petmongrels/white</a>).</p>
@@ -241,9 +241,9 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   
   <entry>
     <title type="html"><![CDATA[UI TDD - UI Automation Experiment]]></title>
-    <link href="http://JakeGinnivan.github.io/uitdd/"/>
+    <link href="http://jake.ginnivan.net/uitdd/"/>
     <updated>2011-07-12T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/uitdd</id>
+    <id>http://jake.ginnivan.net/uitdd</id>
     <content type="html"><![CDATA[<p>Yesterday the project I have been working on for close to a year now went live! We have had very minimal issues and apart from working with an Amazing team of Readify people we have made use of an extensive suite of UI Automation and Integration tests.</p>
 
 <p>Our UI Automation suite was originally supposed to simply be &lsquo;Smoke Tests&rsquo; which run through all UI processes in our application and makes sure it works end to end, not really asserting much, just that the process worked and the expected result was there at the end.</p>
@@ -549,9 +549,9 @@ Assert.AreEqual(title, tasks[0].Title);
   
   <entry>
     <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
-    <link href="http://JakeGinnivan.github.io/dddsydney/"/>
+    <link href="http://jake.ginnivan.net/dddsydney/"/>
     <updated>2011-06-29T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/dddsydney</id>
+    <id>http://jake.ginnivan.net/dddsydney</id>
     <content type="html"><![CDATA[<h1>Rich Client UI Automation, without shooting yourself in the foot</h1>
 
 <p>When you talk to most people that have tried Coded UI Tests or other UI Automation they tell you it was great, then it caused them way too much pain to be worth it. This phenomenon is also known as the Sine of Death by UI Test Automation. In this session Jake will show you how to avoid the Sine of Death and make UI Automation an invaluable part of your testing with a great ROI which reducing risk in the project.</p>

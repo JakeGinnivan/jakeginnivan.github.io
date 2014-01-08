@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: .NET | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/dot-net/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/dot-net/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Redirecting Process Output]]></title>
-    <link href="http://JakeGinnivan.github.io/redirecting-process-output/"/>
+    <link href="http://jake.ginnivan.net/redirecting-process-output/"/>
     <updated>2013-04-05T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/redirecting-process-output</id>
+    <id>http://jake.ginnivan.net/redirecting-process-output</id>
     <content type="html"><![CDATA[<p>I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.</p>
 
 <p>Based on a blog post that Lucian Wischik posted a while back at <a href="http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx">http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx</a> I have created a c# version of his code which makes it nice and easy.</p>
@@ -130,9 +130,9 @@ Console.Write(stdErr);
   
   <entry>
     <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-bootstrapping-errors/"/>
+    <link href="http://jake.ginnivan.net/clickonce-bootstrapping-errors/"/>
     <updated>2011-07-20T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-bootstrapping-errors</id>
+    <id>http://jake.ginnivan.net/clickonce-bootstrapping-errors</id>
     <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
 
 <p>When trying to publish my clickonce installer I am getting the error:</p>
@@ -163,9 +163,9 @@ Console.Write(stdErr);
   
   <entry>
     <title type="html"><![CDATA[TFS Merge Tools Configuration]]></title>
-    <link href="http://JakeGinnivan.github.io/tfsmergetools/"/>
+    <link href="http://jake.ginnivan.net/tfsmergetools/"/>
     <updated>2011-06-01T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/tfsmergetools</id>
+    <id>http://jake.ginnivan.net/tfsmergetools</id>
     <content type="html"><![CDATA[<p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
 
 <p>This blog post <a href="http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx">http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx</a> lists all common merge tools, and the command line arguments for each of them.</p>
@@ -183,9 +183,9 @@ Console.Write(stdErr);
   
   <entry>
     <title type="html"><![CDATA[C# Command Line Argument Parser]]></title>
-    <link href="http://JakeGinnivan.github.io/c-sharp-argument-parser/"/>
+    <link href="http://jake.ginnivan.net/c-sharp-argument-parser/"/>
     <updated>2010-08-21T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/c-sharp-argument-parser</id>
+    <id>http://jake.ginnivan.net/c-sharp-argument-parser</id>
     <content type="html"><![CDATA[<p>I know this has been done to death but nothing I found did the job for me so I started with the one that fitted my needs the most then edited from there.</p>
 
 <p>Original source: <a href="http://www.codeproject.com/KB/recipes/command_line.aspx">http://www.codeproject.com/KB/recipes/command_line.aspx</a></p>
@@ -202,7 +202,7 @@ Console.Write(stdErr);
 <!-- more -->
 
 
-<p><img src="/get/screenshots/argPaserClassDiagram.png" alt="Class Diagram" /></p>
+<p><img src="/assets/posts/2010-08-21-c-sharp-argument-parser/argPaserClassDiagram.png" alt="Class Diagram" /></p>
 
 <h1>Example Usage</h1>
 
@@ -727,9 +727,9 @@ public class Arguments
   
   <entry>
     <title type="html"><![CDATA[VSTO Contrib]]></title>
-    <link href="http://JakeGinnivan.github.io/vsto-contrib/"/>
+    <link href="http://jake.ginnivan.net/vsto-contrib/"/>
     <updated>2010-07-14T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/vsto-contrib</id>
+    <id>http://jake.ginnivan.net/vsto-contrib</id>
     <content type="html"><![CDATA[<p>Over the time with working with VSTO, I have created a heap of reusable classes and extensions for VSTO. So I have decided to start a Contrib project.</p>
 
 <p><a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a></p>

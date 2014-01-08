@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: TFS | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/tfs/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/tfs/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[TeamCity Build Results in TFS]]></title>
-    <link href="http://JakeGinnivan.github.io/teamcity-build-results-in-tfs/"/>
+    <link href="http://jake.ginnivan.net/teamcity-build-results-in-tfs/"/>
     <updated>2013-04-13T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teamcity-build-results-in-tfs</id>
+    <id>http://jake.ginnivan.net/teamcity-build-results-in-tfs</id>
     <content type="html"><![CDATA[<h1>Why?</h1>
 
 <p>Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our test tool, TFS for work items, GitHub for source control and TeamCity for our build server.</p>
@@ -99,9 +99,9 @@ It is based off Based off <a href="http://blogs.msdn.com/b/jpricket/archive/2010
   
   <entry>
     <title type="html"><![CDATA[TFS Merge Tools Configuration]]></title>
-    <link href="http://JakeGinnivan.github.io/tfsmergetools/"/>
+    <link href="http://jake.ginnivan.net/tfsmergetools/"/>
     <updated>2011-06-01T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/tfsmergetools</id>
+    <id>http://jake.ginnivan.net/tfsmergetools</id>
     <content type="html"><![CDATA[<p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
 
 <p>This blog post <a href="http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx">http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx</a> lists all common merge tools, and the command line arguments for each of them.</p>

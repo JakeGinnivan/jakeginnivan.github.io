@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: TeamCity | Jake Ginnivan's blog]]></title>
-  <link href="http://JakeGinnivan.github.io/blog/categories/teamcity/atom.xml" rel="self"/>
-  <link href="http://JakeGinnivan.github.io/"/>
-  <updated>2014-01-07T20:31:54+00:00</updated>
-  <id>http://JakeGinnivan.github.io/</id>
+  <link href="http://jake.ginnivan.net/blog/categories/teamcity/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-01-08T22:01:19+00:00</updated>
+  <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
     <email><![CDATA[jake@ginnivan.net]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
-    <link href="http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity/"/>
+    <link href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity/"/>
     <updated>2013-09-28T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/release-nuget-semver-packages-from-teamcity</id>
+    <id>http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</id>
     <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
 
 <p>My goals were</p>
@@ -140,9 +140,9 @@
   
   <entry>
     <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
-    <link href="http://JakeGinnivan.github.io/teamcity-ui-test-agent/"/>
+    <link href="http://jake.ginnivan.net/teamcity-ui-test-agent/"/>
     <updated>2013-07-31T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teamcity-ui-test-agent</id>
+    <id>http://jake.ginnivan.net/teamcity-ui-test-agent</id>
     <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
 
 <p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
@@ -276,9 +276,9 @@ Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. T
   
   <entry>
     <title type="html"><![CDATA[TeamCity Build Results in TFS]]></title>
-    <link href="http://JakeGinnivan.github.io/teamcity-build-results-in-tfs/"/>
+    <link href="http://jake.ginnivan.net/teamcity-build-results-in-tfs/"/>
     <updated>2013-04-13T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/teamcity-build-results-in-tfs</id>
+    <id>http://jake.ginnivan.net/teamcity-build-results-in-tfs</id>
     <content type="html"><![CDATA[<h1>Why?</h1>
 
 <p>Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our test tool, TFS for work items, GitHub for source control and TeamCity for our build server.</p>
@@ -360,9 +360,9 @@ It is based off Based off <a href="http://blogs.msdn.com/b/jpricket/archive/2010
   
   <entry>
     <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-bootstrapping-errors/"/>
+    <link href="http://jake.ginnivan.net/clickonce-bootstrapping-errors/"/>
     <updated>2011-07-20T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-bootstrapping-errors</id>
+    <id>http://jake.ginnivan.net/clickonce-bootstrapping-errors</id>
     <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
 
 <p>When trying to publish my clickonce installer I am getting the error:</p>
@@ -393,9 +393,9 @@ It is based off Based off <a href="http://blogs.msdn.com/b/jpricket/archive/2010
   
   <entry>
     <title type="html"><![CDATA[ClickOnce Deployment in TeamCity]]></title>
-    <link href="http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity/"/>
+    <link href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity/"/>
     <updated>2009-08-29T00:00:00+01:00</updated>
-    <id>http://JakeGinnivan.github.io/clickonce-deployment-in-teamcity</id>
+    <id>http://jake.ginnivan.net/clickonce-deployment-in-teamcity</id>
     <content type="html"><![CDATA[<p>I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server.</p>
 
 <p>This blog post was very useful for getting the initial build working <a href="http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html">http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html</a> it also mentions how to fix the error MSB3147: Could not find required file &lsquo;setup.bin&rsquo; in &lsquo;ProjectFolder\Engine&rsquo; error I was getting.</p>

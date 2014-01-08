@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://JakeGinnivan.github.io/vsto-data-access-repositories/">
+  <link rel="canonical" href="http://jake.ginnivan.net/vsto-data-access-repositories/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -70,7 +70,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:JakeGinnivan.github.io" />
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -126,13 +126,13 @@
 
 <p>To achieve a non leaking high performance repository no matter what thread you call from we have to use a few patterns and Automapper to put it all together. Here is a class diagram of the end goal.</p>
 
-<p><img src="/get/screenshots/OutlookEventRepository.png" alt="Outlook Event Repository" /></p>
+<p><img src="/assets/posts/2010-04-23-vsto-data-access-repositories/OutlookEventRepository.png" alt="Outlook Event Repository" /></p>
 
 <p>Notice that my repository returns a basic CLR interface, not appointment items.</p>
 
 <p>FacebookEventAdapter – uses the adapter pattern to adapt the ugly and HUGE <em>AppointmentItem interface to something that is useful to us. It is essentially a wrapper class that adapts the </em>AppointmentItem interface to our own interface.</p>
 
-<p><img src="/get/screenshots/IOutlookFacebookEvent.png" alt="Outlook event interface" /></p>
+<p><img src="/assets/posts/2010-04-23-vsto-data-access-repositories/IOutlookFacebookEvent.png" alt="Outlook event interface" /></p>
 
 <p>The next step is we do not want our repository to leak. For the moment trust me that we do not want to leak COM objects. I will cover why it is bad in a later post.</p>
 
@@ -247,7 +247,7 @@ Dispatched repository mapped in ~0.6 seconds</p></blockquote>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://JakeGinnivan.github.io/vsto-data-access-repositories/" data-via="JakeGinnivan" data-counturl="http://JakeGinnivan.github.io/vsto-data-access-repositories/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/vsto-data-access-repositories/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/vsto-data-access-repositories/" >Tweet</a>
   
   
   
@@ -359,8 +359,8 @@ Dispatched repository mapped in ~0.6 seconds</p></blockquote>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://JakeGinnivan.github.io/vsto-data-access-repositories/';
-        var disqus_url = 'http://JakeGinnivan.github.io/vsto-data-access-repositories/';
+        var disqus_identifier = 'http://jake.ginnivan.net/vsto-data-access-repositories/';
+        var disqus_url = 'http://jake.ginnivan.net/vsto-data-access-repositories/';
         var disqus_script = 'embed.js';
       
     (function () {
