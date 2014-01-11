@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Rich Client UI Automation, without shooting yourself in the foot When you talk to most people that have tried Coded UI Tests or other UI Automation &hellip;">
+  <meta name="description" content="Yesterday the project I have been working on for close to a year now went live! We have had very minimal issues and apart from working with an &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/uitdd/">UI TDD - UI Automation Experiment</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-12T00:00:00+01:00" pubdate data-updated="true">Jul 12<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Yesterday the project I have been working on for close to a year now went live! We have had very minimal issues and apart from working with an Amazing team of Readify people we have made use of an extensive suite of UI Automation and Integration tests.</p>
+
+<p>Our UI Automation suite was originally supposed to simply be &lsquo;Smoke Tests&rsquo; which run through all UI processes in our application and makes sure it works end to end, not really asserting much, just that the process worked and the expected result was there at the end.</p>
+
+<p>This grew&hellip; we now verify all application logs, have helpers which wait for our message processors to send and receive all messages, then assert everything from audit messages, to financial movements to report data. It has given us amazing confidence in our product and allowed us to go live with maybe a dozen medium priority bugs which has taken us &frac12; a day to get on top of.</p>
+
+<p>I have started breaking out the framework we built into a CodedUI contrib project which lives in the MSTestContrib project on codeplex (<a href="http://mstestcontrib.codeplex.com">http://mstestcontrib.codeplex.com</a>)</p>
+
+<p>I will be creating a WPF Todo application using the framework, writing my UI Automation tests first, refactoring, making mistakes, improving the code etc. It will be the first time I have used EF, so this whole thing will be a learning experience.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/uitdd/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -495,46 +544,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto/addin-uninstaller/">VSTO Add-in Uninstaller</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-19T00:00:00+00:00" pubdate data-updated="true">Mar 19<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have just pushed up a simple app to uninstall VSTO add-ins, if the manifest file is present, it will use the VSTOInstaller.exe, otherwise it will remove the registry keys manually.</p>
-
-<p><img src="/assets/posts/2011-03-19-addin-uninstaller/Add-inUninstaller.PNG" alt="Addin Uninstaller" /></p>
-
-<p>Grab it at <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -552,6 +561,10 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
@@ -567,15 +580,11 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
         <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
-      <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
-  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
+  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
 </section>
 <section>
   <h1>GitHub Repos</h1>

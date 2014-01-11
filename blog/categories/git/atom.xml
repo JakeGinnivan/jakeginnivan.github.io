@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:10+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -165,7 +165,7 @@ I think that is pretty neat.</p>
 
 <p>I can now leave this branch open for a bit, do the work I need to do to release 2.1.1 or send it to someone else on the team to OK. I could even release the 2.1.1 build as a pre-release package on NuGet. It would have version 2.1.1-beta1 remember.</p>
 
-<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &mdash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
+<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &ndash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
 
 <pre><code>git checkout develop
 git merge release-2.1.1 --no-ff
@@ -299,8 +299,8 @@ git push upstream --tags
 <li><code>Set-ExecutionPolicy RemoteSigned</code>, this will allow you to run powershell scripts</li>
 <li><code>git clone https://github.com/dahlbyk/posh-git</code></li>
 <li><code>cd posh-git</code></li>
-<li><code>.\install.ps1</code> &ndash; this will install posh-git into your profile.</li>
-<li><code>. $PROFILE</code> &ndash; this will run your profile, now you should see [master] in blue on the command line</li>
+<li><code>.\install.ps1</code> - this will install posh-git into your profile.</li>
+<li><code>. $PROFILE</code> - this will run your profile, now you should see [master] in blue on the command line</li>
 </ul>
 
 

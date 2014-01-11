@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Wpf | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/wpf/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:46+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -379,7 +379,7 @@ In my current projects, we actually define all windows as UserControls, and our 
 
 <p>Next chance I get, I was thinking that doing something like this in the viewmodel might work quite well.</p>
 
-<h1>IoC &ndash; Putting it together</h1>
+<h1>IoC - Putting it together</h1>
 
 <p>In our appliation startup, we need to register out IoC container, I am using Autofac. This is my registration</p>
 

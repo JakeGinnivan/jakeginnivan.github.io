@@ -4,7 +4,7 @@
   <title><![CDATA[Category: NuGet | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/nuget/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:10+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -23,7 +23,7 @@
 <p>My goals were</p>
 
 <ul>
-<li>Use GitHubs releases feature &ndash; <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>Use GitHubs releases feature - <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
 <li>I want to release from NuGet</li>
 <li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
 <li>Support SemVer, including pre-release packages</li>

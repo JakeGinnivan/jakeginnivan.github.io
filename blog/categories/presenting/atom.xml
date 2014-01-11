@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Presenting | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/presenting/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:10+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -35,21 +35,21 @@
     <link href="http://jake.ginnivan.net/teched-2011/"/>
     <updated>2011-08-29T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/teched-2011</id>
-    <content type="html"><![CDATA[<h1>DEV304 &ndash; Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
+    <content type="html"><![CDATA[<h1>DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
 
 <p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
 If you have used it, and hated it, I will also be showing how to improve your experience and give you a way of approaching the problems and some nice ways to improve the default experience. Part of this is a quick intro to COM Interop, how it works and how to make sure you avoid problems with it.
 And finally, I will be showing a bit of VSTO contrib and how you can use IoC and other cool enhancements to the platform.</p>
 
-<h1>WPH305 &ndash; Multi-Tasking and Application Services (Fri, 8:15am)</h1>
+<h1>WPH305 - Multi-Tasking and Application Services (Fri, 8:15am)</h1>
 
 <p>In this session with Chris Walsh, we will be going through a whole lot of App services related features in Windows Phone Mango. We will cover things like Multi-Tasking, Background agents, Tiles, Notifications and Search extra&rsquo;s. We have some cool demo&rsquo;s and it will be a fun session.</p>
 
 <h1>Demos</h1>
 
 <p>I also have a few demo&rsquo;s lined up
- &ndash; Unit Testing with WP7 (1:30pm Wednesday)
- &ndash; Windows Phone MVC Intro (2:00pm Wednesday)</p>
+ - Unit Testing with WP7 (1:30pm Wednesday)
+ - Windows Phone MVC Intro (2:00pm Wednesday)</p>
 
 <ul>
 <li>Unit Testing with WP7 (1:00pm Wednesday)</li>
@@ -95,17 +95,17 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
 
 <p>Talk Link: <a href="http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx">http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx</a></p>
 
-<p><strong>When:</strong> Thursday, Mar 3rd, 5:30pm &ndash; 7:00pm<br/>
+<p><strong>When:</strong> Thursday, Mar 3rd, 5:30pm - 7:00pm<br/>
 <strong>Where:</strong> Enex 100 Seminar Room, Level 3, 100 St Georges Terrace, Perth</p>
 
 <h1>The frameworks</h1>
 
 <p>So far the frameworks I am aware of:</p>
 
-<p><a href="http://columbus.codeplex.com/">Columbus</a> &ndash; written by Artem Govorov<br/>
-<a href="http://windowsphonemvp.codeplex.com/">Windows Phone MVP</a> &ndash; written by <a href="http://www.kowitz.net/">Brendan Kowitz</a><br/>
-<a href="http://caliburnmicro.codeplex.com/">Calburn Micro</a> &ndash; written by <a href="http://robeisenberg.com/Work.aspx">Rob Eisenberg</a><br/>
-<a href="http://mvvmlight.codeplex.com/">MVVM Light</a> &ndash; written by <a href="http://www.galasoft.ch/contact_en.html">Laurent Bugnion (GalaSoft)</a></p>
+<p><a href="http://columbus.codeplex.com/">Columbus</a> - written by Artem Govorov<br/>
+<a href="http://windowsphonemvp.codeplex.com/">Windows Phone MVP</a> - written by <a href="http://www.kowitz.net/">Brendan Kowitz</a><br/>
+<a href="http://caliburnmicro.codeplex.com/">Calburn Micro</a> - written by <a href="http://robeisenberg.com/Work.aspx">Rob Eisenberg</a><br/>
+<a href="http://mvvmlight.codeplex.com/">MVVM Light</a> - written by <a href="http://www.galasoft.ch/contact_en.html">Laurent Bugnion (GalaSoft)</a></p>
 
 <p>If you know of others let me know, and tell me what is your favourite thing in that framework.</p>
 ]]></content>

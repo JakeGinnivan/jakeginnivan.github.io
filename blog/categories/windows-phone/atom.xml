@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Windows Phone | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/windows-phone/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:10+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -231,21 +231,21 @@ settingsProvider.SaveSettings(applicationSettings);
     <link href="http://jake.ginnivan.net/teched-2011/"/>
     <updated>2011-08-29T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/teched-2011</id>
-    <content type="html"><![CDATA[<h1>DEV304 &ndash; Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
+    <content type="html"><![CDATA[<h1>DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
 
 <p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
 If you have used it, and hated it, I will also be showing how to improve your experience and give you a way of approaching the problems and some nice ways to improve the default experience. Part of this is a quick intro to COM Interop, how it works and how to make sure you avoid problems with it.
 And finally, I will be showing a bit of VSTO contrib and how you can use IoC and other cool enhancements to the platform.</p>
 
-<h1>WPH305 &ndash; Multi-Tasking and Application Services (Fri, 8:15am)</h1>
+<h1>WPH305 - Multi-Tasking and Application Services (Fri, 8:15am)</h1>
 
 <p>In this session with Chris Walsh, we will be going through a whole lot of App services related features in Windows Phone Mango. We will cover things like Multi-Tasking, Background agents, Tiles, Notifications and Search extra&rsquo;s. We have some cool demo&rsquo;s and it will be a fun session.</p>
 
 <h1>Demos</h1>
 
 <p>I also have a few demo&rsquo;s lined up
- &ndash; Unit Testing with WP7 (1:30pm Wednesday)
- &ndash; Windows Phone MVC Intro (2:00pm Wednesday)</p>
+ - Unit Testing with WP7 (1:30pm Wednesday)
+ - Windows Phone MVC Intro (2:00pm Wednesday)</p>
 
 <ul>
 <li>Unit Testing with WP7 (1:00pm Wednesday)</li>
@@ -1021,7 +1021,7 @@ Navigator: Memory usage after navigation: 19.84765625
 
 <p>I hope this is a useful post as a introduction to Windows Phone MVC, and shows off many of the features which make it really easy to write WP7 applications.</p>
 
-<p>Please leave feedback, ping me on twitter (@JakeGinnivan), or email me at <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x6a;&#97;&#107;&#x65;&#64;&#x67;&#x69;&#110;&#x6e;&#x69;&#x76;&#x61;&#x6e;&#x2e;&#x6e;&#x65;&#116;">&#x6a;&#x61;&#x6b;&#101;&#x40;&#103;&#x69;&#x6e;&#110;&#105;&#x76;&#97;&#x6e;&#x2e;&#x6e;&#101;&#116;</a> with suggestions/issues. I want to power towards v1.0 when I will lock down API&rsquo;s and consider the framework stable. The framework is reasonably stable now, and is being used in a decent size app. But there will likely be situations I haven&rsquo;t thought of, or haven&rsquo;t tested.</p>
+<p>Please leave feedback, ping me on twitter (@JakeGinnivan), or email me at <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#106;&#x61;&#107;&#x65;&#x40;&#103;&#x69;&#x6e;&#x6e;&#x69;&#x76;&#x61;&#110;&#x2e;&#110;&#101;&#116;">&#106;&#x61;&#x6b;&#101;&#x40;&#x67;&#x69;&#110;&#x6e;&#x69;&#118;&#97;&#x6e;&#46;&#110;&#101;&#116;</a> with suggestions/issues. I want to power towards v1.0 when I will lock down API&rsquo;s and consider the framework stable. The framework is reasonably stable now, and is being used in a decent size app. But there will likely be situations I haven&rsquo;t thought of, or haven&rsquo;t tested.</p>
 
 <h1>Go get it!</h1>
 

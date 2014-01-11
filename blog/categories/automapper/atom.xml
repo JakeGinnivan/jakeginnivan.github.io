@@ -4,7 +4,7 @@
   <title><![CDATA[Category: AutoMapper | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/automapper/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:10+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -36,11 +36,9 @@ Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
     .ForMember(d =&gt; d.SpecificProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
 </code></pre>
 
-<p>And have the rest of the properties map by convention. The problem is that the .Include function is only used for type resolution. i.e.</p>
-
-<pre><code>var dto = Mapper.Map&lt;ItemBase, ItemSummaryDto&gt;(new GeneralItem());
-Assert.IsInstanceOfType&lt;GeneralItemSummaryDto&gt;(dto); // Passes
-</code></pre>
+<p>And have the rest of the properties map by convention. The problem is that the .Include function is only used for type resolution. i.e.
+    var dto = Mapper.Map&lt;ItemBase, ItemSummaryDto>(new GeneralItem());
+    Assert.IsInstanceOfType<GeneralItemSummaryDto>(dto); // Passes</p>
 
 <p>If we validate our mapping we will find that Description is not mapped on GeneralItemSummaryDto and SpecificItemSummaryDto. This means out mapping ends up being:</p>
 

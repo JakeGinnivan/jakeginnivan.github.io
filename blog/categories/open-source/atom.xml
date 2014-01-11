@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Open Source | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/open-source/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:10+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -75,11 +75,11 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
 </code></pre>
 
 <p>There are a few things we are saying:
- &ndash; Create me a pretzel site
- &ndash; We are not specifying a directory, so pretzel will create the site in the current directory
- &ndash; We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
- &ndash; The <em>&mdash;wiki</em> switch says we want a wiki template rather than the default blog setup
- &ndash; The <em>&mdash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
+ - Create me a pretzel site
+ - We are not specifying a directory, so pretzel will create the site in the current directory
+ - We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
+ - The <em>&ndash;wiki</em> switch says we want a wiki template rather than the default blog setup
+ - The <em>&ndash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
 
 <pre><code>C:\PretzelDemo&gt; pretzel.exe create -t=razor --wiki --azure
 starting pretzel...

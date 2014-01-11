@@ -127,11 +127,11 @@
 </code></pre>
 
 <p>There are a few things we are saying:
- &ndash; Create me a pretzel site
- &ndash; We are not specifying a directory, so pretzel will create the site in the current directory
- &ndash; We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
- &ndash; The <em>&mdash;wiki</em> switch says we want a wiki template rather than the default blog setup
- &ndash; The <em>&mdash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
+ - Create me a pretzel site
+ - We are not specifying a directory, so pretzel will create the site in the current directory
+ - We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
+ - The <em>&ndash;wiki</em> switch says we want a wiki template rather than the default blog setup
+ - The <em>&ndash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
 
 <pre><code>C:\PretzelDemo&gt; pretzel.exe create -t=razor --wiki --azure
 starting pretzel...
@@ -311,6 +311,10 @@ To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
@@ -326,15 +330,11 @@ To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
         <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
-      <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
-  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
+  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
 </section>
 <section>
   <h1>GitHub Repos</h1>

@@ -130,11 +130,9 @@ Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
     .ForMember(d =&gt; d.SpecificProperty, m =&gt; m.MapFrom(s =&gt; s.Something));
 </code></pre>
 
-<p>And have the rest of the properties map by convention. The problem is that the .Include function is only used for type resolution. i.e.</p>
-
-<pre><code>var dto = Mapper.Map&lt;ItemBase, ItemSummaryDto&gt;(new GeneralItem());
-Assert.IsInstanceOfType&lt;GeneralItemSummaryDto&gt;(dto); // Passes
-</code></pre>
+<p>And have the rest of the properties map by convention. The problem is that the .Include function is only used for type resolution. i.e.
+    var dto = Mapper.Map&lt;ItemBase, ItemSummaryDto>(new GeneralItem());
+    Assert.IsInstanceOfType<GeneralItemSummaryDto>(dto); // Passes</p>
 
 <p>If we validate our mapping we will find that Description is not mapped on GeneralItemSummaryDto and SpecificItemSummaryDto. This means out mapping ends up being:</p>
 
@@ -223,6 +221,10 @@ Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
@@ -238,15 +240,11 @@ Mapper.CreateMap&lt;SpecificItem, SpecificItemSumaryDto&gt;()
         <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
-      <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
-  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
+  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
 </section>
 <section>
   <h1>GitHub Repos</h1>

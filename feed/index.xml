@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-08T22:01:19+00:00</updated>
+  <updated>2014-01-11T11:48:10+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -12,6 +12,244 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[On Async and Sync Contexts]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts/"/>
+    <updated>2014-01-10T14:12:49+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts</id>
+    <content type="html"><![CDATA[<p>This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation Contexts. Quite a few of my assumptions were wrong, or the behaviour is different between the .NET 4.0 implementation (CTP3 and RTM) and what happens in .NET 4.5.</p>
+
+<p>In this post I will cover:</p>
+
+<ul>
+<li>What .ConfigureAwait(false) does in .net 4.0 and in .net 4.5, and why they act differently</li>
+<li>Some guidance around using await in a rich client app (i.e await for <em>offloading</em>, not scalability) .net 4.0 in particular, .net 4.5 behaves better and the guidance is not as relevant</li>
+<li>How you can use custom awaiters to switch contexts</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h2>Quick SynchronizationContext Intro</h2>
+
+<p>If you do not know what synchronization context&rsquo;s are, then I will quickly cover them here. If you know what they do, skip to the next section.</p>
+
+<p>A SynchronizationContext allows you to queue a unit of work on another <em>context</em>, a context can be a specific thread or it may be shared between multiple threads. For example you can get the SynchronizationContext of the current thread by going <code>var uiSyncContext = SynchronizationContext.Current</code>, you can use it to run a delegate on the UI thread (or whatever context the SynchronizationContext represents) with <code>uiSyncContext.Send(state =&gt; { MyProperty = state; }, state: "bar")</code>. This will pass the string &ldquo;bar&rdquo; through as state (without implicitly capturing the outside closure) then assign to MyProperty on the UI thread.</p>
+
+<p>SynchronizationContext&rsquo;s also get notified when asynchronous work is started, which is how frameworks like (<a href="http://www.nunit.org/">nUnit</a>, <a href="http://xunit.codeplex.com/">xUnit 2.0</a>, <a href="https://github.com/TestStack/TestStack.BDDfy">BDDfy</a> and others supports tests which have a method signature of <code>async void</code></p>
+
+<h2>How await uses SynchronisationContext&rsquo;s</h2>
+
+<p>Async/await is just compiler magic to make it easier to compose asynchronous stuff, it does not make your code run asynchronously all it does is when it sees an await, it splits your method up into a state machine then when the thing you are awaiting finishes executing, the state machine is resumed and your code continues running. Resuming execution is called the <em>continuation</em>.<br/>
+A great feature of the <code>await</code> keyword is that it captures the current SynchronizationContext before it runs the asynchronous operation, then it will post the continuation to that SynchronizationContext, meaning if you are on the UI Thread when you <code>await Foo()</code> once <code>Foo()</code> finishes running your code will continue execution on the UI Thread.</p>
+
+<p>This scenario here is called <em>offloading</em>, because the UI thread is an important thread you want to run as little code as possible on the UI thread.</p>
+
+<h3>Controlling await with .ConfigureAwait()</h3>
+
+<p>To change the default behaviour TPL gives us the <code>.ConfigureAwait(bool continueOnCapturedContext)</code>, this allows you to write code like this:</p>
+
+<pre><code>public async Task&lt;ObservableCollection&lt;DataViewModel&gt;&gt; DoSomeStuff() {
+    var results = _service.GetSomeData().ConfigureAwait(false);
+    var mappedData = MapDataToViewModels(results); // Just pretend this is CPU bound work
+    return mappedData;
+}
+</code></pre>
+
+<p>Because of the <code>.ConfigureAwait(false)</code> our continuation and the <code>MapDataToViewModels()</code> method call will be run on a background thread (unless the awaited task is already complete, then the continuation will be executed in-line). Lets take this one step further</p>
+
+<pre><code>public async Task&lt;ObservableCollection&lt;DataViewModel&gt;&gt; DoSomeStuff() {
+    var results = await _service.GetSomeData().ConfigureAwait(false);
+    var mappedData = MapDataToViewModels(results);
+    var moreData = await _service.GetMoreData();
+    UpdateViewModelsWithAdditionalData(moreData);
+    return mappedData;
+}
+</code></pre>
+
+<p>In which context does <code>UpdateViewModelsWithAdditionalData(moreData);</code> run?</p>
+
+<p>The answer is <em>it depends</em>, on .net 4.0 <code>UpdateViewModelsWithAdditionalData(moreData);</code> runs on the UI thread, on .net 4.5 it will run on the <em>threadpool</em>. Why is this? To answer that we need to dive into something called the execution context.</p>
+
+<h3>Execution Context?</h3>
+
+<p>When our .NET code is executing, these is a bunch of additional metadata which floats around with our thread, these are things like security information and the synchronisation context. For more in depth information on the .net execution context have a read of <a href="http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx">http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx</a>.</p>
+
+<p>The important thing to know about the execution context is that the .NET framework flows it around so things work as we would expect, for instance if we start a new thread, out execution context will go with us. Task.Run, ThreadPool.QueueUserWorkItem() etc all will flow the execution context (but will supress the flow of the SynchronizationContext).</p>
+
+<h2>Differences between .NET 4.0 and 4.5</h2>
+
+<p>So we have explained some of the moving parts when we are dealing with async/await. (If you would like me to do a more in depth post on async/await in general and how it works starting from the basics, leave a comment below).</p>
+
+<p>Above I showed this code</p>
+
+<pre><code>public async Task&lt;ObservableCollection&lt;DataViewModel&gt;&gt; DoSomeStuff() {
+    var results = await _service.GetSomeData().ConfigureAwait(false);
+    var mappedData = MapDataToViewModels(results);
+    var moreData = await _service.GetMoreData();
+    UpdateViewModelsWithAdditionalData(moreData);
+    return mappedData;
+}
+</code></pre>
+
+<p>And said that in .NET 4.0 <code>UpdateViewModelsWithAdditionalData(moreData);</code> would run on the UI thread and in .NET 4.5 it would run on the ThreadPool. This is because of how the different implementations capture the <code>ExecutionContext</code>.</p>
+
+<h3>Breakdown of .NET 4.0</h3>
+
+<p>If we break this method down into what will be executed. This is a mixture of the generated state machine, library code and code to just demonstrate what is happening (because there are heaps of moving parts).</p>
+
+<pre><code>int state;
+Results results;
+
+void IAsyncStateMachine.MoveNext()
+{
+    switch 1:
+        var mappedData = MapDataToViewModels(results);
+        // etc...
+        break;
+    // etc...
+    default:
+        var ex = ExecutionContext.Capture();
+        var task = _service.GetSomeData();
+
+        TaskAwaiter.OnCompletedInternal(task, ()=&gt; {
+            ex.Run(()=&gt;
+            {
+                results = task.Result;
+                state = 1;
+                MoveNext();
+            });
+        }, continueOnCapturedContext: false);
+}
+</code></pre>
+
+<p>Now there are a few things to look at in this small bit of code, first is <code>var ex = ExecutionContext.Capture();</code>, this captures the current execution context and the ExecutionContext contains the SynchronizationContext so when we execute <code>MoveNext()</code> our SynchronizationContext has been restored BUT because the TaskAwaiter.OnCompletedInternal has been told to not continue on the captured context it will be run on the default task scheduler.</p>
+
+<p>The end result of all this is when <code>var mappedData = MapDataToViewModels(results);</code> runs we will:</p>
+
+<ul>
+<li>Be running on the ThreadPool</li>
+<li>SynchronizationContext.Current will still be the <code>DispatcherSynchronizationContext</code></li>
+</ul>
+
+
+<p>So on the next line when we await and <em>do not use</em> .ConfigureAwait(false) the continuation will run on the captured SynchronizationContext</p>
+
+<h3>.NET 4.5 Behaviour</h3>
+
+<p>Lets have a look at what the code looks like in .NET 4.5 land.</p>
+
+<pre><code>int state;
+Results results;
+
+void IAsyncStateMachine.MoveNext()
+{
+    switch 1:
+        var mappedData = MapDataToViewModels(results);
+        // etc...
+        break;
+    // etc...
+    default:
+        var ex = ExecutionContext.CaptureInternal(ExecutionContext.CaptureOptions.IgnoreSyncCtx); 
+        var task = _service.GetSomeData();
+
+        TaskAwaiter.OnCompletedInternal(task, ()=&gt; {
+            ex.Run(()=&gt;
+            {
+                results = task.Result;
+                state = 1;
+                MoveNext();
+            });
+        }, continueOnCapturedContext: false);
+}
+</code></pre>
+
+<p>Notice the line where the execution context is captured, in .NET 4.5 the AsyncMethodBuilderCore calls an <em>internal</em> method on the ExecutionContext which allows the caller to specify that they do not want the SynchronizationContext to be captured as part of the ExecutionContext.</p>
+
+<p>The reason .NET 4.0 and .NET 4.5 are different is that this internal cannot be called from the Async Targeting Pack because it&rsquo;s a library, in .NET 4.5 the AsyncMethodBuilderCore is part of the framework so it can call this internal methods.</p>
+
+<h3>How does TaskEx.Run not capture SynchronizationContext?</h3>
+
+<p>Because TaskEx.Run delegates to <code>Task.Factory.StartNew()</code> which is part of the framework, it passes the option to not capture the SynchronizationContext</p>
+
+<h2>Some guidance for .NET 4.0</h2>
+
+<p>The general guidance is any library code should use <code>.ConfigureAwait(false)</code> so our continuations do not constantly post back to the UI thread, because .NET 4.0 always flows the SynchronizationContext it means that <em>all</em> of our await calls should have <code>.ConfigureAwait(false)</code> which is pretty ugly. Also because .ConfigureAwait(false) still checks if the task is complete, using <code>.ConfigureAwait(false)</code> does not guarantee that we will no longer be executing on the UI thread.</p>
+
+<p>Rather than using .ConfigureAwait() we can explicitly get our code running on the ThreadPool as soon as possible. There are two options for this (that I can see currently):</p>
+
+<p>In ViewModels when you invoke any sort of async service, wrap it in a <code>await TaskEx.Run(()=&gt;_myService.DoStuffAsync());</code>, this is quite good because if your service calls other services you do not get the problem where all your services have <code>TaskEx.Run</code> scattered everywhere and you are scheduling a heap more things into the ThreadPool.</p>
+
+<p>Create a app services layer which your viewmodels interact with, in this layer you delegate to your domain or existing app services, but wrap it in a <code>TaskEx.Run(()=&gt;..);</code></p>
+
+<pre><code>| UI/ViewModels |   ==&gt;   | Service Layer (TaskEx.Run) |   ==&gt;   | Rest of app (never has sync context) |
+</code></pre>
+
+<p>Both of these options basically try and make sure that only code executing in the ViewModels have a SynchronizationContext, and the rest of your application had no threading concerns.</p>
+
+<h3>Additional Option for .NET 4.5</h3>
+
+<p>If you are using .NET 4.5, then another option is to create a custom awaiter (<em>note</em> this feature was removed from the async CTP, possibly because it doesn&rsquo;t work properly in .NET 4.0 and also because it can confuse people)</p>
+
+<pre><code>await TaskHelper.SwitchToThreadPool();
+</code></pre>
+
+<p>Just awaiting this will cause our async method to switch onto the ThreadPool, personally I think this is quite nice because you do not have to pay the Lambda Tax of <code>Task.Run(..)</code></p>
+
+<p>The code is pretty simple</p>
+
+<pre><code>public static class TaskHelper
+{
+    public static SwitchContextToThreadPoolAwaiter SwitchToThreadPool()
+    {
+        return new SwitchContextToThreadPoolAwaiter();
+    }
+}
+
+public struct SwitchContextToThreadPoolAwaiter : INotifyCompletion
+{
+    public SwitchContextToThreadPoolAwaiter GetAwaiter() { return this; }
+
+    public bool IsCompleted { get { return false; } }
+
+    public void OnCompleted(Action continuation)
+    {
+        if (!Thread.CurrentThread.IsThreadPoolThread)
+            ThreadPool.QueueUserWorkItem(state =&gt; ((Action)state)(), continuation);
+        else
+            continuation();
+    }
+
+    public void GetResult() { }
+}
+</code></pre>
+
+<h2>Summary</h2>
+
+<p>I dived into this because of randomly failing tests when I upgraded to nCrunch 2.2 beta, this was due to some false assumptions about how async/await worked in .net 4.0 and also because of some <em>helper</em> classes which scheduled work on the threadpool or on the main UI thread.
+Because of the way the SyncContext flowed, the nUnit synchronisation context was present where we thought it should not be. Because of this our code and helpers were not working correctly as the WPF UI DispatcherSynchronizationContext can be captured as a TaskScheduler and has a few other differences.</p>
+
+<p>In short</p>
+
+<ul>
+<li>.NET 4.0 flows the SynchronizationContext always, even when you use <code>.ConfigureAwait(false)</code></li>
+<li>.NET 4.5 does not flow the SynchronizationContext when you use <code>.ConfigureAwait(false)</code></li>
+<li>Don&rsquo;t try and use the nUnit SynchronizationContext as a task scheduler</li>
+<li>If you are using .NET 4.0, use TaskEx.Run to get off the UI Thread as fast as possible, then use an <code>await</code> in your viewmodel to capture the UI thread and bring you back to it</li>
+<li>Make sure your application code does not need to run on the UI thread, if you have services (like say an <code>IDialogService</code>) then it should post to the UI dispatcher in that service so it is effectively mocked in your unit tests. This was the main source of our issues with tests failing..</li>
+<li>Don&rsquo;t mix threading concerns and application code</li>
+</ul>
+
+
+<p>I Hope that helps a few people understand SynchronizationContexts, ExecutionContexts and how async/await works with either of them.</p>
+
+<h2>Resources</h2>
+
+<p><a href="http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx">Stephen Toub on ExecutionContext vs SynchronizationContext (talks about .net 4.5 behaviour)</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Blog Migration]]></title>
@@ -186,7 +424,7 @@ I think that is pretty neat.</p>
 
 <p>I can now leave this branch open for a bit, do the work I need to do to release 2.1.1 or send it to someone else on the team to OK. I could even release the 2.1.1 build as a pre-release package on NuGet. It would have version 2.1.1-beta1 remember.</p>
 
-<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &mdash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
+<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &ndash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
 
 <pre><code>git checkout develop
 git merge release-2.1.1 --no-ff
@@ -278,7 +516,7 @@ git push upstream --tags
 <p>My goals were</p>
 
 <ul>
-<li>Use GitHubs releases feature &ndash; <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>Use GitHubs releases feature - <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
 <li>I want to release from NuGet</li>
 <li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
 <li>Support SemVer, including pre-release packages</li>
@@ -1205,8 +1443,8 @@ Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. T
 <li><code>Set-ExecutionPolicy RemoteSigned</code>, this will allow you to run powershell scripts</li>
 <li><code>git clone https://github.com/dahlbyk/posh-git</code></li>
 <li><code>cd posh-git</code></li>
-<li><code>.\install.ps1</code> &ndash; this will install posh-git into your profile.</li>
-<li><code>. $PROFILE</code> &ndash; this will run your profile, now you should see [master] in blue on the command line</li>
+<li><code>.\install.ps1</code> - this will install posh-git into your profile.</li>
+<li><code>. $PROFILE</code> - this will run your profile, now you should see [master] in blue on the command line</li>
 </ul>
 
 
@@ -1276,11 +1514,11 @@ editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe'
 </code></pre>
 
 <p>There are a few things we are saying:
- &ndash; Create me a pretzel site
- &ndash; We are not specifying a directory, so pretzel will create the site in the current directory
- &ndash; We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
- &ndash; The <em>&mdash;wiki</em> switch says we want a wiki template rather than the default blog setup
- &ndash; The <em>&mdash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
+ - Create me a pretzel site
+ - We are not specifying a directory, so pretzel will create the site in the current directory
+ - We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
+ - The <em>&ndash;wiki</em> switch says we want a wiki template rather than the default blog setup
+ - The <em>&ndash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
 
 <pre><code>C:\PretzelDemo&gt; pretzel.exe create -t=razor --wiki --azure
 starting pretzel...
@@ -1704,40 +1942,6 @@ public class AwaitableDelegateCommand&lt;T&gt; : IAsyncCommand&lt;T&gt;, IComman
 <p>Notice that the AwaitableDelegateCommand implements ICommand, which makes WPF happy, but our viewmodels expose IAsyncCommand, which makes our tests happy. All in all, it works pretty well for me!</p>
 
 <p>If you need a <code>DelegateCommand</code> implementation, check out <a href="https://gist.github.com/JakeGinnivan/5166898">this gist</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Disable Narrator in Windows 8]]></title>
-    <link href="http://jake.ginnivan.net/diable-narrator-in-windows-8/"/>
-    <updated>2012-12-11T00:00:00+00:00</updated>
-    <id>http://jake.ginnivan.net/diable-narrator-in-windows-8</id>
-    <content type="html"><![CDATA[<p>I get rather annoyed with the narrator. Using <a href="http://blog.ostebaronen.dk/2012/08/disable-narrator-in-windows-8.html">this</a> as inspiration here is how you do it.</p>
-
-<p><strong>Update:</strong>  Another solution is available at <a href="http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/">http://www.hmemcpy.com/blog/2012/12/how-to-disable-windows-narrator-appearing-on-win-enter-in-windows-8/</a> which uses Image File Execution Options instead.</p>
-
-<!-- more -->
-
-
-<p>Note: You can just delete it, but windows will restore it every time an update is installed</p>
-
-<ul>
-<li>Open <code>C:\Windows\System32</code></li>
-<li>Open Properties of Narrator.exe, goto Security Tab, Click advanced<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator1.png" alt="Narrator 1" /></li>
-<li>Change the owner to yourself<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 2" /></li>
-<li>Click ok, and accept the warning</li>
-<li>Now back on the properties, click edit<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator3.png" alt="Narrator 3" /></li>
-<li>Add yourself, then explicitly deny <code>Read &amp; execute</code> and <code>Read</code>. Click yes on warning about modifying security on system files<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator4.png" alt="Narrator 4" /></li>
-<li>Change owner to <code>SYSTEM</code><br/>
-<img src="http://jake.ginnivan.net/assets/posts/2012-12-11-diable-narrator-in-windows-8/Narrator2.png" alt="Narrator 5" /></li>
-</ul>
-
-
-<p>Win+Enter now won&rsquo;t do anything :D</p>
 ]]></content>
   </entry>
   

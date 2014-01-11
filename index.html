@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site &hellip;">
+  <meta name="description" content="This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-10T14:12:49+00:00" pubdate data-updated="true">Jan 10<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation Contexts. Quite a few of my assumptions were wrong, or the behaviour is different between the .NET 4.0 implementation (CTP3 and RTM) and what happens in .NET 4.5.</p>
+
+<p>In this post I will cover:</p>
+
+<ul>
+<li>What .ConfigureAwait(false) does in .net 4.0 and in .net 4.5, and why they act differently</li>
+<li>Some guidance around using await in a rich client app (i.e await for <em>offloading</em>, not scalability) .net 4.0 in particular, .net 4.5 behaves better and the guidance is not as relevant</li>
+<li>How you can use custom awaiters to switch contexts</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/01/10/on-async-and-sync-contexts/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -262,7 +312,7 @@
 <p>My goals were</p>
 
 <ul>
-<li>Use GitHubs releases feature &ndash; <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>Use GitHubs releases feature - <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
 <li>I want to release from NuGet</li>
 <li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
 <li>Support SemVer, including pre-release packages</li>
@@ -535,53 +585,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/clickonce-from-azure-blob-storage/">ClickOnce From Azure Blob Storage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-08T00:00:00+01:00" pubdate data-updated="true">Aug 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
-
-<h2>Creating the ClickOnce installer</h2>
-
-<p>I don&rsquo;t like using the publish feature in VS for my ClickOnce installers, it causes more problems than it solves. I tend to use Mage directly, but this is sometimes not that easy to figure out how to do it. Lets start by creating our installer.</p>
-
-<p>I am using MSBuild as my build platform, but these instructions can be adapted to anything really.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/clickonce-from-azure-blob-storage/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -595,6 +598,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
@@ -612,15 +619,11 @@
         <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
-      <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
-  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
+  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
 </section>
 <section>
   <h1>GitHub Repos</h1>

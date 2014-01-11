@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Windows Phone 7 Frameworks Windows phone 7 frameworks have been popping up quite rapidly, and I have found each has benefits and drawbacks. You may &hellip;">
+  <meta name="description" content="I have just pushed up a simple app to uninstall VSTO add-ins, if the manifest file is present, it will use the VSTOInstaller.exe, otherwise it will &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +92,46 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/vsto/addin-uninstaller/">VSTO Add-in Uninstaller</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-19T00:00:00+00:00" pubdate data-updated="true">Mar 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have just pushed up a simple app to uninstall VSTO add-ins, if the manifest file is present, it will use the VSTOInstaller.exe, otherwise it will remove the registry keys manually.</p>
+
+<p><img src="/assets/posts/2011-03-19-addin-uninstaller/Add-inUninstaller.PNG" alt="Addin Uninstaller" /></p>
+
+<p>Grab it at <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/presentations/perth-dotnet-wp7-frameworks/">Windows Phone 7 Frameworks Presentation</a></h1>
     
     
@@ -127,17 +167,17 @@
 
 <p>Talk Link: <a href="http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx">http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx</a></p>
 
-<p><strong>When:</strong> Thursday, Mar 3rd, 5:30pm &ndash; 7:00pm<br/>
+<p><strong>When:</strong> Thursday, Mar 3rd, 5:30pm - 7:00pm<br/>
 <strong>Where:</strong> Enex 100 Seminar Room, Level 3, 100 St Georges Terrace, Perth</p>
 
 <h1>The frameworks</h1>
 
 <p>So far the frameworks I am aware of:</p>
 
-<p><a href="http://columbus.codeplex.com/">Columbus</a> &ndash; written by Artem Govorov<br/>
-<a href="http://windowsphonemvp.codeplex.com/">Windows Phone MVP</a> &ndash; written by <a href="http://www.kowitz.net/">Brendan Kowitz</a><br/>
-<a href="http://caliburnmicro.codeplex.com/">Calburn Micro</a> &ndash; written by <a href="http://robeisenberg.com/Work.aspx">Rob Eisenberg</a><br/>
-<a href="http://mvvmlight.codeplex.com/">MVVM Light</a> &ndash; written by <a href="http://www.galasoft.ch/contact_en.html">Laurent Bugnion (GalaSoft)</a></p>
+<p><a href="http://columbus.codeplex.com/">Columbus</a> - written by Artem Govorov<br/>
+<a href="http://windowsphonemvp.codeplex.com/">Windows Phone MVP</a> - written by <a href="http://www.kowitz.net/">Brendan Kowitz</a><br/>
+<a href="http://caliburnmicro.codeplex.com/">Calburn Micro</a> - written by <a href="http://robeisenberg.com/Work.aspx">Rob Eisenberg</a><br/>
+<a href="http://mvvmlight.codeplex.com/">MVVM Light</a> - written by <a href="http://www.galasoft.ch/contact_en.html">Laurent Bugnion (GalaSoft)</a></p>
 
 <p>If you know of others let me know, and tell me what is your favourite thing in that framework.</p>
 </div>
@@ -368,10 +408,10 @@ What would you like to see?</p>
 <h2>Open Source Work</h2>
 
 <ul>
-<li><a href="http://vstocontrib.codeplex.com/">VSTO Contrib</a> &ndash; Collection of libraries which make COM Interop much easier, and add IoC support to VSTO Add-ins (which making it easier to test).</li>
-<li><a href="http://fibre.codeplex.com/">Fibre Async Framework</a> &ndash; Another Async framework, which runs on Silverlight and WP7 as well as .NET 3.5/4.0. It simply allows you to coordinate async work, or perform work asynchronously. Goals are similar to the Task parallel library in .NET 4.0, but has a simpler API, and works on more frameworks. I would like to think it has a lower barrier to entry than other frameworks due to it&rsquo;s simplicity.</li>
-<li><a href="https://github.com/jbogard/AutoMapper">AutoMapper</a> &ndash; Added Inheritance to AutoMapper, made AutoMapper feel MUCH more predictable. My fork is available at <a href="https://github.com/JakeGinnivan/AutoMapper/">https://github.com/JakeGinnivan/AutoMapper/</a> Hopefully the changes will be pulled into the Jimmy&rsquo;s repository soon =)</li>
-<li><a href="http://mahtweetswp7.codeplex.com/">MahTweets for Windows Phone</a> &ndash; Have done a lot on this project, lots of refactoring and cleanups mainly.</li>
+<li><a href="http://vstocontrib.codeplex.com/">VSTO Contrib</a> - Collection of libraries which make COM Interop much easier, and add IoC support to VSTO Add-ins (which making it easier to test).</li>
+<li><a href="http://fibre.codeplex.com/">Fibre Async Framework</a> - Another Async framework, which runs on Silverlight and WP7 as well as .NET 3.5/4.0. It simply allows you to coordinate async work, or perform work asynchronously. Goals are similar to the Task parallel library in .NET 4.0, but has a simpler API, and works on more frameworks. I would like to think it has a lower barrier to entry than other frameworks due to it&rsquo;s simplicity.</li>
+<li><a href="https://github.com/jbogard/AutoMapper">AutoMapper</a> - Added Inheritance to AutoMapper, made AutoMapper feel MUCH more predictable. My fork is available at <a href="https://github.com/JakeGinnivan/AutoMapper/">https://github.com/JakeGinnivan/AutoMapper/</a> Hopefully the changes will be pulled into the Jimmy&rsquo;s repository soon =)</li>
+<li><a href="http://mahtweetswp7.codeplex.com/">MahTweets for Windows Phone</a> - Have done a lot on this project, lots of refactoring and cleanups mainly.</li>
 <li><a href="http://code.google.com/p/funnelweb/">FunnelWeb Blog</a>  -The blog engine that is behind my blog, started by <a href="http://www.paulstovell.com/">Paul Stovell</a> it is now an awesome open source blog engine based on MVC3.</li>
 </ul>
 
@@ -582,52 +622,6 @@ It seemed unnatural that I could define a mapping that looked like:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/dev332-resources/">TechEd DEV332 Resources</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-29T00:00:00+01:00" pubdate data-updated="true">Aug 29<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>DEV332</h1>
-
-<p>Thanks to everyone that attended my session, any feedback you have would be great!</p>
-
-<h1>Resources</h1>
-
-<ul>
-<li><a href="/get/downloads/dev332.zip">Demos</a></li>
-<li><a href="/get/downloads/dev332_Ginnivan.zip">Powerpoint</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -645,6 +639,10 @@ It seemed unnatural that I could define a mapping that looked like:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
@@ -660,15 +658,11 @@ It seemed unnatural that I could define a mapping that looked like:</p>
         <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
       </li>
     
-      <li class="post">
-        <a href="/conventiontests-v2-released/">Convention Tests v2 Released</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
-  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
+  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
 </section>
 <section>
   <h1>GitHub Repos</h1>
