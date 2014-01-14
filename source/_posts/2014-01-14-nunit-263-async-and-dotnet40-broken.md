@@ -15,6 +15,8 @@ Also I was getting different results in nCrunch, R# and nUnits console runner. S
 As far as I can tell, there is no reason that 4.0 cannot be supported because to offer framework support does not need any new features OR the classes in the Async Targeting Pack or .NET 4.5. At a minimum tests returning `Task` should be supported as TPL was introduced into the CLR for net40.    
 Recently I added async void and Task support to [BDDfy](https://github.com/TestStack/TestStack.BDDfy/pull/32) which targets .NET 4.0, also xUnit 1.9.x supports Tasks in the current released version and has backported `async void` support to the 1.9.x codebase from the 2.0 and will be released if there is a need to release another patch release before 2.0 is released.
 
+**.NET 4.5 is fully supported and works as expected with nUnit, it is only .net 4.0 which is affected**
+
 <!-- more -->
 
 ![2014-01-14-nunit-263,asyncandnet4](/assets/posts/2014-01-14-nunit-263,asyncandnet4.png)
