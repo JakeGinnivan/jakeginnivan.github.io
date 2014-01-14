@@ -294,7 +294,11 @@
     </url>
     <url>
         <loc>http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts/</loc>
-        <lastmod>2014-01-11T11:48:45+00:00</lastmod>
+        <lastmod>2014-01-14T21:16:54+00:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/</loc>
+        <lastmod>2014-01-14T21:56:46+00:00</lastmod>
     </url>
     <url>
         <loc>http://jake.ginnivan.net/about-me/</loc>
@@ -302,7 +306,7 @@
     </url>
     <url>
         <loc>http://jake.ginnivan.net/blog/archives/</loc>
-        <lastmod>2014-01-11T11:48:45+00:00</lastmod>
+        <lastmod>2014-01-14T21:56:46+00:00</lastmod>
     </url>
     <url>
         <loc>http://jake.ginnivan.net/feed/index.xml</loc>
@@ -310,7 +314,7 @@
     </url>
     <url>
         <loc>http://jake.ginnivan.net/</loc>
-        <lastmod>2014-01-11T11:48:45+00:00</lastmod>
+        <lastmod>2014-01-14T21:56:46+00:00</lastmod>
     </url>
     <url>
         <loc>http://jake.ginnivan.net/open-source-work/</loc>

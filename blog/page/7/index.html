@@ -9,8 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="DEV332 Thanks to everyone that attended my session, any feedback you have would be great! Resources Demos
-Powerpoint ">
+  <meta name="description" content="Edit: Updated to fix a problem when there are spaces in the path where Console2.exe is. I decided I would get this idea working again, when I did, it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +86,64 @@ Powerpoint ">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/quake-style-powershell-console-v2/">Quake Style Powershell Console V2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-01T00:00:00+01:00" pubdate data-updated="true">Sep 1<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Edit: Updated to fix a problem when there are spaces in the path where Console2.exe is.</p>
+
+<p>I decided I would get this idea working again, when I did, it fell short a few times. I needed a few extra features:</p>
+
+<ul>
+<li>Elevated Powershell Console</li>
+<li>x64 Console</li>
+<li>I wanted it to work without adding anything to the %path% environmental variable</li>
+</ul>
+
+
+<h2>The goal</h2>
+
+<p>win + `</p>
+
+<p>=</p>
+
+<p><img src="/assets/posts/2010-09-01-quake-style-powershell-console-v2/powershellConsole.png" alt="Quake Mode Powershell" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/quake-style-powershell-console-v2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -493,63 +550,6 @@ Powerpoint ">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/wpf-sql-connection-user-control/">WPF SQL Connection User Control</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-04-19T00:00:00+01:00" pubdate data-updated="true">Apr 19<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Many of the apps I have written need to target multiple databases or I want the connection to be configurable by the user. I have a user control in my common library that I use all the time to let the user connect to a database.</p>
-
-<p>You will need the Sql Management Objects from <a href="http://www.microsoft.com/Downloads/details.aspx?familyid=B33D2C78-1059-4CE2-B80D-2343C099BCB4&amp;displaylang=en">http://www.microsoft.com/Downloads/details.aspx?familyid=B33D2C78-1059-4CE2-B80D-2343C099BCB4&amp;displaylang=en</a> to compile the demo project.</p>
-
-<p>Features:</p>
-
-<ul>
-<li>Finds database instances on your Lan, these are stored statically so will only be loaded once during the application lifetime.</li>
-<li>Will populate the databases on that SQL server.</li>
-<li>Is easily extendable, you can expose other options within the control if you want.</li>
-<li>Has a cool little loading circle I built included</li>
-<li>It uses a SqlConnectionString object which is much nicer than dealing with a SqlConnectionStringBuilder or a string. SqlConnectionString is also implicitly converts to a string so you can pass it directly to your SqlConnection constructor without .ToString() or casting.</li>
-<li>Also validates against SQL Compact databases</li>
-</ul>
-
-
-<p>All in all, for small apps I think this makes connecting to a SQL database really easy! The SqlConnectionString class is also handy for any type of apps that have to manipulate a Sql Connection String.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/wpf-sql-connection-user-control/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -567,6 +567,10 @@ Powerpoint ">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
       </li>
     
@@ -582,15 +586,11 @@ Powerpoint ">
         <a href="/git-flow-versioning/">Git Flow Versioning</a>
       </li>
     
-      <li class="post">
-        <a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer packages from Teamcity</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
-  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
+  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/async/">async</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
 </section>
 <section>
   <h1>GitHub Repos</h1>
