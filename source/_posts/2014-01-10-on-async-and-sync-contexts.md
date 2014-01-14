@@ -31,7 +31,7 @@ This scenario here is called *offloading*, because the UI thread is an important
 To change the default behaviour TPL gives us the `.ConfigureAwait(bool continueOnCapturedContext)`, this allows you to write code like this:
 
     public async Task<ObservableCollection<DataViewModel>> DoSomeStuff() {
-        var results = _service.GetSomeData().ConfigureAwait(false);
+        var results = await _service.GetSomeData().ConfigureAwait(false);
         var mappedData = MapDataToViewModels(results); // Just pretend this is CPU bound work
         return mappedData;
     }
