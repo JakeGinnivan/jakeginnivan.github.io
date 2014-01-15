@@ -4,7 +4,7 @@
   <title><![CDATA[Category: async | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/async/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-01-14T21:56:46+00:00</updated>
+  <updated>2014-01-15T09:03:36+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -27,6 +27,8 @@
 <p><strong>NOTE</strong>: Async and TPL support is <em>not supported</em> in nUnit 2.x, but will be officially supported in v3.x and that it was a coincidence that it worked in 2.6.2. My discussions about the issues are at <a href="https://groups.google.com/forum/#!topic/nunit-discuss/McE95Cy2DlY">here on the nunit discussion board</a>.<br/>
 As far as I can tell, there is no reason that 4.0 cannot be supported because to offer framework support does not need any new features OR the classes in the Async Targeting Pack or .NET 4.5. At a minimum tests returning <code>Task</code> should be supported as TPL was introduced into the CLR for net40.  <br/>
 Recently I added async void and Task support to <a href="https://github.com/TestStack/TestStack.BDDfy/pull/32">BDDfy</a> which targets .NET 4.0, also xUnit 1.9.x supports Tasks in the current released version and has backported <code>async void</code> support to the 1.9.x codebase from the 2.0 and will be released if there is a need to release another patch release before 2.0 is released.</p>
+
+<p><strong>.NET 4.5 is fully supported and works as expected with nUnit, it is only .net 4.0 which is affected</strong></p>
 
 <!-- more -->
 
