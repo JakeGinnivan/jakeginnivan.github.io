@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-08T13:11:06+01:00</updated>
+  <updated>2014-05-08T13:16:17+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -27,18 +27,19 @@
 <p>New features include:</p>
 
 <ul>
-<li><a href="http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support/">Examples support</a>
+<li>Cucumber Examples support
 
 <ul>
 <li>This was one of the biggest missing features of BDDfy. We support text based tables (to support easy migration from SpecFlow) and also examples in code which allows complex types rather than just basic types!</li>
-<li>See the linked blog post for more information about examples.</li>
 <li>If you have not seen cucumber examples before check out <a href="https://github.com/cucumber/cucumber/wiki/Scenario-Outlines">https://github.com/cucumber/cucumber/wiki/Scenario-Outlines</a> for more information</li>
+<li>See the <a href="http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support/">examples blog post</a> for more information about examples and how they work in BDDfy</li>
 </ul>
 </li>
 <li>Tags
 
 <ul>
-<li><code>.WithTags("Tag1", "Tag2")</code> will be seen in your reports. Tag functionality is really basic at the moment, and will be improved in v4.1</li>
+<li><code>.WithTags("Tag1", "Tag2")</code> will be seen in your reports. For example in text reporter you will get <code>Tags: Tag1, Tag2</code> under the test output. The HTML report will have tags boxes next to the step title</li>
+<li>Tag functionality is really basic at the moment, and will be improved in v4.1</li>
 </ul>
 </li>
 <li>Fluent: Step titles are prefixed with the step type
