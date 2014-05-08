@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-08T13:02:16+01:00</updated>
+  <updated>2014-05-08T13:11:06+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -18,7 +18,7 @@
     <link href="http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/"/>
     <updated>2014-05-08T10:05:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1</id>
-    <content type="html"><![CDATA[<p>We are excited to announce v4 beta 1 of BDDfy, to give it a spin just change your NuGet settings to include pre-release and update. Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
+    <content type="html"><![CDATA[<p>We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
 
 <h2>New Features</h2>
 
@@ -30,9 +30,9 @@
 <li><a href="http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support/">Examples support</a>
 
 <ul>
-<li>This was one of the biggest missing features of BDDfy, we support text based tables (to support easy migration from SpecFlow), and also examples in code which allows complex types rather than just basic types!</li>
+<li>This was one of the biggest missing features of BDDfy. We support text based tables (to support easy migration from SpecFlow) and also examples in code which allows complex types rather than just basic types!</li>
 <li>See the linked blog post for more information about examples.</li>
-<li>If you have not seen cucumber examples before, check out <a href="https://github.com/cucumber/cucumber/wiki/Scenario-Outlines">https://github.com/cucumber/cucumber/wiki/Scenario-Outlines</a> for more information</li>
+<li>If you have not seen cucumber examples before check out <a href="https://github.com/cucumber/cucumber/wiki/Scenario-Outlines">https://github.com/cucumber/cucumber/wiki/Scenario-Outlines</a> for more information</li>
 </ul>
 </li>
 <li>Tags
@@ -99,7 +99,7 @@
 
 <h2>Feedback wanted</h2>
 
-<p>This is an exciting release for BDDfy, and we want to hear about any issues you hit</p>
+<p>This is an exciting release for BDDfy and we want to hear about any issues you hit</p>
 
 <p>From the TestStack team (<a href="https://github.com/JakeGinnivan">Jake Ginnivan</a>, <a href="https://github.com/MehdiK">Mehdi Khalili</a>, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="https://github.com/robdmoore">Rob Moore</a>)</p>
 ]]></content>
