@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Edit: Updated to fix a problem when there are spaces in the path where Console2.exe is. I decided I would get this idea working again, when I did, it &hellip;">
+  <meta name="description" content="Due to time restraints at the moment this will be a very short blog post. I have pushed all my latest changes to the VSTO contrib project to codeplex &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,99 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/ccoz2010/">Code Camp Oz 2010</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-21T00:00:00+00:00" pubdate data-updated="true">Nov 21<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Due to time restraints at the moment this will be a very short blog post.</p>
+
+<p>I have pushed all my latest changes to the VSTO contrib project to codeplex. The url is <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a>.</p>
+
+<p>I will upload my powerpoint deck and release my LinqPad example scripts soon as well.</p>
+
+<p>But to sum up my talk, the VSTO Contrib project makes it easy to:</p>
+
+<ul>
+<li>Cleanup your COM References deterministically without cluttering your code</li>
+<li>Use Ribbon XML ribbons with IoC, view model binding (listens to INotifyPropertyChanged and invalidates ribbon controls when needed) and wires up the current Explorer or Inspector to your ribbon view model.</li>
+<li>Makes it really easy to use custom task panes, and relate them to ribbons</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/automapperinheritance/">Adding Inheritance to AutoMapper</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-31T00:00:00+01:00" pubdate data-updated="true">Oct 31<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Update:</strong> This is currently in the Automapper master, and will be included in the v2 release (hopefully Before/After map will also get included, patch submitted).</p>
+
+<p>In my current project, we are leveraging AutoMapper a lot to map our Domain to Dto&rsquo;s. The major problem we are facing is that our mappings are getting quite complex and bloated, especially for flattened Dtos or Summaries which have properties that cover all the properties from the concrete types they come from.
+It seemed unnatural that I could define a mapping that looked like:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/automapperinheritance/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -454,102 +547,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/ioc-dependencyinjection-vsto/">IoC, Dependency Injection and VSTO</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-04-23T00:00:00+01:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A really common problem I see with VSTO is getting access to dependencies. Because the framework builds your ribbons and the main point of interaction is in the Load event, developers resort to putting dependencies in their ThisAddin.cs class, then access them through Globals.ThisAddin.MyDependency.</p>
-
-<p>This is bad..</p>
-
-<p>Unfortunately out of the box this is really hard to get around, in this post I will present a few options and a few helper classes that will be included in Outlook.Utility very soon.</p>
-
-<p>I try to use IoC and DI as much as I can inside Outlook add-ins, in some places this is really hard, so I fall back to a ServiceLocator.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/ioc-dependencyinjection-vsto/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/enterprise-vsto/">Enterprise VSTO</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-04-23T00:00:00+01:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Its been a while since I have blogged, since starting with VSTO I haven’t posted much. That is about to change.</p>
-
-<p>I have been playing around with VSTO a lot lately, mainly Outlook but I will move into Word and Excel very soon because I see a lot of business value in the VSTO platform.</p>
-
-<p>I have started an open source library called Outlook.Utility, which I will probably break into Office.Utility as well to separate Office and Outlook functionality. There is a very good but old article on MSDN (<a href="http://msdn.microsoft.com/en-us/library/aa479345.aspx">http://msdn.microsoft.com/en-us/library/aa479345.aspx</a>). In the code example in that article they have a Outlook.Utility project which has some really handy classes in it. I have cleaned up and enhanced a few of the classes, as well as adding my own.</p>
-
-<p>The main issue with the code is it doesn’t release any COM references and actually leaks, as I invest more time into my Outlook.Utility project I will clean up all the leaks as well as add my own helper classes and extensions. I am going to start a Enterprise VSTO series that will use this library and cover ways you can create a good maintainable add-in.</p>
-
-<p>Over a few posts I will cover IoC, Patterns to use, COM interop, performance issues/solutions, WPF integration (using MVVM) and a few other things. I then will probably put it all in a webcast at the end.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/enterprise-vsto/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -567,6 +564,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
       </li>
     
@@ -576,14 +581,6 @@
     
       <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
-      </li>
-    
-      <li class="post">
-        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/git-flow-versioning/">Git Flow Versioning</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I am currently working on a .net 4.0 project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM &hellip;">
+  <meta name="description" content="We are excited to announce v4 beta 1 of BDDfy, to give it a spin just change your NuGet settings to include pre-release and update. Please give it a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,345 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-08T10:05:00+01:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We are excited to announce v4 beta 1 of BDDfy, to give it a spin just change your NuGet settings to include pre-release and update. Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
+
+<h2>New Features</h2>
+
+<p>v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
+
+<p>New features include:</p>
+
+<ul>
+<li><a href="/blog/2014/05/05/bddfy-examples-support/">Examples support</a>
+
+<ul>
+<li>This was one of the biggest missing features of BDDfy, we support text based tables (to support easy migration from SpecFlow), and also examples in code which allows complex types rather than just basic types!</li>
+<li>See the linked blog post for more information about examples.</li>
+<li>If you have not seen cucumber examples before, check out <a href="https://github.com/cucumber/cucumber/wiki/Scenario-Outlines">https://github.com/cucumber/cucumber/wiki/Scenario-Outlines</a> for more information</li>
+</ul>
+</li>
+<li>Tags
+
+<ul>
+<li><code>.WithTags("Tag1", "Tag2")</code> will be seen in your reports. Tag functionality is really basic at the moment, and will be improved in v4.1</li>
+</ul>
+</li>
+<li>Fluent: Step titles are prefixed with the step type
+
+<ul>
+<li>For example: <code>this.Given(_ =&gt; Something())</code> will result in a step title of <code>Given something</code></li>
+</ul>
+</li>
+<li>Fluent: Removed restriction on order of step types. So you can create more complex tests (for acceptance/UI based tests). i.e <code>.Given().Then().When().Then().And().When().Then()</code> etc.</li>
+<li>Added <em>But</em> step type, in beta 1 this is only available for the fluent syntax. It will be in reflective by the final release</li>
+<li>New Metro HTML report</li>
+<li>Classic HTML Report is now self contained with jQuery inlined in the report. CSS is also minified to make the report source easier to read.
+
+<ul>
+<li>You can switch to a CDN version of jQuery via configuration if you do not want it included in the report</li>
+</ul>
+</li>
+<li>Inline assertions:
+
+<ul>
+<li><code>this.Given(() =&gt; { something = 5; }, "Something is 5")</code> so you do not have to create methods for steps if you do not want to.</li>
+</ul>
+</li>
+<li>Title-only steps: you can have a title only step to explain the context more; e.g. Given(&ldquo;Given something&rdquo;)</li>
+<li>StoryMetadata is made more generic to allow different story narratives; e.g. instead of As a &hellip;, I want &hellip;, So that &hellip; you can now have anything including So that &hellip;, As a &hellip;., I want &hellip;</li>
+<li>Story title prefix is now customisable</li>
+<li>Arguments passed to methods are now reported in steps much better, including:
+
+<ul>
+<li>Step titles are lazily evaluated, so if previous steps mutate state which is passed into a step then the value at step execution time will be reported</li>
+<li>Support fields, properties and they will be reported as arguments in step title (i.e <code>this.Given(_ =&gt; Given(_three))</code> will be <code>Given 3</code></li>
+<li>And a bunch of other improvements</li>
+</ul>
+</li>
+<li><strong>BREAKING:</strong> A lot less namespaces to make the API easier to use.
+
+<ul>
+<li>Many of the namespaces that were necessary before, particularly for using fluent API and executable attributes, are removed and are now accessible via the root TestStack.BDDfy namespace.</li>
+</ul>
+</li>
+<li><strong>BREAKING:</strong> A few types have been renamed to more accurately reflect their role and usage</li>
+<li><strong>BREAKING:</strong> Removed story category from <code>.BDDFy</code> and <code>.LazyBDDfy</code> methods</li>
+<li><strong>BREAKING:</strong> .net 3.5 support has been dropped, BDDfy now requires > .NET 4.0</li>
+<li><em>Coming Soon:</em> ReSharper BDDfy plugin, which will stop ReSharper marking steps as unused. Check out it&rsquo;s progress at <a href="https://github.com/TestStack/TestStack.BDDfy.ReSharper">https://github.com/TestStack/TestStack.BDDfy.ReSharper</a> - Thanks heaps to Igal Tabachnik (@hmemcpy) for the work on this</li>
+</ul>
+
+
+<p>Check out the release notes at <a href="https://github.com/TestStack/TestStack.BDDfy/blob/release-4.0.0/release-notes.md">https://github.com/TestStack/TestStack.BDDfy/blob/release-4.0.0/release-notes.md</a></p>
+
+<h2>Known issues</h2>
+
+<ul>
+<li>Add But to reflective API (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/85">https://github.com/TestStack/TestStack.BDDfy/issues/85</a>)</li>
+<li>Update diagnostics report to work with examples (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/135">https://github.com/TestStack/TestStack.BDDfy/issues/135</a>)</li>
+<li>Examples do not work with RunStepWithArgsAttribute (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/136">https://github.com/TestStack/TestStack.BDDfy/issues/136</a>)</li>
+</ul>
+
+
+<h2>Feedback wanted</h2>
+
+<p>This is an exciting release for BDDfy, and we want to hear about any issues you hit</p>
+
+<p>From the TestStack team (<a href="https://github.com/JakeGinnivan">Jake Ginnivan</a>, <a href="https://github.com/MehdiK">Mehdi Khalili</a>, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="https://github.com/robdmoore">Rob Moore</a>)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-05T17:09:00+01:00" pubdate data-updated="true">May 5<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the major features in BDDfy v4 is the inclusion of examples</p>
+
+<p><strong>Scenario:</strong> Successful rail card purchases<br/>
+<strong>Given:</strong> the buyer is a <em>&lt;buyer category&gt;</em><br/>
+<strong>And:</strong> the buyer selects a <em>&lt;fare&gt;</em><br/>
+<strong>When:</strong> the buyer pays<br/>
+<strong>Then:</strong> a sale occurs with an amount of <em>&lt;price&gt;</em></p>
+
+<p>Examples:</p>
+
+<pre><code>| Buyer Category | Fare          | Price |
+| Student        | Monthly Pass  | $76   |
+| Senior         | Monthly Pass  | $98   |
+| Standard       | Monthly Pass  | $146  |
+| Student        | Weekly Pass   | $23   |
+| Senior         | Weekly Pass   | $30   |
+| Standard       | Weekly Pass   | $44   |
+| Student        | Day Pass      | $4    |
+| Senior         | Day Pass      | $5    |
+| Standard       | Day Pass      | $7    |
+| Student        | Single Ticket | $1.5  |
+| Senior         | Single Ticket | $2    |
+| Standard       | Single Ticket | $3    |
+</code></pre>
+
+<p>This is an example of a Cucumber test with examples, for each row in the examples table the test will run effectively giving us a data driven BDD style test.</p>
+
+<p>I have picked this test because it is a bit more complex than the standard <code>Given I have 3 beers in my fridge, When I drink 2, Then I have 1 beer left</code>.. Yay, how interesting..</p>
+
+<p>In this example, I will use BDDfy&rsquo;s fluent API to write this test. First without examples:</p>
+
+<pre><code>this.Given(_ =&gt; TheBuyerIsA(BuyerCategory.Student))
+    .And(_ =&gt; TheBuyerSelectsA(new MonthlyPass()))
+    .When(_ =&gt; TheBuyerPays())
+    .Then(_ =&gt; ASaleOccursWithAnAmountOf(new Money(76)))
+    .BDDfy("Successful rail card purchases");
+</code></pre>
+
+<p>Which gives us a nicely formatted output of</p>
+
+<pre><code>Scenario: Successful rail card purchases
+  The buyer is a Student
+    The buyer selects a Monthly Pass
+  The buyer pays
+  A sale occurs with an amount of $76.00
+</code></pre>
+
+<p>The next step is to turn this into a test with examples.</p>
+
+<h3>Step 1</h3>
+
+<p>Create somewhere to put the examples, BDDfy supports private/public fields and properties as well as local variables in your test method. The following all work:</p>
+
+<pre><code>private Fare fare;
+private BuyerCategory _buyerCategory;
+public Money Price { get; set; }
+
+public void MyTest()
+{
+      var Fare = default(Fare);
+}
+</code></pre>
+
+<p>Local variables are the cleanest and recommended approach, but feel free to use fields or properties when examples are shared between tests.</p>
+
+<h3>Step 2</h3>
+
+<p>Then we should replace the arguments we are passing to our steps to be the fields/properties</p>
+
+<pre><code>var buyerCategory = default(BuyerCategory);
+var fare = default(Fare);
+var price = default(Money);
+
+this.Given(_ =&gt; TheBuyerIsA(buyerCategory))
+    .And(_ =&gt; TheBuyerSelectsA(fare))
+    .When(_ =&gt; TheBuyerPays())
+    .Then(_ =&gt; ASaleOccursWithAnAmountOf(Price))
+    .BDDfy("Successful rail card purchases");
+</code></pre>
+
+<h3>Step 3</h3>
+
+<p>Use the .WithExamples() extension method to pass your examples to BDDfy</p>
+
+<pre><code>this.Given(_ =&gt; TheBuyerIsA(buyerCategory))
+    .And(_ =&gt; TheBuyerSelectsA(fare))
+    .When(_ =&gt; TheBuyerPays())
+    .Then(_ =&gt; ASaleOccursWithAnAmountOf(price))
+    .WithExamples(new ExampleTable(
+        "Buyer Category", "Fare", "Price")
+    {
+        { BuyerCategory.Student, new MonthlyPass(), new Money(76) },
+        { BuyerCategory.Senior, new MonthlyPass(), new Money(98) },
+        { BuyerCategory.Standard, new MonthlyPass(), new Money(146) },
+        { BuyerCategory.Student, new WeeklyPass(), new Money(23) },
+        { BuyerCategory.Senior, new WeeklyPass(), new Money(30) },
+        { BuyerCategory.Standard, new WeeklyPass(), new Money(44) },
+        { BuyerCategory.Student, new DayPass(), new Money(4) },
+        { BuyerCategory.Senior, new DayPass(), new Money(5) },
+        { BuyerCategory.Standard, new DayPass(), new Money(7) },
+        { BuyerCategory.Student, new SingleTicket(), new Money(1.5m) },
+        { BuyerCategory.Senior, new SingleTicket(), new Money(2m) },
+        { BuyerCategory.Standard, new SingleTicket(), new Money(3m) }
+    })
+    .BDDfy("Successful rail card purchases");
+</code></pre>
+
+<p>BDDfy supports two ways of providing examples, if you are migrating from SpecFlow and you are using simple types (unlike the example above where my examples are actually classes) then we support the normal text table:</p>
+
+<pre><code>.WithExamples(@"
+    | Header 1 | Header 2     | Header3    |
+    | Value 1  | 2            | 3          |
+    |          | 14 Mar 2010  | Transition |");
+</code></pre>
+
+<h3>Step 4</h3>
+
+<p>Thats it, simply run your tests and the output will be something like this:</p>
+
+<pre><code>Scenario: Successful rail card purchases
+  The buyer is a &lt;Buyer Category&gt;        
+    The buyer selects a &lt;Fare&gt;           
+  The buyer pays                         
+  A sale occurs with an amount of &lt;Price&gt;
+
+Examples: 
+| Buyer Category | Fare         | Price   |
+| Student        | Monthly Pass | $76.00  |
+| Senior         | Monthly Pass | $98.00  |
+| Standard       | Monthly Pass | $146.00 |
+| Student        | Weekly Pass  | $23.00  |
+| Senior         | Weekly Pass  | $30.00  |
+| Standard       | Weekly Pass  | $44.00  |
+| Student        | Day Pass     | $4.00   |
+| Senior         | Day Pass     | $5.00   |
+| Standard       | Day Pass     | $7.00   |
+| Student        | Day Pass     | $1.50   |
+| Senior         | Day Pass     | $2.00   |
+| Standard       | Day Pass     | $3.00   |
+</code></pre>
+
+<p>Errors will be reported against examples rather than steps when examples are used. For example:</p>
+
+<pre><code>Examples: 
+| Buyer Category | Fare         | Price   | Error                                                  |
+| Student        | Monthly Pass | $76.00  |                                                        |
+| Senior         | Monthly Pass | $98.00  |                                                        |
+| Standard       | Monthly Pass | $146.00 |                                                        |
+| Student        | Weekly Pass  | $23.00  | ChuckedAWobblyException: $24 should be $23 [Details 1] |
+| Senior         | Weekly Pass  | $30.00  |                                                        |
+| Standard       | Weekly Pass  | $44.00  |                                                        |
+| Student        | Day Pass     | $4.00   |                                                        |
+| Senior         | Day Pass     | $5.00   |                                                        |
+| Standard       | Day Pass     | $7.00   |                                                        |
+| Student        | Day Pass     | $1.50   |                                                        |
+| Senior         | Day Pass     | $2.00   |                                                        |
+| Standard       | Day Pass     | $3.00   |                                                        |
+
+Exceptions:
+1. ChuckedAWobblyException: $24 should be $23
+&lt;stacktrace&gt;
+</code></pre>
+
+<p>This works with all of our built in reports. If you have custom reports then you will get a test for <em>each</em> example. Have a look at the built in reporters for examples on how to build custom reporters with examples support.</p>
+
+<h2>Other things to note</h2>
+
+<h3>Step names</h3>
+
+<p>There are multiple ways to put placeholders in step names, the one shown above allows you to simply use the parameter on the step method. If it matches a column in your example table it will be substituted in the step name. If it doesn&rsquo;t match you will just get the value like you currently do.</p>
+
+<p>We also support the following:</p>
+
+<pre><code>GivenIHave__initialCount__Beers() # Then access the value from a field/property directly in the step
+.Given(_ =&gt; InitialCount(), "Given I have &lt;initial count&gt; beers")
+</code></pre>
+
+<p>If you have more ideas on how we could make this even better, let us know!</p>
+
+<h3>Errors</h3>
+
+<p>BDDfy will try it&rsquo;s best to tell you when something is wrong, for example your test will fail if examples in your example table are not put anywhere. This is handy when you make a spelling mistake or refactor things and they no longer match.
+We will also give you row and column information of values if they cannot be assigned, for example trying to assign &lsquo;null&rsquo; to a value type.</p>
+
+<p>I really hope you enjoy using this feature, we have wanted to add this to BDDfy for a long time but it is a pretty massive feature so it has taken us a while. We also not only wanted to make it as good as the Gherkin first languages, but take advantage of the fact that BDDfy tests are written in code to allow complex types to be used in examples.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -490,104 +829,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/verifying-logged-messages-with-log4net/">Verifying Logged Messages With Log4Net</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-13T00:00:00+01:00" pubdate data-updated="true">Sep 13<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
-
-<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
-</code></pre>
-
-<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
-
-<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
-</code></pre>
-
-<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/verifying-logged-messages-with-log4net/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/clickonce-signing-error/">ClickOnce Signing Error</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-13T00:00:00+01:00" pubdate data-updated="true">Sep 13<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
-
-<p>The command:</p>
-
-<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
-</code></pre>
-
-<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
-
-<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
-
-<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -603,6 +844,14 @@ Recently I added async void and Task support to <a href="https://github.com/Test
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
       </li>
     
@@ -612,14 +861,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
     
       <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
-      </li>
-    
-      <li class="post">
-        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/git-flow-versioning/">Git Flow Versioning</a>
       </li>
     
   </ul>

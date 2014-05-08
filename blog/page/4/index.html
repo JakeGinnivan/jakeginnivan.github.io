@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning. &hellip;">
+  <meta name="description" content="The Problem A while back we received some Azure pull requests which added an Azure project and fixed all our SQL scripts so they were compatible with &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,145 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/azure-and-msshrtmi/">Azure and msshrtmi.dll</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-30T00:00:00+01:00" pubdate data-updated="true">Jun 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>The Problem</h2>
+
+<p>A while back we received some Azure pull requests which added an Azure project and fixed all our SQL scripts so they were compatible with SQL Azure and that was pretty good, FunnelWeb would run in Azure.</p>
+
+<p>The problem though is updates to the my.config required a full new deployment, so I wanted to support loading the configuration from the Role Environment config files instead when running in Azure.</p>
+
+<p>So in our configuration settings class I put something like this:</p>
+
+<pre><code>public string Get(string name)
+{
+    return (RoleEnvironment.IsAvailable)
+                ? RoleEnvironment.GetConfigurationSettingValue(name)
+                : myConfigSettings.Get(name);
+}
+</code></pre>
+
+<p>All good, local testing works beautifully. So I start with deploying to Azure Websites via git using the same script we use to deploy to AppHarbor. And boom:</p>
+
+<pre><code>---&gt; System.TypeInitializationException: The type initializer for 'Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment' threw an exception. ---&gt; System.IO.FileNotFoundException: Could not load file or assembly 'msshrtmi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35' or one of its dependencies. The system cannot find the file specified.
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.InitializeEnvironment()
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment..cctor()
+   --- End of inner exception stack trace ---
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.get_IsAvailable()
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/azure-and-msshrtmi/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/getting-started-with-api-approver/">Getting Started With ApprovalTests Without Installing TortoiseSVN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-08T00:00:00+00:00" pubdate data-updated="true">Mar 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have just installed Windows 8 consumer preview on my dev machine, then all my API Approval tests started failing with this exception because I don&rsquo;t have TortoiseMerge installed =(</p>
+
+<pre><code>System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
+   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start()
+   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start(String fileName, String arguments)
+   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
+   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
+   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
+   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
+   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
+   at Phoenix.Tests.ApiChanges.phoenix_has_no_public_api_changes() in C:\Users\Jake\_Code\Phoenix\src\net40\Phoenix.Tests\ApiChanges.cs:line 22
+System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
+   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start()
+   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start(String fileName, String arguments)
+   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
+   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
+   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
+   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
+   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
+</code></pre>
+
+<p>My issue is I don&rsquo;t want to install TortoiseSVN just to get TortoiseMerge which ApiApprover uses by default.</p>
+
+<p>So I created a Chocolatey package at <a href="http://chocolatey.org/packages/tortoisemerge">http://chocolatey.org/packages/tortoisemerge</a> which will download and add TortoiseMerge to your Path, then Approval Tests DiffReporter will just start working :)</p>
+
+<h1>Install Steps</h1>
+
+<h2>1. Install Chocolatey</h2>
+
+<p><strong>PS:></strong> <code>iex ((new-object net.webclient).DownloadString('http://bit.ly/psChocInstall'))</code></p>
+
+<h2>2. Install TortoiseMerge via Chocolatey</h2>
+
+<p><strong>PS:></strong> <code>cinst TortoiseMerge</code></p>
+
+<p>Done :)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -492,108 +631,6 @@ I am still a little way from v1, so there will be API changes, but I am more tha
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/wpf-mvvm-thoughs/">MVVM, Design Time vs IoC Usage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-21T00:00:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>The problems</h1>
-
-<p>Lets start with the problems we want to solve with our solution</p>
-
-<ul>
-<li>Blend Design time support</li>
-<li>Resharper binding validation support</li>
-<li>No using ServiceLocator, DI only</li>
-<li>ViewModels should be testable</li>
-</ul>
-
-
-<p>Frameworks like Magellan solve these sort of issues in other ways, but if you don&rsquo;t want to take on a framework then maybe an approach like this may help you get started.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/wpf-mvvm-thoughs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/nhibernate-alias-warnings/">No More R# Warnings for nHibernate Aliases</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-21T00:00:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
-
-<p>Here is a scenario</p>
-
-<pre><code>var entryAlias = default(Entry);
-var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
-</code></pre>
-
-<p>In the above scenario R# will warn that entryAlias is always null, which is is, but I don&rsquo;t care, nHibernate is simply getting the type from the expression.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/nhibernate-alias-warnings/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -611,6 +648,14 @@ var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
       </li>
     
@@ -620,14 +665,6 @@ var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
     
       <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
-      </li>
-    
-      <li class="post">
-        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/git-flow-versioning/">Git Flow Versioning</a>
       </li>
     
   </ul>

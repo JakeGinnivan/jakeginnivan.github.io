@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>TechEd 2010 - Jake Ginnivan's blog</title>
+  <title>BDDfy v4.0 Beta 1 Released - Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I will be speaking at TechEd 2010!">
+  <meta name="description" content="We are excited to announce v4 beta 1 of BDDfy, to give it a spin just change your NuGet settings to include pre-release and update. Please give it a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/tech-ed-2010/">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -89,7 +89,7 @@
   
   <header>
     
-      <h1 class="entry-title">TechEd 2010</h1>
+      <h1 class="entry-title">BDDfy v4.0 Beta 1 Released</h1>
     
     
       <p class="meta">
@@ -105,22 +105,97 @@
   
 
 
-<time datetime="2010-08-21T00:00:00+01:00" pubdate data-updated="true">Aug 21<span>st</span>, 2010</time>
+<time datetime="2014-05-08T10:05:00+01:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I have been lucky enough to be selected to speak at TechEd this year, and it is only 2 days away!</p>
+<div class="entry-content"><p>We are excited to announce v4 beta 1 of BDDfy, to give it a spin just change your NuGet settings to include pre-release and update. Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
 
-<p>The backend of my blog blew up a few weeks ago and have been trying to find the time to rebuild it, and I have managed to get it done while fine tuning my talk.</p>
+<h2>New Features</h2>
 
-<p>I will be speaking about how to use VSTO as a platform, it is a level 300 talk so expect a lot of code, demo&rsquo;s and hopefully you will be able to take a few things away. I am really looking forward to this talk and I think that people will be surprised at what you can achieve with VSTO if you know what path to take.</p>
+<p>v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
 
-<p>My talk is DEV332 at 8.15 am Thursday morning in Meeting Room 8.</p>
+<p>New features include:</p>
 
-<p><img src="http://australia.msteched.com/p/TEAU10/resources/BB_100_hearMe.JPG" alt="Come listen to DEV332 at TechEd" /></p>
+<ul>
+<li><a href="/blog/2014/05/05/bddfy-examples-support/">Examples support</a>
+
+<ul>
+<li>This was one of the biggest missing features of BDDfy, we support text based tables (to support easy migration from SpecFlow), and also examples in code which allows complex types rather than just basic types!</li>
+<li>See the linked blog post for more information about examples.</li>
+<li>If you have not seen cucumber examples before, check out <a href="https://github.com/cucumber/cucumber/wiki/Scenario-Outlines">https://github.com/cucumber/cucumber/wiki/Scenario-Outlines</a> for more information</li>
+</ul>
+</li>
+<li>Tags
+
+<ul>
+<li><code>.WithTags("Tag1", "Tag2")</code> will be seen in your reports. Tag functionality is really basic at the moment, and will be improved in v4.1</li>
+</ul>
+</li>
+<li>Fluent: Step titles are prefixed with the step type
+
+<ul>
+<li>For example: <code>this.Given(_ =&gt; Something())</code> will result in a step title of <code>Given something</code></li>
+</ul>
+</li>
+<li>Fluent: Removed restriction on order of step types. So you can create more complex tests (for acceptance/UI based tests). i.e <code>.Given().Then().When().Then().And().When().Then()</code> etc.</li>
+<li>Added <em>But</em> step type, in beta 1 this is only available for the fluent syntax. It will be in reflective by the final release</li>
+<li>New Metro HTML report</li>
+<li>Classic HTML Report is now self contained with jQuery inlined in the report. CSS is also minified to make the report source easier to read.
+
+<ul>
+<li>You can switch to a CDN version of jQuery via configuration if you do not want it included in the report</li>
+</ul>
+</li>
+<li>Inline assertions:
+
+<ul>
+<li><code>this.Given(() =&gt; { something = 5; }, "Something is 5")</code> so you do not have to create methods for steps if you do not want to.</li>
+</ul>
+</li>
+<li>Title-only steps: you can have a title only step to explain the context more; e.g. Given(&ldquo;Given something&rdquo;)</li>
+<li>StoryMetadata is made more generic to allow different story narratives; e.g. instead of As a &hellip;, I want &hellip;, So that &hellip; you can now have anything including So that &hellip;, As a &hellip;., I want &hellip;</li>
+<li>Story title prefix is now customisable</li>
+<li>Arguments passed to methods are now reported in steps much better, including:
+
+<ul>
+<li>Step titles are lazily evaluated, so if previous steps mutate state which is passed into a step then the value at step execution time will be reported</li>
+<li>Support fields, properties and they will be reported as arguments in step title (i.e <code>this.Given(_ =&gt; Given(_three))</code> will be <code>Given 3</code></li>
+<li>And a bunch of other improvements</li>
+</ul>
+</li>
+<li><strong>BREAKING:</strong> A lot less namespaces to make the API easier to use.
+
+<ul>
+<li>Many of the namespaces that were necessary before, particularly for using fluent API and executable attributes, are removed and are now accessible via the root TestStack.BDDfy namespace.</li>
+</ul>
+</li>
+<li><strong>BREAKING:</strong> A few types have been renamed to more accurately reflect their role and usage</li>
+<li><strong>BREAKING:</strong> Removed story category from <code>.BDDFy</code> and <code>.LazyBDDfy</code> methods</li>
+<li><strong>BREAKING:</strong> .net 3.5 support has been dropped, BDDfy now requires > .NET 4.0</li>
+<li><em>Coming Soon:</em> ReSharper BDDfy plugin, which will stop ReSharper marking steps as unused. Check out it&rsquo;s progress at <a href="https://github.com/TestStack/TestStack.BDDfy.ReSharper">https://github.com/TestStack/TestStack.BDDfy.ReSharper</a> - Thanks heaps to Igal Tabachnik (@hmemcpy) for the work on this</li>
+</ul>
+
+
+<p>Check out the release notes at <a href="https://github.com/TestStack/TestStack.BDDfy/blob/release-4.0.0/release-notes.md">https://github.com/TestStack/TestStack.BDDfy/blob/release-4.0.0/release-notes.md</a></p>
+
+<h2>Known issues</h2>
+
+<ul>
+<li>Add But to reflective API (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/85">https://github.com/TestStack/TestStack.BDDfy/issues/85</a>)</li>
+<li>Update diagnostics report to work with examples (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/135">https://github.com/TestStack/TestStack.BDDfy/issues/135</a>)</li>
+<li>Examples do not work with RunStepWithArgsAttribute (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/136">https://github.com/TestStack/TestStack.BDDfy/issues/136</a>)</li>
+</ul>
+
+
+<h2>Feedback wanted</h2>
+
+<p>This is an exciting release for BDDfy, and we want to hear about any issues you hit</p>
+
+<p>From the TestStack team (<a href="https://github.com/JakeGinnivan">Jake Ginnivan</a>, <a href="https://github.com/MehdiK">Mehdi Khalili</a>, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="https://github.com/robdmoore">Rob Moore</a>)</p>
 </div>
 
 
@@ -143,21 +218,15 @@
   
 
 
-<time datetime="2010-08-21T00:00:00+01:00" pubdate data-updated="true">Aug 21<span>st</span>, 2010</time>
+<time datetime="2014-05-08T10:05:00+01:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/presenting/'>Presenting</a>, <a class='category' href='/blog/categories/vsto/'>VSTO</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/tech-ed-2010/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/tech-ed-2010/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/" >Tweet</a>
   
   
   
@@ -166,10 +235,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/c-sharp-argument-parser/" title="Previous Post: C# Command Line Argument Parser">&laquo; C# Command Line Argument Parser</a>
+        <a class="basic-alignment left" href="/blog/2014/05/05/bddfy-examples-support/" title="Previous Post: BDDfy v4.0 Examples Support">&laquo; BDDfy v4.0 Examples Support</a>
       
-      
-        <a class="basic-alignment right" href="/dev332-resources/" title="Next Post: TechEd DEV332 Resources">TechEd DEV332 Resources &raquo;</a>
       
     </p>
   </footer>
@@ -269,8 +336,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jake.ginnivan.net/tech-ed-2010/';
-        var disqus_url = 'http://jake.ginnivan.net/tech-ed-2010/';
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/';
         var disqus_script = 'embed.js';
       
     (function () {

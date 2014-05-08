@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put &hellip;">
+  <meta name="description" content="Goal of VSTO Contrib When I first started on this library, it was a very simple set of classes designed to help me do trivial tasks in VSTO, such as &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/vsto-contrib/introduction/">Introduction to VSTO Contrib</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-05T00:00:00+01:00" pubdate data-updated="true">Apr 5<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Goal of VSTO Contrib</h1>
+
+<p>When I first started on this library, it was a very simple set of classes designed to help me do trivial tasks in VSTO, such as simplifying listening to certain events, wrappers, and it was really a dumping ground for code that solved problems I had while developing VSTO solutions.</p>
+
+<p>Just before TechEd last year (August), I started trying to tackle some more fundamental architectural issues, such as no ability to use DI, or IoC, which often causes VSTO solutions to have Ribbons with hundreds of lines of code behind, this issue is made worse with Ribbon XML which only lets you have a single callback file for ALL ribbons.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/vsto-contrib/introduction/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/vsto-contrib/com-cleanup-extension-methods/">Cleaning Up Office COM Interop Code With Extension Methods</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-05T00:00:00+01:00" pubdate data-updated="true">Apr 5<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Office Automation and COM interop code can be really ugly, this post show you how the extension methods in VSTO Contrib can help</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/vsto-contrib/com-cleanup-extension-methods/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -514,99 +600,6 @@ What would you like to see?</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/ccoz2010/">Code Camp Oz 2010</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-21T00:00:00+00:00" pubdate data-updated="true">Nov 21<span>st</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Due to time restraints at the moment this will be a very short blog post.</p>
-
-<p>I have pushed all my latest changes to the VSTO contrib project to codeplex. The url is <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a>.</p>
-
-<p>I will upload my powerpoint deck and release my LinqPad example scripts soon as well.</p>
-
-<p>But to sum up my talk, the VSTO Contrib project makes it easy to:</p>
-
-<ul>
-<li>Cleanup your COM References deterministically without cluttering your code</li>
-<li>Use Ribbon XML ribbons with IoC, view model binding (listens to INotifyPropertyChanged and invalidates ribbon controls when needed) and wires up the current Explorer or Inspector to your ribbon view model.</li>
-<li>Makes it really easy to use custom task panes, and relate them to ribbons</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/automapperinheritance/">Adding Inheritance to AutoMapper</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-31T00:00:00+01:00" pubdate data-updated="true">Oct 31<span>st</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Update:</strong> This is currently in the Automapper master, and will be included in the v2 release (hopefully Before/After map will also get included, patch submitted).</p>
-
-<p>In my current project, we are leveraging AutoMapper a lot to map our Domain to Dto&rsquo;s. The major problem we are facing is that our mappings are getting quite complex and bloated, especially for flattened Dtos or Summaries which have properties that cover all the properties from the concrete types they come from.
-It seemed unnatural that I could define a mapping that looked like:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/automapperinheritance/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -624,6 +617,14 @@ It seemed unnatural that I could define a mapping that looked like:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
       </li>
     
@@ -633,14 +634,6 @@ It seemed unnatural that I could define a mapping that looked like:</p>
     
       <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
-      </li>
-    
-      <li class="post">
-        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/git-flow-versioning/">Git Flow Versioning</a>
       </li>
     
   </ul>

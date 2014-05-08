@@ -9,7 +9,9 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have hit this before, but it was VSTO related and posted about it http://jake.ginnivan.net/clickonce-deployment-in-teamcity When trying to publish &hellip;">
+  <meta name="description" content="The problems Lets start with the problems we want to solve with our solution Blend Design time support
+Resharper binding validation support
+No using &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +88,108 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpf-mvvm-thoughs/">MVVM, Design Time vs IoC Usage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-21T00:00:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>The problems</h1>
+
+<p>Lets start with the problems we want to solve with our solution</p>
+
+<ul>
+<li>Blend Design time support</li>
+<li>Resharper binding validation support</li>
+<li>No using ServiceLocator, DI only</li>
+<li>ViewModels should be testable</li>
+</ul>
+
+
+<p>Frameworks like Magellan solve these sort of issues in other ways, but if you don&rsquo;t want to take on a framework then maybe an approach like this may help you get started.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpf-mvvm-thoughs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/nhibernate-alias-warnings/">No More R# Warnings for nHibernate Aliases</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-21T00:00:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
+
+<p>Here is a scenario</p>
+
+<pre><code>var entryAlias = default(Entry);
+var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
+</code></pre>
+
+<p>In the above scenario R# will warn that entryAlias is always null, which is is, but I don&rsquo;t care, nHibernate is simply getting the type from the expression.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/nhibernate-alias-warnings/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -475,92 +579,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-contrib/introduction/">Introduction to VSTO Contrib</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-05T00:00:00+01:00" pubdate data-updated="true">Apr 5<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Goal of VSTO Contrib</h1>
-
-<p>When I first started on this library, it was a very simple set of classes designed to help me do trivial tasks in VSTO, such as simplifying listening to certain events, wrappers, and it was really a dumping ground for code that solved problems I had while developing VSTO solutions.</p>
-
-<p>Just before TechEd last year (August), I started trying to tackle some more fundamental architectural issues, such as no ability to use DI, or IoC, which often causes VSTO solutions to have Ribbons with hundreds of lines of code behind, this issue is made worse with Ribbon XML which only lets you have a single callback file for ALL ribbons.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-contrib/introduction/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-contrib/com-cleanup-extension-methods/">Cleaning Up Office COM Interop Code With Extension Methods</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-05T00:00:00+01:00" pubdate data-updated="true">Apr 5<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Office Automation and COM interop code can be really ugly, this post show you how the extension methods in VSTO Contrib can help</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-contrib/com-cleanup-extension-methods/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -578,6 +596,14 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
       </li>
     
@@ -587,14 +613,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
     
       <li class="post">
         <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
-      </li>
-    
-      <li class="post">
-        <a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/git-flow-versioning/">Git Flow Versioning</a>
       </li>
     
   </ul>
