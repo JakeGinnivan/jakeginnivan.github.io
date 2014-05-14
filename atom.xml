@@ -1,0 +1,1904 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Jake Ginnivan's blog]]></title>
+  <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
+  <link href="http://jake.ginnivan.net/"/>
+  <updated>2014-05-14T20:41:15+01:00</updated>
+  <id>http://jake.ginnivan.net/</id>
+  <author>
+    <name><![CDATA[Jake Ginnivan]]></name>
+    <email><![CDATA[jake@ginnivan.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Unknown Git Mergetool]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/"/>
+    <updated>2014-05-14T20:08:32+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool</id>
+    <content type="html"><![CDATA[<p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
+
+<pre><code>git config option merge.tool set to unknown tool: --global
+Resetting to default...
+
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+tortoisemerge emerge vimdiff
+No known merge tool is available.
+</code></pre>
+
+<p>Somehow (seriously, I have <strong>no</strong> idea how I did this) I had created a setting in one of my repositories set my mergetool to <code>--global</code>.</p>
+
+<p>If you happen to get yourself into the same issue, run <code>git config --list</code> to see what your config settings are.</p>
+
+<p>For me, I had a rogue <code>merge.tool</code> entry, so I just had to run <code>git config --unset merge.tool</code> which deleted the entry and I was off again.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[BDDfy v4.0 Beta 1 Released]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/"/>
+    <updated>2014-05-08T10:05:00+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1</id>
+    <content type="html"><![CDATA[<p>We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
+
+<h2>New Features</h2>
+
+<p>v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
+
+<p>New features include:</p>
+
+<ul>
+<li>Cucumber Examples support
+
+<ul>
+<li>This was one of the biggest missing features of BDDfy. We support text based tables (to support easy migration from SpecFlow) and also examples in code which allows complex types rather than just basic types!</li>
+<li>If you have not seen cucumber examples before check out <a href="https://github.com/cucumber/cucumber/wiki/Scenario-Outlines">https://github.com/cucumber/cucumber/wiki/Scenario-Outlines</a> for more information</li>
+<li>See the <a href="http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support/">examples blog post</a> for more information about examples and how they work in BDDfy</li>
+</ul>
+</li>
+<li>Tags
+
+<ul>
+<li><code>.WithTags("Tag1", "Tag2")</code> will be seen in your reports. For example in text reporter you will get <code>Tags: Tag1, Tag2</code> under the test output. The HTML report will have tags boxes next to the step title</li>
+<li>Tag functionality is really basic at the moment, and will be improved in v4.1</li>
+</ul>
+</li>
+<li>Fluent: Step titles are prefixed with the step type
+
+<ul>
+<li>For example: <code>this.Given(_ =&gt; Something())</code> will result in a step title of <code>Given something</code></li>
+</ul>
+</li>
+<li>Fluent: Removed restriction on order of step types. So you can create more complex tests (for acceptance/UI based tests). i.e <code>.Given().Then().When().Then().And().When().Then()</code> etc.</li>
+<li>Added <em>But</em> step type, in beta 1 this is only available for the fluent syntax. It will be in reflective by the final release</li>
+<li>New Metro HTML report</li>
+<li>Classic HTML Report is now self contained with jQuery inlined in the report. CSS is also minified to make the report source easier to read.
+
+<ul>
+<li>You can switch to a CDN version of jQuery via configuration if you do not want it included in the report</li>
+</ul>
+</li>
+<li>Inline assertions:
+
+<ul>
+<li><code>this.Given(() =&gt; { something = 5; }, "Something is 5")</code> so you do not have to create methods for steps if you do not want to.</li>
+</ul>
+</li>
+<li>Title-only steps: you can have a title only step to explain the context more; e.g. Given(&ldquo;Given something&rdquo;)</li>
+<li>StoryMetadata is made more generic to allow different story narratives; e.g. instead of As a &hellip;, I want &hellip;, So that &hellip; you can now have anything including So that &hellip;, As a &hellip;., I want &hellip;</li>
+<li>Story title prefix is now customisable</li>
+<li>Arguments passed to methods are now reported in steps much better, including:
+
+<ul>
+<li>Step titles are lazily evaluated, so if previous steps mutate state which is passed into a step then the value at step execution time will be reported</li>
+<li>Support fields, properties and they will be reported as arguments in step title (i.e <code>this.Given(_ =&gt; Given(_three))</code> will be <code>Given 3</code></li>
+<li>And a bunch of other improvements</li>
+</ul>
+</li>
+<li><strong>BREAKING:</strong> A lot less namespaces to make the API easier to use.
+
+<ul>
+<li>Many of the namespaces that were necessary before, particularly for using fluent API and executable attributes, are removed and are now accessible via the root TestStack.BDDfy namespace.</li>
+</ul>
+</li>
+<li><strong>BREAKING:</strong> A few types have been renamed to more accurately reflect their role and usage</li>
+<li><strong>BREAKING:</strong> Removed story category from <code>.BDDFy</code> and <code>.LazyBDDfy</code> methods</li>
+<li><strong>BREAKING:</strong> .net 3.5 support has been dropped, BDDfy now requires > .NET 4.0</li>
+<li><em>Coming Soon:</em> ReSharper BDDfy plugin, which will stop ReSharper marking steps as unused. Check out it&rsquo;s progress at <a href="https://github.com/TestStack/TestStack.BDDfy.ReSharper">https://github.com/TestStack/TestStack.BDDfy.ReSharper</a> - Thanks heaps to Igal Tabachnik (@hmemcpy) for the work on this</li>
+</ul>
+
+
+<p>Check out the release notes at <a href="https://github.com/TestStack/TestStack.BDDfy/blob/release-4.0.0/release-notes.md">https://github.com/TestStack/TestStack.BDDfy/blob/release-4.0.0/release-notes.md</a></p>
+
+<h2>Known issues</h2>
+
+<ul>
+<li>Add But to reflective API (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/85">https://github.com/TestStack/TestStack.BDDfy/issues/85</a>)</li>
+<li>Update diagnostics report to work with examples (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/135">https://github.com/TestStack/TestStack.BDDfy/issues/135</a>)</li>
+<li>Examples do not work with RunStepWithArgsAttribute (<a href="https://github.com/TestStack/TestStack.BDDfy/issues/136">https://github.com/TestStack/TestStack.BDDfy/issues/136</a>)</li>
+</ul>
+
+
+<h2>Feedback wanted</h2>
+
+<p>This is an exciting release for BDDfy and we want to hear about any issues you hit</p>
+
+<p>From the TestStack team (<a href="https://github.com/JakeGinnivan">Jake Ginnivan</a>, <a href="https://github.com/MehdiK">Mehdi Khalili</a>, <a href="https://github.com/mwhelan">Michael Whelan</a> and <a href="https://github.com/robdmoore">Rob Moore</a>)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[BDDfy v4.0 Examples Support]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support/"/>
+    <updated>2014-05-05T17:09:00+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support</id>
+    <content type="html"><![CDATA[<p>One of the major features in BDDfy v4 is the inclusion of examples</p>
+
+<p><strong>Scenario:</strong> Successful rail card purchases<br/>
+<strong>Given:</strong> the buyer is a <em>&lt;buyer category&gt;</em><br/>
+<strong>And:</strong> the buyer selects a <em>&lt;fare&gt;</em><br/>
+<strong>When:</strong> the buyer pays<br/>
+<strong>Then:</strong> a sale occurs with an amount of <em>&lt;price&gt;</em></p>
+
+<p>Examples:</p>
+
+<pre><code>| Buyer Category | Fare          | Price |
+| Student        | Monthly Pass  | $76   |
+| Senior         | Monthly Pass  | $98   |
+| Standard       | Monthly Pass  | $146  |
+| Student        | Weekly Pass   | $23   |
+| Senior         | Weekly Pass   | $30   |
+| Standard       | Weekly Pass   | $44   |
+| Student        | Day Pass      | $4    |
+| Senior         | Day Pass      | $5    |
+| Standard       | Day Pass      | $7    |
+| Student        | Single Ticket | $1.5  |
+| Senior         | Single Ticket | $2    |
+| Standard       | Single Ticket | $3    |
+</code></pre>
+
+<p>This is an example of a Cucumber test with examples, for each row in the examples table the test will run effectively giving us a data driven BDD style test.</p>
+
+<p>I have picked this test because it is a bit more complex than the standard <code>Given I have 3 beers in my fridge, When I drink 2, Then I have 1 beer left</code>.. Yay, how interesting..</p>
+
+<p>In this example, I will use BDDfy&rsquo;s fluent API to write this test. First without examples:</p>
+
+<pre><code>this.Given(_ =&gt; TheBuyerIsA(BuyerCategory.Student))
+    .And(_ =&gt; TheBuyerSelectsA(new MonthlyPass()))
+    .When(_ =&gt; TheBuyerPays())
+    .Then(_ =&gt; ASaleOccursWithAnAmountOf(new Money(76)))
+    .BDDfy("Successful rail card purchases");
+</code></pre>
+
+<p>Which gives us a nicely formatted output of</p>
+
+<pre><code>Scenario: Successful rail card purchases
+  The buyer is a Student
+    The buyer selects a Monthly Pass
+  The buyer pays
+  A sale occurs with an amount of $76.00
+</code></pre>
+
+<p>The next step is to turn this into a test with examples.</p>
+
+<h3>Step 1</h3>
+
+<p>Create somewhere to put the examples, BDDfy supports private/public fields and properties as well as local variables in your test method. The following all work:</p>
+
+<pre><code>private Fare fare;
+private BuyerCategory _buyerCategory;
+public Money Price { get; set; }
+
+public void MyTest()
+{
+      var Fare = default(Fare);
+}
+</code></pre>
+
+<p>Local variables are the cleanest and recommended approach, but feel free to use fields or properties when examples are shared between tests.</p>
+
+<h3>Step 2</h3>
+
+<p>Then we should replace the arguments we are passing to our steps to be the fields/properties</p>
+
+<pre><code>var buyerCategory = default(BuyerCategory);
+var fare = default(Fare);
+var price = default(Money);
+
+this.Given(_ =&gt; TheBuyerIsA(buyerCategory))
+    .And(_ =&gt; TheBuyerSelectsA(fare))
+    .When(_ =&gt; TheBuyerPays())
+    .Then(_ =&gt; ASaleOccursWithAnAmountOf(Price))
+    .BDDfy("Successful rail card purchases");
+</code></pre>
+
+<h3>Step 3</h3>
+
+<p>Use the .WithExamples() extension method to pass your examples to BDDfy</p>
+
+<pre><code>this.Given(_ =&gt; TheBuyerIsA(buyerCategory))
+    .And(_ =&gt; TheBuyerSelectsA(fare))
+    .When(_ =&gt; TheBuyerPays())
+    .Then(_ =&gt; ASaleOccursWithAnAmountOf(price))
+    .WithExamples(new ExampleTable(
+        "Buyer Category", "Fare", "Price")
+    {
+        { BuyerCategory.Student, new MonthlyPass(), new Money(76) },
+        { BuyerCategory.Senior, new MonthlyPass(), new Money(98) },
+        { BuyerCategory.Standard, new MonthlyPass(), new Money(146) },
+        { BuyerCategory.Student, new WeeklyPass(), new Money(23) },
+        { BuyerCategory.Senior, new WeeklyPass(), new Money(30) },
+        { BuyerCategory.Standard, new WeeklyPass(), new Money(44) },
+        { BuyerCategory.Student, new DayPass(), new Money(4) },
+        { BuyerCategory.Senior, new DayPass(), new Money(5) },
+        { BuyerCategory.Standard, new DayPass(), new Money(7) },
+        { BuyerCategory.Student, new SingleTicket(), new Money(1.5m) },
+        { BuyerCategory.Senior, new SingleTicket(), new Money(2m) },
+        { BuyerCategory.Standard, new SingleTicket(), new Money(3m) }
+    })
+    .BDDfy("Successful rail card purchases");
+</code></pre>
+
+<p>BDDfy supports two ways of providing examples, if you are migrating from SpecFlow and you are using simple types (unlike the example above where my examples are actually classes) then we support the normal text table:</p>
+
+<pre><code>.WithExamples(@"
+    | Header 1 | Header 2     | Header3    |
+    | Value 1  | 2            | 3          |
+    |          | 14 Mar 2010  | Transition |");
+</code></pre>
+
+<h3>Step 4</h3>
+
+<p>Thats it, simply run your tests and the output will be something like this:</p>
+
+<pre><code>Scenario: Successful rail card purchases
+  The buyer is a &lt;Buyer Category&gt;        
+    The buyer selects a &lt;Fare&gt;           
+  The buyer pays                         
+  A sale occurs with an amount of &lt;Price&gt;
+
+Examples: 
+| Buyer Category | Fare         | Price   |
+| Student        | Monthly Pass | $76.00  |
+| Senior         | Monthly Pass | $98.00  |
+| Standard       | Monthly Pass | $146.00 |
+| Student        | Weekly Pass  | $23.00  |
+| Senior         | Weekly Pass  | $30.00  |
+| Standard       | Weekly Pass  | $44.00  |
+| Student        | Day Pass     | $4.00   |
+| Senior         | Day Pass     | $5.00   |
+| Standard       | Day Pass     | $7.00   |
+| Student        | Day Pass     | $1.50   |
+| Senior         | Day Pass     | $2.00   |
+| Standard       | Day Pass     | $3.00   |
+</code></pre>
+
+<p>Errors will be reported against examples rather than steps when examples are used. For example:</p>
+
+<pre><code>Examples: 
+| Buyer Category | Fare         | Price   | Error                                                  |
+| Student        | Monthly Pass | $76.00  |                                                        |
+| Senior         | Monthly Pass | $98.00  |                                                        |
+| Standard       | Monthly Pass | $146.00 |                                                        |
+| Student        | Weekly Pass  | $23.00  | ChuckedAWobblyException: $24 should be $23 [Details 1] |
+| Senior         | Weekly Pass  | $30.00  |                                                        |
+| Standard       | Weekly Pass  | $44.00  |                                                        |
+| Student        | Day Pass     | $4.00   |                                                        |
+| Senior         | Day Pass     | $5.00   |                                                        |
+| Standard       | Day Pass     | $7.00   |                                                        |
+| Student        | Day Pass     | $1.50   |                                                        |
+| Senior         | Day Pass     | $2.00   |                                                        |
+| Standard       | Day Pass     | $3.00   |                                                        |
+
+Exceptions:
+1. ChuckedAWobblyException: $24 should be $23
+&lt;stacktrace&gt;
+</code></pre>
+
+<p>This works with all of our built in reports. If you have custom reports then you will get a test for <em>each</em> example. Have a look at the built in reporters for examples on how to build custom reporters with examples support.</p>
+
+<h2>Other things to note</h2>
+
+<h3>Step names</h3>
+
+<p>There are multiple ways to put placeholders in step names, the one shown above allows you to simply use the parameter on the step method. If it matches a column in your example table it will be substituted in the step name. If it doesn&rsquo;t match you will just get the value like you currently do.</p>
+
+<p>We also support the following:</p>
+
+<pre><code>GivenIHave__initialCount__Beers() # Then access the value from a field/property directly in the step
+.Given(_ =&gt; InitialCount(), "Given I have &lt;initial count&gt; beers")
+</code></pre>
+
+<p>If you have more ideas on how we could make this even better, let us know!</p>
+
+<h3>Errors</h3>
+
+<p>BDDfy will try it&rsquo;s best to tell you when something is wrong, for example your test will fail if examples in your example table are not put anywhere. This is handy when you make a spelling mistake or refactor things and they no longer match.
+We will also give you row and column information of values if they cannot be assigned, for example trying to assign &lsquo;null&rsquo; to a value type.</p>
+
+<p>I really hope you enjoy using this feature, we have wanted to add this to BDDfy for a long time but it is a pretty massive feature so it has taken us a while. We also not only wanted to make it as good as the Gherkin first languages, but take advantage of the fact that BDDfy tests are written in code to allow complex types to be used in examples.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[nUnit 2.6.3, Async and .net 4.0 Broken]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/"/>
+    <updated>2014-01-14T18:55:09+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken</id>
+    <content type="html"><![CDATA[<p>I am currently working on a <strong>.net 4.0</strong> project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM because we do not have stats on how many clients currently have the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=3556">.net 4.0 KB 2468871 patch</a> which enables PCL support. These issues affect the RTM version as well.</p>
+
+<p>Recently I have upgraded to nCrunch 2.2 beta and ReSharper 8.1 both which ship with the upgraded nUnit 2.6.3 runner. After I upgraded these tools I noticed tests which should have been failing were passing and passing tests were being reported as failing but showing stack traces from a different test..</p>
+
+<p>Also I was getting different results in nCrunch, R# and nUnits console runner. Something was broken.</p>
+
+<p><strong>NOTE</strong>: Async and TPL support is <em>not supported</em> in nUnit 2.x, but will be officially supported in v3.x and that it was a coincidence that it worked in 2.6.2. My discussions about the issues are at <a href="https://groups.google.com/forum/#!topic/nunit-discuss/McE95Cy2DlY">here on the nunit discussion board</a>.<br/>
+As far as I can tell, there is no reason that 4.0 cannot be supported because to offer framework support does not need any new features OR the classes in the Async Targeting Pack or .NET 4.5. At a minimum tests returning <code>Task</code> should be supported as TPL was introduced into the CLR for net40.  <br/>
+Recently I added async void and Task support to <a href="https://github.com/TestStack/TestStack.BDDfy/pull/32">BDDfy</a> which targets .NET 4.0, also xUnit 1.9.x supports Tasks in the current released version and has backported <code>async void</code> support to the 1.9.x codebase from the 2.0 and will be released if there is a need to release another patch release before 2.0 is released.</p>
+
+<p><strong>.NET 4.5 is fully supported and works as expected with nUnit, it is only .net 4.0 which is affected</strong></p>
+
+<!-- more -->
+
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2014-01-14-nunit-263,asyncandnet4.png" alt="2014-01-14-nunit-263,asyncandnet4" /></p>
+
+<p>When I first saw this it really really confused me, so I have been diving into async, nUnit and trying all different things which is where my blog post on <a href="http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts/">async and synchronisation contexts</a> came from.</p>
+
+<h2>So what&rsquo;s broken?</h2>
+
+<p>But in 2.6.3 tests returning <code>Task</code> and <code>async void</code> tests will not wait for completion. In addition to that, nUnit 2.6.3 will flat out refuse to run tests which return <code>Task</code> and the console runner will return an error code. Other runners just silently skip the tests&hellip;</p>
+
+<p>This means that if you use async/await <em>or</em> TPL and have upgraded to R# 8.1, nCrunch 2.2 or 2.3 beta, the nUnit.Runners NuGet project or any other tools which have upgraded to use the nUnit 2.6.3 runner internally your async tests will be completing <strong>unobserved</strong> and may be failing without your knowledge.</p>
+
+<h3>Repro Solution</h3>
+
+<p>I put together a sample solution showing the issues (and the screenshot above is from) the GitHub repo is available at <a href="https://github.com/JakeGinnivan/nUnit_net4.0AsyncIssues">https://github.com/JakeGinnivan/nUnit_net4.0AsyncIssues</a></p>
+
+<p>Here are the test results from 2.6.2:</p>
+
+<pre><code>Tests run: 3, Errors: 1, Failures: 0, Inconclusive: 0, Time: 1.4863562 seconds
+  Not run: 0, Invalid: 0, Ignored: 0, Skipped: 0
+
+Errors and Failures:
+1) Test Error : ClassLibrary1.Class1Tests.Test1
+   System.InvalidOperationException : Operation is not valid due to the current state of the object.
+
+Server stack trace:
+   at ClassLibrary1.Class1Tests.&lt;Test1&gt;d__0.MoveNext() in c:\Users\Jake\_Code\WpfApplication4\ClassLibrary1\Class1Tests.cs:line 19
+
+Exception rethrown at [0]:
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.&lt;ThrowAsync&gt;b__0(Object state)
+   at NUnit.Core.AsyncSynchronizationContext.AsyncOperationQueue.InvokePendingOperations()
+   at NUnit.Core.AsyncSynchronizationContext.AsyncOperationQueue.InvokeAll()
+   at NUnit.Core.NUnitAsyncTestMethod.RunVoidAsyncMethod(TestResult testResult)
+</code></pre>
+
+<p>And 2.6.3:</p>
+
+<pre><code>Tests run: 2, Errors: 0, Failures: 0, Inconclusive: 0, Time: 0.676135209417321 seconds
+  Not run: 1, Invalid: 1, Ignored: 0, Skipped: 0
+
+Errors and Failures:
+
+Tests Not Run:
+1) NotRunnable : ClassLibrary1.Class1Tests.Test3
+   Test method has non-void return type, but no result is expected
+</code></pre>
+
+<h2>What to do about it</h2>
+
+<p>Luckily we can fix this and go back to a working version of nUnit (which as far as I can tell works perfectly for both <code>async void</code> and <code>Task</code> tests).</p>
+
+<p>First you will need to <a href="http://launchpad.net/nunitv2/trunk/2.6.2/+download/NUnit-2.6.2.zip">download nUnit 2.6.2</a> and extract it to a known location</p>
+
+<h3>Fixing ReSharper</h3>
+
+<p>ReSharper is pretty easy as the options dialog allows you to override the runner it uses.</p>
+
+<p>Go into the Resharper menu, then Options. Scroll down to <em>Unit Testing</em> under tools and select NUnit.</p>
+
+<p>Then you can point ReSharper at the nUnit lib directory like so:
+<img src="http://jake.ginnivan.net/assets/posts/2014-01-14-nunit-263,asyncandnet41.png" alt="2014-01-14-nunit-263,asyncandnet41" /></p>
+
+<p>Now ReSharper will be using a non-broken version of nUnit.</p>
+
+<h3>Fixing nCrunch</h3>
+
+<p>nCrunch is a little harder, but this fix works fine.</p>
+
+<p>First open up <code>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Remco Software\NCrunch for Visual Studio 2013</code>, then overwrite <code>nunit.core.dll</code> and <code>nunit.core.interfaces.dll</code> with the ones from the 2.6.2 zip you downloaded earlier.</p>
+
+<p>Now nCrunch will be using the non-broken version. Yay</p>
+
+<h2>Summary</h2>
+
+<p>If you are using .NET 4.0, async/await <em>or</em> TPL and nUnit, do not upgrade your runners to 2.6.3 and if any tools/build servers you are using upgrade, make sure you set them back to using 2.6.2 manually</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[On Async and Sync Contexts]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts/"/>
+    <updated>2014-01-10T14:12:49+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts</id>
+    <content type="html"><![CDATA[<p>This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation Contexts. Quite a few of my assumptions were wrong, or the behaviour is different between the .NET 4.0 implementation (CTP3 and RTM) and what happens in .NET 4.5.</p>
+
+<p>In this post I will cover:</p>
+
+<ul>
+<li>What .ConfigureAwait(false) does in .net 4.0 and in .net 4.5, and why they act differently</li>
+<li>Some guidance around using await in a rich client app (i.e await for <em>offloading</em>, not scalability) .net 4.0 in particular, .net 4.5 behaves better and the guidance is not as relevant</li>
+<li>How you can use custom awaiters to switch contexts</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h2>Quick SynchronizationContext Intro</h2>
+
+<p>If you do not know what synchronization context&rsquo;s are, then I will quickly cover them here. If you know what they do, skip to the next section.</p>
+
+<p>A SynchronizationContext allows you to queue a unit of work on another <em>context</em>, a context can be a specific thread or it may be shared between multiple threads. For example you can get the SynchronizationContext of the current thread by going <code>var uiSyncContext = SynchronizationContext.Current</code>, you can use it to run a delegate on the UI thread (or whatever context the SynchronizationContext represents) with <code>uiSyncContext.Send(state =&gt; { MyProperty = state; }, state: "bar")</code>. This will pass the string &ldquo;bar&rdquo; through as state (without implicitly capturing the outside closure) then assign to MyProperty on the UI thread.</p>
+
+<p>SynchronizationContext&rsquo;s also get notified when asynchronous work is started, which is how frameworks like (<a href="http://www.nunit.org/">nUnit</a>, <a href="http://xunit.codeplex.com/">xUnit 2.0</a>, <a href="https://github.com/TestStack/TestStack.BDDfy">BDDfy</a> and others supports tests which have a method signature of <code>async void</code></p>
+
+<h2>How await uses SynchronisationContext&rsquo;s</h2>
+
+<p>Async/await is just compiler magic to make it easier to compose asynchronous stuff, it does not make your code run asynchronously all it does is when it sees an await, it splits your method up into a state machine then when the thing you are awaiting finishes executing, the state machine is resumed and your code continues running. Resuming execution is called the <em>continuation</em>.<br/>
+A great feature of the <code>await</code> keyword is that it captures the current SynchronizationContext before it runs the asynchronous operation, then it will post the continuation to that SynchronizationContext, meaning if you are on the UI Thread when you <code>await Foo()</code> once <code>Foo()</code> finishes running your code will continue execution on the UI Thread.</p>
+
+<p>This scenario here is called <em>offloading</em>, because the UI thread is an important thread you want to run as little code as possible on the UI thread.</p>
+
+<h3>Controlling await with .ConfigureAwait()</h3>
+
+<p>To change the default behaviour TPL gives us the <code>.ConfigureAwait(bool continueOnCapturedContext)</code>, this allows you to write code like this:</p>
+
+<pre><code>public async Task&lt;ObservableCollection&lt;DataViewModel&gt;&gt; DoSomeStuff() {
+    var results = await _service.GetSomeData().ConfigureAwait(false);
+    var mappedData = MapDataToViewModels(results); // Just pretend this is CPU bound work
+    return mappedData;
+}
+</code></pre>
+
+<p>Because of the <code>.ConfigureAwait(false)</code> our continuation and the <code>MapDataToViewModels()</code> method call will be run on a background thread (unless the awaited task is already complete, then the continuation will be executed in-line). Lets take this one step further</p>
+
+<pre><code>public async Task&lt;ObservableCollection&lt;DataViewModel&gt;&gt; DoSomeStuff() {
+    var results = await _service.GetSomeData().ConfigureAwait(false);
+    var mappedData = MapDataToViewModels(results);
+    var moreData = await _service.GetMoreData();
+    UpdateViewModelsWithAdditionalData(moreData);
+    return mappedData;
+}
+</code></pre>
+
+<p>In which context does <code>UpdateViewModelsWithAdditionalData(moreData);</code> run?</p>
+
+<p>The answer is <em>it depends</em>, on .net 4.0 <code>UpdateViewModelsWithAdditionalData(moreData);</code> runs on the UI thread, on .net 4.5 it will run on the <em>threadpool</em>. Why is this? To answer that we need to dive into something called the execution context.</p>
+
+<h3>Execution Context?</h3>
+
+<p>When our .NET code is executing, these is a bunch of additional metadata which floats around with our thread, these are things like security information and the synchronisation context. For more in depth information on the .net execution context have a read of <a href="http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx">http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx</a>.</p>
+
+<p>The important thing to know about the execution context is that the .NET framework flows it around so things work as we would expect, for instance if we start a new thread, out execution context will go with us. Task.Run, ThreadPool.QueueUserWorkItem() etc all will flow the execution context (but will supress the flow of the SynchronizationContext).</p>
+
+<h2>Differences between .NET 4.0 and 4.5</h2>
+
+<p>So we have explained some of the moving parts when we are dealing with async/await. (If you would like me to do a more in depth post on async/await in general and how it works starting from the basics, leave a comment below).</p>
+
+<p>Above I showed this code</p>
+
+<pre><code>public async Task&lt;ObservableCollection&lt;DataViewModel&gt;&gt; DoSomeStuff() {
+    var results = await _service.GetSomeData().ConfigureAwait(false);
+    var mappedData = MapDataToViewModels(results);
+    var moreData = await _service.GetMoreData();
+    UpdateViewModelsWithAdditionalData(moreData);
+    return mappedData;
+}
+</code></pre>
+
+<p>And said that in .NET 4.0 <code>UpdateViewModelsWithAdditionalData(moreData);</code> would run on the UI thread and in .NET 4.5 it would run on the ThreadPool. This is because of how the different implementations capture the <code>ExecutionContext</code>.</p>
+
+<h3>Breakdown of .NET 4.0</h3>
+
+<p>If we break this method down into what will be executed. This is a mixture of the generated state machine, library code and code to just demonstrate what is happening (because there are heaps of moving parts).</p>
+
+<pre><code>int state;
+Results results;
+
+void IAsyncStateMachine.MoveNext()
+{
+    switch 1:
+        var mappedData = MapDataToViewModels(results);
+        // etc...
+        break;
+    // etc...
+    default:
+        var ex = ExecutionContext.Capture();
+        var task = _service.GetSomeData();
+
+        TaskAwaiter.OnCompletedInternal(task, ()=&gt; {
+            ex.Run(()=&gt;
+            {
+                results = task.Result;
+                state = 1;
+                MoveNext();
+            });
+        }, continueOnCapturedContext: false);
+}
+</code></pre>
+
+<p>Now there are a few things to look at in this small bit of code, first is <code>var ex = ExecutionContext.Capture();</code>, this captures the current execution context and the ExecutionContext contains the SynchronizationContext so when we execute <code>MoveNext()</code> our SynchronizationContext has been restored BUT because the TaskAwaiter.OnCompletedInternal has been told to not continue on the captured context it will be run on the default task scheduler.</p>
+
+<p>The end result of all this is when <code>var mappedData = MapDataToViewModels(results);</code> runs we will:</p>
+
+<ul>
+<li>Be running on the ThreadPool</li>
+<li>SynchronizationContext.Current will still be the <code>DispatcherSynchronizationContext</code></li>
+</ul>
+
+
+<p>So on the next line when we await and <em>do not use</em> .ConfigureAwait(false) the continuation will run on the captured SynchronizationContext</p>
+
+<h3>.NET 4.5 Behaviour</h3>
+
+<p>Lets have a look at what the code looks like in .NET 4.5 land.</p>
+
+<pre><code>int state;
+Results results;
+
+void IAsyncStateMachine.MoveNext()
+{
+    switch 1:
+        var mappedData = MapDataToViewModels(results);
+        // etc...
+        break;
+    // etc...
+    default:
+        var ex = ExecutionContext.CaptureInternal(ExecutionContext.CaptureOptions.IgnoreSyncCtx); 
+        var task = _service.GetSomeData();
+
+        TaskAwaiter.OnCompletedInternal(task, ()=&gt; {
+            ex.Run(()=&gt;
+            {
+                results = task.Result;
+                state = 1;
+                MoveNext();
+            });
+        }, continueOnCapturedContext: false);
+}
+</code></pre>
+
+<p>Notice the line where the execution context is captured, in .NET 4.5 the AsyncMethodBuilderCore calls an <em>internal</em> method on the ExecutionContext which allows the caller to specify that they do not want the SynchronizationContext to be captured as part of the ExecutionContext.</p>
+
+<p>The reason .NET 4.0 and .NET 4.5 are different is that this internal cannot be called from the Async Targeting Pack because it&rsquo;s a library, in .NET 4.5 the AsyncMethodBuilderCore is part of the framework so it can call this internal methods.</p>
+
+<h3>How does TaskEx.Run not capture SynchronizationContext?</h3>
+
+<p>Because TaskEx.Run delegates to <code>Task.Factory.StartNew()</code> which is part of the framework, it passes the option to not capture the SynchronizationContext</p>
+
+<h2>Some guidance for .NET 4.0</h2>
+
+<p>The general guidance is any library code should use <code>.ConfigureAwait(false)</code> so our continuations do not constantly post back to the UI thread, because .NET 4.0 always flows the SynchronizationContext it means that <em>all</em> of our await calls should have <code>.ConfigureAwait(false)</code> which is pretty ugly. Also because .ConfigureAwait(false) still checks if the task is complete, using <code>.ConfigureAwait(false)</code> does not guarantee that we will no longer be executing on the UI thread.</p>
+
+<p>Rather than using .ConfigureAwait() we can explicitly get our code running on the ThreadPool as soon as possible. There are two options for this (that I can see currently):</p>
+
+<p>In ViewModels when you invoke any sort of async service, wrap it in a <code>await TaskEx.Run(()=&gt;_myService.DoStuffAsync());</code>, this is quite good because if your service calls other services you do not get the problem where all your services have <code>TaskEx.Run</code> scattered everywhere and you are scheduling a heap more things into the ThreadPool.</p>
+
+<p>Create a app services layer which your viewmodels interact with, in this layer you delegate to your domain or existing app services, but wrap it in a <code>TaskEx.Run(()=&gt;..);</code></p>
+
+<pre><code>| UI/ViewModels |   ==&gt;   | Service Layer (TaskEx.Run) |   ==&gt;   | Rest of app (never has sync context) |
+</code></pre>
+
+<p>Both of these options basically try and make sure that only code executing in the ViewModels have a SynchronizationContext, and the rest of your application had no threading concerns.</p>
+
+<h3>Additional Option for .NET 4.5</h3>
+
+<p>If you are using .NET 4.5, then another option is to create a custom awaiter (<em>note</em> this feature was removed from the async CTP, possibly because it doesn&rsquo;t work properly in .NET 4.0 and also because it can confuse people)</p>
+
+<pre><code>await TaskHelper.SwitchToThreadPool();
+</code></pre>
+
+<p>Just awaiting this will cause our async method to switch onto the ThreadPool, personally I think this is quite nice because you do not have to pay the Lambda Tax of <code>Task.Run(..)</code></p>
+
+<p>The code is pretty simple</p>
+
+<pre><code>public static class TaskHelper
+{
+    public static SwitchContextToThreadPoolAwaiter SwitchToThreadPool()
+    {
+        return new SwitchContextToThreadPoolAwaiter();
+    }
+}
+
+public struct SwitchContextToThreadPoolAwaiter : INotifyCompletion
+{
+    public SwitchContextToThreadPoolAwaiter GetAwaiter() { return this; }
+
+    public bool IsCompleted { get { return false; } }
+
+    public void OnCompleted(Action continuation)
+    {
+        if (!Thread.CurrentThread.IsThreadPoolThread)
+            ThreadPool.QueueUserWorkItem(state =&gt; ((Action)state)(), continuation);
+        else
+            continuation();
+    }
+
+    public void GetResult() { }
+}
+</code></pre>
+
+<h2>Summary</h2>
+
+<p>I dived into this because of randomly failing tests when I upgraded to nCrunch 2.2 beta, this was due to some false assumptions about how async/await worked in .net 4.0 and also because of some <em>helper</em> classes which scheduled work on the threadpool or on the main UI thread.
+Because of the way the SyncContext flowed, the nUnit synchronisation context was present where we thought it should not be. Because of this our code and helpers were not working correctly as the WPF UI DispatcherSynchronizationContext can be captured as a TaskScheduler and has a few other differences.</p>
+
+<p>In short</p>
+
+<ul>
+<li>.NET 4.0 flows the SynchronizationContext always, even when you use <code>.ConfigureAwait(false)</code></li>
+<li>.NET 4.5 does not flow the SynchronizationContext when you use <code>.ConfigureAwait(false)</code></li>
+<li>Don&rsquo;t try and use the nUnit SynchronizationContext as a task scheduler</li>
+<li>If you are using .NET 4.0, use TaskEx.Run to get off the UI Thread as fast as possible, then use an <code>await</code> in your viewmodel to capture the UI thread and bring you back to it</li>
+<li>Make sure your application code does not need to run on the UI thread, if you have services (like say an <code>IDialogService</code>) then it should post to the UI dispatcher in that service so it is effectively mocked in your unit tests. This was the main source of our issues with tests failing..</li>
+<li>Don&rsquo;t mix threading concerns and application code</li>
+</ul>
+
+
+<p>I Hope that helps a few people understand SynchronizationContexts, ExecutionContexts and how async/await works with either of them.</p>
+
+<h2>Resources</h2>
+
+<p><a href="http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx">Stephen Toub on ExecutionContext vs SynchronizationContext (talks about .net 4.5 behaviour)</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Blog Migration]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/01/05/blog-migration/"/>
+    <updated>2014-01-05T16:51:56+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/05/blog-migration</id>
+    <content type="html"><![CDATA[<p>I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site generators.</p>
+
+<p>Those of you subscribed to my RSS feeds will likely get duplications, sorry about that.</p>
+
+<h2>LinqPad Migration script</h2>
+
+<p>Migrates posts, and images (putting them in the correct spot for Jekyll sites and rewriting links in your blog posts as it goes)</p>
+
+<p>Available at <a href="http://share.linqpad.net/76oqrd.linq">http://share.linqpad.net/76oqrd.linq</a></p>
+
+<h2>Other Links</h2>
+
+<p><a href="https://github.com/tokkonopapa/octopress-tagcloud">https://github.com/tokkonopapa/octopress-tagcloud</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
+    <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
+    <updated>2013-12-17T00:00:00+00:00</updated>
+    <id>http://jake.ginnivan.net/gitreleasenotes</id>
+    <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
+
+<p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>
+
+<p>GitReleaseNotes was another project I kicked off about the same time that <a href="https://github.com/simoncropp">Simon Cropp</a> and <a href="https://github.com/andreasohlund">Andreas Öhlund</a> were kicking off similar projects, see <a href="https://github.com/Particular/ReleaseNotesCompiler">https://github.com/Particular/ReleaseNotesCompiler</a>. We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.</p>
+
+<!-- more -->
+
+
+<h2>What does it do</h2>
+
+<p>The concept is quite simple, you can optionally specify a Git tag (it will select the newest tag if you do not specify one). It will then scan all newer commits for references to issues.</p>
+
+<p>Once it has all the referenced commits, it will connect the issue tracker you specify, currently GitHub or Jira (and soon YouTrack, TFS and BitBucket) and fetch all the closed issues which have been referenced.
+It will then output your release notes in <a href="http://www.semanticreleasenotes.org/">Semantic Release Notes</a> format (which is also markdown) to a file you specify.</p>
+
+<p>It can also publish a release on GitHub, including the generated release notes.</p>
+
+<p>Here are some examples of the types of release notes it can generate:</p>
+
+<p><a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.ApproveSimpleTests.approved.txt">Simple single issue release</a><br/>
+<a href="https://github.com/JakeGinnivan/GitReleaseNotes/blob/master/src/GitReleaseNotes.Tests/ReleaseNotesGeneratorTests.MultipleReleases.approved.txt">Multiple releases</a></p>
+
+<h2>How to use it</h2>
+
+<p>GitReleaseNotes is a .NET exe, but can be used on ALL project types (JavaScript, Ruby, Java, whatever) because it simply works with Git and whatever issue tracker you use.</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /OutputFile ReleaseNotes.md
+</code></pre>
+
+<p>To Publish, just add the <code>/Publish</code> switch and specify the version you want to publish with the <code>/Version</code> switch. Like so</p>
+
+<pre><code>GitReleaseNotes.exe /IssueTracker Github /Repo JakeGinnivan/GitReleaseNotes /Token ######################### /Publish /Version 0.2.0
+</code></pre>
+
+<h2>How to setup on TeamCity</h2>
+
+<p>TeamCity is not required, but I like being able to press a button and my latest CI build gets published.</p>
+
+<p>Well, I am using <a href="https://github.com/JakeGinnivan/GitHubFlowVersion">GitHubFlowVersion</a> which helps me do Semantic Versioning with ease, but if you have another versioning strategy most of the instructions are the same.</p>
+
+<p>Assuming you have a CI build which creates the artifacts, or you have an existing build you will be adding to.</p>
+
+<ol>
+<li>Head to <a href="https://github.com/settings/applications">https://github.com/settings/applications</a> and create an access token</li>
+<li>Create a new configuration parameter in teamcity called <code>GitHubToken</code>, set the value to the access token you have just created and edit the spec field and paste in <code>password display='hidden'</code>, which will mean your GitHub access token will not be published into any build logs and will just be ####ed out.</li>
+<li>Your VCS root must be set to checkout <code>Automatically on Agent</code>, otherwise GitReleaseNotes will not run</li>
+<li>Make sure you check GitReleaseNotes.exe into source control so you can access it</li>
+<li>Create a new build step which is running a command line application, and make it look something like this<br/>
+ <code>GitReleaseNotes\GitReleaseNotes.exe /IssueTracker GitHub /Publish /Token %GitHubToken% /Repo JakeGinnivan/GitReleaseNotes /Version %dep.OpenSourceProjects_GitReleaseNotes_CI.system.GitHubFlowVersion.SemVer%</code></li>
+</ol>
+
+
+<p>My version number is the SemVer of my CI build, if you are using GitHubFlowVersion you will have to create a dummy system.GitHubFlowVersion.SemVer variable, otherwise you cannot reference it across builds (doesn&rsquo;t exist at configure time, it is created when you run GitHubFlowVersion).</p>
+
+<p>And thats it, you can have a build publishing your release notes to GitHub and this will also tag master with the version you have just published.</p>
+
+<p>There are still plenty of issues with this project and heaps of work to do, but I like the way it is shaping up. Feedback/contributions are welcome.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git Flow Versioning]]></title>
+    <link href="http://jake.ginnivan.net/git-flow-versioning/"/>
+    <updated>2013-10-02T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/git-flow-versioning</id>
+    <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
+
+<p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
+
+<p>Much to my surpise, it is actually very light-weight and you can drop much of it if your process is simpler (say for open source).</p>
+
+<p><a href="https://github.com/TestStack/ConventionTests">https://github.com/TestStack/ConventionTests</a> is my guinea pig!</p>
+
+<p>To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, &lsquo;upstream&rsquo; is the main repository, &lsquo;origin&rsquo; is my fork.</p>
+
+<!-- more -->
+
+
+<h2>1. Convert the repo over to git-flow</h2>
+
+<p>From your git command line</p>
+
+<pre><code>git checkout master
+git fetch upstream
+git merge upstream/master
+git checkout develop
+git push upstream develop
+</code></pre>
+
+<p>This pushes the <code>develop</code> branch into your repo, then head to the project settings in github and change the default branch to <code>develop</code>.</p>
+
+<h2>2. Install GitFlowVersion</h2>
+
+<p>I am a big fan on Simon Cropp&rsquo;s (<a href="https://twitter.com/SimonCropp">https://twitter.com/SimonCropp</a>) work. He has been working on <a href="https://github.com/Particular/GitFlowVersion">https://github.com/Particular/GitFlowVersion</a> with Andreas Öhlund.</p>
+
+<p>Basically GitFlowVersion uses the conventions in place in git-flow to make it really easy to version your software.</p>
+
+<p>Once up and running, tags off <code>master</code> get a normal version, say <code>v2.1.0</code> (assume this is the LAST tagged release), develop CI builds get the version <code>v2.2.0-unstable20</code> where the minor is LASTMINOR + 1 and there has been 20 commits since the last tag on master. Or <code>v&lt;major&gt;.&lt;minor+1&gt;.0-unstable&lt;#commitssincelastrelease&gt;</code>
+Release branches have a version of <code>v2.2.0-beta</code> where 2.2.0 is the version you have put in the release branch name (in this case <code>release-2.2.0</code>)
+You can also tag a release branch as <code>rc1</code> or <code>rc2</code> and the version will become <code>v2.2.0-&lt;tag&gt;</code>.</p>
+
+<p>If this sounds confusing, its not, and it is all pretty automatic, read on to see what it actually means for you maintaining a project.</p>
+
+<h2>3. Contributing/Pull Requests</h2>
+
+<p>I always use feature branches, but not for an entire feature. I use very short lived branches, which I put up as a pull request as soon as I am done. I am known to submit 3+ pull requests all within the space of an hour when I work on a project because I just fix a bunch of small things.</p>
+
+<p>Nothing much changes here, except you take you branch from <code>develop</code>. So</p>
+
+<pre><code>git checkout develop
+git fetch upstream
+git merge upstream/develop
+git checkout -b FixingSomething
+</code></pre>
+
+<p>Pull requests now target <code>develop</code>, so I do my commits, push to origin like normal and submit my pull request targeting <code>develop</code></p>
+
+<p>Your CI build (assuming you are building pull requests) will trigger with build number <code>v2.2.0-PullRequest50</code>, where the version is the last release, with the minor bumped, just like develop version numbers, except the semver tag is PullRequest&lt;PR#>.
+I think that is pretty neat.</p>
+
+<h2>4. Releasing a new version</h2>
+
+<p>When you decide you want to release, or start preparing a release you can either take a release branch, or merge develop straight into master and tag master with the release (afaik this doesn&rsquo;t cause any issues :P)</p>
+
+<p>In my mind there are two styles to run a project,</p>
+
+<ol>
+<li>every checkin builds, then if tests pass autodeploys. These projects cannot adhere to semantic versioning, but the changes are often so tiny that upgrades pose little risk.</li>
+<li>At some point in time, the decision to release is made, this could be as soon as a pull request is merged, or after a particular milestone is reached. All the projects I am currently contributing to work in this way.</li>
+</ol>
+
+
+<h3>4.1 Using a release branch</h3>
+
+<p>Using a release branch allows you to make the decision I am going to release, there may be a few things I know I have to do before releasing (DbUp is a great example of this). But I don&rsquo;t want to stop being able to merge pull requests. To release using a branch (assume develop is up to date), and I am only fixing a bug in the current v2.1.0 release</p>
+
+<pre><code>git checkout -b release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release start 2.1.1
+</code></pre>
+
+<p>I can now leave this branch open for a bit, do the work I need to do to release 2.1.1 or send it to someone else on the team to OK. I could even release the 2.1.1 build as a pre-release package on NuGet. It would have version 2.1.1-beta1 remember.</p>
+
+<p>Once I am happy, either the pre-release package has got the feedback I wanted, or I have made the additional changes I need I simply merge the branch to master (with the &ndash;no-ff option), tag, then delete the remote branchs. Remember this is if you are doing it manually, you can also just go <code>git flow release finish</code> if you have the git-flow extensions installed, or use source tree and click a button :P The first two commands are not needed if you haven&rsquo;t committed anything to the release branch</p>
+
+<pre><code>git checkout develop
+git merge release-2.1.1 --no-ff
+git checkout master
+git merge release-2.1.1 --no-ff
+git tag 2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release finish 2.1.1
+</code></pre>
+
+<p>Then publish</p>
+
+<pre><code>git push upstream master
+git push --tags
+git branch -d release-2.1.1
+git push upstream :release-2.1.1
+</code></pre>
+
+<p>or</p>
+
+<pre><code>git flow release publish 2.1.1
+</code></pre>
+
+<h3>4.2 Skip release branch</h3>
+
+<p>If you don&rsquo;t want to bother with the release branch, you could also just go</p>
+
+<pre><code>git checkout master
+git merge develop --no-ff
+git tag 2.1.1
+git push upstream master
+git push --tags
+</code></pre>
+
+<h2>5. Publish the build</h2>
+
+<p>Now you have the release build from your CI you can progress through your build pipeline and release to NuGet or publish to a test environment or whatever the first step is in your Continuous Delivery pipeline.</p>
+
+<h2>That&rsquo;s it</h2>
+
+<p>I think Git-Flow is actually not too bad for releasing projects using semantic versioning, most of the time in this is writing the release notes, seeing what has changed since the last release (which is really easy due to the conventions in place!) and checking to see if you have any breaking changes which would mean a major version bump.</p>
+
+<p>As a summary. Here is me fixing and releasing a feature as a pre-release package. The current version on NuGet is currently v2.2.0</p>
+
+<pre><code>git fetch upstream
+git checkout develop
+git merge upstream/develop
+git checkout -b SomeFeature
+
+# Work..
+git commit -am "Some experimental feature"
+git push origin SomeFeature
+
+# Submit pull request, so NOTHING has changed yet, this PR is merged
+git fetch upstream
+git checkout develop
+git merge upstream/develop # to get my changes into my local develop branch
+
+# So now I am starting the release, nothing before here is new if you are using GitHub flow
+git checkout -b release-2.3.0
+git push upstream release-2.3.0
+</code></pre>
+
+<p>Now my CI builds, and I click the button to promote the last CI build as a pre-release NuGet package. Once I am happy, I have got my feedback</p>
+
+<pre><code>git checkout master
+git merge release-2.3.0 --no-ff
+git tag 2.3.0
+git push upstream master
+git push upstream --tags
+</code></pre>
+
+<p>My CI will build, and I can click the publish button on teamcity to release to NuGet.</p>
+
+<p>Thoughts? Do you know of an easier way. I am REALLY open to suggestions and willing to try stuff out at the moment :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Release NuGet SemVer Packages From Teamcity]]></title>
+    <link href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity/"/>
+    <updated>2013-09-28T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</id>
+    <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
+
+<p>My goals were</p>
+
+<ul>
+<li>Use GitHubs releases feature - <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>I want to release from NuGet</li>
+<li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
+<li>Support SemVer, including pre-release packages</li>
+<li>Assembly versions should be stamped with informational version as well as a version</li>
+<li>Be able to link to the project GitHub releases from the NuSpec</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h1>My Solution</h1>
+
+<h2>1. Setup the VCS Root to be authenticated</h2>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/ReleaseNuGetSemVerpackagesfromTeamcity.png" alt="ReleaseNuGetSemVerpackagesfromTeamcity" /></p>
+
+<p>Then tell TeamCity to Label Successful builds
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity11_635160285120295000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity11" /></p>
+
+<h2>2. Setup some additional build parameters</h2>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity_635160285057326250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity" /></p>
+
+<h3>2.1. AssemblyVersion</h3>
+
+<p>This is the assembly version, only change this for major releases, this will save people adding binding redirects when different projects rely on different versions
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity1_635160285061232500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity1" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity2_635160285065138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity2" /></p>
+
+<p>If you want the text version of the spec, it is</p>
+
+<pre><code>text description='The assembly version which will be stamped (assembly info version/nuget version will be the build number)' display='prompt' label='AssemblyVersion' validationMode='not_empty'
+</code></pre>
+
+<h3>2.2. Prerelease</h3>
+
+<p>This is a checkbox, when ticked it&rsquo;s value is <code>-pre</code> so we can just use it in the version
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity3_635160285069201250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity3" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity4_635160285073263750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity4" /></p>
+
+<p>Once again the text version of the spec is</p>
+
+<pre><code>checkbox checkedValue='-pre' description='Check this box if you want a pre-release' display='prompt' label='PreRelease?'
+</code></pre>
+
+<h3>2.3. Version</h3>
+
+<p>This is the version which you will pass to NuGet when you are creating your package
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity5_635160285077170000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity5" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity6_635160285081076250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity6" /></p>
+
+<pre><code>text description='This is the version number, adjust the major/minor as needed to conform to semver' display='prompt' label='VersionNumber' validationMode='not_empty'
+</code></pre>
+
+<h3>2.4. env.Version</h3>
+
+<p>This is just so the version gets set as an environmental variable so my build scripts can pick it up</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity7_635160285084513750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity7" /></p>
+
+<p>I am not sure if this is actually needed.</p>
+
+<h2>3. Build Steps</h2>
+
+<p>I always have a <code>.proj</code> file checked in for all of my projects which contain all logic to build the solution, I just have to tell teamcity what targets to invoke. If you want to view my build script, check out <a href="https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj">https://github.com/TestStack/ConventionTests/blob/master/ConventionTests.proj</a></p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity8_635160285101388750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity8" /></p>
+
+<p>The Test target builds and runs my unit tests, then the Publish Target builds the NuGet packages, step 2 of my TeamCity build is Publish to NuGet</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity9_635160285112638750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity9" /></p>
+
+<p>Finally, the assembly info stamping build feature. Click <strong>Add build feature</strong></p>
+
+<p>We want to use two different versions from our config, remember from above we have</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity10_635160285116545000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity10" /></p>
+
+<h2>4. Update the build version</h2>
+
+<p>Finally go to the General Settings of your build, and update the build number format to be: <code>%Version%</code> and we set the build counter to 0</p>
+
+<h1>Releasing a new version</h1>
+
+<p>So now, we have to stick to SemVer, let us run through a scenario of releasing a minor release (new non-breaking feature) of TestStack.ConventionTests. The current release is v2.0.0. I first need to reset the build counter back to 0, if you don&rsquo;t want to mess with the build counter, just change the VersionNumber variable to have a manually updated patch version. This actually is probably better because then the version numbers are more predictable.</p>
+
+<h2>Create release definition in GitHub</h2>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity16_635160285172951250.png" alt="Release-NuGet-SemVer-packages-from-Teamcity16" />
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity17_635160285176857500.png" alt="Release-NuGet-SemVer-packages-from-Teamcity17" /></p>
+
+<p>Specify the release notes for this release
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity18_635160285180763750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity18" /></p>
+
+<p>Do not have the Publish Release box ticked, otherwise GitHub will create the tag for you.</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity19_635160285184670000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity19" /></p>
+
+<h2>Release from TeamCity</h2>
+
+<p>I click <em>Run</em> in TeamCity, and I will be prompted to confirm everything</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity14_635160285165138750.png" alt="Release-NuGet-SemVer-packages-from-Teamcity14" /></p>
+
+<p>Because this is a minor release, I increment the minor version number
+<img src="http://jake.ginnivan.net/assets/posts/2013-09-28-release-nuget-semver-packages-from-teamcity/Release-NuGet-SemVer-packages-from-Teamcity15_635160285169045000.png" alt="Release-NuGet-SemVer-packages-from-Teamcity15" /></p>
+
+<p>Now hit run, this will publish to NuGet and create the tag in Git. The final step is to go back to GitHub and publish the release (this is not done automatically, and I&rsquo;m sure it could be automated through the GitHub API).</p>
+
+<p>This is my first attempt at making it easy for me to release my open source projects with SemVer and GitHub Releases</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convention Tests V2 Released]]></title>
+    <link href="http://jake.ginnivan.net/conventiontests-v2-released/"/>
+    <updated>2013-09-19T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/conventiontests-v2-released</id>
+    <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
+
+<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
+
+<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
+
+<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
+
+<h2>What is ConventionTests?</h2>
+
+<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
+
+<!-- more -->
+
+
+<h2>Getting Started</h2>
+
+<p>It is really easy to get started with Convention Tests, we have included a bunch of conventions out of the box. The included conventions are:</p>
+
+<ul>
+<li>All Classes Have Default Constructor</li>
+<li>All Methods are Virtual</li>
+<li>Class type has specific namespace (for example, all dtos must live in the ProjectName.Dtos namespace)</li>
+<li>Files are Embedded Resources</li>
+<li>Project does not reference dlls from Bin or Obj directory</li>
+<li>Plus others will be added!</li>
+</ul>
+
+
+<h3>Writing your first Convention test</h3>
+
+<h4>1. Using your favourite testing framework, create a new test. Lets call it <code>nhibernate_entities_must_have_default_constructor</code></h4>
+
+<h4>2. Define some data</h4>
+
+<p>At the moment there is minimal support for type scanning, but better support will be added soon!</p>
+
+<pre><code>var itemsToVerify = typeof (SampleDomainClass).Assembly.GetTypes();
+var nhibernateEntities = new Types("nHibernate Entitites")
+{
+    TypesToVerify = itemsToVerify
+};
+</code></pre>
+
+<h4>3. Assert the convention</h4>
+
+<p><code>Convention.Is(new AllClassesHaveDefaultConstructor(), nhibernateEntities);</code></p>
+
+<h4>That&rsquo;s it!</h4>
+
+<p>When you run this convention, if it fails an exception will be thrown, which will look something like this:</p>
+
+<pre><code>ConventionFailedException
+Message = Failed: 'Types must have a default constructor' for 'nHibernate Entitites'
+--------------------------------------------------------------------------
+
+TestAssembly.ClassWithNoDefaultCtor
+TestAssembly.ClassWithPrivateDefaultCtor
+</code></pre>
+
+<p>How cool is that!</p>
+
+<h3>Reporting</h3>
+
+<p>If you would like to use ConventionTests reporting features, you just have to opt in by specifying the reporter you want. This makes it easy to add your own reporters, for example a WikiReporter may be better than the <code>HtmlReporter</code></p>
+
+<p>In your <code>Properties\AssemblyInfo.cs</code> file add the reporters you want. This are global reporters which will report the results of all conventions.</p>
+
+<pre><code>[assembly: ConventionReporter(typeof(HtmlConventionResultsReporter))]
+[assembly: ConventionReporter(typeof(MarkdownConventionResultsReporter))]
+</code></pre>
+
+<p>Then if you look in the directory where your test assembly is, there will be an html report called <code>Conventions.htm</code>, serving as living documentation!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pack URI in Unit Tests]]></title>
+    <link href="http://jake.ginnivan.net/pack-uri-in-unit-tests/"/>
+    <updated>2013-09-16T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/pack-uri-in-unit-tests</id>
+    <content type="html"><![CDATA[<p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
+
+<h2>Exception 1</h2>
+
+<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
+
+<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
+
+<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
+</code></pre>
+
+<h2>Exception 2</h2>
+
+<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
+
+<p>This one is fixed by giving WPF the default resource assembly.</p>
+
+<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
+</code></pre>
+
+<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Verifying Logged Messages With Log4Net]]></title>
+    <link href="http://jake.ginnivan.net/verifying-logged-messages-with-log4net/"/>
+    <updated>2013-09-13T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/verifying-logged-messages-with-log4net</id>
+    <content type="html"><![CDATA[<p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
+
+<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
+</code></pre>
+
+<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
+
+<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
+</code></pre>
+
+<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
+
+<!-- more -->
+
+
+<pre><code>[TestFixture]
+public class RecordTest
+{
+    [Test]
+    public void DoTest()
+    {
+        var testing = Log4NetTestHelper.RecordLog(() =&gt;
+        {
+            var log = LogManager.GetLogger(typeof (RecordTest));
+            log.Error("Testing!");
+        });
+
+        Assert.AreEqual("ERROR - RecordTest | Testing!", testing[0]);
+    }
+}
+</code></pre>
+
+<p>Pretty easy, you record the logs which are logged inside a lambda. This means you don&rsquo;t have to inject logs and modify your code if you decide you want to assert on a logged message</p>
+
+<p>The class to do this is pretty simple</p>
+
+<pre><code>public static class Log4NetTestHelper
+{
+    public static string[] RecordLog(Action action)
+    {
+        if (!LogManager.GetRepository().Configured)
+            BasicConfigurator.Configure();
+        var logMessages = new List&lt;string&gt;();
+        var root = ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root;
+        var attachable = root as IAppenderAttachable;
+
+        var appender = new MemoryAppender();
+        if (attachable != null)
+            attachable.AddAppender(appender);
+
+        try
+        {           
+            action();
+        }
+        finally
+        {
+            var loggingEvents = appender.GetEvents();
+            foreach (var loggingEvent in loggingEvents)
+            {
+                var stringWriter = new StringWriter();
+                loggingEvent.WriteRenderedMessage(stringWriter);
+                logMessages.Add(string.Format("{0} - {1} | {2}", loggingEvent.Level.DisplayName, loggingEvent.LoggerName, stringWriter.ToString()));
+            }
+            if (attachable != null)
+                attachable.RemoveAppender(appender);
+        }
+
+        return logMessages.ToArray();
+    }
+}
+</code></pre>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce Signing Error]]></title>
+    <link href="http://jake.ginnivan.net/clickonce-signing-error/"/>
+    <updated>2013-09-13T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/clickonce-signing-error</id>
+    <content type="html"><![CDATA[<p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
+
+<p>The command:</p>
+
+<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
+</code></pre>
+
+<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
+
+<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
+
+<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
+    <link href="http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin/"/>
+    <updated>2013-09-09T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin</id>
+    <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
+
+<p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
+
+<p>Here are some screenshots</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture2.PNG" alt="Options" /></p>
+
+<p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
+
+<p>Check out the code, report issues and submit pull requests at <a href="https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup">https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup</a> and install from <a href="https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/">ReSharper Extensions Site</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ClickOnce From Azure Blob Storage]]></title>
+    <link href="http://jake.ginnivan.net/clickonce-from-azure-blob-storage/"/>
+    <updated>2013-08-08T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/clickonce-from-azure-blob-storage</id>
+    <content type="html"><![CDATA[<p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
+
+<h2>Creating the ClickOnce installer</h2>
+
+<p>I don&rsquo;t like using the publish feature in VS for my ClickOnce installers, it causes more problems than it solves. I tend to use Mage directly, but this is sometimes not that easy to figure out how to do it. Lets start by creating our installer.</p>
+
+<p>I am using MSBuild as my build platform, but these instructions can be adapted to anything really.</p>
+
+<!-- more -->
+
+
+<h3>Properties</h3>
+
+<pre><code>&lt;PropertyGroup&gt;
+  &lt;Version Condition="$(VERSION)==''"&gt;0.0.0.1&lt;/Version&gt;
+  &lt;ClickOnceFolder&gt;$(MSBuildProjectDirectory)artifacts\ClickOnce\&lt;/ClickOnceFolder&gt;
+  &lt;ClickOnceFiles&gt;$(ClickOnceFolder)$(Version)\&lt;/ClickOnceFiles&gt;
+  &lt;Mage&gt;$(MSBuildProjectDirectory)tools\mage.exe&lt;/Mage&gt;
+  &lt;ProviderUrlArg Condition="$(ProviderUrl)!=''"&gt;-ProviderURL $(ProviderUrl)&lt;/ProviderUrlArg&gt;
+  &lt;ClickOnceName Condition="$(ClickOnceName)==''"&gt;MarkPad&lt;/ClickOnceName&gt;
+&lt;/PropertyGroup&gt;
+&lt;ItemGroup&gt;
+  &lt;SourceFiles Include="$(MSBuildProjectDirectory)src\My.App\bin\$(Configuration)\**\*.*" /&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+
+<p>The provider URL is so we can embed the installation URL into the installer, this will make ClickOnce work in Chrome and other browsers. Chrome downloads the .application file, then the user runs it from the <code>Downloads</code> folder, at that point ClickOnce has no idea where it was downloaded from, so the install fails.
+With the provider url embedded, it will work as expected.</p>
+
+<p>Most of the properties above should be easy to understand what they are for.</p>
+
+<h3>Creating the installer</h3>
+
+<h4>1. Copy the application binaries into a Version folder</h4>
+
+<pre><code>&lt;Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ClickOnceFiles)%(SourceFiles.RecursiveDir)"/&gt;
+</code></pre>
+
+<h4>2. Create the .manifest file for the application</h4>
+
+<pre><code>&lt;Exec Command="$(Mage) -New Application -ToFile $(ClickOnceFiles)MyApp.exe.manifest -Processor x86 -name &amp;quot;$(ClickOnceName)&amp;quot; -Version $(Version) -FromDirectory $(ClickOnceFiles) -IconFile icon.ico" /&gt;
+</code></pre>
+
+<p>This creates the .manifest file, which is information about that particular version of the software. It lives inside the folder with all the binaries.</p>
+
+<h4>3. Perform updates to manifest (optional)</h4>
+
+<pre><code>&lt;Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -NoProfile $(Root)tools\UpdateManifest.ps1 -ManifestFile $(ClickOnceFiles)MyApp.exe.manifest" /&gt;
+</code></pre>
+
+<p>If you have issues with certain assemblies failing the checksum (normally because of native dlls), I have used this code to fix the issue:</p>
+
+<pre><code>Param($ManifestFile) 
+write-host "Fixing up Manifest File"
+write-host $ManifestFile
+
+[xml]$xml = get-content $ManifestFile
+
+$elementsToRewrite = $xml.assembly.dependency | where {$_.dependentAssembly.codebase -ne $null -and ($_.dependentAssembly.codebase.Contains("CefSharp") -or $_.dependentAssembly.codebase.Contains("NHunspell")) }
+foreach ($elementToRewrite in $elementsToRewrite)
+{
+    $fileNode = $xml.CreateElement("file", "urn:schemas-microsoft-com:asm.v2")
+    $fileNode.SetAttribute("name", $elementToRewrite.dependentAssembly.codebase)    
+    $fileNode.SetAttribute("size", $elementToRewrite.dependentAssembly.size)
+    $fileNode.AppendChild($elementToRewrite.dependentAssembly.hash) 
+    $xml.assembly.AppendChild($fileNode)
+    [Void]$xml.assembly.RemoveChild($elementToRewrite)
+}
+
+$xml.Save($ManifestFile)
+
+write-host "Fixed Manfiest File"
+</code></pre>
+
+<p>Skip this step by default, introduce if you need it.</p>
+
+<h4>4. Sign the .manifest file (optional)</h4>
+
+<p>If you want to sign your installer, this is where you do that.</p>
+
+<pre><code>&lt;Exec Command="$(Mage) -sign MyApp.manifest -CertFile $(Certificate) -Password $(CertPassword)" /&gt;
+</code></pre>
+
+<h4>5. Create the .application file</h4>
+
+<pre><code>&lt;Exec Command="$(Mage) -New Deployment -ToFile $(ClickOnceFolder)MyApp.application -name &amp;quot;$(ClickOnceName)&amp;quot; -Processor x86 -Install true -Version $(Version) -Publisher &amp;quot;Your Company&amp;quot; -AppManifest $(ClickOnceFiles)MyApp.exe.manifest $(ProviderUrlArg)" /&gt;
+</code></pre>
+
+<p>This generates your deployment</p>
+
+<h4>7. Update your deployment settings (optional)</h4>
+
+<pre><code>&lt;Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -NoProfile $(Root)tools\UpdateApplicationManifest.ps1 -ManifestFile $(ClickOnceFolder)MyApp.application" /&gt;
+</code></pre>
+
+<p>The powershell script looks like this</p>
+
+<pre><code>Param($ManifestFile) 
+write-host "Fixing up Manifest File"
+write-host $ManifestFile
+
+[xml]$xml = get-content $ManifestFile
+
+$xml.assembly.deployment.SetAttribute("trustURLParameters", "true")
+$xml.assembly.deployment.SetAttribute("mapFileExtensions", "true")
+
+# Uncomment to tell your app to update before startup
+#$xml.assembly.deployment.subscription.update.RemoveAll()
+#$updateNode = $xml.CreateElement("beforeApplicationStartup", "urn:schemas-microsoft-com:asm.v2")
+#$xml.assembly.deployment.subscription.Item("update").AppendChild($updateNode)
+
+$xml.Save($ManifestFile)
+
+write-host "Fixed Manfiest File"
+</code></pre>
+
+<p>This is where you can change when you want your app to check for updates, and modify deployment settings. More information about this file available at <a href="http://msdn.microsoft.com/en-us/library/k26e96zf.aspx">http://msdn.microsoft.com/en-us/library/k26e96zf.aspx</a></p>
+
+<h4>7. Sign your deployment (optional)</h4>
+
+<pre><code>&lt;Exec Command="$(Mage) -update MyApp.application -appmanifest MyApp.manifest -CertFile $(Certificate) -Password $(CertPassword)" /&gt;
+</code></pre>
+
+<p>This signs your deployment.</p>
+
+<h4>8. Rename binaries to have the .deploy extension</h4>
+
+<pre><code>&lt;ItemGroup&gt;
+  &lt;DeploymentFiles Include="$(ClickOnceFiles)**\*.*" Exclude="$(ClickOnceFiles)MarkPad.exe.manifest" /&gt;
+&lt;/ItemGroup&gt;
+
+&lt;Move SourceFiles="@(DeploymentFiles)" DestinationFiles="@(DeploymentFiles-&gt;'%(RootDir)%(Directory)%(FileName)%(Extension).deploy')" /&gt;
+</code></pre>
+
+<p>This is so webservers will serve all the files, some extensions will not be served on some web servers, this gets around that issue.</p>
+
+<p>To see it all working together, check out MarkPad&rsquo;s build script at <a href="https://github.com/Code52/DownmarkerWPF/blob/master/Markpad.msbuild#L31">https://github.com/Code52/DownmarkerWPF/blob/master/Markpad.msbuild#L31</a></p>
+
+<h2>Deploying to Azure</h2>
+
+<h3>Setup a storage account</h3>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure.png" alt="Create Storage Account" /></p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure1.png" alt="Create Storage Account 2" /></p>
+
+<p>Once created, go to the <code>containers</code> tab, then add a new container.
+<img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure2.png" alt="Create Container" /></p>
+
+<p>Make sure you choose <code>Public Container</code> as the access level, otherwise things will not work!</p>
+
+<h3>Uploading deployment to Azure Storage</h3>
+
+<p>For this I use a utility from the Azure team called AzCopy. See the blog post at <a href="http://blogs.msdn.com/b/windowsazurestorage/archive/2013/04/01/azcopy-using-cross-account-copy-blob.aspx">http://blogs.msdn.com/b/windowsazurestorage/archive/2013/04/01/azcopy-using-cross-account-copy-blob.aspx</a> and download it from <a href="http://go.microsoft.com/fwlink/?LinkId=287086">http://go.microsoft.com/fwlink/?LinkId=287086</a></p>
+
+<p>Upload steps</p>
+
+<pre><code>&lt;!--$(BlobTargetUrl) = https://myaccount.blob.core.windows.net/mycontainer/ --&gt;
+
+&lt;!--Upload everything except the application manifest as it should be done last (once everything else is uploaded)--&gt;
+&lt;Move SourceFiles="$(ClickOnceFolder)MyApp.application" DestinationFolder="$(ClickOnceFolder)ClickOnceApplicationFile\" /&gt;
+&lt;Exec Command="$(Root)tools\AzCopy.exe $(ClickOnceFolder) $(BlobTargetUrl) /destkey:$(BlobTargetKey) /S /V /Y" /&gt;
+&lt;Exec Command="$(Root)tools\AzCopy.exe $(ClickOnceFolder)ClickOnceApplicationFile\ $(BlobTargetUrl) /destkey:$(BlobTargetKey) /S /V /Y" /&gt;
+</code></pre>
+
+<p>What we are doing here is moving all the files, except the .application file, and uploading them first. Then finally uploading the .application file once all the other files are uploaded. This is so you do not have a corrupted installer while you are uploading the new version.</p>
+
+<h3>Install from Azure</h3>
+
+<p>Now you just point at the .application file, for example MarkPad&rsquo;s nightly is available from <a href="http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application">http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application</a></p>
+
+<p>Hope this helps you out, I have found this is a really cheap and easy way to get ClickOnce installers out there!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Automated Project Environment Setup]]></title>
+    <link href="http://jake.ginnivan.net/automated-project-environment-setup/"/>
+    <updated>2013-08-08T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/automated-project-environment-setup</id>
+    <content type="html"><![CDATA[<h2>Web Project Dev Environment</h2>
+
+<p>A common problem projects have is when a new dev joins the team is they hopefully have to follow a bunch of instructions to set everything up. Most of the time, those instructions are out of date so another member of the team ends up setting everything up.</p>
+
+<p>Depending on the complexity of the project, this can be quite time consuming.</p>
+
+<p>The last project I was on was greenfields, so from day 1 we had a <code>Setup Dev Environment.ps1</code> file in the root of the project. This powershell script did the following:</p>
+
+<ul>
+<li>Installed IIS, and all the components we needed (windows auth, .net etc)</li>
+<li>Registered asp.net with IIS</li>
+<li>Created Websites with host headers for each of the sites in the project (we ended up having 3 different websites)</li>
+<li>Opened the HOSTS file in notepad (elevated) and printed out the lines you needed to paste into your HOSTS file</li>
+</ul>
+
+
+<p>Over time, this script gained more and more features. But when a new team member joined the team, they just ran this script which installed/configured everything.</p>
+
+<p>Why IIS you may ask, instead of say IIS Express. Well this approach means each site had it&rsquo;s own domain, so fiddler works out of the box. It also means that our UI Test suite doesn&rsquo;t have to fire up IIS Express to run it&rsquo;s tests.</p>
+
+<!-- more -->
+
+
+<h3>The script</h3>
+
+<p>This is what our script looked like</p>
+
+<pre><code>&amp; DISM /Online /Enable-Feature /All `
+/FeatureName:IIS-ApplicationDevelopment `
+/FeatureName:IIS-ASPNET `
+/FeatureName:IIS-BasicAuthentication `
+/FeatureName:IIS-CommonHttpFeatures `
+/FeatureName:IIS-DefaultDocument `
+/FeatureName:IIS-DirectoryBrowsing `
+/FeatureName:IIS-HttpErrors `
+/FeatureName:IIS-HttpLogging `
+/FeatureName:IIS-HttpRedirect `
+/FeatureName:IIS-HttpTracing `
+/FeatureName:IIS-ISAPIFilter `
+/FeatureName:IIS-ISAPIExtensions `
+/FeatureName:IIS-IIS6ManagementCompatibility `
+/FeatureName:IIS-ManagementConsole `
+/FeatureName:IIS-ManagementScriptingTools `
+/FeatureName:IIS-Metabase `
+/FeatureName:IIS-NetFxExtensibility `
+/FeatureName:IIS-ASPNET45 `
+/FeatureName:IIS-NetFxExtensibility45 `
+/FeatureName:NetFx4Extended-ASPNET45 `
+/FeatureName:IIS-Security `
+/FeatureName:IIS-ServerSideIncludes `
+/FeatureName:IIS-StaticContent `
+/FeatureName:IIS-WebServer `
+/FeatureName:IIS-WebServerManagementTools `
+/FeatureName:IIS-WebServerRole `
+/FeatureName:IIS-WindowsAuthentication `
+/FeatureName:IIS-WMICompatibility `
+/FeatureName:WAS-ConfigurationAPI `
+/FeatureName:WAS-NetFxEnvironment `
+/FeatureName:WAS-ProcessModel `
+/FeatureName:WAS-WindowsActivationService
+
+&amp; C:\Windows\Microsoft.NET\Framework\v4.0.30319\aspnet_regiis.exe -i
+
+$invocation = (Get-Variable MyInvocation).Value
+$directorypath = Split-Path $invocation.MyCommand.Path
+$physicalPath = Join-Path $directorypath "src\SampleWebSite"
+$adminWebPhysicalPath = Join-Path $directorypath "src\Project.AdminWeb"
+$guestServicesPhysicalPath = Join-Path $directorypath "src\Project.GuestServices"
+$fakeApiPhysicalPath = Join-Path $directorypath "src\FakeSiteApi"
+$elevate = Join-Path $directorypath "tools\Elevate.exe"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:SampleWebSiteAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='SampleWebSiteAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:SampleWebSite /physicalPath:$physicalPath /bindings:http/*:80:samplewebsite.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "SampleWebSite/" /applicationPool:"SampleWebSiteAppPool"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:AdminSiteAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='AdminWebAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"AdminSite" /physicalpath:"$adminWebPhysicalPath" /bindings:http/*:80:adminsite.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "AdminSite/" /applicationPool:"AdminSiteAppPool"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:GuestServicesAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='GuestServicesAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"GuestServices" /physicalPath:$guestServicesPhysicalPath /bindings:http/*:80:guestservices.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "GuestServices/" /applicationPool:"GuestServicesAppPool"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:FakeApiAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='FakeEmbedApiAppPool'].processModel.identityType:LocalSystem"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"FakeApi" /physicalPath:$fakeEmbedApiPhysicalPath /bindings:http/*:80:siteapi.net
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "FakeApi/" /applicationPool:"FakeApiAppPool"
+
+Write-Host "Add the following lines to your hosts file:" -ForegroundColor red
+Write-Host "127.0.0.1      samplewebsite.net" -ForegroundColor yellow
+Write-Host "127.0.0.1      adminsite.net" -ForegroundColor yellow
+Write-Host "127.0.0.1      guestservices.net" -ForegroundColor yellow
+Write-Host "127.0.0.1      siteapi.net" -ForegroundColor yellow
+Write-Host ""
+
+Start-Process $elevate -ArgumentList "notepad c:\Windows\system32\drivers\etc\hosts"
+</code></pre>
+
+<p>You can also put unattended installs for SQL, or any other dependencies your project has.</p>
+
+<h2>Build Server considerations</h2>
+
+<p>We also were running UI Tests using <a href="http://teststack.net/TestStack.Seleno/">http://teststack.net/TestStack.Seleno/</a></p>
+
+<p>This meant we needed our build server setup to be able to run the project, as well as build it. The great thing about this script, is you can reuse it to set up your build server.</p>
+
+<p>For the build server, we had another script, which would re-map the IIS sites to the correct folder (as teamcity can checkout your code to different folders, we didn&rsquo;t want to set things up over and over).</p>
+
+<p>The script looked like this</p>
+
+<pre><code>$invocation = (Get-Variable MyInvocation).Value
+$directorypath = Split-Path $invocation.MyCommand.Path
+$physicalPath = Join-Path $directorypath "src\SampleWebSite"
+$adminWebPhysicalPath = Join-Path $directorypath "src\AdminWeb"
+$guestServicesPhysicalPath = Join-Path $directorypath "src\GuestServices"
+$fakeApiPhysicalPath = Join-Path $directorypath "src\FakeApi"
+$elevate = Join-Path $directorypath "tools\Elevate.exe"
+
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "SampleWebSite/" /physicalPath:"$physicalPath"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "AdminSite/" /physicalpath:"$adminWebPhysicalPath"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "GuestServices/" /physicalpath:"$guestServicesPhysicalPath"
+&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "FakeApi/" /physicalpath:"$fakeApiPhysicalPath"
+</code></pre>
+
+<p>Just execute this as part of your build process before you run your UI Automation tests.</p>
+
+<h2>Wrapping up</h2>
+
+<p>I encourage you to create your own SetupEnvironment.ps1 script on the project you are on at the moment, it will be well worth the time investment over the lifetime of the project (we found it had saved us time within a few weeks).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
+    <link href="http://jake.ginnivan.net/vsto-contrib/v0-12-released/"/>
+    <updated>2013-08-06T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/vsto-contrib/v0-12-released</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
+
+<p>This release is aimed at fixing a bunch of bugs, like some callbacks not working, creating a viewmodel instance for when no documents are open and supporting Office 2013!
+Due to the complexities of supporting multiple versions, I have dropped Office 2007 support. Please let me know if this is a major issue, and I might try to add it back in next release.</p>
+
+<p>I have also released a getting started video. This is one of the first screencasts I have done, so I will likely do it again next release. Also when you install VSTO Contrib, a readme will popup, this will help you get started.</p>
+
+<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+
+
+<p>I will try to produce some documentation/blog posts on VSTO Contrib over the next few weeks.</p>
+
+<p>From now, I will be tracking changes/fixes a lot better. Please report any issues at <a href="https://github.com/JakeGinnivan/VSTOContrib/issues">https://github.com/JakeGinnivan/VSTOContrib/issues</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
+    <link href="http://jake.ginnivan.net/teststack-white-v0-11/"/>
+    <updated>2013-08-01T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/teststack-white-v0-11</id>
+    <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
+
+<p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
+
+<p>The previous test suite was often red, which meant that it was hard to know if there were regressions as other issues were fixed.</p>
+
+<p>You can see the CI status at <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;branch_TestStack_White=__all_branches__">http://teamcity.ginnivan.net/project.html?projectId=TestStack_White</a></p>
+
+<!-- more -->
+
+
+<h2>TestStack.White.ScreenObjects</h2>
+
+<p>Also released is <a href="https://www.nuget.org/packages/TestStack.White.ScreenObjects">https://www.nuget.org/packages/TestStack.White.ScreenObjects</a></p>
+
+<p>This is the old White.Repository project, finally released on NuGet. Hopefully there should be some updates to this project coming up as well!</p>
+
+<h2>Namespace Change</h2>
+
+<p>Being part of TestStack now, we wanted to bring White&rsquo;s namespace into line with the other TestStack projects.</p>
+
+<p>White&rsquo;s namespace has changed from <code>White.Core</code> to <code>TestStack.White</code>. Once you upgrade just run <code>Fix-WhiteNamespaces</code> from your NuGet console and we will fix all your namespace references for you!</p>
+
+<h2>Change Log</h2>
+
+<p>The change log is available at <a href="http://teststack.azurewebsites.net/White/ChangeLog.html">http://teststack.azurewebsites.net/White/ChangeLog.html</a></p>
+
+<p>You may notice the website (which we will have a domain for very shortly), this is the new TestStack documentation site/wiki.</p>
+
+<p>Please have a look around, post comments, contribute and give us feedback!</p>
+
+<h2>Pull Requests</h2>
+
+<p>Whenever you submit a pull request for White, we will automatically do a CI build, then a full UI Test run.
+This means if you do not want to wait for the test suite to run on your machine, you can just submit your pull request, then wait for the status to be reported back (which sometimes fails for some reason, but you should be able to see it on the build server).</p>
+
+<h2>Whats next</h2>
+
+<p>The next step for White is upgrading to v3 of the UIA Library, this will likely break a few things (which is why it was important to get the tests running properly).</p>
+
+<h2>Reporting Issues</h2>
+
+<p>If you find an issue in White, create an issue on github, and even better, create a failing UI tests. I do not mind pull requests with a failing test, I can fix the underlying issue without you getting involved in the inner workings of White.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
+    <link href="http://jake.ginnivan.net/teamcity-ui-test-agent/"/>
+    <updated>2013-07-31T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/teamcity-ui-test-agent</id>
+    <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
+
+<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
+This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
+
+<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
+
+<!-- more -->
+
+
+<h2>Create our VM on Azure</h2>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
+I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS&rsquo;s are all that are available in Azure. This also means you don&rsquo;t have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop.</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
+
+<p>Now we are ready to go, lets remote desktop into our VM</p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
+
+<p>Enter your remote desktop credentials which we you setup when creating your VM
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
+
+<h2>Setting up your VM</h2>
+
+<p>On first login, make sure you tell the initial configuration and server manager to not open on start
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
+
+<p>Before you close server manager you want to click on <code>Configure IE ESC</code>, then turn it off. Otherwise downloading everything will be rather painful (unless you just want to download firefox or chrome, then don&rsquo;t worry.</p>
+
+<p>Next, we need our VM to login automatically, if our VM restarts, it needs to come straight back up and logs in.</p>
+
+<p>To do this, download Sysinternals Autologon for Windows from <a href="http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx">http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx</a>. Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
+The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
+
+<p>Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
+TeamViewer will also work.</p>
+
+<p>Personally I use TightVNC.</p>
+
+<h3>Installing/Configuring TightVNC</h3>
+
+<ol>
+<li>Download from <a href="http://www.tightvnc.com/download.php">http://www.tightvnc.com/download.php</a></li>
+<li>Do a complete install, leave all options ticked when presented with them.</li>
+<li>Set your passwords, I am happy to not have a separate administration password.<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
+<li>Install the DFMirage driver, available from the TightVNC download page</li>
+<li>If using azure you need to open up the port (Manage VM, EndPoints, Add, Next)<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
+</ol>
+
+
+<h3>Finishing VM Setup</h3>
+
+<p>Reconnect using something other than remote desktop<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
+
+<p>Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).</p>
+
+<h4>Disable WER</h4>
+
+<p>Windows error reporting causes issues when running UI automation, if you app crashes (which is why we have UI automation, to find that sort fo thing) then you want it to exit straight away, not popup the Windows Error Reporting Dialog
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
+
+<p>Save the following text into a .reg file i.e DisableWER.reg then run</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows]
+"ErrorMode"="2"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting]
+"DontShowUI"="1"
+</code></pre>
+
+<h3>Installing the teamcity build agent</h3>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
+
+<p>Fill in your teamcity server URL, and note the port number the agent is running on
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
+
+<p>Now we go back into Azure Management, and add the port<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
+
+<h4>Open Filewall Ports</h4>
+
+<p>Once we have added the port on azure, we need to open the windows firewall for that port on the VM itself<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
+Put in port 9090, or whatever you set your teamcity server to<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
+Next, Next, Next, give it a good name &lsquo;TeamCity Build Agent&rsquo;, Finish</p>
+
+<h4>Set to automatic startup</h4>
+
+<p>Now open explorer, and go to <code>%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code> and create a new shortcut<br/>
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
+
+<p>Browse to your TeamCity build agent folder, and select <code>agent.bat</code></p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
+Then add the parameter <code>start</code> onto the path. You should end up with
+<code>"C:\UITestsBuildAgent\bin\agent.bat" start</code>
+Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. Then Run the shortcut. Your TeamCity build agent should startup and connect to TeamCity
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
+
+<p>Authorise the build agent, then the agent should update itself and restart, after a few minutes you should have another build controller online!
+<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
+
+<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
+
+<h2>Conclusion</h2>
+
+<p>There you have it, a build agent that runs UI Tests on an unlocked desktop in Azure</p>
+
+<h3>NOTE: TeamCity is not setup for SSL, so everything is unencrypted. This would be another blog post in itself, please leave a comment if that would be useful for you?</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setting Up Git]]></title>
+    <link href="http://jake.ginnivan.net/setting-up-git/"/>
+    <updated>2013-07-27T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/setting-up-git</id>
+    <content type="html"><![CDATA[<p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
+
+<p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
+
+<!-- more -->
+
+
+<h2>Required Software</h2>
+
+<p>Tick both boxes (MsysGit and KDiff3)</p>
+
+<h2>Feature selection</h2>
+
+<p>I tend to disable Visual Studio integration. With VS 2013 you get native git support which will continue to get better over time. And I don&rsquo;t need more menus&hellip;</p>
+
+<h2>Select SSH Agent</h2>
+
+<p>I prefer to go with OpenSSH, it is more work to setup, but once you have generated your ssh keys, put the .ssh folder into your dropbox or back it up, then you can just drop it back into your user profile when you reinstall windows or move to another computer.</p>
+
+<h1>KDiff Installation</h1>
+
+<p>Next Next Next Finish etc. :)</p>
+
+<h1>Git Installation</h1>
+
+<h2>Select components</h2>
+
+<p>I leave this as the default</p>
+
+<h2>Adjust your PATH environment</h2>
+
+<p>I go for option 2 (Run git from the Windows Command Prompt), this sets up a reasonable default so you can access git from the command line anywhere</p>
+
+<h2>Line Endings</h2>
+
+<p>Option 3, Checkout as is, commit as is. Nobody likes it when you mess with their line endings.</p>
+
+<h1>Install PoshGit</h1>
+
+<p>Now you have git installed, open up a PowerShell console as Administrator and change directories to somewhere sensible that you want to put your code.</p>
+
+<p>Then run:</p>
+
+<ul>
+<li><code>Set-ExecutionPolicy RemoteSigned</code>, this will allow you to run powershell scripts</li>
+<li><code>git clone https://github.com/dahlbyk/posh-git</code></li>
+<li><code>cd posh-git</code></li>
+<li><code>.\install.ps1</code> - this will install posh-git into your profile.</li>
+<li><code>. $PROFILE</code> - this will run your profile, now you should see [master] in blue on the command line</li>
+</ul>
+
+
+<p>You may have noticed a warning when you ran your profile
+<strong>WARNING: Could not find ssh-agent</strong></p>
+
+<p>To fix this, we need to change our PATH settings.
+Run <code>control sysdm.cpl</code> on the command line, go to the Advanced tab, click Environmental Variables
+The edit your PATH variable. When you click edit, you should see <code>C:\Program Files (x86)\Git\cmd</code> right at the end. Change this to <code>C:\Program Files (x86)\Git\bin</code></p>
+
+<p>Now when you restart your powershell console, you shouldn&rsquo;t get a warning.</p>
+
+<h1>Creating your SSH Key</h1>
+
+<p><a href="https://help.github.com/articles/generating-ssh-keys">https://help.github.com/articles/generating-ssh-keys</a> is a great resource for creating your SSH key, after you are done you should have a folder in your user profile called .ssh, and two files in that folder, id_rsa and id_rsa.pub.</p>
+
+<p>Simply copy the contents of id_rsa.pub to your GitHub keys under your profile, now you can push/pull from github easily!</p>
+
+<h1>Git Config</h1>
+
+<p>And finally, here is my .gitconfig</p>
+
+<pre><code>[core]
+autocrlf = false
+editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe'
+[diff]
+    tool = kdiff3
+    guitool = kdiff3
+[merge]
+    tool = kdiff3
+[mergetool "kdiff3"]
+    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
+    keepBackup = false
+    trustExitCode = false
+[difftool]
+    prompt = false
+[mergetool]
+    keepBackup = false
+[difftool "kdiff3"]
+    path = c:/Program Files (x86)/KDiff3/kdiff3.exe
+[alias]
+    st = status
+    rc = rebase --continue
+</code></pre>
+
+<p>Hope that helps someone get started with Git</p>
+]]></content>
+  </entry>
+  
+</feed>

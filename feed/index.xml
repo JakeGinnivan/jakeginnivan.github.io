@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-08T13:16:17+01:00</updated>
+  <updated>2014-05-14T20:41:15+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Unknown git mergetool]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/"/>
+    <updated>2014-05-14T20:08:32+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool</id>
+    <content type="html"><![CDATA[<p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
+
+<pre><code>git config option merge.tool set to unknown tool: --global
+Resetting to default...
+
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+tortoisemerge emerge vimdiff
+No known merge tool is available.
+</code></pre>
+
+<p>Somehow (seriously, I have <strong>no</strong> idea how I did this) I had created a setting in one of my repositories set my mergetool to <code>--global</code>.</p>
+
+<p>If you happen to get yourself into the same issue, run <code>git config --list</code> to see what your config settings are.</p>
+
+<p>For me, I had a rogue <code>merge.tool</code> entry, so I just had to run <code>git config --unset merge.tool</code> which deleted the entry and I was off again.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[BDDfy v4.0 Beta 1 Released]]></title>
@@ -1577,7 +1602,7 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
 
 <p>I have also released a getting started video. This is one of the first screencasts I have done, so I will likely do it again next release. Also when you install VSTO Contrib, a readme will popup, this will help you get started.</p>
 
-<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://jake.ginnivan.net//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
 
 
 <p>I will try to produce some documentation/blog posts on VSTO Contrib over the next few weeks.</p>
@@ -1873,144 +1898,6 @@ editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe'
 </code></pre>
 
 <p>Hope that helps someone get started with Git</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Documentation Site with Pretzel]]></title>
-    <link href="http://jake.ginnivan.net/documentation-site-with-pretzel/"/>
-    <updated>2013-07-27T00:00:00+01:00</updated>
-    <id>http://jake.ginnivan.net/documentation-site-with-pretzel</id>
-    <content type="html"><![CDATA[<p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
-
-<p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
-
-<!-- more -->
-
-
-<h2>Create the site in pretzel</h2>
-
-<p>This assumes you already have pretzel and it is in your PATH.</p>
-
-<pre><code>C:\PretzelDemo&gt;pretzel.exe create -t=Razor --wiki --azure
-</code></pre>
-
-<p>There are a few things we are saying:
- - Create me a pretzel site
- - We are not specifying a directory, so pretzel will create the site in the current directory
- - We want our templating engine to be Razor, by default pretzel uses the Liquid templating engine (same as Jekyll)
- - The <em>&ndash;wiki</em> switch says we want a wiki template rather than the default blog setup
- - The <em>&ndash;azure</em> switch tells pretzel to create a solution which will bake our site when it is pushed to azure websites, this will move our site into a folder called _source</p>
-
-<pre><code>C:\PretzelDemo&gt; pretzel.exe create -t=razor --wiki --azure
-starting pretzel...
-create - configure a new site
-Using razor Engine
-Pretzel site template has been created
-Shim project added to allow deployment to azure websites
-Press any key to continue...
-</code></pre>
-
-<p>A file you may be interested in is <code>_source\_layouts\layout.cshtml</code>, this file has all the logic for your Wiki, feel free to edit this, make improvements, style changes, structural changes. What pretzel gives you is just a starting point!</p>
-
-<h2>The Wiki</h2>
-
-<p>To view your wiki, run
-<code>C:\PretzelDemo&gt; pretzel taste _source</code></p>
-
-<p>This will fire up pretzel&rsquo;s web server, and launch your wiki.</p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument.png" alt="NewDocument" /></p>
-
-<p>Lets create a few files</p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument1.png" alt="NewDocument1" /></p>
-
-<p>Notice the items circled in blue are new files, each file we create must have what is called yaml front matter (circled in red).</p>
-
-<p>Yaml front matter contains metadata about the file, like the title, permalink (a fixed url) and order among other things.</p>
-
-<p>If you refresh your browser, you will get this</p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument2.png" alt="NewDocument2" /></p>
-
-<p>Pretzel has detected changes to files in the site, then rebuilt our site for us.</p>
-
-<h2>Deploying to Azure Wesbites</h2>
-
-<p>Create the website
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument3.png" alt="NewDocument3" />
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument4.png" alt="NewDocument4" />
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument5.png" alt="NewDocument5" /></p>
-
-<p>Now our site and deployment is setup, lets deploy. First copy the git deployment url
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument6.png" alt="NewDocument6" /></p>
-
-<p>Now we head back to our powershell console and run the following commands:</p>
-
-<pre><code>git init
-"_site" | Out-File .gitignore
-git add -A
-git commit -m "Committed wiki"
-git remote add azure &lt;deploymenturl&gt;
-git push azure master
-</code></pre>
-
-<p>And that should deploy our site, if everything went well, you should have an output looking something like this</p>
-
-<pre><code>C:\PretzelDemo [master]&gt; git push azure master
-Counting objects: 33, done.
-Delta compression using up to 4 threads.
-Compressing objects: 100% (29/29), done.
-Writing objects: 100% (33/33), 716.65 KiB | 0 bytes/s, done.
-Total 33 (delta 10), reused 0 (delta 0)
-remote: Updating branch 'master'.
-remote: Updating submodules.
-remote: Preparing deployment for commit id '6476560e7e'.
-remote: Generating deployment script.
-remote: .
-remote: info:    Executing command site deploymentscript
-remote: info:    Solution file path: .\Shim.sln
-remote: info:    The site directory path: .\_source\_site
-remote: info:    Generating deployment script for .NET Web Site
-remote: info:    Generated deployment script files
-remote: info:    site deploymentscript command OK
-remote: Running deployment command...
-remote: Handling .NET Web Site deployment.
-remote: C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln.metaproj : warning MSB4121: The project configuration for project "Sham" was not specified in the solution file for the solution configuration "Release|Any CPU". [C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\Shim.sln]
-remote:   Shim -&gt; C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\bin\Release\Shim.dll
-remote:   starting pretzel...
-remote:   bake - transforming content into a website
-remote:   Recommended engine for directory: 'razor'
-remote:   done - took 2943ms
-remote:   Press any key to continue...
-remote: KuduSync.NET from: 'C:\DWASFiles\Sites\pretzeldemo\VirtualDirectory0\site\repository\_source\_site' to: 'C:\DWAS Files\Sites\pretzeldemo\VirtualDirectory0\site\wwwroot'
-remote: Deleting file: 'hostingstart.html'
-remote: Copying file: 'index.html'
-remote: Copying file: 'MainTopic.html'
-remote: Copying file: 'Topic.html'
-remote: Copying file: 'topic2.html'
-remote: Copying file: 'css\default.css'
-remote: Copying file: 'css\style.css'
-remote: Copying file: 'Feature\index - Copy.html'
-remote: Copying file: 'Feature\index.html'
-remote: Copying file: 'Feature\Topic - Copy.html'
-remote: Copying file: 'Feature\Topic 2.html'
-remote: Copying file: 'Feature\Topic.html'
-remote: Copying file: 'img\favicon.ico'
-remote: Finished successfully.
-remote: Deployment successful.
-To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
- * [new branch]      master -&gt; master
-</code></pre>
-
-<p>Check the azure management console
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument8.png" alt="NewDocument8" /></p>
-
-<p>Head to your website
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-27-documentation-site-with-pretzel/NewDocument7.png" alt="NewDocument7" /></p>
-
-<p>Job done! You have a new wiki for documentation.</p>
 ]]></content>
   </entry>
   

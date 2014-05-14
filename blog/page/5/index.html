@@ -9,9 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="The problems Lets start with the problems we want to solve with our solution Blend Design time support
-Resharper binding validation support
-No using &hellip;">
+  <meta name="description" content="I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the http://windowsphonefoundations.net/ website &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,13 +18,14 @@ No using &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/page/5/">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/page/5">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -70,7 +69,7 @@ No using &hellip;">
   
 </ul>
   
-<form action="http://google.com/search" method="get">
+<form action="https://www.google.com/search" method="get">
   <fieldset role="search">
     <input type="hidden" name="q" value="site:jake.ginnivan.net" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
@@ -88,6 +87,68 @@ No using &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpmvc/">Windows Phone MVC - Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-23T00:00:00+01:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the <a href="http://windowsphonefoundations.net/">http://windowsphonefoundations.net/</a> website which is home to Windows Phone Essentials, Windows Phone MVC and Windows Phone MVP (and more projects in the future).</p>
+
+<h1>Features</h1>
+
+<p>This will change over time, so check out the change log.</p>
+
+<ul>
+<li>Strongly Typed Navigation</li>
+<li>Custom Shell, Navigator and Journal to give better control over navigation of WP7</li>
+<li>TransitionFrame comes out of the box, for nice navigation animations</li>
+<li>Ability to pass arguments in navigation, rather than uri query strings</li>
+<li>Modal Dialog support</li>
+<li>Easy access to Obscured and Activated events on your view model</li>
+<li>Full Testable! All major WP7 classes (WindowsPhoneFrame, WindowsPhoneApplication etc) all have Interfaces and are wrapped to allow you to test</li>
+<li>Some helpers around Async. Execute.AsyncPattern or Execute.AsyncPatternWithResult synchronise async calls</li>
+<li>Task/Chooser support, in a testable way</li>
+<li>Convention based Controller and View discovery</li>
+<li>Autofac Support Via an Extension</li>
+<li>Easy access to page or application transient storage</li>
+<li>Simple tombstoning support</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpmvc/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -523,62 +584,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-contrib/ribbon-factory/">VSTO Contrib RibbonFactory</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-05T00:00:00+01:00" pubdate data-updated="true">Apr 5<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Why?</h1>
-
-<p>When I started creating a RibbonFactory, I hadn&rsquo;t actually looked into the way VSTO does it, I just wanted to use Ribbon XML, because it has more flexibility, but have a single class to represent a single ribbon and also support an IoC container, and DI for my ribbons.</p>
-
-<p>Once I got that working, I started tweaking, improving, adding in context awareness and a view other things. Recently my reasons for trying to finish this have been:</p>
-
-<ul>
-<li>Lack of IoC/DI support in VSTO</li>
-<li>Cost of brute force reflection when using ribbon designer</li>
-<li>Wanting to use Ribbon XML over Ribbon Designer, but not really viable due to missing context for ribbon xml.</li>
-<li>Ribbon XML having a single callback file</li>
-<li>Making custom task panes, which are associated with a ribbon (i.e. button to show/hide custom task pane) really simple.</li>
-</ul>
-
-
-<p>The VSTO tooling is pretty good, especially around the designer, but I want the best of both worlds, and to be able to fall into <code>the pit of success</code> as <a href="http://www.paulstovell.com/">Paul Stovell</a> often says.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-contrib/ribbon-factory/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -596,6 +601,10 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/14/unknown-git-mergetool/">Unknown Git Mergetool</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
       </li>
     
@@ -604,15 +613,11 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
       </li>
     
       <li class="post">
-        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
+        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
   </ul>
@@ -630,7 +635,7 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
   <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -677,7 +682,7 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>

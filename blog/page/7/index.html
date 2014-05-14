@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Due to time restraints at the moment this will be a very short blog post. I have pushed all my latest changes to the VSTO contrib project to codeplex &hellip;">
+  <meta name="description" content="Today I had to build a search screen, it had 3 radio buttons for different types of items to search, and each item had very specific search fields. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/page/7/">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/page/7">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -68,7 +69,7 @@
   
 </ul>
   
-<form action="http://google.com/search" method="get">
+<form action="https://www.google.com/search" method="get">
   <fieldset role="search">
     <input type="hidden" name="q" value="site:jake.ginnivan.net" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
@@ -86,6 +87,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/radiobuttonbindings/">RadioButton.IsChecked Bindings</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-05T00:00:00+00:00" pubdate data-updated="true">Dec 5<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Today I had to build a search screen, it had 3 radio buttons for different types of items to search, and each item had very specific search fields.</p>
+
+<p>On my viewmodel I had 3x IsSearchingBlahItems properties. And bound the IsChecked property on my radio buttons to those properties. I then had some stack panels which were bound to the same properties. Here is what this would look like:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/radiobuttonbindings/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -506,47 +550,6 @@ It seemed unnatural that I could define a mapping that looked like:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-data-access-repositories/">Outlook Items, Repositories & Data Access</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-04-23T00:00:00+01:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>If we want to do anything interesting with VSTO and Outlook we will have to access data from Outlook. That will normally be Contacts, or Appointments or Emails? When you do this you will probably leak items, then Outlook will stop behaving normally, you can get ghost inspectors (click save &amp; close, and the window stays open, but ribbon is grayed out), or errors when you try to edit a item through the Outlook UI. There can be many side effects, most are not fun to track down the cause.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-data-access-repositories/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -564,6 +567,10 @@ It seemed unnatural that I could define a mapping that looked like:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/14/unknown-git-mergetool/">Unknown Git Mergetool</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
       </li>
     
@@ -572,15 +579,11 @@ It seemed unnatural that I could define a mapping that looked like:</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
+        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
   </ul>
@@ -598,7 +601,7 @@ It seemed unnatural that I could define a mapping that looked like:</p>
   <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -645,7 +648,7 @@ It seemed unnatural that I could define a mapping that looked like:</p>
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>

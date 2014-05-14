@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Why? Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our &hellip;">
+  <meta name="description" content="Over the last day or so, I have been setting up the documentation website for TestStack at http://teststack.azurewebsites.net/ With Pretzel&rsquo;s &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/page/3/">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/page/3">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -68,7 +69,7 @@
   
 </ul>
   
-<form action="http://google.com/search" method="get">
+<form action="https://www.google.com/search" method="get">
   <fieldset role="search">
     <input type="hidden" name="q" value="site:jake.ginnivan.net" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
@@ -86,6 +87,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/documentation-site-with-pretzel/">Documentation Site With Pretzel</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T00:00:00+01:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
+
+<p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/documentation-site-with-pretzel/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -538,50 +582,6 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/ddd-melbourne-rest-talk/">DDD Melbourne Rest Talk</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-30T00:00:00+01:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Over the weekend I presented at <a href="http://www.dddmelbourne.com/">http://www.dddmelbourne.com/</a> on building RESTful web services.</p>
-
-<p>I wanted to do it a bit different to the REST talks I had been to, and really try to cover how it all fits together, as well as the theory and covering the <a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a> I put together a RESTful beer API, which I want to evolve over time as a cool example. My intention is to release WebApi.Hal as a NuGet package once it matures a little more and I figure out the API and conventions.</p>
-
-<p>My slides are available <strong><a href="https://www.dropbox.com/s/vksivsuo5fx44qp/REST.pptx">here</a></strong></p>
-
-<p>All the sample code is available in the WebApi.Hal project on github (<a href="https://github.com/JakeGinnivan/WebApi.Hal">https://github.com/JakeGinnivan/WebApi.Hal</a>) and I do accept pull requests. =)</p>
-
-<p>The resource linker stuff is a bit clunky, but I think it is becoming quite a good example of a RESTful API. If you want to help out or have suggestions just fire me an email to jake at ginnivan dot net.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -599,6 +599,10 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/14/unknown-git-mergetool/">Unknown Git Mergetool</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
       </li>
     
@@ -607,15 +611,11 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
       </li>
     
       <li class="post">
-        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
+        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
   </ul>
@@ -633,7 +633,7 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -680,7 +680,7 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>

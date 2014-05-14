@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. Please give it a &hellip;">
+  <meta name="description" content="Today my git mergetool stopped working. When I ran git mergetool I was greeted with: git config option merge.tool set to unknown tool: --global &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/">
+  <link rel="canonical" href="http://jake.ginnivan.net">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -68,7 +69,7 @@
   
 </ul>
   
-<form action="http://google.com/search" method="get">
+<form action="https://www.google.com/search" method="get">
   <fieldset role="search">
     <input type="hidden" name="q" value="site:jake.ginnivan.net" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
@@ -86,6 +87,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/14/unknown-git-mergetool/">Unknown Git Mergetool</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-14T20:08:32+01:00" pubdate data-updated="true">May 14<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
+
+<pre><code>git config option merge.tool set to unknown tool: --global
+Resetting to default...
+
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+tortoisemerge emerge vimdiff
+No known merge tool is available.
+</code></pre>
+
+<p>Somehow (seriously, I have <strong>no</strong> idea how I did this) I had created a setting in one of my repositories set my mergetool to <code>--global</code>.</p>
+
+<p>If you happen to get yourself into the same issue, run <code>git config --list</code> to see what your config settings are.</p>
+
+<p>For me, I had a rogue <code>merge.tool</code> entry, so I just had to run <code>git config --unset merge.tool</code> which deleted the entry and I was off again.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -774,62 +827,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-16T00:00:00+01:00" pubdate data-updated="true">Sep 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
-
-<h2>Exception 1</h2>
-
-<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
-
-<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
-
-<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
-</code></pre>
-
-<h2>Exception 2</h2>
-
-<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
-
-<p>This one is fixed by giving WPF the default resource assembly.</p>
-
-<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
-</code></pre>
-
-<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -845,6 +842,10 @@ Recently I added async void and Task support to <a href="https://github.com/Test
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/14/unknown-git-mergetool/">Unknown Git Mergetool</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
       </li>
     
@@ -853,15 +854,11 @@ Recently I added async void and Task support to <a href="https://github.com/Test
       </li>
     
       <li class="post">
-        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, async and .net 4.0 broken</a>
+        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/05/blog-migration/">Blog Migration</a>
       </li>
     
   </ul>
@@ -879,7 +876,7 @@ Recently I added async void and Task support to <a href="https://github.com/Test
   <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -926,7 +923,7 @@ Recently I added async void and Task support to <a href="https://github.com/Test
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
