@@ -13,3 +13,4 @@ vendor
 node_modules
 Thumbs.db
 *.orig
+.preview-mode
