@@ -12,7 +12,9 @@ permalink: /about-me/
 
 I'm Jake. An [Open Source Enthusiast](/open-source-work), Blogger, Speaker, Microsoft MVP (VSTO) and a fan of good Beer & Whisky.
 
-Currently I am working for [Adaptive Consulting](http://weareadaptive.com) at Deutsche Bank with a bunch of really cool people. Check out the [Adaptive Blog](http://blog.weareadaptive.com/), they are doing some really great stuff.
+Currently I am a Consultant for [Adaptive Consulting](http://weareadaptive.com) at Deutsche Bank in London with a bunch of really cool people. Before that I was a Senior Consultant with [Readify](http://readify.net/), another top consulting company based in Perth, Australia.
+
+It is worth checking out the [Adaptive Blog](http://blog.weareadaptive.com/), they are doing some really great stuff.
   
 Unless specified all code on this blog is released under MIT License.
 

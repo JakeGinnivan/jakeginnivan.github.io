@@ -5,8 +5,8 @@ metaTitle: Open Source Work
 description: A collection of the open source projects I am currently contributing to, or have created
 date: 2011-02-21
 categories: [Open Source]
-comments: true
-sharing: true
+comments: false
+sharing: false
 footer: true
 ---
 I love open source, and contribute a lot of my free time to working on open source. You can find me on [Codeplex](http://www.codeplex.com/site/users/view/JakeGinnivan), [GitHub](https://github.com/JakeGinnivan) and [BitBucket](https://bitbucket.org/JakeGinnivan)
@@ -22,6 +22,7 @@ My open source related blog posts are [here](/blog/categories/open-source).
 
 ## Projects
 ### My Projects
+ - [https://github.com/JakeGinnivan/GitReleaseNotes](https://github.com/JakeGinnivan/GitReleaseNotes) - Generate release notes easily from your Git repo
  - [https://github.com/JakeGinnivan/ApiApprover](https://github.com/JakeGinnivan/ApiApprover) - Uses ApprovalTests to approve the public API of your library to help notify you when you have possibly introduced a breaking change which would require a major SemVer bump
  - [https://github.com/JakeGinnivan/WebApi.Hal](https://github.com/JakeGinnivan/WebApi.Hal) - A WebAPI media type formatter which allows you to easily support hypermedia via HAL
  - [https://github.com/JakeGinnivan/SettingsProvider.net](https://github.com/JakeGinnivan/SettingsProvider.net) - Simple library which makes saving/restoring settings really easy
@@ -43,15 +44,16 @@ I am a member of TestStack, a GitHub organisation which brings together a number
 ### Code52
 I was very active with Code52 and have continued to maintain a number of Code52 projects:
 
- - [https://github.com/Code52/DownmarkerWPF](https://github.com/Code52/DownmarkerWPF) - Awesome markdown editor
+ - [https://github.com/Code52/DownmarkerWPF](https://github.com/Code52/DownmarkerWPF) - Markdown editor
  - [https://github.com/Code52/pretzel](https://github.com/Code52/pretzel) - a .NET Jekyll implementation
- - [https://github.com/Code52/carnac](https://github.com/Code52/carnac) - Awesome presentation too, overlaying key presses on your screen with shortcut names as well
+ - [https://github.com/Code52/carnac](https://github.com/Code52/carnac) - Presentation tool, overlaying key presses on your screen with shortcut names as well
  - [https://github.com/Code52/aspnet-internationalization](https://github.com/Code52/aspnet-internationalization) - Makes internationalising an MVC project pretty easy
 
 ### Projects I contribute/have contributed to
  - [https://github.com/AutoMapper/AutoMapper](https://github.com/AutoMapper/AutoMapper)
- - [https://github.com/shouldly/shouldly](https://github.com/shouldly/shouldly) - An awesome assertion library
- - [http://nsubstitute.github.io/](http://nsubstitute.github.io/) - An amazing mocking framework
+ - [https://github.com/shouldly/shouldly](https://github.com/shouldly/shouldly) - An .NET assertion library
+ - [http://nsubstitute.github.io/](http://nsubstitute.github.io/) - .NET mocking framework
  - [https://github.com/xbehave/xbehave.net](https://github.com/xbehave/xbehave.net) - Another great BDD library for .NET
+ - [https://github.com/Particular/GitVersion](https://github.com/Particular/GitVersion) - Use git branching conventions to infer the semantic version of your project
 
 There are a few other small projects. small contributions to other projects and projects I no longer maintain. I hope this inspires you to get involved, much of this is done out of need. I need to solve a problem I have, if there is not a library already which I can just enhance then I can create my own. 
