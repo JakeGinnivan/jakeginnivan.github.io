@@ -3,6 +3,7 @@ layout: post
 title: "Simple Versioning and release notes"
 date: 2014-05-13 9:05:00 +0000
 comments: true
+published: false
 ---
 
 I do a lot of open source and one common time sink across all projects is versioning and generating good release notes. This spawned two more open source projects (I am a sucker for punishment), GitHubFlowVersion and [GitReleaseNotes](https://github.com/JakeGinnivan/GitReleaseNotes).
