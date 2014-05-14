@@ -46,7 +46,7 @@
 
 </head>
 
-<body   >
+<body    class="collapse-sidebar sidebar-footer" >
   <header role="banner"><hgroup>
   <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
@@ -79,7 +79,9 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about-me">About</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>\
+  <li><a href="/about-me">About Me</a></li>
 </ul>
 
 </nav>
@@ -180,69 +182,7 @@ What would you like to see?</p>
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2014/05/14/unknown-git-mergetool/">Unknown Git Mergetool</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a>
-      </li>
-    
-  </ul>
-</section>
-<section>
-  <h1>Categories</h1>
-  <div id="category-buttons-list"><div class="category-button"><a href="/blog/categories/dot-net/">.NET</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/async/">Async</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/async/">async</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/automapper/">AutoMapper</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/azure/">Azure</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/clickonce/">ClickOnce</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/continuous-delivery/">Continuous Delivery</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/git/">Git</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/gitflow/">GitFlow</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/github/">GitHub</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/jira/">Jira</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/log4net/">log4net</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/msbuild/">MSBuild</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/nuget/">NuGet</a><span class="category-count">3</span></div><div class="category-button"><a href="/blog/categories/open-source/">Open Source</a><span class="category-count">20</span></div><div class="category-button"><a href="/blog/categories/presenting/">Presenting</a><span class="category-count">8</span></div><div class="category-button"><a href="/blog/categories/resharper/">ReSharper</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/semantic-versioning/">Semantic Versioning</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/teamcity/">TeamCity</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/testing/">Testing</a><span class="category-count">5</span></div><div class="category-button"><a href="/blog/categories/teststack/">TestStack</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/tfs/">TFS</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/ui-automation/">UI Automation</a><span class="category-count">6</span></div><div class="category-button"><a href="/blog/categories/vsto/">VSTO</a><span class="category-count">17</span></div><div class="category-button"><a href="/blog/categories/webapi/">WebApi</a><span class="category-count">1</span></div><div class="category-button"><a href="/blog/categories/white/">White</a><span class="category-count">2</span></div><div class="category-button"><a href="/blog/categories/windows-phone/">Windows Phone</a><span class="category-count">9</span></div><div class="category-button"><a href="/blog/categories/wpf/">Wpf</a><span class="category-count">8</span></div></ul>
-</section>
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating...</li>
-  </ul>
-  
-  <a href="https://github.com/JakeGinnivan">@JakeGinnivan</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'JakeGinnivan',
-            count: 6,
-            skip_forks: false,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-
-
-
   
 </aside>
 
