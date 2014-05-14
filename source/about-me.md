@@ -1,20 +1,18 @@
 ---
 layout: post
 title: About Me
-metaTitle: About Me
 description: A bit of information about me
-revised: 2012-02-19
 date: 2011-02-21
 categories: []
 comments: false
 sharing: false
 footer: true
 permalink: /about-me/
-summary: 
 ---
-I'm Jake, an Open Source Enthusiast, Blogger, Speaker, Microsoft MVP (VSTO) and Readifarian on Sabbatical London at the moment normally based in Perth, Australia.
 
-Currently I am working for [http://weareadaptive.com](http://weareadaptive.com), with a bunch of really cool people. Check out the [Adaptive Blog](http://blog.weareadaptive.com/)
+I'm Jake. An [Open Source Enthusiast](/open-source-work), Blogger, Speaker, Microsoft MVP (VSTO) and a fan of good Beer & Whisky.
+
+Currently I am working for [Adaptive Consulting](http://weareadaptive.com) at Deutsche Bank with a bunch of really cool people. Check out the [Adaptive Blog](http://blog.weareadaptive.com/), they are doing some really great stuff.
   
 Unless specified all code on this blog is released under MIT License.
 
