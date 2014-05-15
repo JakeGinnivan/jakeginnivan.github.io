@@ -1,8 +1,7 @@
 ---
-layout: post
+layout: page
 title: About Me
 description: A bit of information about me
-date: 2011-02-21
 categories: []
 comments: false
 sharing: false

@@ -1,19 +1,22 @@
 ---
 layout: post
 title: "Simple Versioning and release notes"
-date: 2014-05-13 9:05:00 +0000
+date: 2014-05-15 9:05:00 +0000
 comments: true
 published: false
 ---
 
-I do a lot of open source and one common time sink across all projects is versioning and generating good release notes. This spawned two more open source projects (I am a sucker for punishment), GitHubFlowVersion and [GitReleaseNotes](https://github.com/JakeGinnivan/GitReleaseNotes).
+I do [a lot of open source](/open-source-work) and one common time sink across all projects is versioning and generating good release notes. This post is about two new open source tools. [https://github.com/Particular/GitVersion](https://github.com/Particular/GitVersion) and [https://github.com/JakeGinnivan/GitReleaseNotes](https://github.com/JakeGinnivan/GitReleaseNotes) which automate both of those things.
 
-At the time [Particular (the nServiceBus guys)](https://github.com/Particular) were going through the same thing, after talking to them we decided to kick off different projects to gather ideas and try things in different ways. They started GitFlowVersion and GitHubReleaseNotes.
+## Background
+About 7 months ago I was talking with [Simon](https://github.com/simoncropp) about this pain and [Particular (the nServiceBus guys)](https://github.com/Particular) had already started on a tool which used the branching conventions of [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/) to infer the [Semantic Version](http://semver.org/) of their software.
 
-Since then, GitHubFlowVersion and GitFlowVersion have joined forces bringing the best ideas from both projects into [https://github.com/Particular/GitVersion](https://github.com/Particular/GitVersion) which uses the conventions we use in common branching strategies to allow you to adopt [Semantic Versioning](http://semver.org/) in your project really easily. I will talk more about release notes a bit later.
+I was pretty excited about this, but did not want to convert all my projects to GitFlow just for versioning reasons. We had two choices, I could contribute GitHubFlow support to GitFlowVersion or spin off a new project. After a discussion with Simon and [Andreas](https://github.com/andreasohlund) we made the call that a separate project would be the way to start, then we can combine the best of both worlds later. [GitHubFlowVersion](https://github.com/JakeGinnivan/GitHubFlowVersion) was born.
+
+Since then, GitHubFlowVersion and GitFlowVersion have joined forces bringing the best ideas from both projects into [GitVersion](https://github.com/Particular/GitVersion) which uses the conventions we use in common branching strategies to allow you to adopt [Semantic Versioning](http://semver.org) in your project really easily. I will talk more about release notes a bit later.
 
 ## GitVersion in action
-I have created a simple repo which I will use for this post at [https://github.com/JakeGinnivan/EasyVersioningAndReleases](https://github.com/JakeGinnivan/EasyVersioningAndReleases) and also setup a CI build at [http://teamcity.ginnivan.net/project.html?projectId=OpenSourceProjects_EasyVersioningAndReleases](http://teamcity.ginnivan.net/project.html?projectId=OpenSourceProjects_EasyVersioningAndReleases&tab=projectOverview) (login as guest).
+I have created a simple repo which I will use for this post at [JakeGinnivan/EasyVersioningAndReleases](https://github.com/JakeGinnivan/EasyVersioningAndReleases) and also [setup a CI build](http://teamcity.ginnivan.net/project.html?projectId=OpenSourceProjects_EasyVersioningAndReleases&tab=projectOverview) (login as guest).
 
 In this example I am going to use *GitVersion.exe* from my "build script", check out [Command line usage](https://github.com/Particular/GitVersion/wiki/Command-Line-Tool) on the GitVersion wiki for more ways you can use GitVersion.exe. Also check out the MSBuild task and the Ruby Gem.
 
@@ -37,12 +40,7 @@ Here is my sample build script, all it does is call GitVersion, parse the json a
         
     Write-Output "##teamcity[buildNumber '$version']"
 
-Lets pull apart a few lines:
-
-    $versionInfo = $joined | ConvertFrom-Json
-    $version = $versionInfo.SemVer
-
-The json returned from GitVersion has a bunch of variables, here is an example of what GitVersion returns
+The json returned from GitVersion is a collection of variables, here is an example of what GitVersion returns
 
     {
       "Major":1,
@@ -72,7 +70,7 @@ We then just copy our powershell module into the output folder and replace the v
 
 ![2014-05-13-simple-versioning-and-release-notes](../assets/posts/2014-05-13-simple-versioning-and-release-notes.png)
 
-That is GitVersion in action, give it a spin!
+That is GitVersion in action. You can also just invoke it directly as the first step in you TeamCity build. It also supports a few other build servers.
 
 # Generating release notes
 The next step in simplifying the maintenance of our open source (or internal) project is generating release notes.
@@ -105,10 +103,10 @@ Commits: d3620015c9...61862ed9e8
  
 ------------------------
 
-Not sure about you, but this is pretty handy.. So what has GitReleaseNotes actually done?
+Not sure about you, but I think this is pretty handy.. So what has GitReleaseNotes actually done?
 
  - Seen that you have a Git remote pointing at GitHub
- - Connects to GitHub repository in remote and fetches issues and pull requests
+ - Connects to GitHub repository in remote and fetches issues and pull requests (for private you need to specify an auth token)
  - Outputs the closed pull requests and issues *since the last tag* to the *release notes*
  - If you have specified the `/alltags` switch then you will get issues grouped by release
 
@@ -119,6 +117,8 @@ You get included:
  - Tags (GitReleaseNotes follows [http://www.semanticreleasenotes.org/](http://www.semanticreleasenotes.org/) which uses `+tag` after the title for tags/categories/labels.
  - Shout outs - a really important part of release notes, calling out the awesome people which have contributed to your project! Shout outs are only available for pull requests, and will only be the person who submitted the pull request
  - Commit range included in that release (this will become a link to the diff of those commits if supported by the site)
+
+As mentioned above, you could also be using another issue tracker and GitReleaseNotes would connect to it and fetch the issues!
 
 ### Step 3
 Edit your release notes, if you only want to list pull requests just delete the issues. If you want to put both issue and pull request links in a single item, just do that.

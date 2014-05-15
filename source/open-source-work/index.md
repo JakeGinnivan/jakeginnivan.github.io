@@ -1,9 +1,8 @@
 ---
-layout: post
+layout: page
 title: Open Source Work
 metaTitle: Open Source Work
 description: A collection of the open source projects I am currently contributing to, or have created
-date: 2011-02-21
 categories: [Open Source]
 comments: false
 sharing: false
@@ -55,5 +54,7 @@ I was very active with Code52 and have continued to maintain a number of Code52 
  - [http://nsubstitute.github.io/](http://nsubstitute.github.io/) - .NET mocking framework
  - [https://github.com/xbehave/xbehave.net](https://github.com/xbehave/xbehave.net) - Another great BDD library for .NET
  - [https://github.com/Particular/GitVersion](https://github.com/Particular/GitVersion) - Use git branching conventions to infer the semantic version of your project
+ - [https://github.com/DbUp/DbUp](https://github.com/DbUp/DbUp) - Simple and effective database upgrade utility
+ - [https://github.com/funnelweblog/FunnelWeb](https://github.com/funnelweblog/FunnelWeb) - .NET blog engine which uses markdown
 
 There are a few other small projects. small contributions to other projects and projects I no longer maintain. I hope this inspires you to get involved, much of this is done out of need. I need to solve a problem I have, if there is not a library already which I can just enhance then I can create my own. 
