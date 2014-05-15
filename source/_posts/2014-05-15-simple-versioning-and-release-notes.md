@@ -9,7 +9,7 @@ published: false
 I do [a lot of open source](/open-source-work) and one common time sink across all projects is versioning and generating good release notes. This post is about two new open source tools. [https://github.com/Particular/GitVersion](https://github.com/Particular/GitVersion) and [https://github.com/JakeGinnivan/GitReleaseNotes](https://github.com/JakeGinnivan/GitReleaseNotes) which automate both of those things.
 
 ## Background
-About 7 months ago I was talking with [Simon](https://github.com/simoncropp) about this pain and [Particular (the nServiceBus guys)](https://github.com/Particular) had already started on a tool which used the branching conventions of [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/) to infer the [Semantic Version](http://semver.org/) of their software.
+About 7 months ago I was talking with [Simon](https://github.com/simoncropp) about this pain. Simon and the guys at [Particular (nServiceBus)](https://github.com/Particular) had already started on a tool which used the branching conventions of [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/) to infer the [Semantic Version](http://semver.org/) of their software.
 
 I was pretty excited about this, but did not want to convert all my projects to GitFlow just for versioning reasons. We had two choices, I could contribute GitHubFlow support to GitFlowVersion or spin off a new project. After a discussion with Simon and [Andreas](https://github.com/andreasohlund) we made the call that a separate project would be the way to start, then we can combine the best of both worlds later. [GitHubFlowVersion](https://github.com/JakeGinnivan/GitHubFlowVersion) was born.
 
@@ -18,7 +18,7 @@ Since then, GitHubFlowVersion and GitFlowVersion have joined forces bringing the
 ## GitVersion in action
 I have created a simple repo which I will use for this post at [JakeGinnivan/EasyVersioningAndReleases](https://github.com/JakeGinnivan/EasyVersioningAndReleases) and also [setup a CI build](http://teamcity.ginnivan.net/project.html?projectId=OpenSourceProjects_EasyVersioningAndReleases&tab=projectOverview) (login as guest).
 
-In this example I am going to use *GitVersion.exe* from my "build script", check out [Command line usage](https://github.com/Particular/GitVersion/wiki/Command-Line-Tool) on the GitVersion wiki for more ways you can use GitVersion.exe. Also check out the MSBuild task and the Ruby Gem.
+In this example I am going to use *GitVersion.exe* from my "build script", check out [Command line usage](https://github.com/Particular/GitVersion/wiki/Command-Line-Tool) on the GitVersion wiki for more ways you can use GitVersion.exe. Also check out the MSBuild task and the Ruby Gem. When  `GitVersion.exe` is run, it looks at your Git repository, and infers the Semantic Version from previous tags, branch names and a few other things. The wiki covers how it does this. The goal though is that it should just work and do sensible things.
 
 Here is my sample build script, all it does is call GitVersion, parse the json and replace a __version__ token in my powershell module.
 
@@ -70,6 +70,8 @@ We then just copy our powershell module into the output folder and replace the v
 
 ![2014-05-13-simple-versioning-and-release-notes](../assets/posts/2014-05-13-simple-versioning-and-release-notes.png)
 
+The build metadata (+431) comes from the number of commits since the last tag/release. This means the SemVer is the same for each build, essentially making each CI build create a release candidate of the release. This works well with continuous delivery.
+
 ### How to SemVer?
 Once we have GitVersion running, how do we get it to bump the SemVer?
 
@@ -77,7 +79,9 @@ GitVersion supports two Git branching strategies, [GitHubFlow](https://guides.gi
 
 #### Ways to bump the version
 1. When you tag, the *patch* will automatically be bumped for the next build
+	- So if you Tag 1.2.0, the next build will be 1.2.1
 1. Use NextVersion.txt, when you want to bump major or minor
+	- i.e "2.0.0" > NextVersion.txt  -- will result in 2.0.0 being built
 1. Put the version number into a branch name and merge to master
 	1. For example if you want to bump major because of a breaking change, you can create a branch called `release-2.0.0`, which will build as `2.0.0-beta.1` automatically, once it is merged into master 2.0.0 stable will start being built
 
@@ -125,7 +129,8 @@ Commits: d3620015c9...61862ed9e8
 Not sure about you, but I think this is pretty handy.. So what has GitReleaseNotes actually done?
 
  - Seen that you have a Git remote pointing at GitHub
- - Connects to GitHub repository in remote and fetches issues and pull requests (for private you need to specify an auth token)
+ - Connects to GitHub repository in remote and fetches issues and pull requests
+	 - For connecting to private repos, you will need to login to GitHub and generate an application auth token then pass the auth token to GitVersion via a command line switch
  - Outputs the closed pull requests and issues *since the last tag* to the *release notes*
  - If you have specified the `/alltags` switch then you will get issues grouped by release
 
@@ -140,13 +145,13 @@ You get included:
 As mentioned above, you could also be using another issue tracker and GitReleaseNotes would connect to it and fetch the issues!
 
 ### Step 3
-Edit your release notes, if you only want to list pull requests just delete the issues. If you want to put both issue and pull request links in a single item, just do that.
+[Optional] Edit your release notes, if you only want to list pull requests just delete the issues. If you want to put both issue and pull request links in a single item, just do that. This can be improved as we go based on feedback to reduce the amount of manual work. You can also just leave it as is.
 
 ### Step 4
 If you are using the `/allTags` switch, then GitReleaseNotes will *append* new issues to your release notes. Meaning all your modifications will *not be changed* and new closed issues will simply be appended!
 
 ## Summary
-Thats it, I would love feedback on both of these projects. I think they are massive time savers and I hope they save you some time!
+That s it, I would love feedback on both of these projects. I think they are massive time savers and I hope they save you some time!
 
 I said I would come back to Particular's release note generator which can be found at [https://github.com/Particular/GitHubReleaseNotes](https://github.com/Particular/GitHubReleaseNotes).
 It is much more strict and uses GitHub milestones and set tags to generate the release notes. Which allows high quality generated release notes. If you use GitHub milestones a lot for release planning, it might work better for you. Check it out.
