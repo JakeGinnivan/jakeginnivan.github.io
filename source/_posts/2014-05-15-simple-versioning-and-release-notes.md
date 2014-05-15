@@ -70,6 +70,25 @@ We then just copy our powershell module into the output folder and replace the v
 
 ![2014-05-13-simple-versioning-and-release-notes](../assets/posts/2014-05-13-simple-versioning-and-release-notes.png)
 
+### How to SemVer?
+Once we have GitVersion running, how do we get it to bump the SemVer?
+
+GitVersion supports two Git branching strategies, [GitHubFlow](https://guides.github.com/introduction/flow/index.html) (or the simple pull request model) and [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/). I am going to use GitHubFlow as an example.
+
+#### Ways to bump the version
+1. When you tag, the *patch* will automatically be bumped for the next build
+1. Use NextVersion.txt, when you want to bump major or minor
+1. Put the version number into a branch name and merge to master
+	1. For example if you want to bump major because of a breaking change, you can create a branch called `release-2.0.0`, which will build as `2.0.0-beta.1` automatically, once it is merged into master 2.0.0 stable will start being built
+
+If you have other idea's on how we could bump the version, let us know. Some ideas are using Git notes or detecting specific phrases in your commit messages. Like `Breaking:` would cause major to be increased.
+
+Check out the wiki for some additional info
+
+ - [https://github.com/Particular/GitVersion/wiki/Advantages-of-GitVersion](https://github.com/Particular/GitVersion/wiki/Advantages-of-GitVersion)
+ - [https://github.com/Particular/GitVersion/wiki/GitFlowExamples](https://github.com/Particular/GitVersion/wiki/GitFlowExamples)
+ - [https://github.com/Particular/GitVersion/wiki/GitHubFlowExamples](https://github.com/Particular/GitVersion/wiki/GitHubFlowExamples)
+
 That is GitVersion in action. You can also just invoke it directly as the first step in you TeamCity build. It also supports a few other build servers.
 
 # Generating release notes
