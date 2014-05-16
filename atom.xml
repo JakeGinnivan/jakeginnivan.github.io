@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-15T07:18:12+01:00</updated>
+  <updated>2014-05-16T10:30:02+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -43,11 +43,14 @@ No known merge tool is available.
     <link href="http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/"/>
     <updated>2014-05-08T10:05:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1</id>
-    <content type="html"><![CDATA[<p>We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
+    <content type="html"><![CDATA[<p>We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
+
+<p>Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
+
+<!-- more -->
+
 
 <h2>New Features</h2>
-
-<p>v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
 
 <p>New features include:</p>
 
@@ -162,6 +165,9 @@ No known merge tool is available.
 </code></pre>
 
 <p>This is an example of a Cucumber test with examples, for each row in the examples table the test will run effectively giving us a data driven BDD style test.</p>
+
+<!-- more -->
+
 
 <p>I have picked this test because it is a bit more complex than the standard <code>Given I have 3 beers in my fridge, When I drink 2, Then I have 1 beer left</code>.. Yay, how interesting..</p>
 
