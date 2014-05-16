@@ -28,9 +28,9 @@ Examples:
     | Student        | Single Ticket | $1.5  |
     | Senior         | Single Ticket | $2    |
     | Standard       | Single Ticket | $3    |
-    
-This is an example of a Cucumber test with examples, for each row in the examples table the test will run effectively giving us a data driven BDD style test. 
 
+This is an example of a Cucumber test with examples, for each row in the examples table the test will run effectively giving us a data driven BDD style test. 
+<!-- more -->
 I have picked this test because it is a bit more complex than the standard `Given I have 3 beers in my fridge, When I drink 2, Then I have 1 beer left`.. Yay, how interesting..
 
 In this example, I will use BDDfy's fluent API to write this test. First without examples:
