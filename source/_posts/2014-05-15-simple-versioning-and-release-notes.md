@@ -132,7 +132,7 @@ Not sure about you, but I think this is pretty handy.. So what has GitReleaseNot
 
  - Seen that you have a Git remote pointing at GitHub
  - Connects to GitHub repository in remote and fetches issues and pull requests
-	 - For connecting to private repos, you will need to login to GitHub and generate an application auth token then pass the auth token to GitVersion via a command line switch
+	 - For connecting to private repos, you will need to login to GitHub and generate an application auth token then pass the auth token to GitReleaseNotes via a command line switch
  - Outputs the closed pull requests and issues *since the last tag* to the *release notes*
  - If you have specified the `/alltags` switch then you will get issues grouped by release
 
