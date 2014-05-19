@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Today my git mergetool stopped working. When I ran git mergetool I was greeted with: git config option merge.tool set to unknown tool: --global &hellip;">
+  <meta name="description" content="At the MVP summit last year I picked up a Sculpt Ergonomic Desktop pack, mainly because I cannot stand the UK keyboard layout and wanted to stay on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,94 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/19/key-not-working-on-sculpt-keyboard/">Cannot Type Capital v on Sculpt Keyboard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-19T10:46:00+01:00" pubdate data-updated="true">May 19<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At the MVP summit last year I picked up a <a href="http://www.microsoft.com/hardware/en-gb/p/sculpt-ergonomic-desktop">Sculpt Ergonomic Desktop pack</a>, mainly because I cannot stand the UK keyboard layout and wanted to stay on the US layout while working in London.</p>
+
+<p>I just had a very strange issue, I could not type a capital <strong>V</strong>, lowercase worked fine. Plugging into another machine showed the same issue.</p>
+
+<p>One of the problems with the Sculpt is that the function keys get stuck. Apparently if the <code>F5</code> key gets stuck, then you can no longer type a capital V. If the <code>F2</code> key is stuck then you won&rsquo;t be able to type a capital C.</p>
+
+<p>If you hit this random issue, hopefully you will read this post before returning your keyboard.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/17/disable-thumbs-dot-db/">Disable thumbs.db</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-17T11:43:14+01:00" pubdate data-updated="true">May 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Thumbs.db is created by windows whenever a folder has images in it as a cache for the thumbnails for the images. But it gets locked and stops me switching branches in git and I have to restart my PC sometimes.</p>
+
+<p>Save this as <code>KillThumbsDb.reg</code> and run it as administrator:</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer]
+"DisableThumbsDBOnNetworkFolders"=dword:00000001
+</code></pre>
+
+<p>I have no idea why thumbs.db is being created in local folders, but this fixes it for me.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -488,110 +576,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
   
     <footer>
       <a rel="full-article" href="/git-flow-versioning/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-28T00:00:00+01:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
-
-<p>My goals were</p>
-
-<ul>
-<li>Use GitHubs releases feature - <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
-<li>I want to release from NuGet</li>
-<li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
-<li>Support SemVer, including pre-release packages</li>
-<li>Assembly versions should be stamped with informational version as well as a version</li>
-<li>Be able to link to the project GitHub releases from the NuSpec</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/release-nuget-semver-packages-from-teamcity/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/conventiontests-v2-released/">Convention Tests V2 Released</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-19T00:00:00+01:00" pubdate data-updated="true">Sep 19<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>ConventionTests v2 Released</h2>
-
-<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
-
-<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
-
-<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
-
-<h2>What is ConventionTests?</h2>
-
-<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/conventiontests-v2-released/">Read on &rarr;</a>
     </footer>
   
 

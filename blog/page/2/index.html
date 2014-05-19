@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues. &hellip;">
+  <meta name="description" content="I have a number of open source projects and I do not really have a good release process. So I spend the arvo trying to figure out a good way to do it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,110 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/release-nuget-semver-packages-from-teamcity/">Release NuGet SemVer Packages From Teamcity</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-28T00:00:00+01:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
+
+<p>My goals were</p>
+
+<ul>
+<li>Use GitHubs releases feature - <a href="https://github.com/blog/1547-release-your-software">https://github.com/blog/1547-release-your-software</a></li>
+<li>I want to release from NuGet</li>
+<li>Preferably write release notes before I click the button in TeamCity, this way i can add them on github to build up a release</li>
+<li>Support SemVer, including pre-release packages</li>
+<li>Assembly versions should be stamped with informational version as well as a version</li>
+<li>Be able to link to the project GitHub releases from the NuSpec</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/release-nuget-semver-packages-from-teamcity/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/conventiontests-v2-released/">Convention Tests V2 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-19T00:00:00+01:00" pubdate data-updated="true">Sep 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>ConventionTests v2 Released</h2>
+
+<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
+
+<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
+
+<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
+
+<h2>What is ConventionTests?</h2>
+
+<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/conventiontests-v2-released/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -487,95 +591,6 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
   
     <footer>
       <a rel="full-article" href="/teststack-white-v0-11/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/teamcity-ui-test-agent/">TeamCity UI Test Agent</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-31T00:00:00+01:00" pubdate data-updated="true">Jul 31<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Setting up a UI Test build agent</h1>
-
-<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
-This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
-
-<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/teamcity-ui-test-agent/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/setting-up-git/">Setting Up Git</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-27T00:00:00+01:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
-
-<p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/setting-up-git/">Read on &rarr;</a>
     </footer>
   
 

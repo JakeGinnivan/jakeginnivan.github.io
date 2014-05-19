@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Unknown Git Mergetool - Jake Ginnivan's blog</title>
+  <title>Disable thumbs.db - Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Today my git mergetool stopped working. When I ran git mergetool I was greeted with: git config option merge.tool set to unknown tool: --global &hellip;">
+  <meta name="description" content="Thumbs.db is created by windows whenever a folder has images in it as a cache for the thumbnails for the images. But it gets locked and stops me &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
@@ -92,7 +92,7 @@
   
   <header>
     
-      <h1 class="entry-title">Unknown Git Mergetool</h1>
+      <h1 class="entry-title">Disable thumbs.db</h1>
     
     
       <p class="meta">
@@ -108,30 +108,24 @@
   
 
 
-<time datetime="2014-05-14T20:08:32+01:00" pubdate data-updated="true">May 14<span>th</span>, 2014</time>
+<time datetime="2014-05-17T11:43:14+01:00" pubdate data-updated="true">May 17<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
+<div class="entry-content"><p>Thumbs.db is created by windows whenever a folder has images in it as a cache for the thumbnails for the images. But it gets locked and stops me switching branches in git and I have to restart my PC sometimes.</p>
 
-<pre><code>git config option merge.tool set to unknown tool: --global
-Resetting to default...
+<p>Save this as <code>KillThumbsDb.reg</code> and run it as administrator:</p>
 
-This message is displayed because 'merge.tool' is not configured.
-See 'git mergetool --tool-help' or 'git help config' for more details.
-'git mergetool' will now attempt to use one of the following tools:
-tortoisemerge emerge vimdiff
-No known merge tool is available.
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer]
+"DisableThumbsDBOnNetworkFolders"=dword:00000001
 </code></pre>
 
-<p>Somehow (seriously, I have <strong>no</strong> idea how I did this) I had created a setting in one of my repositories set my mergetool to <code>--global</code>.</p>
-
-<p>If you happen to get yourself into the same issue, run <code>git config --list</code> to see what your config settings are.</p>
-
-<p>For me, I had a rogue <code>merge.tool</code> entry, so I just had to run <code>git config --unset merge.tool</code> which deleted the entry and I was off again.</p>
+<p>I have no idea why thumbs.db is being created in local folders, but this fixes it for me.</p>
 </div>
 
 
@@ -154,7 +148,7 @@ No known merge tool is available.
   
 
 
-<time datetime="2014-05-14T20:08:32+01:00" pubdate data-updated="true">May 14<span>th</span>, 2014</time>
+<time datetime="2014-05-17T11:43:14+01:00" pubdate data-updated="true">May 17<span>th</span>, 2014</time>
       
 
 
@@ -162,7 +156,7 @@ No known merge tool is available.
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db/" >Tweet</a>
   
   
   
@@ -171,10 +165,10 @@ No known merge tool is available.
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/08/bddfy-v4-beta1/" title="Previous Post: BDDfy v4.0 Beta 1 Released">&laquo; BDDfy v4.0 Beta 1 Released</a>
+        <a class="basic-alignment left" href="/blog/2014/05/14/unknown-git-mergetool/" title="Previous Post: Unknown git mergetool">&laquo; Unknown git mergetool</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/05/17/disable-thumbs-dot-db/" title="Next Post: Disable thumbs.db">Disable thumbs.db &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/05/19/key-not-working-on-sculpt-keyboard/" title="Next Post: Cannot type capital V on Sculpt Keyboard">Cannot type capital V on Sculpt Keyboard &raquo;</a>
       
     </p>
   </footer>
@@ -212,8 +206,8 @@ No known merge tool is available.
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/';
-        var disqus_url = 'http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/';
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db/';
         var disqus_script = 'embed.js';
       
     (function () {

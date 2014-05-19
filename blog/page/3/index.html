@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Over the last day or so, I have been setting up the documentation website for TestStack at http://teststack.azurewebsites.net/ With Pretzel&rsquo;s &hellip;">
+  <meta name="description" content="Setting up a UI Test build agent Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,95 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/teamcity-ui-test-agent/">TeamCity UI Test Agent</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-31T00:00:00+01:00" pubdate data-updated="true">Jul 31<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Setting up a UI Test build agent</h1>
+
+<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
+This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
+
+<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/teamcity-ui-test-agent/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/setting-up-git/">Setting Up Git</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T00:00:00+01:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
+
+<p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/setting-up-git/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -476,108 +565,6 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   
     <footer>
       <a rel="full-article" href="/vstocontrib-outlook-contextmenus/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/web-api-problem-404s-for-everything/">Web Api Problem - 404s for Everything</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-20T00:00:00+01:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Scenario</h1>
-
-<p>So the scenario is that we are in the middle of migrating all our services into Azure, and there will be a time when our services will be running on premise and also in Azure.</p>
-
-<p>We added this class to our project and added a reference to <code>Microsoft.WindowsAzure.ServiceRuntime</code> (from the GAC):</p>
-
-<pre><code>public class WebRole : RoleEntryPoint
-{
-    public override bool OnStart()
-    {
-        //Start code
-        return base.OnStart();
-    }
-}
-</code></pre>
-
-<p>Our WebApi site starts 404&#8217;ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/web-api-problem-404s-for-everything/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/markpad-performance-push/">Markpad Performance Push</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-12T00:00:00+01:00" pubdate data-updated="true">Aug 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files.</p>
-
-<p><img src="/assets/posts/2012-08-12-markpad-performance-push/screenshot.png" alt="MarkPad" /></p>
-
-<p>While flying back from Oslo and <a href="http://www.ndcoslo.com/">NDC</a> I spent probably 12+ hours of my ~20 hours of flying working on improving performance in MarkPad and cleaning up the codebase. This is documenting the most significant change.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/markpad-performance-push/">Read on &rarr;</a>
     </footer>
   
 

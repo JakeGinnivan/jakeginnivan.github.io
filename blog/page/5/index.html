@@ -9,7 +9,8 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the http://windowsphonefoundations.net/ website &hellip;">
+  <meta name="description" content="Windows Phone MVC? So to get started, let me explain what it is.
+It is a MVC + MVVM Hybrid framework, I think MVVM falls down in a few area&rsquo;s, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +90,107 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/windows-phone-mvc-update/">Windows Phone MVC Update</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-21T00:00:00+01:00" pubdate data-updated="true">Aug 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Windows Phone MVC?</h1>
+
+<p>So to get started, let me explain what it is.<br/>
+It is a MVC + MVVM Hybrid framework, I think MVVM falls down in a few area&rsquo;s, and by teaming up with the MVC pattern we can achieve great testability, performance, navigation, lifecycle etc..</p>
+
+<p>The aim of Windows Phone MVC is to make windows phone development quicker, easier, more enjoyable and most of all help you build a nice performant app which gives an awesome user experience.</p>
+
+<p>This is going to be quite a long post going through many features of Windows Phone MVC, I hope it gets across what I am trying to do with the framework, and how it can help you out!<br/>
+I am still a little way from v1, so there will be API changes, but I am more than happy to field some questions about how to use it.</p>
+
+<p>Many of the improvements on this release are due to <a href="http://transhub.wordpress.com/">http://transhub.wordpress.com/</a> using Windows Phone MVC and I have been working close with the transub team to make sure the framework helped them deliver a killer app!</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/windows-phone-mvc-update/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/phone-test-project/">Phone Test Project Template</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-20T00:00:00+01:00" pubdate data-updated="true">Aug 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Last week I put together a project template for a windows phone 7 test project. At the moment there isn&rsquo;t a really good story for unit testing on the phone. If you have the mango tools you have to grab the Mango Silverlight Unit Test assemblies from Jeff Wincox&rsquo;s blog.</p>
+
+<p>The Project Template available at <a href="http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b">http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b</a> is really basic, and you then have to add a reference via NuGet of either the Silverlight Unit Testing Framework (doesn&rsquo;t work with Mango), or WindowsPhoneEssentials.Testing.</p>
+
+<p>The advantage of the WindowsPhoneEssentials.Testing project is it contains the Mango compatible versions, sets everything up and has a collection of really useful testing related helpers/abstractions for WP7. Check out <a href="http://windowsphonefoundations.net/windowsphoneessentials">http://windowsphonefoundations.net/windowsphoneessentials</a> or the source at <a href="http://wp7essentials.codeplex.com/">http://wp7essentials.codeplex.com/</a> for more information.</p>
+
+<p>But what you get after you install it is:</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/NewTestProject.png" alt="New Phone Test Project" /></p>
+
+<p>Then you add the NuGet reference to WindowsPhoneEssentials.Testing</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/TestingNuGet.png" alt="Add NuGet reference to WindowsPhoneEssentials.Testing" /></p>
+
+<p>Enjoy!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -492,94 +594,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
   
     <footer>
       <a rel="full-article" href="/wp7essentials/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/tfsmergetools/">TFS Merge Tools Configuration</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-01T00:00:00+01:00" pubdate data-updated="true">Jun 1<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
-
-<p>This blog post <a href="http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx">http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx</a> lists all common merge tools, and the command line arguments for each of them.</p>
-
-<p>I use KDiff, so the Compare arguments are <code>%1 --fname %6 %2 --fname %7</code> and Merge arguments are <code>%3 --fname %8 %2 --fname %7 %1 --fname %6 -o %4</code></p>
-
-<p>Great, except I have to register all the extensions that I want to use KDiff for. This is my list:</p>
-
-<pre><code>.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql,.rptproj,.rdl,.rss,.settings
-</code></pre>
-
-<p>What other extensions am I missing?</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-ribbon-designer-in-depth/">Ribbon XML and Ribbon Designer in Depth</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-05T00:00:00+01:00" pubdate data-updated="true">Apr 5<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ever wanted to know a bit more about how VSTO gives you the Ribbon designer. This post will explain Ribbon XML, then how the designer gives you more.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-ribbon-designer-in-depth/">Read on &rarr;</a>
     </footer>
   
 

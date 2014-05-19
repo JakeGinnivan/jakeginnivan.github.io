@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-16T10:30:02+01:00</updated>
+  <updated>2014-05-19T16:28:23+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Cannot type capital V on Sculpt Keyboard]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/05/19/key-not-working-on-sculpt-keyboard/"/>
+    <updated>2014-05-19T10:46:00+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/19/key-not-working-on-sculpt-keyboard</id>
+    <content type="html"><![CDATA[<p>At the MVP summit last year I picked up a <a href="http://www.microsoft.com/hardware/en-gb/p/sculpt-ergonomic-desktop">Sculpt Ergonomic Desktop pack</a>, mainly because I cannot stand the UK keyboard layout and wanted to stay on the US layout while working in London.</p>
+
+<p>I just had a very strange issue, I could not type a capital <strong>V</strong>, lowercase worked fine. Plugging into another machine showed the same issue.</p>
+
+<p>One of the problems with the Sculpt is that the function keys get stuck. Apparently if the <code>F5</code> key gets stuck, then you can no longer type a capital V. If the <code>F2</code> key is stuck then you won&rsquo;t be able to type a capital C.</p>
+
+<p>If you hit this random issue, hopefully you will read this post before returning your keyboard.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Disable thumbs.db]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db/"/>
+    <updated>2014-05-17T11:43:14+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db</id>
+    <content type="html"><![CDATA[<p>Thumbs.db is created by windows whenever a folder has images in it as a cache for the thumbnails for the images. But it gets locked and stops me switching branches in git and I have to restart my PC sometimes.</p>
+
+<p>Save this as <code>KillThumbsDb.reg</code> and run it as administrator:</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer]
+"DisableThumbsDBOnNetworkFolders"=dword:00000001
+</code></pre>
+
+<p>I have no idea why thumbs.db is being created in local folders, but this fixes it for me.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Unknown git mergetool]]></title>
@@ -1665,245 +1699,6 @@ This means if you do not want to wait for the test suite to run on your machine,
 <h2>Reporting Issues</h2>
 
 <p>If you find an issue in White, create an issue on github, and even better, create a failing UI tests. I do not mind pull requests with a failing test, I can fix the underlying issue without you getting involved in the inner workings of White.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
-    <link href="http://jake.ginnivan.net/teamcity-ui-test-agent/"/>
-    <updated>2013-07-31T00:00:00+01:00</updated>
-    <id>http://jake.ginnivan.net/teamcity-ui-test-agent</id>
-    <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
-
-<p>Many UI automation frameworks automate not only using automation patterns, but also automate your mouse and keyboard.
-This means that you need a fully unlocked desktop for things to work correctly. This blog post will show you how to setup a UI Test agent on Azure VM&rsquo;s, but you can use your own vm infrastructure.</p>
-
-<p>I recommend using a VM, because otherwise you are leaving a desktop unlocked where anyone can come and use it. At least VM&rsquo;s run on a locked desktop, or on the cloud and you need to remote in.</p>
-
-<!-- more -->
-
-
-<h2>Create our VM on Azure</h2>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent_635109042213761250.png" alt="NewDocument" /></p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent1_635109042218761250.png" alt="NewDocument1" /><br/>
-I choose Windows Server 2008 R2 as the Operating System, it is preferable to use a client operating system, but server OS&rsquo;s are all that are available in Azure. This also means you don&rsquo;t have to work around the fact that the 2012 start screen shows first, and we need to be on the desktop.</p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent2_635109042222198750.png" alt="NewDocument2" /></p>
-
-<p>Now we are ready to go, lets remote desktop into our VM</p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent3_635109042225792500.png" alt="NewDocument3" /></p>
-
-<p>Enter your remote desktop credentials which we you setup when creating your VM
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent4_635109042229230000.png" alt="NewDocument4" /></p>
-
-<h2>Setting up your VM</h2>
-
-<p>On first login, make sure you tell the initial configuration and server manager to not open on start
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent6_635109042232667500.png" alt="NewDocument6" />
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent7_635109042236105000.png" alt="NewDocument7" /></p>
-
-<p>Before you close server manager you want to click on <code>Configure IE ESC</code>, then turn it off. Otherwise downloading everything will be rather painful (unless you just want to download firefox or chrome, then don&rsquo;t worry.</p>
-
-<p>Next, we need our VM to login automatically, if our VM restarts, it needs to come straight back up and logs in.</p>
-
-<p>To do this, download Sysinternals Autologon for Windows from <a href="http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx">http://technet.microsoft.com/en-us/sysinternals/bb963905.aspx</a>. Once you have downloaded, extracted, run and accepted the EULA you can enter the credentials to login with.
-The advantage of using this tool rather than just putting it in the registry, is that your password will be encrypted rather than plain text :)<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent8_635109042239542500.png" alt="NewDocument8" /><br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent9_635109042242980000.png" alt="NewDocument9" /></p>
-
-<p>Next we need to install VNC onto the server, we cannot use remote desktop because after you disconnect the desktop will lock, and your tests will start failing.
-TeamViewer will also work.</p>
-
-<p>Personally I use TightVNC.</p>
-
-<h3>Installing/Configuring TightVNC</h3>
-
-<ol>
-<li>Download from <a href="http://www.tightvnc.com/download.php">http://www.tightvnc.com/download.php</a></li>
-<li>Do a complete install, leave all options ticked when presented with them.</li>
-<li>Set your passwords, I am happy to not have a separate administration password.<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent10_635109042246417500.png" alt="NewDocument10" /></li>
-<li>Install the DFMirage driver, available from the TightVNC download page</li>
-<li>If using azure you need to open up the port (Manage VM, EndPoints, Add, Next)<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent11_635109042249855000.png" alt="NewDocument11" /></li>
-</ol>
-
-
-<h3>Finishing VM Setup</h3>
-
-<p>Reconnect using something other than remote desktop<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent12_635109042253292500.png" alt="NewDocument12" /></p>
-
-<p>Now you are logged in, bump the screen resolution up to 1280x1024 (or whatever suites you).</p>
-
-<h4>Disable WER</h4>
-
-<p>Windows error reporting causes issues when running UI automation, if you app crashes (which is why we have UI automation, to find that sort fo thing) then you want it to exit straight away, not popup the Windows Error Reporting Dialog
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/SettingupUITestAgent13_635109042256730000.png" alt="NewDocument13" /></p>
-
-<p>Save the following text into a .reg file i.e DisableWER.reg then run</p>
-
-<pre><code>Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows]
-"ErrorMode"="2"
-
-[HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting]
-"DontShowUI"="1"
-</code></pre>
-
-<h3>Installing the teamcity build agent</h3>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent_635109042263761250.png" alt="UITestAgent" /><br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent1_635109042267198750.png" alt="UITestAgent1" /><br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent2_635109042273605000.png" alt="UITestAgent2" /><br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent3_635109042290480000.png" alt="UITestAgent3" /></p>
-
-<p>Fill in your teamcity server URL, and note the port number the agent is running on
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent4_635109042304073750.png" alt="UITestAgent4" /></p>
-
-<p>Now we go back into Azure Management, and add the port<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent5_635109042307511250.png" alt="UITestAgent5" /></p>
-
-<h4>Open Filewall Ports</h4>
-
-<p>Once we have added the port on azure, we need to open the windows firewall for that port on the VM itself<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent8_635109042326886250.png" alt="UITestAgent8" /></p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent9_635109042330480000.png" alt="UITestAgent9" /><br/>
-Put in port 9090, or whatever you set your teamcity server to<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent10_635109042341573750.png" alt="UITestAgent10" /><br/>
-Next, Next, Next, give it a good name &lsquo;TeamCity Build Agent&rsquo;, Finish</p>
-
-<h4>Set to automatic startup</h4>
-
-<p>Now open explorer, and go to <code>%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</code> and create a new shortcut<br/>
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent6_635109042366730000.png" alt="UITestAgent6" /></p>
-
-<p>Browse to your TeamCity build agent folder, and select <code>agent.bat</code></p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent7_635109042381730000.png" alt="UITestAgent7" /><br/>
-Then add the parameter <code>start</code> onto the path. You should end up with
-<code>"C:\UITestsBuildAgent\bin\agent.bat" start</code>
-Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. Then Run the shortcut. Your TeamCity build agent should startup and connect to TeamCity
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent11_635109042385167500.png" alt="UITestAgent11" /></p>
-
-<p>Authorise the build agent, then the agent should update itself and restart, after a few minutes you should have another build controller online!
-<img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent12_635109042398448750.png" alt="UITestAgent12" /></p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-07-31-teamcity-ui-test-agent/UITestAgent13_635109042408292500.png" alt="UITestAgent13" /></p>
-
-<h2>Conclusion</h2>
-
-<p>There you have it, a build agent that runs UI Tests on an unlocked desktop in Azure</p>
-
-<h3>NOTE: TeamCity is not setup for SSL, so everything is unencrypted. This would be another blog post in itself, please leave a comment if that would be useful for you?</h3>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Setting up Git]]></title>
-    <link href="http://jake.ginnivan.net/setting-up-git/"/>
-    <updated>2013-07-27T00:00:00+01:00</updated>
-    <id>http://jake.ginnivan.net/setting-up-git</id>
-    <content type="html"><![CDATA[<p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
-
-<p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
-
-<!-- more -->
-
-
-<h2>Required Software</h2>
-
-<p>Tick both boxes (MsysGit and KDiff3)</p>
-
-<h2>Feature selection</h2>
-
-<p>I tend to disable Visual Studio integration. With VS 2013 you get native git support which will continue to get better over time. And I don&rsquo;t need more menus&hellip;</p>
-
-<h2>Select SSH Agent</h2>
-
-<p>I prefer to go with OpenSSH, it is more work to setup, but once you have generated your ssh keys, put the .ssh folder into your dropbox or back it up, then you can just drop it back into your user profile when you reinstall windows or move to another computer.</p>
-
-<h1>KDiff Installation</h1>
-
-<p>Next Next Next Finish etc. :)</p>
-
-<h1>Git Installation</h1>
-
-<h2>Select components</h2>
-
-<p>I leave this as the default</p>
-
-<h2>Adjust your PATH environment</h2>
-
-<p>I go for option 2 (Run git from the Windows Command Prompt), this sets up a reasonable default so you can access git from the command line anywhere</p>
-
-<h2>Line Endings</h2>
-
-<p>Option 3, Checkout as is, commit as is. Nobody likes it when you mess with their line endings.</p>
-
-<h1>Install PoshGit</h1>
-
-<p>Now you have git installed, open up a PowerShell console as Administrator and change directories to somewhere sensible that you want to put your code.</p>
-
-<p>Then run:</p>
-
-<ul>
-<li><code>Set-ExecutionPolicy RemoteSigned</code>, this will allow you to run powershell scripts</li>
-<li><code>git clone https://github.com/dahlbyk/posh-git</code></li>
-<li><code>cd posh-git</code></li>
-<li><code>.\install.ps1</code> - this will install posh-git into your profile.</li>
-<li><code>. $PROFILE</code> - this will run your profile, now you should see [master] in blue on the command line</li>
-</ul>
-
-
-<p>You may have noticed a warning when you ran your profile
-<strong>WARNING: Could not find ssh-agent</strong></p>
-
-<p>To fix this, we need to change our PATH settings.
-Run <code>control sysdm.cpl</code> on the command line, go to the Advanced tab, click Environmental Variables
-The edit your PATH variable. When you click edit, you should see <code>C:\Program Files (x86)\Git\cmd</code> right at the end. Change this to <code>C:\Program Files (x86)\Git\bin</code></p>
-
-<p>Now when you restart your powershell console, you shouldn&rsquo;t get a warning.</p>
-
-<h1>Creating your SSH Key</h1>
-
-<p><a href="https://help.github.com/articles/generating-ssh-keys">https://help.github.com/articles/generating-ssh-keys</a> is a great resource for creating your SSH key, after you are done you should have a folder in your user profile called .ssh, and two files in that folder, id_rsa and id_rsa.pub.</p>
-
-<p>Simply copy the contents of id_rsa.pub to your GitHub keys under your profile, now you can push/pull from github easily!</p>
-
-<h1>Git Config</h1>
-
-<p>And finally, here is my .gitconfig</p>
-
-<pre><code>[core]
-autocrlf = false
-editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe'
-[diff]
-    tool = kdiff3
-    guitool = kdiff3
-[merge]
-    tool = kdiff3
-[mergetool "kdiff3"]
-    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
-    keepBackup = false
-    trustExitCode = false
-[difftool]
-    prompt = false
-[mergetool]
-    keepBackup = false
-[difftool "kdiff3"]
-    path = c:/Program Files (x86)/KDiff3/kdiff3.exe
-[alias]
-    st = status
-    rc = rebase --continue
-</code></pre>
-
-<p>Hope that helps someone get started with Git</p>
 ]]></content>
   </entry>
   
