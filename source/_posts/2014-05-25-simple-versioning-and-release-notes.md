@@ -1,9 +1,8 @@
 ---
 layout: post
 title: "Simple Versioning and release notes"
-date: 2014-05-15 9:05:00 +0000
+date: 2014-05-25 9:05:00 +0000
 comments: true
-published: false
 ---
 
 I do [a lot of open source](/open-source-work) and one common time sink across all projects is versioning and generating good release notes. 
@@ -131,8 +130,8 @@ Commits: d3620015c9...61862ed9e8
 Not sure about you, but I think this is pretty handy.. So what has GitReleaseNotes actually done?
 
  - Seen that you have a Git remote pointing at GitHub
- - Connects to GitHub repository in remote and fetches issues and pull requests
-	 - For connecting to private repos, you will need to login to GitHub and generate an application auth token then pass the auth token to GitReleaseNotes via a command line switch
+ - Connects to that remote (for example if upstream is Particular/GitVersion, it will use that repo) and fetches issues and pull requests
+	 - To connect to a private repo, you will need to login to GitHub and generate an application auth token then pass the auth token to GitReleaseNotes via a command line switch. 
  - Outputs the closed pull requests and issues *since the last tag* to the *release notes*
  - If you have specified the `/alltags` switch then you will get issues grouped by release
 
