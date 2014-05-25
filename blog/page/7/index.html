@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I am a little late blogging about this, by last month I attended the inaugural Microsoft Evangelism Academy (#EvangelOz) which was organised by &hellip;">
+  <meta name="description" content="In my current project, we have quite an awesome UI automation setup running through every process (happy days path) in our WPF app. Often we cannot &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpf-screenshot/">Taking Screenshots of WPF Apps</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-15T00:00:00+00:00" pubdate data-updated="true">Feb 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my current project, we have quite an awesome UI automation setup running through every process (happy days path) in our WPF app.</p>
+
+<p>Often we cannot resolve a UI element, and we will get an error like:</p>
+
+<pre><code>White.Core.AutomationException: Failed to get UIElement ControlType=button,AutomationId=OkButton from DialogWindow
+</code></pre>
+
+<p>While this is great, often it is hard to figure out why this happens, could be due to a validation error on the previous screen, or a error popup etc. So out infrastructure will automatically take a screenshot whenever it catches a AutomationException.</p>
+
+<p>The problem is the modal window that was often captured (and was blocking a button press on the main window) was coming out as a tiny little square with no contents:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpf-screenshot/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -568,48 +618,6 @@ It seemed unnatural that I could define a mapping that looked like:</p>
     <footer>
       <a rel="full-article" href="/c-sharp-argument-parser/">Read on &rarr;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-contrib/">VSTO Contrib</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-14T00:00:00+01:00" pubdate data-updated="true">Jul 14<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Over the time with working with VSTO, I have created a heap of reusable classes and extensions for VSTO. So I have decided to start a Contrib project.</p>
-
-<p><a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a></p>
-
-<p>The best class (in my opinion) in the Office.Utility project is the RibbonFactory, it allows you to have a ribbon callback file for each xml ribbon, register all the callback files via IoC (or manually), then the factory will locate the associated Ribbon.xml file and wire up all the callbacks for you. I prefer working with the Ribbon XML model over the designer, but the limitation of only having a single callback class is really annoying. The ribbon factory gets around that</p>
-
-<p>Over the next few months I will write up some more posts about ways to really leverage VSTO, and also write maintainable apps.</p>
-</div>
-  
   
 
 

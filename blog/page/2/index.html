@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have a number of open source projects and I do not really have a good release process. So I spend the arvo trying to figure out a good way to do it &hellip;">
+  <meta name="description" content="As a follow up to my last post http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity I have been investigating more into different &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/git-flow-versioning/">Git Flow Versioning</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-02T00:00:00+01:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
+
+<p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
+
+<p>Much to my surpise, it is actually very light-weight and you can drop much of it if your process is simpler (say for open source).</p>
+
+<p><a href="https://github.com/TestStack/ConventionTests">https://github.com/TestStack/ConventionTests</a> is my guinea pig!</p>
+
+<p>To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, &lsquo;upstream&rsquo; is the main repository, &lsquo;origin&rsquo; is my fork.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/git-flow-versioning/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -545,53 +594,6 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
 <p>From now, I will be tracking changes/fixes a lot better. Please report any issues at <a href="https://github.com/JakeGinnivan/VSTOContrib/issues">https://github.com/JakeGinnivan/VSTOContrib/issues</a></p>
 </div>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/teststack-white-v0-11/">TestStack.White v0.11 Released!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-01T00:00:00+01:00" pubdate data-updated="true">Aug 1<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have just pushed the button for TestStack.White v0.11.</p>
-
-<p>The main focus between v0.10 and v0.11 is converting the old test suite into a new test suite which is easier to maintain and can reliably run on the build server.</p>
-
-<p>The previous test suite was often red, which meant that it was hard to know if there were regressions as other issues were fixed.</p>
-
-<p>You can see the CI status at <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;branch_TestStack_White=__all_branches__">http://teamcity.ginnivan.net/project.html?projectId=TestStack_White</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/teststack-white-v0-11/">Read on &rarr;</a>
-    </footer>
   
 
 

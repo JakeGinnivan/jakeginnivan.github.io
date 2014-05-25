@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="At the MVP summit last year I picked up a Sculpt Ergonomic Desktop pack, mainly because I cannot stand the UK keyboard layout and wanted to stay on &hellip;">
+  <meta name="description" content="I do a lot of open source and one common time sink across all projects is versioning and generating good release notes. This post is about two new &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/25/simple-versioning-and-release-notes/">Simple Versioning and Release Notes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-25T10:05:00+01:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I do <a href="/open-source-work">a lot of open source</a> and one common time sink across all projects is versioning and generating good release notes.</p>
+
+<p>This post is about two new open source tools. <a href="https://github.com/Particular/GitVersion">GitVersion</a> and <a href="https://github.com/JakeGinnivan/GitReleaseNotes">GitReleaseNotes</a> which automate both of those things.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/25/simple-versioning-and-release-notes/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -527,55 +570,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
   
     <footer>
       <a rel="full-article" href="/gitreleasenotes/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/git-flow-versioning/">Git Flow Versioning</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-02T00:00:00+01:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
-
-<p>Next stop on my trip was looking into Git-Flow and how it manages releases, initially it seemed very waterfally and too heavy to use on an open source project, but I thought it may fit at different clients. I was instantly drawn to the fact that releases have an explicit step to version at the start of the release process, this is great, I can manage my project, merge pull requests, add features then when I am ready, I can decide to release, put together release notes and figure out if this is a major, minor or patch release.</p>
-
-<p>Much to my surpise, it is actually very light-weight and you can drop much of it if your process is simpler (say for open source).</p>
-
-<p><a href="https://github.com/TestStack/ConventionTests">https://github.com/TestStack/ConventionTests</a> is my guinea pig!</p>
-
-<p>To get started, I decided to try and implement git-flow manually to really understand what is going on. There are plenty of explainations out there, so I will just be running through what I did, and how it works from my point of view. I always have two remotes setup for my projects, &lsquo;upstream&rsquo; is the main repository, &lsquo;origin&rsquo; is my fork.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/git-flow-versioning/">Read on &rarr;</a>
     </footer>
   
 

@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Simple Versioning and Release Notes - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="I do a lot of open source and one common time sink across all projects is versioning and generating good release notes. This post is about two new &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Simple Versioning and Release Notes</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-25T10:05:00+01:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I do <a href="/open-source-work">a lot of open source</a> and one common time sink across all projects is versioning and generating good release notes.</p>
+
+<p>This post is about two new open source tools. <a href="https://github.com/Particular/GitVersion">GitVersion</a> and <a href="https://github.com/JakeGinnivan/GitReleaseNotes">GitReleaseNotes</a> which automate both of those things.</p>
+
+<!-- more -->
+
+
+<h2>Background</h2>
+
+<p>About 7 months ago I was talking with <a href="https://github.com/simoncropp">Simon</a> about this pain. Simon and the guys at <a href="https://github.com/Particular">Particular (nServiceBus)</a> had already started on a tool which used the branching conventions of <a href="http://nvie.com/posts/a-successful-git-branching-model/">GitFlow</a> to infer the <a href="http://semver.org/">Semantic Version</a> of their software.</p>
+
+<p>I was pretty excited about this, but did not want to convert all my projects to GitFlow just for versioning reasons. We had two choices, I could contribute <a href="https://guides.github.com/introduction/flow/index.html">GitHubFlow</a> support to GitFlowVersion or spin off a new project. After a discussion with Simon and <a href="https://github.com/andreasohlund">Andreas</a> we made the call that a separate project would be the way to start, then we can combine the best of both worlds later. <a href="https://github.com/JakeGinnivan/GitHubFlowVersion">GitHubFlowVersion</a> was born.</p>
+
+<p>Since then, GitHubFlowVersion and GitFlowVersion have joined forces bringing the best ideas from both projects into <a href="https://github.com/Particular/GitVersion">GitVersion</a> which uses the conventions in common Git branching strategies to allow you to adopt <a href="http://semver.org">Semantic Versioning</a> in your project really easily. I will talk more about release notes a bit later.</p>
+
+<h2>GitVersion in action</h2>
+
+<p>I have created a simple repository on GitHub which I will use for this post at <a href="https://github.com/JakeGinnivan/EasyVersioningAndReleases">JakeGinnivan/EasyVersioningAndReleases</a> and also <a href="http://teamcity.ginnivan.net/project.html?projectId=OpenSourceProjects_EasyVersioningAndReleases&amp;tab=projectOverview">setup a CI build</a> (login as guest).</p>
+
+<p>In this example I am going to use <em>GitVersion.exe</em> from my &ldquo;build script&rdquo;, check out <a href="https://github.com/Particular/GitVersion/wiki/Command-Line-Tool">Command line usage</a> on the GitVersion wiki for more ways you can use GitVersion.exe. Also check out the MSBuild task and the Ruby Gem. When <em>GitVersion.exe</em> is run, it looks at your Git repository and infers the Semantic Version from previous tags, branch names and a few other things. The wiki covers how it does this. The goal though is that it should just work and do sensible things.</p>
+
+<p>Here is my sample build script, all it does is call <em>GitVersion.exe</em>, parse the json that is returned and replace a <strong>version</strong> token in my powershell module.</p>
+
+<pre><code>$currentDir = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+
+$output = . "$currentDir\GitVersion.1.0.0.0\tools\GitVersion.exe"
+
+$joined = $output -join "`n"
+$versionInfo = $joined | ConvertFrom-Json
+$version = $versionInfo.SemVer
+
+mkdir "$currentDir\Artifacts"
+
+Copy-Item "$currentDir\src\UsefulStuff.psm1" "$currentDir\Artifacts\UsefulStuff.psm1"
+
+(Get-Content "$currentDir\Artifacts\UsefulStuff.psm1") | 
+    Foreach-Object {$_ -replace '__version__',"v$version"} |
+    Out-File "$currentDir\Artifacts\UsefulStuff.psm1"
+
+Write-Output "##teamcity[buildNumber '$version']"
+</code></pre>
+
+<p>The json returned from GitVersion is a collection of variables, here is an example of what GitVersion returns</p>
+
+<pre><code>{
+  "Major":1,
+  "Minor":0,
+  "Patch":0,
+  "PreReleaseTag":"beta.1",
+  "PreReleaseTagWithDash":"-beta.1",
+  "BuildMetaData":431,
+  "FullBuildMetaData":"431.Branch.release-1.0.0.Sha.c1b1f80cd5e3e8182aa208163e40b4df66461226",
+  "MajorMinorPatch":"1.0.0",
+  "SemVer":"1.0.0-beta.1",
+  "LegacySemVer":"1.0.0-beta1",
+  "LegacySemVerPadded":"1.0.0-beta0001",
+  "AssemblySemVer":"1.0.0.0",
+  "FullSemVer":"1.0.0-beta.1+431",
+  "InformationalVersion":"1.0.0-beta.1+431.Branch.release-1.0.0.Sha.c1b1f80cd5e3e8182aa208163e40b4df66461226",
+  "ClassicVersion":"1.0.0.431",
+  "ClassicVersionWithTag":"1.0.0.431-beta.1",
+  "BranchName":"release-1.0.0",
+  "Sha":"c1b1f80cd5e3e8182aa208163e40b4df66461226",
+  "AssemblyVersion":"1.0.0.0",
+  "AssemblyFileVersion":"1.0.0.0",
+  "OriginalRelease":"c1b1f80cd5e3e8182aa208163e40b4df66461226.2014-05-11 08:42:24Z"
+}
+</code></pre>
+
+<p>The build metadata in the above example (+431) comes from the number of commits since the last tag/release. This means the SemVer is the same for each build, essentially making each CI build create a release candidate of the release. This works well with continuous delivery.</p>
+
+<p>We then just copy our powershell module into the output folder and replace the version. The last command <code>Write-Output "##teamcity[buildNumber '$version']"</code> updates TeamCity&rsquo;s build number. Resulting in:</p>
+
+<p><img src="/assets/posts/2014-05-13-simple-versioning-and-release-notes.png" alt="2014-05-13-simple-versioning-and-release-notes" /></p>
+
+<h3>How to SemVer?</h3>
+
+<p>Once we have GitVersion running, how do we get it to bump the SemVer?</p>
+
+<p>GitVersion supports two Git branching strategies, <a href="https://guides.github.com/introduction/flow/index.html">GitHubFlow</a> (or the simple pull request model) and <a href="http://nvie.com/posts/a-successful-git-branching-model/">GitFlow</a>. I am going to use GitHubFlow as an example.</p>
+
+<h4>Ways to bump the version</h4>
+
+<ol>
+<li>When you tag, the <em>patch</em> will automatically be bumped for the next build
+
+<ul>
+<li>So if you Tag 1.2.0, the next build will be 1.2.1</li>
+</ul>
+</li>
+<li>Use NextVersion.txt when you want to bump major or minor
+
+<ul>
+<li>i.e &ldquo;2.0.0&rdquo; > NextVersion.txt  &ndash; will result in 2.0.0 being built</li>
+</ul>
+</li>
+<li>Put the version number into a branch name and merge to master
+
+<ul>
+<li>For example if you want to bump major because of a breaking change, you can create a branch called <code>release-2.0.0</code>, which will build as <code>2.0.0-beta.1</code> automatically, once it is merged into master 2.0.0 stable will start being built</li>
+</ul>
+</li>
+</ol>
+
+
+<p>If you have other idea&rsquo;s on how we could bump the version, let us know. Some ideas are using Git notes or detecting specific phrases in your commit messages. Like <code>Breaking:</code> would cause major to be increased.</p>
+
+<p>Check out the wiki for some additional info</p>
+
+<ul>
+<li><a href="https://github.com/Particular/GitVersion/wiki/Advantages-of-GitVersion">https://github.com/Particular/GitVersion/wiki/Advantages-of-GitVersion</a></li>
+<li><a href="https://github.com/Particular/GitVersion/wiki/GitFlowExamples">https://github.com/Particular/GitVersion/wiki/GitFlowExamples</a></li>
+<li><a href="https://github.com/Particular/GitVersion/wiki/GitHubFlowExamples">https://github.com/Particular/GitVersion/wiki/GitHubFlowExamples</a></li>
+</ul>
+
+
+<p>That is GitVersion in action. You can also just invoke it directly as the first step in you TeamCity build. It also supports a few other build servers.</p>
+
+<h1>Generating release notes</h1>
+
+<p>The next step in simplifying the maintenance of our open source (or internal) project is generating release notes.</p>
+
+<p>There are two approaches you could take, try and keep your issue tracker and everything up to date so they can be generated from the issue tracker you use when you are release your software.</p>
+
+<p>The second option is to keep your release notes in your repository, and you can edit and update them manually.
+GitReleaseNotes works with either approach, but the recommended approach is the second one. Let&rsquo;s go through how you can use GitReleaseNotes.</p>
+
+<p><strong>Note:</strong> these examples are with GitHub, but GitReleaseNotes works with Jira and YouTrack currenly. TFS will also be supported. The main requirement is that you use Git as your VCS.</p>
+
+<h3>Step 1</h3>
+
+<p>Install git release notes from Chocolatey, or download the zip and put into your PATH.</p>
+
+<p><code>cinst GitReleaseNotes</code></p>
+
+<h3>Step 2</h3>
+
+<p>Change directory to any git directory, then run <code>GitReleaseNotes /o ReleaseNotes.md</code></p>
+
+<p>This will generate some release notes:</p>
+
+<ul>
+<li><a href="https://github.com/JakeGinnivan/EasyVersioningAndReleases/pull/11">#11</a> - Added function to load visual studio vars contributed by Jake Ginnivan (<a href="https://github.com/JakeGinnivan">JakeGinnivan</a>)</li>
+<li><a href="https://github.com/JakeGinnivan/EasyVersioningAndReleases/issues/10">#10</a> - Add function to load VS 2013 variables +enhancement</li>
+<li><a href="https://github.com/JakeGinnivan/EasyVersioningAndReleases/pull/9">#9</a> - Added project info contributed by Jake Ginnivan (<a href="https://github.com/JakeGinnivan">JakeGinnivan</a>)</li>
+<li><a href="https://github.com/JakeGinnivan/EasyVersioningAndReleases/issues/8">#8</a> - Create something to version</li>
+<li><a href="https://github.com/JakeGinnivan/EasyVersioningAndReleases/pull/7">#7</a> - Fixed header formatting contributed by Jake Ginnivan (<a href="https://github.com/JakeGinnivan">JakeGinnivan</a>)</li>
+<li><a href="https://github.com/JakeGinnivan/EasyVersioningAndReleases/issues/1">#1</a> - Header formatted badly +fix</li>
+</ul>
+
+
+<p>Commits: d3620015c9&hellip;61862ed9e8</p>
+
+<hr />
+
+<p>Not sure about you, but I think this is pretty handy.. So what has GitReleaseNotes actually done?</p>
+
+<ul>
+<li>Seen that you have a Git remote pointing at GitHub</li>
+<li>Connects to that remote (for example if upstream is Particular/GitVersion, it will use that repo) and fetches issues and pull requests
+
+<ul>
+<li>To connect to a private repo, you will need to login to GitHub and generate an application auth token then pass the auth token to GitReleaseNotes via a command line switch.</li>
+</ul>
+</li>
+<li>Outputs the closed pull requests and issues <em>since the last tag</em> to the <em>release notes</em></li>
+<li>If you have specified the <code>/alltags</code> switch then you will get issues grouped by release</li>
+</ul>
+
+
+<p>You get included:</p>
+
+<ul>
+<li>Link to the issue/pull request</li>
+<li>Issue title</li>
+<li>Tags (GitReleaseNotes follows <a href="http://www.semanticreleasenotes.org/">http://www.semanticreleasenotes.org/</a> which uses <code>+tag</code> after the title for tags/categories/labels.</li>
+<li>Shout outs - a really important part of release notes, calling out the awesome people which have contributed to your project! Shout outs are only available for pull requests, and will only be the person who submitted the pull request</li>
+<li>Commit range included in that release (this will become a link to the diff of those commits if supported by the site)</li>
+</ul>
+
+
+<p>As mentioned above, you could also be using another issue tracker and GitReleaseNotes would connect to it and fetch the issues!</p>
+
+<h3>Step 3</h3>
+
+<p>[Optional] Edit your release notes, if you only want to list pull requests just delete the issues. If you want to put both issue and pull request links in a single item, just do that. This can be improved as we go based on feedback to reduce the amount of manual work. You can also just leave it as is.</p>
+
+<h3>Step 4</h3>
+
+<p>If you are using the <code>/allTags</code> switch, then GitReleaseNotes will <em>append</em> new issues to your release notes. Meaning all your modifications will <em>not be changed</em> and new closed issues will simply be appended!</p>
+
+<h2>Summary</h2>
+
+<p>That&rsquo;s it, I would love feedback on both of these projects. I think they are massive time savers and I hope they save you some time!</p>
+
+<p>I said I would come back to Particular&rsquo;s release note generator which can be found at <a href="https://github.com/Particular/GitHubReleaseNotes">https://github.com/Particular/GitHubReleaseNotes</a>.
+It is much more strict and uses GitHub milestones and set tags to generate the release notes. Which allows high quality generated release notes. If you use GitHub milestones a lot for release planning, it might work better for you. Check it out.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-25T10:05:00+01:00" pubdate data-updated="true">May 25<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/05/19/key-not-working-on-sculpt-keyboard/" title="Previous Post: Cannot type capital V on Sculpt Keyboard">&laquo; Cannot type capital V on Sculpt Keyboard</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
