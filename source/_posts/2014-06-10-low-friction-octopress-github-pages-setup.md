@@ -10,7 +10,7 @@ comments: true
 My blog uses [Octopress](http://octopress.org) which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on [GitHub Pages](https://pages.github.com). But sometimes I really miss being able to simply create or edit posts online. I started looking around and found [Prose.io](http://prose.io/).
 
 Prose is an *awesome* open source online Jekyll site editor for GitHub. Then if we setup TeamCity to automatically regenerate and deploy our blog when we make any commits we have a really simple way of making quick blog posts online.
-
+<!-- more -->
 Here is a quick rundown of creating a new post with Prose. If you are only interested in the automated TeamCity deployment just skip this section.
 
 1. Go into the _posts folder, then click New File  
@@ -82,4 +82,3 @@ The next step is I want TeamCity to automatically regenerate my Octopress site a
 Save your build configuration, and now whenever you push any updates to `source` your blog will be regenerated and deployed.
 
 Enjoy!
-  
