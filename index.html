@@ -176,88 +176,12 @@
 
 <p>Prose is an <em>awesome</em> open source online Jekyll site editor for GitHub. Then if we setup TeamCity to automatically regenerate and deploy our blog when we make any commits we have a really simple way of making quick blog posts online.</p>
 
-<p>Here is a quick rundown of creating a new post with Prose. If you are only interested in the automated TeamCity deployment just skip this section.</p>
-
-<ol>
-<li>Go into the _posts folder, then click New File<br/>
-<img src="/assets/posts/Prose1.png" alt="New file" /></li>
-<li>Add a title and write your post<br/>
-<img src="/assets/posts/Prose2.png" alt="Write post" /></li>
-<li>You can define your yaml metadata defaults for prose in your _config.yaml, giving you a nice UI<br/>
-<img src="/assets/posts/Prose3.png" alt="Edit metadata" /></li>
-</ol>
-
-
-<p>When you hit save Prose will commit that file, pretty sweet. <strong>note</strong> if you do not create the file in the _posts folder you will not see the meta-data options. <strong>note2</strong> Image uploading is broken at the moment, hopefully this gets some love soon</p>
-
-<h3>My Prose Config</h3>
-
-<p>You can configure Prose by adding some additional metadata in your _config.yaml file. Here is mine:</p>
-
-<pre><code># ----------------------- #
-#   prose.io settings     #
-# ----------------------- #
-prose:
-  rooturl: "source"
-  site: "http://jake.ginnivan.net"
-  media: "source/assets/posts"
-  metadata:
-    "source/_posts":
-      - name: "layout"
-        field:
-          element: "hidden"
-          value: "post"
-      - name: "title"
-        field:
-          element: "text"
-          value: "Title"
-      - name: "comments"
-        field:
-          label: "Allow comments"
-          element: "checkbox"
-          value: true
-      - name: "categories"
-        field:
-          element: "text"
-          value: ""
-      - name: "published"
-        field:
-          label: "Published"
-          element: "checkbox"
-          value: true
-</code></pre>
-
-<p>Read more about <a href="https://github.com/prose/prose/wiki/Prose-Configuration">Prose Configuration</a>.</p>
-
-<h2>Setting up continuous deployment from TeamCity</h2>
-
-<p>The next step is I want TeamCity to automatically regenerate my Octopress site and push it to GitHub. This also assumes you have your site setup as a <strong>user</strong> site</p>
-
-<ol>
-<li>Install everything you would need to get Octopress building locally on your build server</li>
-<li>Create new build</li>
-<li>Add VCS root pointing at <code>source</code></li>
-<li> Set TeamCity Checkout mode to <em>checkout on agent</em></li>
-<li>Add <code>Command Line</code> Build Step with Exe of <code>bundle</code> and Parameter of <code>install</code>. This will install all the dependencies Octopress needs</li>
-<li><p>Next we need TeamCity to clone our repo into the <code>_deploy</code> directory, we can do this with another Command Line build step with the <em>Run</em> parameter set to Custom Script (the reason for <code>git checkout master</code> is that I have the source branch set as default, and the _deploy branch needs to be on master)</p>
-
-<pre><code> if not exist _deploy (git clone https://%GithubUsername%:%GithubPassword%@github.com/%GithubUsername%/%GithubUsername%.github.io.git _deploy)
- cd _deploy
- git checkout master
- cd ..
-</code></pre></li>
-<li><p>The last build step is to regenerate and deploy our Octopress site. Add a <code>Rake</code> build step with the path set to <code>Rakefile</code> and the task set to <code>gen_deploy</code>. Make sure the <em>bundle exec</em> option is checked</p></li>
-<li>Now setup a VCS build trigger so we deploy whenever anything changes</li>
-<li>Finally go to the <em>Parameters</em> section of your build configuration. There will be two parameters needing values, <em>GitHubUsername</em> and <em>GitHubPassword</em>. <em>GitHubUsername</em> is easy, just put your username in.</li>
-<li>For <em>GitHubPassword</em> click on <code>Edit</code> next to Spec, then set Display to Hidden and Type to Password. This will make sure your password does not show up in build logs and will be ****&rsquo;d out instead.</li>
-</ol>
-
-
-<p>Save your build configuration, and now whenever you push any updates to <code>source</code> your blog will be regenerated and deployed.</p>
-
-<p>Enjoy!</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/10/low-friction-octopress-github-pages-setup/">Read on &rarr;</a>
+    </footer>
   
 
 

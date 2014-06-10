@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Windows Phone | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/windows-phone/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-11T04:29:14+08:00</updated>
+  <updated>2014-06-11T04:32:57+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -1021,7 +1021,7 @@ Navigator: Memory usage after navigation: 19.84765625
 
 <p>I hope this is a useful post as a introduction to Windows Phone MVC, and shows off many of the features which make it really easy to write WP7 applications.</p>
 
-<p>Please leave feedback, ping me on twitter (@JakeGinnivan), or email me at <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x6a;&#97;&#x6b;&#x65;&#64;&#x67;&#105;&#x6e;&#x6e;&#105;&#x76;&#97;&#110;&#x2e;&#x6e;&#101;&#116;">&#x6a;&#x61;&#x6b;&#x65;&#x40;&#103;&#x69;&#x6e;&#110;&#x69;&#118;&#x61;&#110;&#x2e;&#x6e;&#x65;&#116;</a> with suggestions/issues. I want to power towards v1.0 when I will lock down API&rsquo;s and consider the framework stable. The framework is reasonably stable now, and is being used in a decent size app. But there will likely be situations I haven&rsquo;t thought of, or haven&rsquo;t tested.</p>
+<p>Please leave feedback, ping me on twitter (@JakeGinnivan), or email me at <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x6a;&#97;&#x6b;&#101;&#x40;&#x67;&#x69;&#x6e;&#x6e;&#105;&#x76;&#x61;&#110;&#46;&#x6e;&#101;&#116;">&#x6a;&#x61;&#107;&#101;&#x40;&#103;&#105;&#x6e;&#110;&#105;&#118;&#x61;&#110;&#46;&#110;&#101;&#116;</a> with suggestions/issues. I want to power towards v1.0 when I will lock down API&rsquo;s and consider the framework stable. The framework is reasonably stable now, and is being used in a decent size app. But there will likely be situations I haven&rsquo;t thought of, or haven&rsquo;t tested.</p>
 
 <h1>Go get it!</h1>
 

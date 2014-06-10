@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-11T04:29:14+08:00</updated>
+  <updated>2014-06-11T04:32:57+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -48,6 +48,9 @@
 <p>My blog uses <a href="http://octopress.org">Octopress</a> which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on <a href="https://pages.github.com">GitHub Pages</a>. But sometimes I really miss being able to simply create or edit posts online. I started looking around and found <a href="http://prose.io/">Prose.io</a>.</p>
 
 <p>Prose is an <em>awesome</em> open source online Jekyll site editor for GitHub. Then if we setup TeamCity to automatically regenerate and deploy our blog when we make any commits we have a really simple way of making quick blog posts online.</p>
+
+<!-- more -->
+
 
 <p>Here is a quick rundown of creating a new post with Prose. If you are only interested in the automated TeamCity deployment just skip this section.</p>
 
