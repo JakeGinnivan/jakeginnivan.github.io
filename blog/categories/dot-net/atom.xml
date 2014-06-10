@@ -4,7 +4,7 @@
   <title><![CDATA[Category: .NET | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/dot-net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Redirecting Process Output]]></title>
     <link href="http://jake.ginnivan.net/redirecting-process-output/"/>
-    <updated>2013-04-05T00:00:00+01:00</updated>
+    <updated>2013-04-05T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/redirecting-process-output</id>
     <content type="html"><![CDATA[<p>I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.</p>
 
@@ -131,7 +131,7 @@ Console.Write(stdErr);
   <entry>
     <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
     <link href="http://jake.ginnivan.net/clickonce-bootstrapping-errors/"/>
-    <updated>2011-07-20T00:00:00+01:00</updated>
+    <updated>2011-07-20T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/clickonce-bootstrapping-errors</id>
     <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
 
@@ -164,7 +164,7 @@ Console.Write(stdErr);
   <entry>
     <title type="html"><![CDATA[TFS Merge Tools Configuration]]></title>
     <link href="http://jake.ginnivan.net/tfsmergetools/"/>
-    <updated>2011-06-01T00:00:00+01:00</updated>
+    <updated>2011-06-01T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/tfsmergetools</id>
     <content type="html"><![CDATA[<p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
 
@@ -184,7 +184,7 @@ Console.Write(stdErr);
   <entry>
     <title type="html"><![CDATA[C# Command Line Argument Parser]]></title>
     <link href="http://jake.ginnivan.net/c-sharp-argument-parser/"/>
-    <updated>2010-08-21T00:00:00+01:00</updated>
+    <updated>2010-08-21T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/c-sharp-argument-parser</id>
     <content type="html"><![CDATA[<p>I know this has been done to death but nothing I found did the job for me so I started with the one that fitted my needs the most then edited from there.</p>
 
@@ -728,7 +728,7 @@ public class Arguments
   <entry>
     <title type="html"><![CDATA[VSTO Contrib]]></title>
     <link href="http://jake.ginnivan.net/vsto-contrib/"/>
-    <updated>2010-07-14T00:00:00+01:00</updated>
+    <updated>2010-07-14T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/vsto-contrib</id>
     <content type="html"><![CDATA[<p>Over the time with working with VSTO, I have created a heap of reusable classes and extensions for VSTO. So I have decided to start a Contrib project.</p>
 

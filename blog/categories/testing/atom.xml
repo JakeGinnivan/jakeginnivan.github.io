@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Verifying logged messages with Log4Net]]></title>
     <link href="http://jake.ginnivan.net/verifying-logged-messages-with-log4net/"/>
-    <updated>2013-09-13T00:00:00+01:00</updated>
+    <updated>2013-09-13T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/verifying-logged-messages-with-log4net</id>
     <content type="html"><![CDATA[<p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
 
@@ -97,7 +97,7 @@ public class RecordTest
   <entry>
     <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
     <link href="http://jake.ginnivan.net/teststack-white-v0-11/"/>
-    <updated>2013-08-01T00:00:00+01:00</updated>
+    <updated>2013-08-01T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/teststack-white-v0-11</id>
     <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
 
@@ -148,7 +148,7 @@ This means if you do not want to wait for the test suite to run on your machine,
   <entry>
     <title type="html"><![CDATA[Async warning with nSubstitute]]></title>
     <link href="http://jake.ginnivan.net/async-warning-with-nsubstitute/"/>
-    <updated>2012-10-16T00:00:00+01:00</updated>
+    <updated>2012-10-16T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/async-warning-with-nsubstitute</id>
     <content type="html"><![CDATA[<p>I got sick of a heap of warnings in VS which look like this:</p>
 
@@ -175,7 +175,7 @@ This means if you do not want to wait for the test suite to run on your machine,
   <entry>
     <title type="html"><![CDATA[Getting Started with ApprovalTests without installing TortoiseSVN]]></title>
     <link href="http://jake.ginnivan.net/getting-started-with-api-approver/"/>
-    <updated>2012-03-08T00:00:00+00:00</updated>
+    <updated>2012-03-08T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/getting-started-with-api-approver</id>
     <content type="html"><![CDATA[<p>I have just installed Windows 8 consumer preview on my dev machine, then all my API Approval tests started failing with this exception because I don&rsquo;t have TortoiseMerge installed =(</p>
 
@@ -223,7 +223,7 @@ System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The
   <entry>
     <title type="html"><![CDATA[Phone Test Project Template]]></title>
     <link href="http://jake.ginnivan.net/phone-test-project/"/>
-    <updated>2011-08-20T00:00:00+01:00</updated>
+    <updated>2011-08-20T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/phone-test-project</id>
     <content type="html"><![CDATA[<p>Last week I put together a project template for a windows phone 7 test project. At the moment there isn&rsquo;t a really good story for unit testing on the phone. If you have the mango tools you have to grab the Mango Silverlight Unit Test assemblies from Jeff Wincox&rsquo;s blog.</p>
 

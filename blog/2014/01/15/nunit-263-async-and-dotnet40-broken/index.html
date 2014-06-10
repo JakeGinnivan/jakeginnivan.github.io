@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>nUnit 2.6.3, Async and .net 4.0 Broken - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="I am currently working on a .net 4.0 project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">nUnit 2.6.3, Async and .net 4.0 Broken</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-15T02:55:09+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I am currently working on a <strong>.net 4.0</strong> project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM because we do not have stats on how many clients currently have the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=3556">.net 4.0 KB 2468871 patch</a> which enables PCL support. These issues affect the RTM version as well.</p>
+
+<p>Recently I have upgraded to nCrunch 2.2 beta and ReSharper 8.1 both which ship with the upgraded nUnit 2.6.3 runner. After I upgraded these tools I noticed tests which should have been failing were passing and passing tests were being reported as failing but showing stack traces from a different test..</p>
+
+<p>Also I was getting different results in nCrunch, R# and nUnits console runner. Something was broken.</p>
+
+<p><strong>NOTE</strong>: Async and TPL support is <em>not supported</em> in nUnit 2.x, but will be officially supported in v3.x and that it was a coincidence that it worked in 2.6.2. My discussions about the issues are at <a href="https://groups.google.com/forum/#!topic/nunit-discuss/McE95Cy2DlY">here on the nunit discussion board</a>.<br/>
+As far as I can tell, there is no reason that 4.0 cannot be supported because to offer framework support does not need any new features OR the classes in the Async Targeting Pack or .NET 4.5. At a minimum tests returning <code>Task</code> should be supported as TPL was introduced into the CLR for net40.  <br/>
+Recently I added async void and Task support to <a href="https://github.com/TestStack/TestStack.BDDfy/pull/32">BDDfy</a> which targets .NET 4.0, also xUnit 1.9.x supports Tasks in the current released version and has backported <code>async void</code> support to the 1.9.x codebase from the 2.0 and will be released if there is a need to release another patch release before 2.0 is released.</p>
+
+<p><strong>.NET 4.5 is fully supported and works as expected with nUnit, it is only .net 4.0 which is affected</strong></p>
+
+<!-- more -->
+
+
+<p><img src="/assets/posts/2014-01-14-nunit-263,asyncandnet4.png" alt="2014-01-14-nunit-263,asyncandnet4" /></p>
+
+<p>When I first saw this it really really confused me, so I have been diving into async, nUnit and trying all different things which is where my blog post on <a href="http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts/">async and synchronisation contexts</a> came from.</p>
+
+<h2>So what&rsquo;s broken?</h2>
+
+<p>But in 2.6.3 tests returning <code>Task</code> and <code>async void</code> tests will not wait for completion. In addition to that, nUnit 2.6.3 will flat out refuse to run tests which return <code>Task</code> and the console runner will return an error code. Other runners just silently skip the tests&hellip;</p>
+
+<p>This means that if you use async/await <em>or</em> TPL and have upgraded to R# 8.1, nCrunch 2.2 or 2.3 beta, the nUnit.Runners NuGet project or any other tools which have upgraded to use the nUnit 2.6.3 runner internally your async tests will be completing <strong>unobserved</strong> and may be failing without your knowledge.</p>
+
+<h3>Repro Solution</h3>
+
+<p>I put together a sample solution showing the issues (and the screenshot above is from) the GitHub repo is available at <a href="https://github.com/JakeGinnivan/nUnit_net4.0AsyncIssues">https://github.com/JakeGinnivan/nUnit_net4.0AsyncIssues</a></p>
+
+<p>Here are the test results from 2.6.2:</p>
+
+<pre><code>Tests run: 3, Errors: 1, Failures: 0, Inconclusive: 0, Time: 1.4863562 seconds
+  Not run: 0, Invalid: 0, Ignored: 0, Skipped: 0
+
+Errors and Failures:
+1) Test Error : ClassLibrary1.Class1Tests.Test1
+   System.InvalidOperationException : Operation is not valid due to the current state of the object.
+
+Server stack trace:
+   at ClassLibrary1.Class1Tests.&lt;Test1&gt;d__0.MoveNext() in c:\Users\Jake\_Code\WpfApplication4\ClassLibrary1\Class1Tests.cs:line 19
+
+Exception rethrown at [0]:
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.&lt;ThrowAsync&gt;b__0(Object state)
+   at NUnit.Core.AsyncSynchronizationContext.AsyncOperationQueue.InvokePendingOperations()
+   at NUnit.Core.AsyncSynchronizationContext.AsyncOperationQueue.InvokeAll()
+   at NUnit.Core.NUnitAsyncTestMethod.RunVoidAsyncMethod(TestResult testResult)
+</code></pre>
+
+<p>And 2.6.3:</p>
+
+<pre><code>Tests run: 2, Errors: 0, Failures: 0, Inconclusive: 0, Time: 0.676135209417321 seconds
+  Not run: 1, Invalid: 1, Ignored: 0, Skipped: 0
+
+Errors and Failures:
+
+Tests Not Run:
+1) NotRunnable : ClassLibrary1.Class1Tests.Test3
+   Test method has non-void return type, but no result is expected
+</code></pre>
+
+<h2>What to do about it</h2>
+
+<p>Luckily we can fix this and go back to a working version of nUnit (which as far as I can tell works perfectly for both <code>async void</code> and <code>Task</code> tests).</p>
+
+<p>First you will need to <a href="http://launchpad.net/nunitv2/trunk/2.6.2/+download/NUnit-2.6.2.zip">download nUnit 2.6.2</a> and extract it to a known location</p>
+
+<h3>Fixing ReSharper</h3>
+
+<p>ReSharper is pretty easy as the options dialog allows you to override the runner it uses.</p>
+
+<p>Go into the Resharper menu, then Options. Scroll down to <em>Unit Testing</em> under tools and select NUnit.</p>
+
+<p>Then you can point ReSharper at the nUnit lib directory like so:
+<img src="/assets/posts/2014-01-14-nunit-263,asyncandnet41.png" alt="2014-01-14-nunit-263,asyncandnet41" /></p>
+
+<p>Now ReSharper will be using a non-broken version of nUnit.</p>
+
+<h3>Fixing nCrunch</h3>
+
+<p>nCrunch is a little harder, but this fix works fine.</p>
+
+<p>First open up <code>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Remco Software\NCrunch for Visual Studio 2013</code>, then overwrite <code>nunit.core.dll</code> and <code>nunit.core.interfaces.dll</code> with the ones from the 2.6.2 zip you downloaded earlier.</p>
+
+<p>Now nCrunch will be using the non-broken version. Yay</p>
+
+<h2>Summary</h2>
+
+<p>If you are using .NET 4.0, async/await <em>or</em> TPL and nUnit, do not upgrade your runners to 2.6.3 and if any tools/build servers you are using upgrade, make sure you set them back to using 2.6.2 manually</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-15T02:55:09+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/async/'>async</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/01/10/on-async-and-sync-contexts/" title="Previous Post: On Async and Sync Contexts">&laquo; On Async and Sync Contexts</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/05/06/bddfy-examples-support/" title="Next Post: BDDfy v4.0 Examples Support">BDDfy v4.0 Examples Support &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Azure | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/azure/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ClickOnce from Azure Blob Storage]]></title>
     <link href="http://jake.ginnivan.net/clickonce-from-azure-blob-storage/"/>
-    <updated>2013-08-08T00:00:00+01:00</updated>
+    <updated>2013-08-08T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/clickonce-from-azure-blob-storage</id>
     <content type="html"><![CDATA[<p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
 
@@ -196,7 +196,7 @@ write-host "Fixed Manfiest File"
   <entry>
     <title type="html"><![CDATA[TeamCity UI Test Agent]]></title>
     <link href="http://jake.ginnivan.net/teamcity-ui-test-agent/"/>
-    <updated>2013-07-31T00:00:00+01:00</updated>
+    <updated>2013-07-31T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/teamcity-ui-test-agent</id>
     <content type="html"><![CDATA[<h1>Setting up a UI Test build agent</h1>
 
@@ -332,7 +332,7 @@ Then give it a good name like &lsquo;Start UI Test Agent&rsquo;, click finish. T
   <entry>
     <title type="html"><![CDATA[Azure and msshrtmi.dll]]></title>
     <link href="http://jake.ginnivan.net/azure-and-msshrtmi/"/>
-    <updated>2012-06-30T00:00:00+01:00</updated>
+    <updated>2012-06-30T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/azure-and-msshrtmi</id>
     <content type="html"><![CDATA[<h2>The Problem</h2>
 

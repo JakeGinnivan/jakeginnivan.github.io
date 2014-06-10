@@ -4,7 +4,7 @@
   <title><![CDATA[Category: TestStack | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/teststack/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Convention Tests v2 Released]]></title>
     <link href="http://jake.ginnivan.net/conventiontests-v2-released/"/>
-    <updated>2013-09-19T00:00:00+01:00</updated>
+    <updated>2013-09-19T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/conventiontests-v2-released</id>
     <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
 
@@ -97,7 +97,7 @@ TestAssembly.ClassWithPrivateDefaultCtor
   <entry>
     <title type="html"><![CDATA[TestStack.White v0.11 Released!]]></title>
     <link href="http://jake.ginnivan.net/teststack-white-v0-11/"/>
-    <updated>2013-08-01T00:00:00+01:00</updated>
+    <updated>2013-08-01T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/teststack-white-v0-11</id>
     <content type="html"><![CDATA[<p>I have just pushed the button for TestStack.White v0.11.</p>
 

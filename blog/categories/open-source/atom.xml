@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Open Source | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/open-source/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
     <link href="http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin/"/>
-    <updated>2013-09-09T00:00:00+01:00</updated>
+    <updated>2013-09-09T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin</id>
     <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
 
@@ -37,7 +37,7 @@
   <entry>
     <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
     <link href="http://jake.ginnivan.net/vsto-contrib/v0-12-released/"/>
-    <updated>2013-08-06T00:00:00+01:00</updated>
+    <updated>2013-08-06T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/vsto-contrib/v0-12-released</id>
     <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
 
@@ -58,7 +58,7 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
   <entry>
     <title type="html"><![CDATA[Documentation Site with Pretzel]]></title>
     <link href="http://jake.ginnivan.net/documentation-site-with-pretzel/"/>
-    <updated>2013-07-27T00:00:00+01:00</updated>
+    <updated>2013-07-27T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/documentation-site-with-pretzel</id>
     <content type="html"><![CDATA[<p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
 
@@ -196,7 +196,7 @@ To https://JakeGinnivan@pretzeldemo.scm.azurewebsites.net/pretzeldemo.git
   <entry>
     <title type="html"><![CDATA[Announcing TestStack.White]]></title>
     <link href="http://jake.ginnivan.net/teststack-white/"/>
-    <updated>2012-10-28T00:00:00+01:00</updated>
+    <updated>2012-10-28T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/teststack-white</id>
     <content type="html"><![CDATA[<h1>Project White</h1>
 
@@ -235,7 +235,7 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
   <entry>
     <title type="html"><![CDATA[Markpad Performance Push]]></title>
     <link href="http://jake.ginnivan.net/markpad-performance-push/"/>
-    <updated>2012-08-12T00:00:00+01:00</updated>
+    <updated>2012-08-12T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/markpad-performance-push</id>
     <content type="html"><![CDATA[<p>If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files.</p>
 

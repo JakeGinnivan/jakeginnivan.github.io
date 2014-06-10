@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Semantic Versioning | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/semantic-versioning/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ApiApprover]]></title>
     <link href="http://jake.ginnivan.net/apiapprover/"/>
-    <updated>2012-02-19T00:00:00+00:00</updated>
+    <updated>2012-02-19T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/apiapprover</id>
     <content type="html"><![CDATA[<p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
 

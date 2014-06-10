@@ -4,7 +4,7 @@
   <title><![CDATA[Category: MSBuild | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/msbuild/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ClickOnce Bootstrapping Errors]]></title>
     <link href="http://jake.ginnivan.net/clickonce-bootstrapping-errors/"/>
-    <updated>2011-07-20T00:00:00+01:00</updated>
+    <updated>2011-07-20T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/clickonce-bootstrapping-errors</id>
     <content type="html"><![CDATA[<p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
 

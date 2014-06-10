@@ -4,7 +4,7 @@
   <title><![CDATA[Category: async | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/async/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[nUnit 2.6.3, async and .net 4.0 broken]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/"/>
-    <updated>2014-01-14T18:55:09+00:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken</id>
+    <link href="http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/"/>
+    <updated>2014-01-15T02:55:09+08:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken</id>
     <content type="html"><![CDATA[<p>I am currently working on a <strong>.net 4.0</strong> project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM because we do not have stats on how many clients currently have the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=3556">.net 4.0 KB 2468871 patch</a> which enables PCL support. These issues affect the RTM version as well.</p>
 
 <p>Recently I have upgraded to nCrunch 2.2 beta and ReSharper 8.1 both which ship with the upgraded nUnit 2.6.3 runner. After I upgraded these tools I noticed tests which should have been failing were passing and passing tests were being reported as failing but showing stack traces from a different test..</p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-05-25T12:24:28+01:00</updated>
+  <updated>2014-06-11T00:11:58+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
     <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
-    <updated>2013-12-17T00:00:00+00:00</updated>
+    <updated>2013-12-17T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/gitreleasenotes</id>
     <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
 
@@ -82,7 +82,7 @@ It will then output your release notes in <a href="http://www.semanticreleasenot
   <entry>
     <title type="html"><![CDATA[Git Flow Versioning]]></title>
     <link href="http://jake.ginnivan.net/git-flow-versioning/"/>
-    <updated>2013-10-02T00:00:00+01:00</updated>
+    <updated>2013-10-02T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/git-flow-versioning</id>
     <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
 
@@ -250,7 +250,7 @@ git push upstream --tags
   <entry>
     <title type="html"><![CDATA[Setting up Git]]></title>
     <link href="http://jake.ginnivan.net/setting-up-git/"/>
-    <updated>2013-07-27T00:00:00+01:00</updated>
+    <updated>2013-07-27T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/setting-up-git</id>
     <content type="html"><![CDATA[<p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
 
