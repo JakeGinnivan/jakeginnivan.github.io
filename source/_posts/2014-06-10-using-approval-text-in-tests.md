@@ -1,3 +1,11 @@
+---
+layout: post
+published: false
+title: Using Approval text in tests
+comments: true
+categories: ""
+---
+
 ## Using Approval Text in tests
 
 I am currently using [TestStack.BDDfy](https://github.com/TestStack/TestStack.BDDfy) as my BDD testing framework. v4 has some great changes which make BDDfy really really awesome.
