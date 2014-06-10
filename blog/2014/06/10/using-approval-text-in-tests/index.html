@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Jake Ginnivan's blog</title>
+  <title>Using Approval Text in Tests - Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="A few of my apps require opening the same window for a lot of different items and I wanted each WPF window to remember its size, position and state &hellip;">
+  <meta name="description" content="Using Approval Text in tests I am currently using TestStack.BDDfy as my BDD testing framework. v4 has some great changes which make BDDfy really &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/page/9">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
@@ -87,15 +87,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/remembering-wpf-window-positions/">Remembering WPF Window Positions</a></h1>
+      <h1 class="entry-title">Using Approval Text in Tests</h1>
     
     
       <p class="meta">
@@ -111,42 +108,41 @@
   
 
 
-<time datetime="2009-08-04T00:00:00+08:00" pubdate data-updated="true">Aug 4<span>th</span>, 2009</time>
+<time datetime="2014-06-10T00:00:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>A few of my apps require opening the same window for a lot of different items and I wanted each WPF window to remember its size, position and state all the time. Nothing annoys me more than closing a window, opening the same window and its back on my second monitor.</p>
+<div class="entry-content"><h2>Using Approval Text in tests</h2>
 
-<p>So I went in search of a solution that someone else had written first, I found a example on the <a href="http://msdn.microsoft.com/en-us/library/aa972163.aspx">MSDN website</a>.What makes this sample good is it makes use of the Win32 API’s, specifically GetWindowPlacement and SetWindowPlacement in User32.dll. Because of this our code doesn&rsquo;t have to worry about missing second monitors, reduced resolution and other edge cases that can cause the normal headaches.</p>
+<p>I am currently using <a href="https://github.com/TestStack/TestStack.BDDfy">TestStack.BDDfy</a> as my BDD testing framework. v4 has some great changes which make BDDfy really really awesome.</p>
 
-<p>The <a href="http://bloggingabout.net/blogs/erwyn/archive/2007/02/01/remembering-window-positions-in-wpf.aspx">second example</a> I found has the idea of using attached properties, which I liked a lot.</p>
+<p>One of the things I am testing is generated confirmation text based on a number of selected form inputs. I want the approved generated text to be put into the BDDfy output. First steps are to read the approved file, here is a quick snipped which does this:</p>
 
-<p>The problem with the MSDN sample is you need to set up each window manually by overriding some of the Windows methods, the second solution did not cater for the edge cases.</p>
+<pre><code>protected string GetApproved()
+{
+    var namer = new UnitTestFrameworkNamer();
+    var basename = string.Format("{0}\\{1}", namer.SourcePath, namer.Name);
+    var approvalFilename = new ApprovalTextWriter(string.Empty).GetApprovalFilename(basename);
+    var approved = !File.Exists(approvalFilename) ? string.Empty : File.ReadAllText(approvalFilename);
+    return approved;
+}
+</code></pre>
 
+<p>Then I can just add my step in BDDfy <code>.Then(_ =&gt; ApprovedGeneratedConfirmationShouldMatch(sut.DealSummary.ToString()), string.Format("Approved generated confirmation should be:\r\n{0}", GetApproved()))</code></p>
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/remembering-wpf-window-positions/">Read on &rarr;</a>
-    </footer>
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/joining-the-blogosphere/">Joining the Blogosphere</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
 
 
 
@@ -158,38 +154,44 @@
   
 
 
-<time datetime="2009-07-21T00:00:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2009</time>
-        
-      </p>
+<time datetime="2014-06-10T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>Talking to <a href="http://wss.made4the.net/">Jeremy Thake</a> last night at the <a href="http://sddn.org.au/">Perth SDDN</a> meeting for the month he suggested I really should get a blog and start sharing some of my experiences while developing. It has been on my To do list for a long time now so I decided to get it done!</p>
-
-<p>I have been working at a company called ioGlobal for about 18 months now and have been doing a lot of internal development. The great thing about my role at the moment is I am doing a lot of the IT pro side of things, but spend most of my time developing all the software we need internally. Being the only staff member with .net experience I have been able to choose my own technologies and run my own projects.</p>
-
-<p>I will be talking about nifty programs I have found and ways I have solved problems that I have come across while writing a lot of these small apps. There are a few apps in particular that I think are quite interesting and I had a lot of trouble finding any information on the net about them.</p>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/05/25/simple-versioning-and-release-notes/" title="Previous Post: Simple Versioning and release notes">&laquo; Simple Versioning and release notes</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="/blog/page/8/">Newer &rarr;</a>
-    
-  </div>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     
   
 </aside>
+
 
     </div>
   </div>
@@ -207,7 +209,10 @@
       var disqus_shortname = 'jakeginnivansblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

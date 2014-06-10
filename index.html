@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I do a lot of open source and one common time sink across all projects is versioning and generating good release notes. This post is about two new &hellip;">
+  <meta name="description" content="Using Approval Text in tests I am currently using TestStack.BDDfy as my BDD testing framework. v4 has some great changes which make BDDfy really &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/10/using-approval-text-in-tests/">Using Approval Text in Tests</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-10T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Using Approval Text in tests</h2>
+
+<p>I am currently using <a href="https://github.com/TestStack/TestStack.BDDfy">TestStack.BDDfy</a> as my BDD testing framework. v4 has some great changes which make BDDfy really really awesome.</p>
+
+<p>One of the things I am testing is generated confirmation text based on a number of selected form inputs. I want the approved generated text to be put into the BDDfy output. First steps are to read the approved file, here is a quick snipped which does this:</p>
+
+<pre><code>protected string GetApproved()
+{
+    var namer = new UnitTestFrameworkNamer();
+    var basename = string.Format("{0}\\{1}", namer.SourcePath, namer.Name);
+    var approvalFilename = new ApprovalTextWriter(string.Empty).GetApprovalFilename(basename);
+    var approved = !File.Exists(approvalFilename) ? string.Empty : File.ReadAllText(approvalFilename);
+    return approved;
+}
+</code></pre>
+
+<p>Then I can just add my step in BDDfy <code>.Then(_ =&gt; ApprovedGeneratedConfirmationShouldMatch(sut.DealSummary.ToString()), string.Format("Approved generated confirmation should be:\r\n{0}", GetApproved()))</code></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -526,51 +578,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
 <p><a href="https://github.com/tokkonopapa/octopress-tagcloud">https://github.com/tokkonopapa/octopress-tagcloud</a></p>
 </div>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/gitreleasenotes/">GitReleaseNotes Initial Release!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-17T00:00:00+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
-
-<p>I am excited about this project because it will save me a heap of time and effort with managing the open source projects I do releases for.</p>
-
-<p>GitReleaseNotes was another project I kicked off about the same time that <a href="https://github.com/simoncropp">Simon Cropp</a> and <a href="https://github.com/andreasohlund">Andreas Öhlund</a> were kicking off similar projects, see <a href="https://github.com/Particular/ReleaseNotesCompiler">https://github.com/Particular/ReleaseNotesCompiler</a>. We decided to start the projects off down different roads to start with, then maybe merge later once we both could experiment with ideas.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/gitreleasenotes/">Read on &rarr;</a>
-    </footer>
   
 
 

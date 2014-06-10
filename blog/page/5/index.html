@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I saw Shawn Wildermuth&rsquo;s post on maintaining a project targeting multiple versions of windows phone, I thought I would share the way I do it as &hellip;">
+  <meta name="description" content="DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am) This sessions will have something for everyone, if you have never used VSTO and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/teched-2011/">My Sessions at TechEd 2011</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-29T00:00:00+08:00" pubdate data-updated="true">Aug 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
+
+<p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
+If you have used it, and hated it, I will also be showing how to improve your experience and give you a way of approaching the problems and some nice ways to improve the default experience. Part of this is a quick intro to COM Interop, how it works and how to make sure you avoid problems with it.
+And finally, I will be showing a bit of VSTO contrib and how you can use IoC and other cool enhancements to the platform.</p>
+
+<h1>WPH305 - Multi-Tasking and Application Services (Fri, 8:15am)</h1>
+
+<p>In this session with Chris Walsh, we will be going through a whole lot of App services related features in Windows Phone Mango. We will cover things like Multi-Tasking, Background agents, Tiles, Notifications and Search extra&rsquo;s. We have some cool demo&rsquo;s and it will be a fun session.</p>
+
+<h1>Demos</h1>
+
+<p>I also have a few demo&rsquo;s lined up
+ - Unit Testing with WP7 (1:30pm Wednesday)
+ - Windows Phone MVC Intro (2:00pm Wednesday)</p>
+
+<ul>
+<li>Unit Testing with WP7 (1:00pm Wednesday)</li>
+<li>Windows Phone MVC Intro (1:30pm Wednesday)</li>
+</ul>
+
+
+<p>If you attend, feedback is always welcomed and please submit your evals, it helps us as speakers a lot.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -543,56 +601,6 @@ var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
 <h2>Resources</h2>
 
 <p>I will post resources on Rich Client Automation after my talk, or early next week.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/nugetwp7/">NuGet Packages Targeting WP7</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-21T00:00:00+08:00" pubdate data-updated="true">Jun 21<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Update</strong> Compatibility table at <a href="http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples">http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples</a></p>
-
-<p>I released windows phone essentials last week, and I have the mango tools installed, so all seemed fine. Then when a friend of mine tried to install the package they got the following error:</p>
-
-<pre><code>Unable to find assembly references that are compatible with the target framework 'Silverlight,Version=v4.0,Profile=WindowsPhone'
-</code></pre>
-
-<p>Hrrm that blows. As you may be aware, Windows Phone 7 runs a version of silverlight known as Silverlight 3.7. NuGet recommends that you use the lib\SL3-WP for windows phone projects, but if you install the mango tools, this will change to SL4-WP. On top of that if you create a project targeting mango specifically you need to put your library into SL4-WindowsPhone71. It seems that NuGet 1.4 will replace WP with WindowsPhone, but I am not sure about previous versions.</p>
-
-<p>My workaround at the moment is to just specify all of them until there is some official documentation:</p>
-
-<pre><code>lib\SL3-WP\WindowsPhoneEssentials.dll
-lib\SL4-WindowsPhone71\WindowsPhoneEssentials.dll
-lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
-</code></pre>
 </div>
   
   

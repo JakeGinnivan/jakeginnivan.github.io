@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="So the scenario was that I want to show additional menu items when right clicking on an email. ">
+  <meta name="description" content="I got sick of a heap of warnings in VS which look like this: Warning 1 Because this call is not awaited, execution of the current method continues &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/async-warning-with-nsubstitute/">Async Warning With nSubstitute</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-16T00:00:00+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I got sick of a heap of warnings in VS which look like this:</p>
+
+<pre><code>Warning 1   Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+</code></pre>
+
+<p>The code which was causing this error was a received call: <code>_service.Received().CancelAsync()</code></p>
+
+<p>My solution to the problem is creating a simple extension</p>
+
+<pre><code>public static class NSubstituteHelper
+{
+    public static void IgnoreAwaitForNSubstituteAssertion(this Task task)
+    {
+
+    }
+}
+</code></pre>
+
+<p>Then my code turns into <code>_service.Received().CancelAsync().IgnoreAwaitForNSubstituteAssertion()</code> and my issue goes away</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -553,64 +607,6 @@ public void phoenix_has_no_public_api_changes()
     <footer>
       <a rel="full-article" href="/wp7-essentials-settings-provider/">Read on &rarr;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/teched-2011/">My Sessions at TechEd 2011</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-29T00:00:00+08:00" pubdate data-updated="true">Aug 29<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
-
-<p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
-If you have used it, and hated it, I will also be showing how to improve your experience and give you a way of approaching the problems and some nice ways to improve the default experience. Part of this is a quick intro to COM Interop, how it works and how to make sure you avoid problems with it.
-And finally, I will be showing a bit of VSTO contrib and how you can use IoC and other cool enhancements to the platform.</p>
-
-<h1>WPH305 - Multi-Tasking and Application Services (Fri, 8:15am)</h1>
-
-<p>In this session with Chris Walsh, we will be going through a whole lot of App services related features in Windows Phone Mango. We will cover things like Multi-Tasking, Background agents, Tiles, Notifications and Search extra&rsquo;s. We have some cool demo&rsquo;s and it will be a fun session.</p>
-
-<h1>Demos</h1>
-
-<p>I also have a few demo&rsquo;s lined up
- - Unit Testing with WP7 (1:30pm Wednesday)
- - Windows Phone MVC Intro (2:00pm Wednesday)</p>
-
-<ul>
-<li>Unit Testing with WP7 (1:00pm Wednesday)</li>
-<li>Windows Phone MVC Intro (1:30pm Wednesday)</li>
-</ul>
-
-
-<p>If you attend, feedback is always welcomed and please submit your evals, it helps us as speakers a lot.</p>
-</div>
-  
   
 
 

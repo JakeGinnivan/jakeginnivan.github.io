@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Windows Phone Essentials tries to fill a gap that many of the other WP7 frameworks don&rsquo;t fill. Most of the libraries out there are Controls and &hellip;">
+  <meta name="description" content="Update Compatibility table at http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/nugetwp7/">NuGet Packages Targeting WP7</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-21T00:00:00+08:00" pubdate data-updated="true">Jun 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Update</strong> Compatibility table at <a href="http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples">http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples</a></p>
+
+<p>I released windows phone essentials last week, and I have the mango tools installed, so all seemed fine. Then when a friend of mine tried to install the package they got the following error:</p>
+
+<pre><code>Unable to find assembly references that are compatible with the target framework 'Silverlight,Version=v4.0,Profile=WindowsPhone'
+</code></pre>
+
+<p>Hrrm that blows. As you may be aware, Windows Phone 7 runs a version of silverlight known as Silverlight 3.7. NuGet recommends that you use the lib\SL3-WP for windows phone projects, but if you install the mango tools, this will change to SL4-WP. On top of that if you create a project targeting mango specifically you need to put your library into SL4-WindowsPhone71. It seems that NuGet 1.4 will replace WP with WindowsPhone, but I am not sure about previous versions.</p>
+
+<p>My workaround at the moment is to just specify all of them until there is some official documentation:</p>
+
+<pre><code>lib\SL3-WP\WindowsPhoneEssentials.dll
+lib\SL4-WindowsPhone71\WindowsPhoneEssentials.dll
+lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -497,50 +547,6 @@
 <a href="http://mvvmlight.codeplex.com/">MVVM Light</a> - written by <a href="http://www.galasoft.ch/contact_en.html">Laurent Bugnion (GalaSoft)</a></p>
 
 <p>If you know of others let me know, and tell me what is your favourite thing in that framework.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog-redesign/">Blog Redesign</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-25T00:00:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>As part of my redesign, I have also changed web hosts. My apologies to anyone that has had their RSS feeds spammed by the process of me rebuilding my blog. I also have not transferred comments yet, I hopefully will get around to that shortly!</p>
-
-<p>If you have a spare moment, could you give some feedback on:</p>
-
-<p>What do you think of my new blog theme?
-What content do you like on my blog?
-What would you like to see?</p>
-
-<p>I am planning on blogging more and feedback would be great about the direction you would like me to go, or the content you enjoy seeing or what you do not want to see.</p>
 </div>
   
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-11T00:11:58+08:00</updated>
+  <updated>2014-06-11T00:14:30+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Approval text in tests]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/"/>
+    <updated>2014-06-10T00:00:00+08:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests</id>
+    <content type="html"><![CDATA[<h2>Using Approval Text in tests</h2>
+
+<p>I am currently using <a href="https://github.com/TestStack/TestStack.BDDfy">TestStack.BDDfy</a> as my BDD testing framework. v4 has some great changes which make BDDfy really really awesome.</p>
+
+<p>One of the things I am testing is generated confirmation text based on a number of selected form inputs. I want the approved generated text to be put into the BDDfy output. First steps are to read the approved file, here is a quick snipped which does this:</p>
+
+<pre><code>protected string GetApproved()
+{
+    var namer = new UnitTestFrameworkNamer();
+    var basename = string.Format("{0}\\{1}", namer.SourcePath, namer.Name);
+    var approvalFilename = new ApprovalTextWriter(string.Empty).GetApprovalFilename(basename);
+    var approved = !File.Exists(approvalFilename) ? string.Empty : File.ReadAllText(approvalFilename);
+    return approved;
+}
+</code></pre>
+
+<p>Then I can just add my step in BDDfy <code>.Then(_ =&gt; ApprovedGeneratedConfirmationShouldMatch(sut.DealSummary.ToString()), string.Format("Approved generated confirmation should be:\r\n{0}", GetApproved()))</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Simple Versioning and release notes]]></title>
@@ -1832,27 +1857,6 @@ $elevate = Join-Path $directorypath "tools\Elevate.exe"
 <h2>Wrapping up</h2>
 
 <p>I encourage you to create your own SetupEnvironment.ps1 script on the project you are on at the moment, it will be well worth the time investment over the lifetime of the project (we found it had saved us time within a few weeks).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
-    <link href="http://jake.ginnivan.net/vsto-contrib/v0-12-released/"/>
-    <updated>2013-08-06T00:00:00+08:00</updated>
-    <id>http://jake.ginnivan.net/vsto-contrib/v0-12-released</id>
-    <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
-
-<p>This release is aimed at fixing a bunch of bugs, like some callbacks not working, creating a viewmodel instance for when no documents are open and supporting Office 2013!
-Due to the complexities of supporting multiple versions, I have dropped Office 2007 support. Please let me know if this is a major issue, and I might try to add it back in next release.</p>
-
-<p>I have also released a getting started video. This is one of the first screencasts I have done, so I will likely do it again next release. Also when you install VSTO Contrib, a readme will popup, this will help you get started.</p>
-
-<object width="420" height="315"><param name="movie" value="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="//www.youtube.com/v/TxRjNsaVX6U?version=3&amp;hl=en_GB" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
-
-
-<p>I will try to produce some documentation/blog posts on VSTO Contrib over the next few weeks.</p>
-
-<p>From now, I will be tracking changes/fixes a lot better. Please report any issues at <a href="https://github.com/JakeGinnivan/VSTOContrib/issues">https://github.com/JakeGinnivan/VSTOContrib/issues</a></p>
 ]]></content>
   </entry>
   

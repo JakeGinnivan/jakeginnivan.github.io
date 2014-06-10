@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Over the time with working with VSTO, I have created a heap of reusable classes and extensions for VSTO. So I have decided to start a Contrib project &hellip;">
+  <meta name="description" content="I know this has been done to death but nothing I found did the job for me so I started with the one that fitted my needs the most then edited from &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/c-sharp-argument-parser/">C# Command Line Argument Parser</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-21T00:00:00+08:00" pubdate data-updated="true">Aug 21<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I know this has been done to death but nothing I found did the job for me so I started with the one that fitted my needs the most then edited from there.</p>
+
+<p>Original source: <a href="http://www.codeproject.com/KB/recipes/command_line.aspx">http://www.codeproject.com/KB/recipes/command_line.aspx</a></p>
+
+<p>I have a few specific requirements:</p>
+
+<ul>
+<li>It must support lists, or the same argument specified multiple times. If an argument has comma’s in it then it will be treated as a list and split on the comma.</li>
+<li>It must support paths with a trailing \ ie. –arg:&ldquo;c:\Users\ginnivanj\My Path\&rdquo;</li>
+<li>Has support for flags.</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/c-sharp-argument-parser/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -493,53 +545,6 @@
 <p>This Wow6432Node key has got me a few times before…</p>
 </div>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/remembering-wpf-window-positions/">Remembering WPF Window Positions</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-08-04T00:00:00+08:00" pubdate data-updated="true">Aug 4<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A few of my apps require opening the same window for a lot of different items and I wanted each WPF window to remember its size, position and state all the time. Nothing annoys me more than closing a window, opening the same window and its back on my second monitor.</p>
-
-<p>So I went in search of a solution that someone else had written first, I found a example on the <a href="http://msdn.microsoft.com/en-us/library/aa972163.aspx">MSDN website</a>.What makes this sample good is it makes use of the Win32 API’s, specifically GetWindowPlacement and SetWindowPlacement in User32.dll. Because of this our code doesn&rsquo;t have to worry about missing second monitors, reduced resolution and other edge cases that can cause the normal headaches.</p>
-
-<p>The <a href="http://bloggingabout.net/blogs/erwyn/archive/2007/02/01/remembering-window-positions-in-wpf.aspx">second example</a> I found has the idea of using attached properties, which I liked a lot.</p>
-
-<p>The problem with the MSDN sample is you need to set up each window manually by overriding some of the Windows methods, the second solution did not cater for the edge cases.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/remembering-wpf-window-positions/">Read on &rarr;</a>
-    </footer>
   
 
 
