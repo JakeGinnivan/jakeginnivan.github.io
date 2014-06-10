@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-11T04:18:42+08:00</updated>
+  <updated>2014-06-11T04:29:14+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -53,11 +53,11 @@
 
 <ol>
 <li>Go into the _posts folder, then click New File<br/>
-<img src="http://jake.ginnivan.net/source/assets/posts/Prose1.png" alt="New file" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/Prose1.png" alt="New file" /></li>
 <li>Add a title and write your post<br/>
-<img src="http://jake.ginnivan.net/source/assets/posts/Prose2.png" alt="Write post" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/Prose2.png" alt="Write post" /></li>
 <li>You can define your yaml metadata defaults for prose in your _config.yaml, giving you a nice UI<br/>
-<img src="http://jake.ginnivan.net/source/assets/posts/Prose3.png" alt="Edit metadata" /></li>
+<img src="http://jake.ginnivan.net/assets/posts/Prose3.png" alt="Edit metadata" /></li>
 </ol>
 
 
