@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="A few of my apps require opening the same window for a lot of different items and I wanted each WPF window to remember its size, position and state &hellip;">
+  <meta name="description" content="I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server. This blog &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/clickonce-deployment-in-teamcity/">ClickOnce Deployment in TeamCity</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-29T00:00:00+08:00" pubdate data-updated="true">Aug 29<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server.</p>
+
+<p>This blog post was very useful for getting the initial build working <a href="http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html">http://abdullin.com/journal/2009/2/17/building-vsto-solutions-without-visual-studio.html</a> it also mentions how to fix the error MSB3147: Could not find required file &lsquo;setup.bin&rsquo; in &lsquo;ProjectFolder\Engine&rsquo; error I was getting.</p>
+
+<p>According to the post we just have to copy the Generic Bootstrapper across to our build machine and create a registry key to let .net know where to find it.</p>
+
+<p>What all the resources (I have seen the same fix posted in a lot of places) fail to mention is the registry key that you need to modify if you are running a x64 system is HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\3.5.</p>
+
+<p>This Wow6432Node key has got me a few times before…</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>

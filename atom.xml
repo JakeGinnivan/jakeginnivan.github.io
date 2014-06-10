@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-11T03:45:17+08:00</updated>
+  <updated>2014-06-11T04:18:42+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -35,6 +35,100 @@
 </code></pre>
 
 <p>Then I can just add my step in BDDfy <code>.Then(_ =&gt; ApprovedGeneratedConfirmationShouldMatch(sut.DealSummary.ToString()), string.Format("Approved generated confirmation should be:\r\n{0}", GetApproved()))</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Low Friction Octopress/GitHub Pages Setup]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup/"/>
+    <updated>2014-06-10T00:00:00+08:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup</id>
+    <content type="html"><![CDATA[<h2>Low friction Octopress/GitHub pages Setup</h2>
+
+<p>My blog uses <a href="http://octopress.org">Octopress</a> which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on <a href="https://pages.github.com">GitHub Pages</a>. But sometimes I really miss being able to simply create or edit posts online. I started looking around and found <a href="http://prose.io/">Prose.io</a>.</p>
+
+<p>Prose is an <em>awesome</em> open source online Jekyll site editor for GitHub. Then if we setup TeamCity to automatically regenerate and deploy our blog when we make any commits we have a really simple way of making quick blog posts online.</p>
+
+<p>Here is a quick rundown of creating a new post with Prose. If you are only interested in the automated TeamCity deployment just skip this section.</p>
+
+<ol>
+<li>Go into the _posts folder, then click New File<br/>
+<img src="http://jake.ginnivan.net/source/assets/posts/Prose1.png" alt="New file" /></li>
+<li>Add a title and write your post<br/>
+<img src="http://jake.ginnivan.net/source/assets/posts/Prose2.png" alt="Write post" /></li>
+<li>You can define your yaml metadata defaults for prose in your _config.yaml, giving you a nice UI<br/>
+<img src="http://jake.ginnivan.net/source/assets/posts/Prose3.png" alt="Edit metadata" /></li>
+</ol>
+
+
+<p>When you hit save Prose will commit that file, pretty sweet. <strong>note</strong> if you do not create the file in the _posts folder you will not see the meta-data options. <strong>note2</strong> Image uploading is broken at the moment, hopefully this gets some love soon</p>
+
+<h3>My Prose Config</h3>
+
+<p>You can configure Prose by adding some additional metadata in your _config.yaml file. Here is mine:</p>
+
+<pre><code># ----------------------- #
+#   prose.io settings     #
+# ----------------------- #
+prose:
+  rooturl: "source"
+  site: "http://jake.ginnivan.net"
+  media: "source/assets/posts"
+  metadata:
+    "source/_posts":
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "post"
+      - name: "title"
+        field:
+          element: "text"
+          value: "Title"
+      - name: "comments"
+        field:
+          label: "Allow comments"
+          element: "checkbox"
+          value: true
+      - name: "categories"
+        field:
+          element: "text"
+          value: ""
+      - name: "published"
+        field:
+          label: "Published"
+          element: "checkbox"
+          value: true
+</code></pre>
+
+<p>Read more about <a href="https://github.com/prose/prose/wiki/Prose-Configuration">Prose Configuration</a>.</p>
+
+<h2>Setting up continuous deployment from TeamCity</h2>
+
+<p>The next step is I want TeamCity to automatically regenerate my Octopress site and push it to GitHub. This also assumes you have your site setup as a <strong>user</strong> site</p>
+
+<ol>
+<li>Install everything you would need to get Octopress building locally on your build server</li>
+<li>Create new build</li>
+<li>Add VCS root pointing at <code>source</code></li>
+<li> Set TeamCity Checkout mode to <em>checkout on agent</em></li>
+<li>Add <code>Command Line</code> Build Step with Exe of <code>bundle</code> and Parameter of <code>install</code>. This will install all the dependencies Octopress needs</li>
+<li><p>Next we need TeamCity to clone our repo into the <code>_deploy</code> directory, we can do this with another Command Line build step with the <em>Run</em> parameter set to Custom Script (the reason for <code>git checkout master</code> is that I have the source branch set as default, and the _deploy branch needs to be on master)</p>
+
+<pre><code> if not exist _deploy (git clone https://%GithubUsername%:%GithubPassword%@github.com/%GithubUsername%/%GithubUsername%.github.io.git _deploy)
+ cd _deploy
+ git checkout master
+ cd ..
+</code></pre></li>
+<li><p>The last build step is to regenerate and deploy our Octopress site. Add a <code>Rake</code> build step with the path set to <code>Rakefile</code> and the task set to <code>gen_deploy</code>. Make sure the <em>bundle exec</em> option is checked</p></li>
+<li>Now setup a VCS build trigger so we deploy whenever anything changes</li>
+<li>Finally go to the <em>Parameters</em> section of your build configuration. There will be two parameters needing values, <em>GitHubUsername</em> and <em>GitHubPassword</em>. <em>GitHubUsername</em> is easy, just put your username in.</li>
+<li>For <em>GitHubPassword</em> click on <code>Edit</code> next to Spec, then set Display to Hidden and Type to Password. This will make sure your password does not show up in build logs and will be ****&rsquo;d out instead.</li>
+</ol>
+
+
+<p>Save your build configuration, and now whenever you push any updates to <code>source</code> your blog will be regenerated and deployed.</p>
+
+<p>Enjoy!</p>
 ]]></content>
   </entry>
   
@@ -1717,146 +1811,6 @@ write-host "Fixed Manfiest File"
 <p>Now you just point at the .application file, for example MarkPad&rsquo;s nightly is available from <a href="http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application">http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application</a></p>
 
 <p>Hope this helps you out, I have found this is a really cheap and easy way to get ClickOnce installers out there!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Automated Project Environment Setup]]></title>
-    <link href="http://jake.ginnivan.net/automated-project-environment-setup/"/>
-    <updated>2013-08-08T00:00:00+08:00</updated>
-    <id>http://jake.ginnivan.net/automated-project-environment-setup</id>
-    <content type="html"><![CDATA[<h2>Web Project Dev Environment</h2>
-
-<p>A common problem projects have is when a new dev joins the team is they hopefully have to follow a bunch of instructions to set everything up. Most of the time, those instructions are out of date so another member of the team ends up setting everything up.</p>
-
-<p>Depending on the complexity of the project, this can be quite time consuming.</p>
-
-<p>The last project I was on was greenfields, so from day 1 we had a <code>Setup Dev Environment.ps1</code> file in the root of the project. This powershell script did the following:</p>
-
-<ul>
-<li>Installed IIS, and all the components we needed (windows auth, .net etc)</li>
-<li>Registered asp.net with IIS</li>
-<li>Created Websites with host headers for each of the sites in the project (we ended up having 3 different websites)</li>
-<li>Opened the HOSTS file in notepad (elevated) and printed out the lines you needed to paste into your HOSTS file</li>
-</ul>
-
-
-<p>Over time, this script gained more and more features. But when a new team member joined the team, they just ran this script which installed/configured everything.</p>
-
-<p>Why IIS you may ask, instead of say IIS Express. Well this approach means each site had it&rsquo;s own domain, so fiddler works out of the box. It also means that our UI Test suite doesn&rsquo;t have to fire up IIS Express to run it&rsquo;s tests.</p>
-
-<!-- more -->
-
-
-<h3>The script</h3>
-
-<p>This is what our script looked like</p>
-
-<pre><code>&amp; DISM /Online /Enable-Feature /All `
-/FeatureName:IIS-ApplicationDevelopment `
-/FeatureName:IIS-ASPNET `
-/FeatureName:IIS-BasicAuthentication `
-/FeatureName:IIS-CommonHttpFeatures `
-/FeatureName:IIS-DefaultDocument `
-/FeatureName:IIS-DirectoryBrowsing `
-/FeatureName:IIS-HttpErrors `
-/FeatureName:IIS-HttpLogging `
-/FeatureName:IIS-HttpRedirect `
-/FeatureName:IIS-HttpTracing `
-/FeatureName:IIS-ISAPIFilter `
-/FeatureName:IIS-ISAPIExtensions `
-/FeatureName:IIS-IIS6ManagementCompatibility `
-/FeatureName:IIS-ManagementConsole `
-/FeatureName:IIS-ManagementScriptingTools `
-/FeatureName:IIS-Metabase `
-/FeatureName:IIS-NetFxExtensibility `
-/FeatureName:IIS-ASPNET45 `
-/FeatureName:IIS-NetFxExtensibility45 `
-/FeatureName:NetFx4Extended-ASPNET45 `
-/FeatureName:IIS-Security `
-/FeatureName:IIS-ServerSideIncludes `
-/FeatureName:IIS-StaticContent `
-/FeatureName:IIS-WebServer `
-/FeatureName:IIS-WebServerManagementTools `
-/FeatureName:IIS-WebServerRole `
-/FeatureName:IIS-WindowsAuthentication `
-/FeatureName:IIS-WMICompatibility `
-/FeatureName:WAS-ConfigurationAPI `
-/FeatureName:WAS-NetFxEnvironment `
-/FeatureName:WAS-ProcessModel `
-/FeatureName:WAS-WindowsActivationService
-
-&amp; C:\Windows\Microsoft.NET\Framework\v4.0.30319\aspnet_regiis.exe -i
-
-$invocation = (Get-Variable MyInvocation).Value
-$directorypath = Split-Path $invocation.MyCommand.Path
-$physicalPath = Join-Path $directorypath "src\SampleWebSite"
-$adminWebPhysicalPath = Join-Path $directorypath "src\Project.AdminWeb"
-$guestServicesPhysicalPath = Join-Path $directorypath "src\Project.GuestServices"
-$fakeApiPhysicalPath = Join-Path $directorypath "src\FakeSiteApi"
-$elevate = Join-Path $directorypath "tools\Elevate.exe"
-
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:SampleWebSiteAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='SampleWebSiteAppPool'].processModel.identityType:LocalSystem"
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:SampleWebSite /physicalPath:$physicalPath /bindings:http/*:80:samplewebsite.net
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "SampleWebSite/" /applicationPool:"SampleWebSiteAppPool"
-
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:AdminSiteAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='AdminWebAppPool'].processModel.identityType:LocalSystem"
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"AdminSite" /physicalpath:"$adminWebPhysicalPath" /bindings:http/*:80:adminsite.net
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "AdminSite/" /applicationPool:"AdminSiteAppPool"
-
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:GuestServicesAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='GuestServicesAppPool'].processModel.identityType:LocalSystem"
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"GuestServices" /physicalPath:$guestServicesPhysicalPath /bindings:http/*:80:guestservices.net
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "GuestServices/" /applicationPool:"GuestServicesAppPool"
-
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add apppool /name:FakeApiAppPool /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set config /section:applicationPools "/[name='FakeEmbedApiAppPool'].processModel.identityType:LocalSystem"
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe add site /name:"FakeApi" /physicalPath:$fakeEmbedApiPhysicalPath /bindings:http/*:80:siteapi.net
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set app "FakeApi/" /applicationPool:"FakeApiAppPool"
-
-Write-Host "Add the following lines to your hosts file:" -ForegroundColor red
-Write-Host "127.0.0.1      samplewebsite.net" -ForegroundColor yellow
-Write-Host "127.0.0.1      adminsite.net" -ForegroundColor yellow
-Write-Host "127.0.0.1      guestservices.net" -ForegroundColor yellow
-Write-Host "127.0.0.1      siteapi.net" -ForegroundColor yellow
-Write-Host ""
-
-Start-Process $elevate -ArgumentList "notepad c:\Windows\system32\drivers\etc\hosts"
-</code></pre>
-
-<p>You can also put unattended installs for SQL, or any other dependencies your project has.</p>
-
-<h2>Build Server considerations</h2>
-
-<p>We also were running UI Tests using <a href="http://teststack.net/TestStack.Seleno/">http://teststack.net/TestStack.Seleno/</a></p>
-
-<p>This meant we needed our build server setup to be able to run the project, as well as build it. The great thing about this script, is you can reuse it to set up your build server.</p>
-
-<p>For the build server, we had another script, which would re-map the IIS sites to the correct folder (as teamcity can checkout your code to different folders, we didn&rsquo;t want to set things up over and over).</p>
-
-<p>The script looked like this</p>
-
-<pre><code>$invocation = (Get-Variable MyInvocation).Value
-$directorypath = Split-Path $invocation.MyCommand.Path
-$physicalPath = Join-Path $directorypath "src\SampleWebSite"
-$adminWebPhysicalPath = Join-Path $directorypath "src\AdminWeb"
-$guestServicesPhysicalPath = Join-Path $directorypath "src\GuestServices"
-$fakeApiPhysicalPath = Join-Path $directorypath "src\FakeApi"
-$elevate = Join-Path $directorypath "tools\Elevate.exe"
-
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "SampleWebSite/" /physicalPath:"$physicalPath"
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "AdminSite/" /physicalpath:"$adminWebPhysicalPath"
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "GuestServices/" /physicalpath:"$guestServicesPhysicalPath"
-&amp; c:\Windows\system32\inetsrv\AppCmd.exe set vdir "FakeApi/" /physicalpath:"$fakeApiPhysicalPath"
-</code></pre>
-
-<p>Just execute this as part of your build process before you run your UI Automation tests.</p>
-
-<h2>Wrapping up</h2>
-
-<p>I encourage you to create your own SetupEnvironment.ps1 script on the project you are on at the moment, it will be well worth the time investment over the lifetime of the project (we found it had saved us time within a few weeks).</p>
 ]]></content>
   </entry>
   

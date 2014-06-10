@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Low Friction Octopress/GitHub Pages Setup - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Low friction Octopress/GitHub pages Setup My blog uses Octopress which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Low Friction Octopress/GitHub Pages Setup</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-10T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Low friction Octopress/GitHub pages Setup</h2>
+
+<p>My blog uses <a href="http://octopress.org">Octopress</a> which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on <a href="https://pages.github.com">GitHub Pages</a>. But sometimes I really miss being able to simply create or edit posts online. I started looking around and found <a href="http://prose.io/">Prose.io</a>.</p>
+
+<p>Prose is an <em>awesome</em> open source online Jekyll site editor for GitHub. Then if we setup TeamCity to automatically regenerate and deploy our blog when we make any commits we have a really simple way of making quick blog posts online.</p>
+
+<p>Here is a quick rundown of creating a new post with Prose. If you are only interested in the automated TeamCity deployment just skip this section.</p>
+
+<ol>
+<li>Go into the _posts folder, then click New File<br/>
+<img src="/source/assets/posts/Prose1.png" alt="New file" /></li>
+<li>Add a title and write your post<br/>
+<img src="/source/assets/posts/Prose2.png" alt="Write post" /></li>
+<li>You can define your yaml metadata defaults for prose in your _config.yaml, giving you a nice UI<br/>
+<img src="/source/assets/posts/Prose3.png" alt="Edit metadata" /></li>
+</ol>
+
+
+<p>When you hit save Prose will commit that file, pretty sweet. <strong>note</strong> if you do not create the file in the _posts folder you will not see the meta-data options. <strong>note2</strong> Image uploading is broken at the moment, hopefully this gets some love soon</p>
+
+<h3>My Prose Config</h3>
+
+<p>You can configure Prose by adding some additional metadata in your _config.yaml file. Here is mine:</p>
+
+<pre><code># ----------------------- #
+#   prose.io settings     #
+# ----------------------- #
+prose:
+  rooturl: "source"
+  site: "http://jake.ginnivan.net"
+  media: "source/assets/posts"
+  metadata:
+    "source/_posts":
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "post"
+      - name: "title"
+        field:
+          element: "text"
+          value: "Title"
+      - name: "comments"
+        field:
+          label: "Allow comments"
+          element: "checkbox"
+          value: true
+      - name: "categories"
+        field:
+          element: "text"
+          value: ""
+      - name: "published"
+        field:
+          label: "Published"
+          element: "checkbox"
+          value: true
+</code></pre>
+
+<p>Read more about <a href="https://github.com/prose/prose/wiki/Prose-Configuration">Prose Configuration</a>.</p>
+
+<h2>Setting up continuous deployment from TeamCity</h2>
+
+<p>The next step is I want TeamCity to automatically regenerate my Octopress site and push it to GitHub. This also assumes you have your site setup as a <strong>user</strong> site</p>
+
+<ol>
+<li>Install everything you would need to get Octopress building locally on your build server</li>
+<li>Create new build</li>
+<li>Add VCS root pointing at <code>source</code></li>
+<li> Set TeamCity Checkout mode to <em>checkout on agent</em></li>
+<li>Add <code>Command Line</code> Build Step with Exe of <code>bundle</code> and Parameter of <code>install</code>. This will install all the dependencies Octopress needs</li>
+<li><p>Next we need TeamCity to clone our repo into the <code>_deploy</code> directory, we can do this with another Command Line build step with the <em>Run</em> parameter set to Custom Script (the reason for <code>git checkout master</code> is that I have the source branch set as default, and the _deploy branch needs to be on master)</p>
+
+<pre><code> if not exist _deploy (git clone https://%GithubUsername%:%GithubPassword%@github.com/%GithubUsername%/%GithubUsername%.github.io.git _deploy)
+ cd _deploy
+ git checkout master
+ cd ..
+</code></pre></li>
+<li><p>The last build step is to regenerate and deploy our Octopress site. Add a <code>Rake</code> build step with the path set to <code>Rakefile</code> and the task set to <code>gen_deploy</code>. Make sure the <em>bundle exec</em> option is checked</p></li>
+<li>Now setup a VCS build trigger so we deploy whenever anything changes</li>
+<li>Finally go to the <em>Parameters</em> section of your build configuration. There will be two parameters needing values, <em>GitHubUsername</em> and <em>GitHubPassword</em>. <em>GitHubUsername</em> is easy, just put your username in.</li>
+<li>For <em>GitHubPassword</em> click on <code>Edit</code> next to Spec, then set Display to Hidden and Type to Password. This will make sure your password does not show up in build logs and will be ****&rsquo;d out instead.</li>
+</ol>
+
+
+<p>Save your build configuration, and now whenever you push any updates to <code>source</code> your blog will be regenerated and deployed.</p>
+
+<p>Enjoy!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-10T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/05/25/simple-versioning-and-release-notes/" title="Previous Post: Simple Versioning and release notes">&laquo; Simple Versioning and release notes</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/06/10/using-approval-text-in-tests/" title="Next Post: Using Approval text in tests">Using Approval text in tests &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
