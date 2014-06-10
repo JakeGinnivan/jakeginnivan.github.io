@@ -59,6 +59,36 @@ titlecase: true       # Converts page and post titles to titlecase
 # page_asides:
 
 # ----------------------- #
+#   prose.io settings     #
+# ----------------------- #
+prose:
+  rooturl: "source"
+  metadata:
+    "source/_posts":
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "post"
+      - name: "title"
+        field:
+          element: "text"
+          value: "Title"
+      - name: "comments"
+        field:
+          label: "Allow comments"
+          element: "checkbox"
+          value: true
+      - name: "categories"
+        field:
+          element: "text"
+          value: "misc"
+      - name: "published"
+        field:
+          label: "Published"
+          element: "checkbox"
+          value: true
+
+# ----------------------- #
 #   3rd Party Settings    #
 # ----------------------- #
 
