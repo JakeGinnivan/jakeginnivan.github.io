@@ -5,8 +5,6 @@ title: Low friction Octopress/GitHub pages Setup
 comments: true
 ---
 
-## Low friction Octopress/GitHub pages Setup
-
 My blog uses [Octopress](http://octopress.org) which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on [GitHub Pages](https://pages.github.com). But sometimes I really miss being able to simply create or edit posts online. I started looking around and found [Prose.io](http://prose.io/).
 
 Prose is an *awesome* open source online Jekyll site editor for GitHub. Then if we setup TeamCity to automatically regenerate and deploy our blog when we make any commits we have a really simple way of making quick blog posts online.
