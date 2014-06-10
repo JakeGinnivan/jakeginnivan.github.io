@@ -14,11 +14,11 @@ Prose is an *awesome* open source online Jekyll site editor for GitHub. Then if 
 Here is a quick rundown of creating a new post with Prose. If you are only interested in the automated TeamCity deployment just skip this section.
 
 1. Go into the _posts folder, then click New File  
-![New file](/source/assets/posts/Prose1.png)
+![New file](/assets/posts/Prose1.png)
 2. Add a title and write your post  
-![Write post](/source/assets/posts/Prose2.png)
+![Write post](/assets/posts/Prose2.png)
 3. You can define your yaml metadata defaults for prose in your _config.yaml, giving you a nice UI  
-![Edit metadata](/source/assets/posts/Prose3.png)
+![Edit metadata](/assets/posts/Prose3.png)
 
 When you hit save Prose will commit that file, pretty sweet. **note** if you do not create the file in the _posts folder you will not see the meta-data options. **note2** Image uploading is broken at the moment, hopefully this gets some love soon
 
