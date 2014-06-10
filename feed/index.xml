@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-11T04:32:57+08:00</updated>
+  <updated>2014-06-11T05:03:23+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -43,9 +43,7 @@
     <link href="http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup/"/>
     <updated>2014-06-10T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup</id>
-    <content type="html"><![CDATA[<h2>Low friction Octopress/GitHub pages Setup</h2>
-
-<p>My blog uses <a href="http://octopress.org">Octopress</a> which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on <a href="https://pages.github.com">GitHub Pages</a>. But sometimes I really miss being able to simply create or edit posts online. I started looking around and found <a href="http://prose.io/">Prose.io</a>.</p>
+    <content type="html"><![CDATA[<p>My blog uses <a href="http://octopress.org">Octopress</a> which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on <a href="https://pages.github.com">GitHub Pages</a>. But sometimes I really miss being able to simply create or edit posts online. I started looking around and found <a href="http://prose.io/">Prose.io</a>.</p>
 
 <p>Prose is an <em>awesome</em> open source online Jekyll site editor for GitHub. Then if we setup TeamCity to automatically regenerate and deploy our blog when we make any commits we have a really simple way of making quick blog posts online.</p>
 
