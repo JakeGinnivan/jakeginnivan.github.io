@@ -1,6 +1,6 @@
 ---
 layout: post
-published: false
+published: true
 title: Using Approval text in tests
 comments: true
 categories: ""
@@ -22,5 +22,3 @@ One of the things I am testing is generated confirmation text based on a number 
     }
 
 Then I can just add my step in BDDfy `.Then(_ => ApprovedGeneratedConfirmationShouldMatch(sut.DealSummary.ToString()), string.Format("Approved generated confirmation should be:\r\n{0}", GetApproved()))`
-    
- 
