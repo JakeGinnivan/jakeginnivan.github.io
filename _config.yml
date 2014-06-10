@@ -64,7 +64,7 @@ titlecase: true       # Converts page and post titles to titlecase
 prose:
   rooturl: "source"
   site: "http://jake.ginnivan.net"
-  media: "assets/posts"
+  media: "source/assets/posts"
   metadata:
     "source/_posts":
       - name: "layout"
