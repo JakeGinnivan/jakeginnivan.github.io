@@ -83,7 +83,7 @@ prose:
       - name: "categories"
         field:
           element: "text"
-          value: "misc"
+          value: ""
       - name: "published"
         field:
           label: "Published"
