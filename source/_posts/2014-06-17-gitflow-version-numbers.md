@@ -56,5 +56,9 @@ One of the points of Semantic Versioning is allowing safe upgrades between minor
 ## Feature branch
 Feature branches are versioned like develop. Except the branch name will be used instead of `unstable`. This means if you name your feature branch `feature/xMyFeature` the tag will be `-xMyFeature` which will sort **higher** than develop. This gives you the option to force a feature branch to be sorted higher than develop if you need to.
 
+## NuGet
+NuGet does not support semantic versioning properly, which sucks. We have the `LegacySemVer` and `LegacyPaddedSemVer` variables mainly for NuGet, but we did not tie the name to NuGet as there may be other systems which do not support SemVer properly.
+Use the padded variable if you are liklely to need more than 10 betas/pre-releases because in nuget 1.0.0-beta2 sorts higher than 1.0.0-beta10 =(
+
 ## Summary
 Hopefully this gives you some idea how we envisioned GitVersion to be used with GitFlow. Feedback is welcome.
