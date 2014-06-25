@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Release Notes | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/release-notes/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-26T06:27:57+08:00</updated>
+  <updated>2014-06-26T06:58:13+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -63,6 +63,21 @@ You can view the pull request at <a href="https://github.com/chocolatey/chocolat
 Feel free to post on issue on GitHub if you have issues with your project, it is still a work in progress tool after all!</p>
 
 <p>You can also run <code>GitReleaseNotes /o releasenotes.md /allTags</code> to generate a complete new set of release notes since the start of the project with easy. Give that a go yourself and see what the output is.</p>
+
+<h2>Next steps</h2>
+
+<p>The next function of GitReleaseNotes will be to help you publish your release. This is <strong>not done yet</strong>, but you will be able to just go on a publish build:</p>
+
+<p><code>GitReleaseNotes /publish /version 1.2.3</code> which will (hopefully):</p>
+
+<ul>
+<li>Push a GitHub release (which will cause the tag to be created)</li>
+<li>Will automatically read the <em>vNext</em> section of your release notes and use that</li>
+<li>Update the version in the release notes file, and push that</li>
+</ul>
+
+
+<p>Each of these steps will be able to be done individually. Then with this and <a href="https://github.com/Particular/GitVersion">GitVersion</a> I will be able to automate MUCH more of my release process.</p>
 ]]></content>
   </entry>
   
