@@ -49,3 +49,14 @@ You can view the pull request at [https://github.com/chocolatey/chocolatey/pull/
 Feel free to post on issue on GitHub if you have issues with your project, it is still a work in progress tool after all!
 
 You can also run `GitReleaseNotes /o releasenotes.md /allTags` to generate a complete new set of release notes since the start of the project with easy. Give that a go yourself and see what the output is.  
+
+## Next steps
+The next function of GitReleaseNotes will be to help you publish your release. This is **not done yet**, but you will be able to just go on a publish build:
+
+`GitReleaseNotes /publish /version 1.2.3` which will (hopefully):
+
+ - Push a GitHub release (which will cause the tag to be created)
+ - Will automatically read the *vNext* section of your release notes and use that
+ - Update the version in the release notes file, and push that
+
+Each of these steps will be able to be done individually. Then with this and [GitVersion](https://github.com/Particular/GitVersion) I will be able to automate MUCH more of my release process.
