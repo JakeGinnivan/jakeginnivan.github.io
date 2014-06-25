@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-06-20T21:57:24+08:00</updated>
+  <updated>2014-06-26T06:27:57+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Updating Chocolateys Release Notes With GitReleaseNotes]]></title>
+    <link href="http://jake.ginnivan.net/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/"/>
+    <updated>2014-06-26T05:51:20+08:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes</id>
+    <content type="html"><![CDATA[<p>Today I saw a tweet from Rob Reynolds today that <a href="https://twitter.com/ferventcoder/status/481816379340120064">Chocolatey 0.9.8.24 RC1 was released</a> so I clicked the link which was straight to the closed issues list on GitHub.</p>
+
+<p>I also noticed that many of the RCs and betas were not tagged in Git so you can&rsquo;t see what was fixed each beta.</p>
+
+<p>I have been working on a little utility to solve exactly this problem called <strong>GitReleaseNotes</strong>, the idea is that you install it via Chocolatey, then run <code>GitReleaseNotes /outputFile ReleaseNotes.md /allTags</code> and it will connect to your issue tracker (if the issue tracker is a REMOTE in your Git repository) fetch all the closed issues since it was last run and append them into your release notes. For public GitHub repos using GitHub issues these are the same so it just works, for Jira and YouTrack you will need to specify additional command line parameters</p>
+
+<p>You then can manually edit, group and do whatever you want. All your modifications will not be changed when you run GitReleaseNotes again.</p>
+
+<!-- more -->
+
+
+<p>The first step was to change the formatting slightly, currently GitVersion assumes all release titles will start with <code># &lt;Release&gt;</code>, so I changed all of the <code>##1.2.3 (release date)</code> to <code># 1.2.3 (release date)</code>.</p>
+
+<p>The next step was to tell GitReleaseNotes where to start from, to do this I needed to add the commit range of the last release, the most important one is the last sha. For this I just took when the release notes was updated last, then went back in the history until I found another major release. This gave me:</p>
+
+<pre><code>Commits: [a32f1fc133...f15a8f3b52](https://github.com/chocolatey/chocolatey/compare/a32f1fc133...f15a8f3b52)
+</code></pre>
+
+<p>But this would work fine too</p>
+
+<pre><code>Commits: a32f1fc133...f15a8f3b52
+</code></pre>
+
+<p>After I had done that I just ran <code>GitReleaseNotes /o CHANGELOG.md /allTags</code> and this was appended to the top of <code>CHANGELOG.md</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># vNext
+</span><span class='line'>
+</span><span class='line'> - [#493](https://github.com/chocolatey/chocolatey/issues/493) - [Enhancement] Chocolatey-Update cleanup
+</span><span class='line'> - [#492](https://github.com/chocolatey/chocolatey/issues/492) - Error messages late in update of chocolatey itself
+</span><span class='line'> - [#487](https://github.com/chocolatey/chocolatey/issues/487) - nuget.exe hangs for packages with many dependencies
+</span><span class='line'> - [#486](https://github.com/chocolatey/chocolatey/pull/486) - Improve Chocolatey setup as administrator and add Test-ProcessAdminRights helper contributed by Jakub Berezanski ([jberezanski](https://github.com/jberezanski))
+</span><span class='line'> - [#424](https://github.com/chocolatey/chocolatey/issues/424) - Update Contributing.md with link to mailing list
+</span><span class='line'> - [#416](https://github.com/chocolatey/chocolatey/pull/416) - [Enhancement] added quiet parameter and forced write-host to honor that param (#411) contributed by Johan Leino ([jole78](https://github.com/jole78))
+</span><span class='line'> - [#411](https://github.com/chocolatey/chocolatey/issues/411) - [Enhancement] absolute "quiet" mode - Allow shutting off "real" Write-Host
+</span><span class='line'> - [#393](https://github.com/chocolatey/chocolatey/pull/393) - Resolve issue with DISM "missing" or with the 32-bit DISM being called on a 64-bit system contributed by Julian Easterling ([dcjulian29](https://github.com/dcjulian29))
+</span><span class='line'> - [#379](https://github.com/chocolatey/chocolatey/issues/379) - [Enhancement] Update NuGet.exe to 2.8+ in Chocolatey install
+</span><span class='line'>
+</span><span class='line'>Commits: [c1ab0a6473...f541d8ca31](https://github.com/chocolatey/chocolatey/compare/c1ab0a6473...f541d8ca31)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That was pretty easy, I submitted this as a pull request and Rob can just edit and next time generate the new release notes with easy. Including all the beta&rsquo;s.
+You can view the pull request at <a href="https://github.com/chocolatey/chocolatey/pull/496">https://github.com/chocolatey/chocolatey/pull/496</a> - it may not be merged, but I figured this was a good guide of how you can start using GitReleaseNotes on your own project.
+Feel free to post on issue on GitHub if you have issues with your project, it is still a work in progress tool after all!</p>
+
+<p>You can also run <code>GitReleaseNotes /o releasenotes.md /allTags</code> to generate a complete new set of release notes since the start of the project with easy. Give that a go yourself and see what the output is.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using Approval Text in Tests]]></title>
@@ -1632,186 +1698,6 @@ public class RecordTest
 <p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
 
 <p>Check out the code, report issues and submit pull requests at <a href="https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup">https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup</a> and install from <a href="https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/">ReSharper Extensions Site</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ClickOnce From Azure Blob Storage]]></title>
-    <link href="http://jake.ginnivan.net/clickonce-from-azure-blob-storage/"/>
-    <updated>2013-08-08T00:00:00+08:00</updated>
-    <id>http://jake.ginnivan.net/clickonce-from-azure-blob-storage</id>
-    <content type="html"><![CDATA[<p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
-
-<h2>Creating the ClickOnce installer</h2>
-
-<p>I don&rsquo;t like using the publish feature in VS for my ClickOnce installers, it causes more problems than it solves. I tend to use Mage directly, but this is sometimes not that easy to figure out how to do it. Lets start by creating our installer.</p>
-
-<p>I am using MSBuild as my build platform, but these instructions can be adapted to anything really.</p>
-
-<!-- more -->
-
-
-<h3>Properties</h3>
-
-<pre><code>&lt;PropertyGroup&gt;
-  &lt;Version Condition="$(VERSION)==''"&gt;0.0.0.1&lt;/Version&gt;
-  &lt;ClickOnceFolder&gt;$(MSBuildProjectDirectory)artifacts\ClickOnce\&lt;/ClickOnceFolder&gt;
-  &lt;ClickOnceFiles&gt;$(ClickOnceFolder)$(Version)\&lt;/ClickOnceFiles&gt;
-  &lt;Mage&gt;$(MSBuildProjectDirectory)tools\mage.exe&lt;/Mage&gt;
-  &lt;ProviderUrlArg Condition="$(ProviderUrl)!=''"&gt;-ProviderURL $(ProviderUrl)&lt;/ProviderUrlArg&gt;
-  &lt;ClickOnceName Condition="$(ClickOnceName)==''"&gt;MarkPad&lt;/ClickOnceName&gt;
-&lt;/PropertyGroup&gt;
-&lt;ItemGroup&gt;
-  &lt;SourceFiles Include="$(MSBuildProjectDirectory)src\My.App\bin\$(Configuration)\**\*.*" /&gt;
-&lt;/ItemGroup&gt;
-</code></pre>
-
-<p>The provider URL is so we can embed the installation URL into the installer, this will make ClickOnce work in Chrome and other browsers. Chrome downloads the .application file, then the user runs it from the <code>Downloads</code> folder, at that point ClickOnce has no idea where it was downloaded from, so the install fails.
-With the provider url embedded, it will work as expected.</p>
-
-<p>Most of the properties above should be easy to understand what they are for.</p>
-
-<h3>Creating the installer</h3>
-
-<h4>1. Copy the application binaries into a Version folder</h4>
-
-<pre><code>&lt;Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ClickOnceFiles)%(SourceFiles.RecursiveDir)"/&gt;
-</code></pre>
-
-<h4>2. Create the .manifest file for the application</h4>
-
-<pre><code>&lt;Exec Command="$(Mage) -New Application -ToFile $(ClickOnceFiles)MyApp.exe.manifest -Processor x86 -name &amp;quot;$(ClickOnceName)&amp;quot; -Version $(Version) -FromDirectory $(ClickOnceFiles) -IconFile icon.ico" /&gt;
-</code></pre>
-
-<p>This creates the .manifest file, which is information about that particular version of the software. It lives inside the folder with all the binaries.</p>
-
-<h4>3. Perform updates to manifest (optional)</h4>
-
-<pre><code>&lt;Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -NoProfile $(Root)tools\UpdateManifest.ps1 -ManifestFile $(ClickOnceFiles)MyApp.exe.manifest" /&gt;
-</code></pre>
-
-<p>If you have issues with certain assemblies failing the checksum (normally because of native dlls), I have used this code to fix the issue:</p>
-
-<pre><code>Param($ManifestFile) 
-write-host "Fixing up Manifest File"
-write-host $ManifestFile
-
-[xml]$xml = get-content $ManifestFile
-
-$elementsToRewrite = $xml.assembly.dependency | where {$_.dependentAssembly.codebase -ne $null -and ($_.dependentAssembly.codebase.Contains("CefSharp") -or $_.dependentAssembly.codebase.Contains("NHunspell")) }
-foreach ($elementToRewrite in $elementsToRewrite)
-{
-    $fileNode = $xml.CreateElement("file", "urn:schemas-microsoft-com:asm.v2")
-    $fileNode.SetAttribute("name", $elementToRewrite.dependentAssembly.codebase)    
-    $fileNode.SetAttribute("size", $elementToRewrite.dependentAssembly.size)
-    $fileNode.AppendChild($elementToRewrite.dependentAssembly.hash) 
-    $xml.assembly.AppendChild($fileNode)
-    [Void]$xml.assembly.RemoveChild($elementToRewrite)
-}
-
-$xml.Save($ManifestFile)
-
-write-host "Fixed Manfiest File"
-</code></pre>
-
-<p>Skip this step by default, introduce if you need it.</p>
-
-<h4>4. Sign the .manifest file (optional)</h4>
-
-<p>If you want to sign your installer, this is where you do that.</p>
-
-<pre><code>&lt;Exec Command="$(Mage) -sign MyApp.manifest -CertFile $(Certificate) -Password $(CertPassword)" /&gt;
-</code></pre>
-
-<h4>5. Create the .application file</h4>
-
-<pre><code>&lt;Exec Command="$(Mage) -New Deployment -ToFile $(ClickOnceFolder)MyApp.application -name &amp;quot;$(ClickOnceName)&amp;quot; -Processor x86 -Install true -Version $(Version) -Publisher &amp;quot;Your Company&amp;quot; -AppManifest $(ClickOnceFiles)MyApp.exe.manifest $(ProviderUrlArg)" /&gt;
-</code></pre>
-
-<p>This generates your deployment</p>
-
-<h4>7. Update your deployment settings (optional)</h4>
-
-<pre><code>&lt;Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -NoProfile $(Root)tools\UpdateApplicationManifest.ps1 -ManifestFile $(ClickOnceFolder)MyApp.application" /&gt;
-</code></pre>
-
-<p>The powershell script looks like this</p>
-
-<pre><code>Param($ManifestFile) 
-write-host "Fixing up Manifest File"
-write-host $ManifestFile
-
-[xml]$xml = get-content $ManifestFile
-
-$xml.assembly.deployment.SetAttribute("trustURLParameters", "true")
-$xml.assembly.deployment.SetAttribute("mapFileExtensions", "true")
-
-# Uncomment to tell your app to update before startup
-#$xml.assembly.deployment.subscription.update.RemoveAll()
-#$updateNode = $xml.CreateElement("beforeApplicationStartup", "urn:schemas-microsoft-com:asm.v2")
-#$xml.assembly.deployment.subscription.Item("update").AppendChild($updateNode)
-
-$xml.Save($ManifestFile)
-
-write-host "Fixed Manfiest File"
-</code></pre>
-
-<p>This is where you can change when you want your app to check for updates, and modify deployment settings. More information about this file available at <a href="http://msdn.microsoft.com/en-us/library/k26e96zf.aspx">http://msdn.microsoft.com/en-us/library/k26e96zf.aspx</a></p>
-
-<h4>7. Sign your deployment (optional)</h4>
-
-<pre><code>&lt;Exec Command="$(Mage) -update MyApp.application -appmanifest MyApp.manifest -CertFile $(Certificate) -Password $(CertPassword)" /&gt;
-</code></pre>
-
-<p>This signs your deployment.</p>
-
-<h4>8. Rename binaries to have the .deploy extension</h4>
-
-<pre><code>&lt;ItemGroup&gt;
-  &lt;DeploymentFiles Include="$(ClickOnceFiles)**\*.*" Exclude="$(ClickOnceFiles)MarkPad.exe.manifest" /&gt;
-&lt;/ItemGroup&gt;
-
-&lt;Move SourceFiles="@(DeploymentFiles)" DestinationFiles="@(DeploymentFiles-&gt;'%(RootDir)%(Directory)%(FileName)%(Extension).deploy')" /&gt;
-</code></pre>
-
-<p>This is so webservers will serve all the files, some extensions will not be served on some web servers, this gets around that issue.</p>
-
-<p>To see it all working together, check out MarkPad&rsquo;s build script at <a href="https://github.com/Code52/DownmarkerWPF/blob/master/Markpad.msbuild#L31">https://github.com/Code52/DownmarkerWPF/blob/master/Markpad.msbuild#L31</a></p>
-
-<h2>Deploying to Azure</h2>
-
-<h3>Setup a storage account</h3>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure.png" alt="Create Storage Account" /></p>
-
-<p><img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure1.png" alt="Create Storage Account 2" /></p>
-
-<p>Once created, go to the <code>containers</code> tab, then add a new container.
-<img src="http://jake.ginnivan.net/assets/posts/2013-08-08-clickonce-from-azure-blob-storage/ClickOnceInAzure2.png" alt="Create Container" /></p>
-
-<p>Make sure you choose <code>Public Container</code> as the access level, otherwise things will not work!</p>
-
-<h3>Uploading deployment to Azure Storage</h3>
-
-<p>For this I use a utility from the Azure team called AzCopy. See the blog post at <a href="http://blogs.msdn.com/b/windowsazurestorage/archive/2013/04/01/azcopy-using-cross-account-copy-blob.aspx">http://blogs.msdn.com/b/windowsazurestorage/archive/2013/04/01/azcopy-using-cross-account-copy-blob.aspx</a> and download it from <a href="http://go.microsoft.com/fwlink/?LinkId=287086">http://go.microsoft.com/fwlink/?LinkId=287086</a></p>
-
-<p>Upload steps</p>
-
-<pre><code>&lt;!--$(BlobTargetUrl) = https://myaccount.blob.core.windows.net/mycontainer/ --&gt;
-
-&lt;!--Upload everything except the application manifest as it should be done last (once everything else is uploaded)--&gt;
-&lt;Move SourceFiles="$(ClickOnceFolder)MyApp.application" DestinationFolder="$(ClickOnceFolder)ClickOnceApplicationFile\" /&gt;
-&lt;Exec Command="$(Root)tools\AzCopy.exe $(ClickOnceFolder) $(BlobTargetUrl) /destkey:$(BlobTargetKey) /S /V /Y" /&gt;
-&lt;Exec Command="$(Root)tools\AzCopy.exe $(ClickOnceFolder)ClickOnceApplicationFile\ $(BlobTargetUrl) /destkey:$(BlobTargetKey) /S /V /Y" /&gt;
-</code></pre>
-
-<p>What we are doing here is moving all the files, except the .application file, and uploading them first. Then finally uploading the .application file once all the other files are uploaded. This is so you do not have a corrupted installer while you are uploading the new version.</p>
-
-<h3>Install from Azure</h3>
-
-<p>Now you just point at the .application file, for example MarkPad&rsquo;s nightly is available from <a href="http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application">http://ginnivan.blob.core.windows.net/markpadnightly/MarkPad.application</a></p>
-
-<p>Hope this helps you out, I have found this is a really cheap and easy way to get ClickOnce installers out there!</p>
 ]]></content>
   </entry>
   

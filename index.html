@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Using Approval Text in tests I am currently using TestStack.BDDfy as my BDD testing framework. v4 has some great changes which make BDDfy really &hellip;">
+  <meta name="description" content="Today I saw a tweet from Rob Reynolds today that Chocolatey 0.9.8.24 RC1 was released so I clicked the link which was straight to the closed issues &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/">Updating Chocolateys Release Notes With GitReleaseNotes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-26T05:51:20+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Today I saw a tweet from Rob Reynolds today that <a href="https://twitter.com/ferventcoder/status/481816379340120064">Chocolatey 0.9.8.24 RC1 was released</a> so I clicked the link which was straight to the closed issues list on GitHub.</p>
+
+<p>I also noticed that many of the RCs and betas were not tagged in Git so you can&rsquo;t see what was fixed each beta.</p>
+
+<p>I have been working on a little utility to solve exactly this problem called <strong>GitReleaseNotes</strong>, the idea is that you install it via Chocolatey, then run <code>GitReleaseNotes /outputFile ReleaseNotes.md /allTags</code> and it will connect to your issue tracker (if the issue tracker is a REMOTE in your Git repository) fetch all the closed issues since it was last run and append them into your release notes. For public GitHub repos using GitHub issues these are the same so it just works, for Jira and YouTrack you will need to specify additional command line parameters</p>
+
+<p>You then can manually edit, group and do whatever you want. All your modifications will not be changed when you run GitReleaseNotes again.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -522,56 +569,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
   
     <footer>
       <a rel="full-article" href="/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/10/on-async-and-sync-contexts/">On Async and Sync Contexts</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-10T22:12:49+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation Contexts. Quite a few of my assumptions were wrong, or the behaviour is different between the .NET 4.0 implementation (CTP3 and RTM) and what happens in .NET 4.5.</p>
-
-<p>In this post I will cover:</p>
-
-<ul>
-<li>What .ConfigureAwait(false) does in .net 4.0 and in .net 4.5, and why they act differently</li>
-<li>Some guidance around using await in a rich client app (i.e await for <em>offloading</em>, not scalability) .net 4.0 in particular, .net 4.5 behaves better and the guidance is not as relevant</li>
-<li>How you can use custom awaiters to switch contexts</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/10/on-async-and-sync-contexts/">Read on &rarr;</a>
     </footer>
   
 

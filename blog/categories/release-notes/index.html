@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Using Approval Text in Tests - Jake Ginnivan's blog</title>
+  <title>Category: Release Notes - Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Using Approval Text in tests I am currently using TestStack.BDDfy as my BDD testing framework. v4 has some great changes which make BDDfy really &hellip;">
+  <meta name="description" content="Category: Release Notes">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests">
+  <link rel="canonical" href="http://jake.ginnivan.netblog/categories/release-notes">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
@@ -88,103 +88,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Using Approval Text in Tests</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-10T00:00:00+08:00" pubdate data-updated="true"></time>
-        
-      </p>
+    <h1 class="entry-title">Category: Release Notes</h1>
     
   </header>
-
-
-<div class="entry-content"><h2>Using Approval Text in tests</h2>
-
-<p>I am currently using <a href="https://github.com/TestStack/TestStack.BDDfy">TestStack.BDDfy</a> as my BDD testing framework. v4 has some great changes which make BDDfy really really awesome.</p>
-
-<p>One of the things I am testing is generated confirmation text based on a number of selected form inputs. I want the approved generated text to be put into the BDDfy output. First steps are to read the approved file, here is a quick snipped which does this:</p>
-
-<pre><code>protected string GetApproved()
-{
-    var namer = new UnitTestFrameworkNamer();
-    var basename = string.Format("{0}\\{1}", namer.SourcePath, namer.Name);
-    var approvalFilename = new ApprovalTextWriter(string.Empty).GetApprovalFilename(basename);
-    var approved = !File.Exists(approvalFilename) ? string.Empty : File.ReadAllText(approvalFilename);
-    return approved;
-}
-</code></pre>
-
-<p>Then I can just add my step in BDDfy <code>.Then(_ =&gt; ApprovedGeneratedConfirmationShouldMatch(sut.DealSummary.ToString()), string.Format("Approved generated confirmation should be:\r\n{0}", GetApproved()))</code></p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2014</h2>
 
-
-<time datetime="2014-06-10T00:00:00+08:00" pubdate data-updated="true"></time>
-      
-
-
-    </p>
-    
-      <div class="sharing">
+<article>
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/" >Tweet</a>
-  
-  
-  
-</div>
+<h1><a href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/">Updating Chocolateys Release Notes With GitReleaseNotes</a></h1>
+<time datetime="2014-06-26T05:51:20+08:00" pubdate><span class='month'>Jun</span> <span class='day'>26</span> <span class='year'>2014</span></time>
 
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2014/06/10/low-friction-octopress-github-pages-setup/" title="Previous Post: Low friction Octopress/GitHub pages Setup">&laquo; Low friction Octopress/GitHub pages Setup</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/" title="Next Post: Updating Chocolateys release notes with GitReleaseNotes">Updating Chocolateys release notes with GitReleaseNotes &raquo;</a>
-      
-    </p>
-  </footer>
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/open-source/'>Open Source</a>, <a class='category' href='/blog/categories/release-notes/'>Release Notes</a></span>
+</footer>
+
+
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
+
+  
+</article>
 
 </div>
 
@@ -211,10 +144,7 @@
       var disqus_shortname = 'jakeginnivansblog';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/';
-        var disqus_url = 'http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
