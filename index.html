@@ -159,10 +159,10 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 <h3>VCS Root</h3>
 
-<p>First step is to create our VCS root.
-<strong>Type: </strong> Git
-<strong>VCS Root Name: </strong> Project Name (all branches + pull requests)
-<strong>Default branch: </strong> master
+<p>First step is to create our VCS root.<br/>
+<strong>Type: </strong> Git<br/>
+<strong>VCS Root Name: </strong> Project Name (all branches + pull requests)<br/>
+<strong>Default branch: </strong> master<br/>
 <strong>Branch specifications: </strong></p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -189,11 +189,11 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 <ul>
 <li><p><strong>GitVersion</strong><br/>
-Runner Type: Command Line<br/>
-Step Name: GitVersion<br/>
-Run: Executable with parameters<br/>
-Command executable: GitVersion<br/>
-Command parameters: . /updateAssemblyInfo /output buildserver</p></li>
+<strong>Runner Type:</strong> Command Line<br/>
+<strong>Step Name:</strong> GitVersion<br/>
+<strong>Run:</strong> Executable with parameters<br/>
+<strong>Command executable:</strong> GitVersion<br/>
+<strong>Command parameters:</strong> . /updateAssemblyInfo /output buildserver</p></li>
 <li><p><strong>Build project</strong><br/>
 This should be setup however you used to do it, build your solution, run your build scripts etc.</p></li>
 </ul>
