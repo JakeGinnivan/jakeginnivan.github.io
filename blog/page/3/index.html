@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates. &hellip;">
+  <meta name="description" content="A while back I got introduced to https://xamlstyler.codeplex.com/ which is a pretty good visual studio plug-in for formatting xaml, but I like &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/resharper-xaml-attribute-ordering-plugin/">ReSharper Xaml Attribute Ordering Plug-in</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-09T00:00:00+08:00" pubdate data-updated="true">Sep 9<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
+
+<p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
+
+<p>Here are some screenshots</p>
+
+<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
+
+<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture2.PNG" alt="Options" /></p>
+
+<p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
+
+<p>Check out the code, report issues and submit pull requests at <a href="https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup">https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup</a> and install from <a href="https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/">ReSharper Extensions Site</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -513,55 +561,6 @@ This means that you need a fully unlocked desktop for things to work correctly. 
   
     <footer>
       <a rel="full-article" href="/redirecting-process-output/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/awaitable-delegatecommand/">Awaitable DelegateCommand</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-15T00:00:00+08:00" pubdate data-updated="true">Mar 15<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Most of you would be aware of DelegateCommand, it allows you to turn a lambda (or two if you want to specify canexecute) into a WPF ICommand.</p>
-
-<p>This is pretty easy to unit test as well, you can simply go <code>viewModel.MyCommand.Execute(null)</code></p>
-
-<p>But this falls down when you start using async, because the lambda will end up being an <strong>async void</strong> method. This means your test can no longer observe what happens in that command. If the implementation throws, your unit test will not know about it and then your test process will crash (if using .net 4.0).</p>
-
-<p>Read <a href="http://blogs.msdn.com/b/lucian/archive/2013/02/18/talk-the-new-async-design-patterns.aspx">Lucians blog post</a> for more information about why async void is bad.</p>
-
-<p>So we introduced a new interface, called <code>IAsyncCommand</code> and it looks like this</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/awaitable-delegatecommand/">Read on &rarr;</a>
     </footer>
   
 

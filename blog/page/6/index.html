@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Yesterday the project I have been working on for close to a year now went live! We have had very minimal issues and apart from working with an &hellip;">
+  <meta name="description" content="I have hit this before, but it was VSTO related and posted about it http://jake.ginnivan.net/clickonce-deployment-in-teamcity When trying to publish &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,66 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/clickonce-bootstrapping-errors/">ClickOnce Bootstrapping Errors</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-20T00:00:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
+
+<p>When trying to publish my clickonce installer I am getting the error:</p>
+
+<pre><code>[14:55:16]: [_DeploymentGenerateBootstrapper] GenerateBootstrapper
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item 'Microsoft.Windows.Installer.3.1' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item '.NETFramework,Version=v4.0' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
+[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): error MSB3147: Could not find required file 'setup.bin' in 'C:\TeamCity\buildAgent\work\63190f273e745a25\ProjectName\Engine'.
+</code></pre>
+
+<p>If your build server is a <strong>x64</strong> operating system copy <code>'C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bootstrapper\'</code> to the same directory on the build server, then copy the blow code into a file called FixBootstrapper.reg, then run it.</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+
+<p>If you have a <strong>x86</strong> build server, upgrade. Otherwise copy &lsquo;<code>C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bootstrapper\</code>&rsquo; to the same directory, then copy the blow into a registry file</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper\4.0]
+"Path"="C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -498,49 +558,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
   
     <footer>
       <a rel="full-article" href="/vsto-contrib/com-cleanup-extension-methods/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/retry-for-class/">Retry.For</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-20T00:00:00+08:00" pubdate data-updated="true">Mar 20<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put a lot of good helpers in place (WaitWhileBusy etc), there are still times where a button does not enable quick enough, or a windows is opening and if you do not have automatic retry enabled you will have quite fragile UI automation tests.</p>
-
-<p>This is where my Retry static class comes in handy.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/retry-for-class/">Read on &rarr;</a>
     </footer>
   
 

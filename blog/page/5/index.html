@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="WP7 Essentials Tracing A new feature coming in the next release is a super easy to use Trace class to allow you to debug your app really easily. ">
+  <meta name="description" content="Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/apiapprover/">ApiApprover</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-19T00:00:00+08:00" pubdate data-updated="true">Feb 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
+
+<p>The interesting thing about Semantic versioning is that often people accidentally break the semantic version. So I wrote a unit test which solves this problem</p>
+
+<pre><code>[Fact]
+public void phoenix_has_no_public_api_changes()
+{
+    // arrange
+    var phoenix = typeof(IPhoenixHost).Assembly;
+
+    // act
+    var publicApi = CodeGen.CreatePublicApiForAssembly(phoenix);
+
+    // assert
+    var reporter = new DiffReporter();
+    Approvals.Approve(new ApprovalTextWriter(publicApi), new XUnitTestFrameworkNamer(), reporter);
+}
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/apiapprover/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -534,66 +592,6 @@ var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
     <footer>
       <a rel="full-article" href="/nhibernate-alias-warnings/">Read on &rarr;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/clickonce-bootstrapping-errors/">ClickOnce Bootstrapping Errors</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-20T00:00:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have hit this before, but it was VSTO related and posted about it <a href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity">http://jake.ginnivan.net/clickonce-deployment-in-teamcity</a></p>
-
-<p>When trying to publish my clickonce installer I am getting the error:</p>
-
-<pre><code>[14:55:16]: [_DeploymentGenerateBootstrapper] GenerateBootstrapper
-[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item 'Microsoft.Windows.Installer.3.1' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
-[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): warning MSB3155: Item '.NETFramework,Version=v4.0' could not be located in 'C:\TeamCity\buildAgent\work\63190f273e745a25\TrainersAdmin'.
-[14:55:16]: [GenerateBootstrapper] c:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(3939, 9): error MSB3147: Could not find required file 'setup.bin' in 'C:\TeamCity\buildAgent\work\63190f273e745a25\ProjectName\Engine'.
-</code></pre>
-
-<p>If your build server is a <strong>x64</strong> operating system copy <code>'C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bootstrapper\'</code> to the same directory on the build server, then copy the blow code into a file called FixBootstrapper.reg, then run it.</p>
-
-<pre><code>Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\GenericBootstrapper\4.0]
-"Path"="C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
-</code></pre>
-
-<p>If you have a <strong>x86</strong> build server, upgrade. Otherwise copy &lsquo;<code>C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bootstrapper\</code>&rsquo; to the same directory, then copy the blow into a registry file</p>
-
-<pre><code>Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\GenericBootstrapper\4.0]
-"Path"="C:\\Program Files\\Microsoft SDKs\\Windows\\v7.0A\\Bootstrapper\\"
-</code></pre>
-</div>
-  
   
 
 

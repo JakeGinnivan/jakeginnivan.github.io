@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation &hellip;">
+  <meta name="description" content="I am currently working on a .net 4.0 project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-15T02:55:09+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I am currently working on a <strong>.net 4.0</strong> project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM because we do not have stats on how many clients currently have the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=3556">.net 4.0 KB 2468871 patch</a> which enables PCL support. These issues affect the RTM version as well.</p>
+
+<p>Recently I have upgraded to nCrunch 2.2 beta and ReSharper 8.1 both which ship with the upgraded nUnit 2.6.3 runner. After I upgraded these tools I noticed tests which should have been failing were passing and passing tests were being reported as failing but showing stack traces from a different test..</p>
+
+<p>Also I was getting different results in nCrunch, R# and nUnits console runner. Something was broken.</p>
+
+<p><strong>NOTE</strong>: Async and TPL support is <em>not supported</em> in nUnit 2.x, but will be officially supported in v3.x and that it was a coincidence that it worked in 2.6.2. My discussions about the issues are at <a href="https://groups.google.com/forum/#!topic/nunit-discuss/McE95Cy2DlY">here on the nunit discussion board</a>.<br/>
+As far as I can tell, there is no reason that 4.0 cannot be supported because to offer framework support does not need any new features OR the classes in the Async Targeting Pack or .NET 4.5. At a minimum tests returning <code>Task</code> should be supported as TPL was introduced into the CLR for net40.  <br/>
+Recently I added async void and Task support to <a href="https://github.com/TestStack/TestStack.BDDfy/pull/32">BDDfy</a> which targets .NET 4.0, also xUnit 1.9.x supports Tasks in the current released version and has backported <code>async void</code> support to the 1.9.x codebase from the 2.0 and will be released if there is a need to release another patch release before 2.0 is released.</p>
+
+<p><strong>.NET 4.5 is fully supported and works as expected with nUnit, it is only .net 4.0 which is affected</strong></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -533,54 +584,6 @@
 <p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
 
 <p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/resharper-xaml-attribute-ordering-plugin/">ReSharper Xaml Attribute Ordering Plug-in</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-09T00:00:00+08:00" pubdate data-updated="true">Sep 9<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
-
-<p>So over the weekend I was at <a href="http://www.jetbrains.com/jetbrainsday/">JetBrains Day</a> in Malmo, and Matt Ellis did a talk on ReSharper extensions. I figured it would be a good time to try and write a plug-in.</p>
-
-<p>Here are some screenshots</p>
-
-<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture1.PNG" alt="Moar Xaml Code Cleanups" /></p>
-
-<p><img src="/assets/posts/2013-09-09-resharper-xaml-attribute-ordering-plugin/Capture2.PNG" alt="Options" /></p>
-
-<p>Now, I don&rsquo;t expect this to be super stable and I know of a few issues (like when you first format the Window tag is not quite formatted right), but I hope to setup a CI build and get some fixes out over the next week or so.</p>
-
-<p>Check out the code, report issues and submit pull requests at <a href="https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup">https://github.com/JakeGinnivan/XamlAttributeOrderingCodeCleanup</a> and install from <a href="https://resharper-plugins.jetbrains.com/packages/JetBrains.ReSharper.Plugins.XamlAttributeOrdering/">ReSharper Extensions Site</a></p>
 </div>
   
   

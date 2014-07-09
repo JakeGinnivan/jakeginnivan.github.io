@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Typical TeamCity Build Setup - Jake Ginnivan's blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="I posted Simple Versioning and Release Notes a few weeks ago talking about how to simplify release notes and versioning. This post is a bit of a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/07/09/my-typical-teamcity-build-setup">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">My Typical TeamCity Build Setup</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-09T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I posted <a href="http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/">Simple Versioning and Release Notes</a> a few weeks ago talking about how to simplify release notes and versioning. This post is a bit of a cheat sheet for how I set up my builds.</p>
+
+<h2>Structure</h2>
+
+<p>I normally have two but sometimes three builds for each project. The structure is something like this:</p>
+
+<ul>
+<li>TeamCity Project
+
+<ul>
+<li><ol>
+<li>CI</li>
+</ol>
+</li>
+<li><ol>
+<li>Acceptance/UI Tests (optional)</li>
+</ol>
+</li>
+<li><ol>
+<li>Release</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p><code>1. CI</code> builds the solution with correctly versioned assemblies (update assembly info files with version before build), runs all unit tests then creates any packages which are required. This includes NuGet packages, Chocolatey packages, zipped binaries, clickonce installers etc.
+This build monitors pull requests and is triggered automatically when there are new commits/branches.</p>
+
+<p><code>2. Acceptance/UI Tests</code> is an extra I use when I have long running or UI tests, for example <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;tab=projectOverview">TestStack.White on TeamCity (sign in as guest)</a> has this build setup and it runs Whites UI tests.
+The reason I separate it is for speed reasons, I want my CI build to fail fast and only if it is successful do I run this slow build.
+This build triggers whenever <code>1. CI</code> succeeds</p>
+
+<p><code>3. Release</code> (or 2. Release if there is no acceptance/ui test build) is run manually and it releases the artifacts build by <code>1. CI</code>, if that is a NuGet package it is pushed to NuGet.org, chocolatey packages get pushed to chocolatey.org, zip files get pushed as a GitHub release etc.
+Once this build succeeds it should tag the VCS root and push that tag.</p>
+
+<h2>Build Configuration</h2>
+
+<h3>VCS Root</h3>
+
+<p>First step is to create our VCS root.
+<strong>Type: </strong> Git
+<strong>VCS Root Name: </strong> Project Name (all branches + pull requests)
+<strong>Default branch: </strong> master
+<strong>Branch specifications: </strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+:refs/pull/*/merge
+</span><span class='line'>+:refs/heads/*</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you are using stash it would be</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+:refs/pull-requests/*/merge-clean
+</span><span class='line'>+:refs/heads/*</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should also put a username/password in to authenticate with the VCS root so we can tag in the release build</p>
+
+<h3>1. CI</h3>
+
+<p>This has two build steps, for this to work you should install GitVersion on your build server via chocolatey.</p>
+
+<h4>Build steps</h4>
+
+<ul>
+<li><p><strong>GitVersion</strong><br/>
+Runner Type: Command Line<br/>
+Step Name: GitVersion<br/>
+Run: Executable with parameters<br/>
+Command executable: GitVersion<br/>
+Command parameters: . /updateAssemblyInfo /output buildserver</p></li>
+<li><p><strong>Build project</strong><br/>
+This should be setup however you used to do it, build your solution, run your build scripts etc.</p></li>
+</ul>
+
+
+<h4>Triggers</h4>
+
+<p>Add trigger <code>VCS Trigger</code> with the default settings which has a branch spec of <code>+:*</code></p>
+
+<h4>Build Features</h4>
+
+<p>I have the report status to GitHub plugin installed, this plugin tells github the build status of pull requests so it can display warnings if a pull request will break the build</p>
+
+<h3>2. Acceptance test</h3>
+
+<p>This build varies greatly, if you need this build it has the same triggers and dependencies setup as 3. Release. I won&rsquo;t repeat those settings here.</p>
+
+<h3>3. Release</h3>
+
+<h4>VCS Root</h4>
+
+<p>The same VCS root which is referenced by 1. CI should also be referenced by this build</p>
+
+<h4>Build steps</h4>
+
+<p>Normally for me this just a NuGet push step. But whatever you normally do, use the artifact dependencies to get at the artifacts from your CI build to publish</p>
+
+<h4>Build Features</h4>
+
+<p>Add feature <code>VCS Labelling</code><br/>
+<strong>Labeling pattern:</strong> %system.build.number%<br/>
+<strong>Label builds in branches:</strong> <code>+:*</code> (we want to label any release)<br/>
+Check <em>Label successful builds only</em></p>
+
+<h4>Dependencies</h4>
+
+<p>This is the important part, we want to setup a proper TeamCity build chain.
+1. Add snapshot dependency for CI build and previous build in chain, so if you have 2. Acceptance tests then add a snapshot dependency for both CI and Acceptance test builds<br/>
+Tick <em>Do not run new build if there is a suitable one</em> and <em>Only use successful builds from suitable ones</em><br/>
+The snapshot dependency is really important, it means that you release the artifacts associated with a specific git commit. If you don&rsquo;t you can deploy artifacts which came from another branch =/
+2. Add Artifact Dependency to CI Build with these settings:<br/>
+<strong>Get artifacts from: </strong> Build from the same chain<br/>
+<strong>Artifacts rules: </strong> MyPackage.*.nupkg (or whatever artifacts you need to publish</p>
+
+<h4>General Settings</h4>
+
+<p>I put this last because you need the dependencies setup before configuring this page.
+<strong>Build Number Format:</strong> %dep.MyProject_Ci.build.number% (MyProject_Ci is the project ID of the CI build)</p>
+
+<h2>Wrap up</h2>
+
+<p>Hopefully this helps you get your TeamCity builds setup, I have found this setup works quite well and is easy to setup and keep running.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-09T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/07/09/my-typical-teamcity-build-setup/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/07/09/my-typical-teamcity-build-setup/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/" title="Previous Post: Updating Chocolateys release notes with GitReleaseNotes">&laquo; Updating Chocolateys release notes with GitReleaseNotes</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/07/09/my-typical-teamcity-build-setup/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/07/09/my-typical-teamcity-build-setup/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have just pushed up a simple app to uninstall VSTO add-ins, if the manifest file is present, it will use the VSTOInstaller.exe, otherwise it will &hellip;">
+  <meta name="description" content="With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/retry-for-class/">Retry.For</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-20T00:00:00+08:00" pubdate data-updated="true">Mar 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put a lot of good helpers in place (WaitWhileBusy etc), there are still times where a button does not enable quick enough, or a windows is opening and if you do not have automatic retry enabled you will have quite fragile UI automation tests.</p>
+
+<p>This is where my Retry static class comes in handy.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/retry-for-class/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -561,64 +604,6 @@ It seemed unnatural that I could define a mapping that looked like:</p>
   
     <footer>
       <a rel="full-article" href="/automapperinheritance/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/quake-style-powershell-console-v2/">Quake Style Powershell Console V2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-01T00:00:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Edit: Updated to fix a problem when there are spaces in the path where Console2.exe is.</p>
-
-<p>I decided I would get this idea working again, when I did, it fell short a few times. I needed a few extra features:</p>
-
-<ul>
-<li>Elevated Powershell Console</li>
-<li>x64 Console</li>
-<li>I wanted it to work without adding anything to the %path% environmental variable</li>
-</ul>
-
-
-<h2>The goal</h2>
-
-<p>win + `</p>
-
-<p>=</p>
-
-<p><img src="/assets/posts/2010-09-01-quake-style-powershell-console-v2/powershellConsole.png" alt="Quake Mode Powershell" /></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/quake-style-powershell-console-v2/">Read on &rarr;</a>
     </footer>
   
 

@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Today I saw a tweet from Rob Reynolds today that Chocolatey 0.9.8.24 RC1 was released so I clicked the link which was straight to the closed issues &hellip;">
+  <meta name="description" content="I posted Simple Versioning and Release Notes a few weeks ago talking about how to simplify release notes and versioning. This post is a bit of a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,169 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/09/my-typical-teamcity-build-setup/">My Typical TeamCity Build Setup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-09T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I posted <a href="http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/">Simple Versioning and Release Notes</a> a few weeks ago talking about how to simplify release notes and versioning. This post is a bit of a cheat sheet for how I set up my builds.</p>
+
+<h2>Structure</h2>
+
+<p>I normally have two but sometimes three builds for each project. The structure is something like this:</p>
+
+<ul>
+<li>TeamCity Project
+
+<ul>
+<li><ol>
+<li>CI</li>
+</ol>
+</li>
+<li><ol>
+<li>Acceptance/UI Tests (optional)</li>
+</ol>
+</li>
+<li><ol>
+<li>Release</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p><code>1. CI</code> builds the solution with correctly versioned assemblies (update assembly info files with version before build), runs all unit tests then creates any packages which are required. This includes NuGet packages, Chocolatey packages, zipped binaries, clickonce installers etc.
+This build monitors pull requests and is triggered automatically when there are new commits/branches.</p>
+
+<p><code>2. Acceptance/UI Tests</code> is an extra I use when I have long running or UI tests, for example <a href="http://teamcity.ginnivan.net/project.html?projectId=TestStack_White&amp;tab=projectOverview">TestStack.White on TeamCity (sign in as guest)</a> has this build setup and it runs Whites UI tests.
+The reason I separate it is for speed reasons, I want my CI build to fail fast and only if it is successful do I run this slow build.
+This build triggers whenever <code>1. CI</code> succeeds</p>
+
+<p><code>3. Release</code> (or 2. Release if there is no acceptance/ui test build) is run manually and it releases the artifacts build by <code>1. CI</code>, if that is a NuGet package it is pushed to NuGet.org, chocolatey packages get pushed to chocolatey.org, zip files get pushed as a GitHub release etc.
+Once this build succeeds it should tag the VCS root and push that tag.</p>
+
+<h2>Build Configuration</h2>
+
+<h3>VCS Root</h3>
+
+<p>First step is to create our VCS root.
+<strong>Type: </strong> Git
+<strong>VCS Root Name: </strong> Project Name (all branches + pull requests)
+<strong>Default branch: </strong> master
+<strong>Branch specifications: </strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+:refs/pull/*/merge
+</span><span class='line'>+:refs/heads/*</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you are using stash it would be</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+:refs/pull-requests/*/merge-clean
+</span><span class='line'>+:refs/heads/*</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should also put a username/password in to authenticate with the VCS root so we can tag in the release build</p>
+
+<h3>1. CI</h3>
+
+<p>This has two build steps, for this to work you should install GitVersion on your build server via chocolatey.</p>
+
+<h4>Build steps</h4>
+
+<ul>
+<li><p><strong>GitVersion</strong><br/>
+Runner Type: Command Line<br/>
+Step Name: GitVersion<br/>
+Run: Executable with parameters<br/>
+Command executable: GitVersion<br/>
+Command parameters: . /updateAssemblyInfo /output buildserver</p></li>
+<li><p><strong>Build project</strong><br/>
+This should be setup however you used to do it, build your solution, run your build scripts etc.</p></li>
+</ul>
+
+
+<h4>Triggers</h4>
+
+<p>Add trigger <code>VCS Trigger</code> with the default settings which has a branch spec of <code>+:*</code></p>
+
+<h4>Build Features</h4>
+
+<p>I have the report status to GitHub plugin installed, this plugin tells github the build status of pull requests so it can display warnings if a pull request will break the build</p>
+
+<h3>2. Acceptance test</h3>
+
+<p>This build varies greatly, if you need this build it has the same triggers and dependencies setup as 3. Release. I won&rsquo;t repeat those settings here.</p>
+
+<h3>3. Release</h3>
+
+<h4>VCS Root</h4>
+
+<p>The same VCS root which is referenced by 1. CI should also be referenced by this build</p>
+
+<h4>Build steps</h4>
+
+<p>Normally for me this just a NuGet push step. But whatever you normally do, use the artifact dependencies to get at the artifacts from your CI build to publish</p>
+
+<h4>Build Features</h4>
+
+<p>Add feature <code>VCS Labelling</code><br/>
+<strong>Labeling pattern:</strong> %system.build.number%<br/>
+<strong>Label builds in branches:</strong> <code>+:*</code> (we want to label any release)<br/>
+Check <em>Label successful builds only</em></p>
+
+<h4>Dependencies</h4>
+
+<p>This is the important part, we want to setup a proper TeamCity build chain.
+1. Add snapshot dependency for CI build and previous build in chain, so if you have 2. Acceptance tests then add a snapshot dependency for both CI and Acceptance test builds<br/>
+Tick <em>Do not run new build if there is a suitable one</em> and <em>Only use successful builds from suitable ones</em><br/>
+The snapshot dependency is really important, it means that you release the artifacts associated with a specific git commit. If you don&rsquo;t you can deploy artifacts which came from another branch =/
+2. Add Artifact Dependency to CI Build with these settings:<br/>
+<strong>Get artifacts from: </strong> Build from the same chain<br/>
+<strong>Artifacts rules: </strong> MyPackage.*.nupkg (or whatever artifacts you need to publish</p>
+
+<h4>General Settings</h4>
+
+<p>I put this last because you need the dependencies setup before configuring this page.
+<strong>Build Number Format:</strong> %dep.MyProject_Ci.build.number% (MyProject_Ci is the project ID of the CI build)</p>
+
+<h2>Wrap up</h2>
+
+<p>Hopefully this helps you get your TeamCity builds setup, I have found this setup works quite well and is easy to setup and keep running.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -518,57 +681,6 @@ No known merge tool is available.
   
     <footer>
       <a rel="full-article" href="/blog/2014/05/06/bddfy-examples-support/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-15T02:55:09+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I am currently working on a <strong>.net 4.0</strong> project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM because we do not have stats on how many clients currently have the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=3556">.net 4.0 KB 2468871 patch</a> which enables PCL support. These issues affect the RTM version as well.</p>
-
-<p>Recently I have upgraded to nCrunch 2.2 beta and ReSharper 8.1 both which ship with the upgraded nUnit 2.6.3 runner. After I upgraded these tools I noticed tests which should have been failing were passing and passing tests were being reported as failing but showing stack traces from a different test..</p>
-
-<p>Also I was getting different results in nCrunch, R# and nUnits console runner. Something was broken.</p>
-
-<p><strong>NOTE</strong>: Async and TPL support is <em>not supported</em> in nUnit 2.x, but will be officially supported in v3.x and that it was a coincidence that it worked in 2.6.2. My discussions about the issues are at <a href="https://groups.google.com/forum/#!topic/nunit-discuss/McE95Cy2DlY">here on the nunit discussion board</a>.<br/>
-As far as I can tell, there is no reason that 4.0 cannot be supported because to offer framework support does not need any new features OR the classes in the Async Targeting Pack or .NET 4.5. At a minimum tests returning <code>Task</code> should be supported as TPL was introduced into the CLR for net40.  <br/>
-Recently I added async void and Task support to <a href="https://github.com/TestStack/TestStack.BDDfy/pull/32">BDDfy</a> which targets .NET 4.0, also xUnit 1.9.x supports Tasks in the current released version and has backported <code>async void</code> support to the 1.9.x codebase from the 2.0 and will be released if there is a need to release another patch release before 2.0 is released.</p>
-
-<p><strong>.NET 4.5 is fully supported and works as expected with nUnit, it is only .net 4.0 which is affected</strong></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/">Read on &rarr;</a>
     </footer>
   
 
