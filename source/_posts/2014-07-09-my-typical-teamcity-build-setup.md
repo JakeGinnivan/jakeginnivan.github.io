@@ -27,10 +27,10 @@ Once this build succeeds it should tag the VCS root and push that tag.
 
 ## Build Configuration
 ### VCS Root
-First step is to create our VCS root.
-**Type: ** Git
-**VCS Root Name: ** Project Name (all branches + pull requests)
-**Default branch: ** master
+First step is to create our VCS root.  
+**Type: ** Git  
+**VCS Root Name: ** Project Name (all branches + pull requests)  
+**Default branch: ** master  
 **Branch specifications: **
 ```
 +:refs/pull/*/merge
@@ -48,11 +48,11 @@ This has two build steps, for this to work you should install GitVersion on your
 
 #### Build steps
  - **GitVersion**  
-Runner Type: Command Line  
-Step Name: GitVersion  
-Run: Executable with parameters  
-Command executable: GitVersion  
-Command parameters: . /updateAssemblyInfo /output buildserver
+**Runner Type:** Command Line  
+**Step Name:** GitVersion  
+**Run:** Executable with parameters  
+**Command executable:** GitVersion  
+**Command parameters:** . /updateAssemblyInfo /output buildserver
 
  - **Build project**  
 This should be setup however you used to do it, build your solution, run your build scripts etc.
