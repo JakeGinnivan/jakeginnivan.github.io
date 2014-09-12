@@ -2,19 +2,20 @@
 layout: post
 title: WPF SQL Connection User Control
 metaTitle: WPF SQL Connection User Control
-description: 
-revised: 2011-04-06
-date: 2010-04-19
-categories: [Wpf]
+description: null
+revised: {}
+date: {}
+categories: 
+  - Wpf
 migrated: true
 comments: true
 sharing: true
 footer: true
-permalink: /wpf-sql-connection-user-control/
-summary: | 
-  
-
+permalink: "/wpf-sql-connection-user-control/"
+summary: "\n"
+published: true
 ---
+
 Many of the apps I have written need to target multiple databases or I want the connection to be configurable by the user. I have a user control in my common library that I use all the time to let the user connect to a database.
 
 You will need the Sql Management Objects from [http://www.microsoft.com/Downloads/details.aspx?familyid=B33D2C78-1059-4CE2-B80D-2343C099BCB4&displaylang=en][1] to compile the demo project.
@@ -239,8 +240,7 @@ Although not needed for this user control the GetTables method was already in th
 
 <h1>Source Code</h1>
 
-[Download][5]
+Source is on GitHub - [https://github.com/JakeGinnivan/SqlConnectionControl](https://github.com/JakeGinnivan/SqlConnectionControl)
 
 
   [1]: http://www.microsoft.com/Downloads/details.aspx?familyid=B33D2C78-1059-4CE2-B80D-2343C099BCB4&displaylang=en
-  [5]: /get/downloads/SqlConnectionSelector.zip
