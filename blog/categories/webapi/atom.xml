@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: WebApi | Jake Ginnivan's blog]]></title>
+  <title><![CDATA[Category: webapi | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/webapi/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-07-09T19:08:13+08:00</updated>
+  <updated>2014-09-30T03:42:34+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -34,7 +34,7 @@
 }
 </code></pre>
 
-<p>Our WebApi site starts 404'ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.</p>
+<p>Our WebApi site starts 404&#8217;ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.</p>
 
 <!-- more -->
 

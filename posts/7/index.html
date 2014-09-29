@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Jake Ginnivan&#8217;s blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/posts/7">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan&#8217;s blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/retry-for-class/">Retry.For</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-03-20'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put a lot of good helpers in place (WaitWhileBusy etc), there are still times where a button does not enable quick enough, or a windows is opening and if you do not have automatic retry enabled you will have quite fragile UI automation tests.</p>
+
+<p>This is where my Retry static class comes in handy.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/retry-for-class/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/vsto/addin-uninstaller/">VSTO Add-in Uninstaller</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-03-19'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have just pushed up a simple app to uninstall VSTO add-ins, if the manifest file is present, it will use the VSTOInstaller.exe, otherwise it will remove the registry keys manually.</p>
+
+<p><img src="/assets/posts/2011-03-19-addin-uninstaller/Add-inUninstaller.PNG" alt="Addin Uninstaller" /></p>
+
+<p>Grab it at <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/presentations/perth-dotnet-wp7-frameworks/">Windows Phone 7 Frameworks Presentation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-02-25'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Windows Phone 7 Frameworks</h1>
+
+<p>Windows phone 7 frameworks have been popping up quite rapidly, and I have found each has benefits and drawbacks. You may be asking questions like, do I need a framework? What will it give me over rolling my own?</p>
+
+<p>In this session I will be giving an introduction to windows phone development, and they diving into a few key area&rsquo;s in windows phone development like lifecycle (tombstoning etc), navigation and general mvvm support.</p>
+
+<p>You will leave knowing much more about Windows Phone 7 dev, and how to select the framework for your application</p>
+
+<h1>The Talk Details</h1>
+
+<p>Talk Link: <a href="http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx">http://perthdotnet.org/blogs/events/archive/2011/02/14/windows-phone-7-frameworks-with-jake-ginnivan.aspx</a></p>
+
+<p><strong>When:</strong> Thursday, Mar 3rd, 5:30pm - 7:00pm<br/>
+<strong>Where:</strong> Enex 100 Seminar Room, Level 3, 100 St Georges Terrace, Perth</p>
+
+<h1>The frameworks</h1>
+
+<p>So far the frameworks I am aware of:</p>
+
+<p><a href="http://columbus.codeplex.com/">Columbus</a> - written by Artem Govorov<br/>
+<a href="http://windowsphonemvp.codeplex.com/">Windows Phone MVP</a> - written by <a href="http://www.kowitz.net/">Brendan Kowitz</a><br/>
+<a href="http://caliburnmicro.codeplex.com/">Calburn Micro</a> - written by <a href="http://robeisenberg.com/Work.aspx">Rob Eisenberg</a><br/>
+<a href="http://mvvmlight.codeplex.com/">MVVM Light</a> - written by <a href="http://www.galasoft.ch/contact_en.html">Laurent Bugnion (GalaSoft)</a></p>
+
+<p>If you know of others let me know, and tell me what is your favourite thing in that framework.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog-redesign/">Blog Redesign</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-02-25'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As part of my redesign, I have also changed web hosts. My apologies to anyone that has had their RSS feeds spammed by the process of me rebuilding my blog. I also have not transferred comments yet, I hopefully will get around to that shortly!</p>
+
+<p>If you have a spare moment, could you give some feedback on:</p>
+
+<p>What do you think of my new blog theme?
+What content do you like on my blog?
+What would you like to see?</p>
+
+<p>I am planning on blogging more and feedback would be great about the direction you would like me to go, or the content you enjoy seeing or what you do not want to see.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpf-screenshot/">Taking Screenshots of WPF Apps</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-02-15'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my current project, we have quite an awesome UI automation setup running through every process (happy days path) in our WPF app.</p>
+
+<p>Often we cannot resolve a UI element, and we will get an error like:</p>
+
+<pre><code>White.Core.AutomationException: Failed to get UIElement ControlType=button,AutomationId=OkButton from DialogWindow
+</code></pre>
+
+<p>While this is great, often it is hard to figure out why this happens, could be due to a validation error on the previous screen, or a error popup etc. So out infrastructure will automatically take a screenshot whenever it catches a AutomationException.</p>
+
+<p>The problem is the modal window that was often captured (and was blocking a button press on the main window) was coming out as a tiny little square with no contents:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpf-screenshot/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/evangeloz2010/">Microsoft Evangelism Academy</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-01-01'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I am a little late blogging about this, by last month I attended the inaugural Microsoft Evangelism Academy (<a href="http://twitter.com/#search?q=%23EvangelOz">#EvangelOz</a>) which was organised by Andrew Coates (<a href="http://twitter.com/coatsy">@coatsy</a>) and Sarah Vaughan (<a href="http://twitter.com/sarahvaughan">@sarahvaughan</a>) at Microsoft DPE. The goal of this program is to take 8 of us to the next level with our presenting! It started with 3 days of coaching, it will continue until August 2011 and will include:</p>
+
+<ul>
+<li>Monthly conference calls</li>
+<li>Monthly 1 on 1 catchup over the phone with a mentor</li>
+<li>1 day of group training in Melbourne every 2-3 months</li>
+<li>Talk at UserGroups, Conferences and whatever we can!</li>
+</ul>
+
+
+<p>I was lucky enough to attend with:</p>
+
+<ul>
+<li><a href="http://demonictalkingskull.com/">James Bannan</a> (<a href="http://twitter.com/jamesbannan">@JamesBannan</a>)</li>
+<li>Windows Desktop Experience MVP</li>
+<li><a href="http://azure.snagy.name/blog/">Steven Nagy</a> (<a href="http://twitter.com/snagy">@snagy</a>)</li>
+<li>Windows Azure MVP</li>
+<li><a href="http://www.soulsolutions.com.au/Blog.aspx">John O’Brien</a> (<a href="http://twitter.com/soulsolutions">@soulsolutions</a>)</li>
+<li>Windows Live MVP</li>
+<li><a href="http://www.made4the.net/default.aspx">Jeremy Thake</a> (<a href="http://twitter.com/jthake">@jthake</a>)</li>
+<li>SharePoint MVP</li>
+<li><a href="http://blog.walshie.me/">Chris Walsh</a> (<a href="http://twitter.com/ChrisWalshie">@ChrisWalshie</a>)</li>
+<li>Windows Phone 7 guru</li>
+<li><a href="http://www.soulsolutions.com.au/Blog.aspx">Bronwen Zande</a> (<a href="http://twitter.com/BronwenZ">@BronwenZ</a>)</li>
+<li>Windows Live MVP</li>
+<li><a href="http://mrhodes.net/">Mark Rhodes</a> (<a href="http://twitter.com/MRhodes">@MRhodes</a>)</li>
+<li>SharePoint Infrastructure guru</li>
+</ul>
+
+
+<p>Over the three days I made some new friends, and learnt a lot about the art of presenting. We covered many areas including Motion, Gestures, Eye Contact, Voice, Stance, Visuals, Content and much more.</p>
+
+<p>I found the whole exercise quite challenging and have to say thanks to  Steve Herzberg (<a href="http://twitter.com/nrgsteve">@nrgsteve</a>) and Melony Dos Remedios from NRG Solutions. They were great mentors, and I look forward to catching up with them again in February!</p>
+
+<p>Hopefully I will post some video&rsquo;s/pictures of the course over the few weeks, but in the meantime you can have a look at any of the others blog posts about EvangelOz =)</p>
+
+<ul>
+<li><a href="http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/">http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/</a></li>
+<li><a href="http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/">http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/</a></li>
+<li><a href="http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx">http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx</a></li>
+<li><a href="http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx">http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010wrapup/">2010 Wrapup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-01-01'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I am a few days late to post this, but oh well =)</p>
+
+<p>2010 was an amazing year for me, I joined <a href="http://readify.net">Readify</a> in February and have been doing as learning and community work as I can. Last year I managed to present 6 times, and I hope to present more this year.</p>
+
+<h2>Presentations</h2>
+
+<ul>
+<li>April, <a href="http://perthdotnet.org">PerthDotNet</a> <strong>VSTO in Visual Studio 2010</strong></li>
+<li>May, <a href="http://melbourne.ozalt.net">Alt.NET Melbourne</a> <strong>TDD, Unit Testing and Mocking</strong></li>
+<li>June, <a href="http://www.sharepointusers.org.au/MOSSIG/default.aspx">MOSSIG</a> (Melbourne) <strong>Developing Add-ins with VSTO</strong></li>
+<li>August, <a href="http://australia.msteched.com/">TechEd</a> (Gold Coast) <strong>Developing with the VSTO Platform</strong></li>
+<li>November, <a href="http://codecampoz.com/">CodeCampOz</a> (Wagga Wagga) <strong>Extending Office with VSTO</strong></li>
+<li>November, <a href="http://sddn.org.au">SDDN</a> (Perth) <strong>MahTweets for Windows Phone 7</strong></li>
+</ul>
+
+
+<p>I also attended the <a href="/evangeloz2010">Microsoft Evangelism Academy</a> just before Christmas, which was a 3 day intense training course organised by Sarah Vaughn and Andrew Coates from Microsoft DPE with the goal of improving the presentation skills of 8 the lucky people that were selected. Read more about it <a href="/evangeloz2010">here</a>.</p>
+
+<h2>Open Source Work</h2>
+
+<ul>
+<li><a href="http://vstocontrib.codeplex.com/">VSTO Contrib</a> - Collection of libraries which make COM Interop much easier, and add IoC support to VSTO Add-ins (which making it easier to test).</li>
+<li><a href="http://fibre.codeplex.com/">Fibre Async Framework</a> - Another Async framework, which runs on Silverlight and WP7 as well as .NET 3.5/4.0. It simply allows you to coordinate async work, or perform work asynchronously. Goals are similar to the Task parallel library in .NET 4.0, but has a simpler API, and works on more frameworks. I would like to think it has a lower barrier to entry than other frameworks due to it&rsquo;s simplicity.</li>
+<li><a href="https://github.com/jbogard/AutoMapper">AutoMapper</a> - Added Inheritance to AutoMapper, made AutoMapper feel MUCH more predictable. My fork is available at <a href="https://github.com/JakeGinnivan/AutoMapper/">https://github.com/JakeGinnivan/AutoMapper/</a> Hopefully the changes will be pulled into the Jimmy&rsquo;s repository soon =)</li>
+<li><a href="http://mahtweetswp7.codeplex.com/">MahTweets for Windows Phone</a> - Have done a lot on this project, lots of refactoring and cleanups mainly.</li>
+<li><a href="http://code.google.com/p/funnelweb/">FunnelWeb Blog</a>  -The blog engine that is behind my blog, started by <a href="http://www.paulstovell.com/">Paul Stovell</a> it is now an awesome open source blog engine based on MVC3.</li>
+</ul>
+
+
+<h2>This year</h2>
+
+<p>This year I want to keep up my Open Source work, as well as do more presenting. One of the biggest fails this year is that I have been so busy and have stopped playing Inline Hockey, doing Rock n&#8217; Roll and also Ballroom dancing. I will start at least the dancing back up this year.</p>
+
+<p>Look forward to catching up with all the people I have met this year!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/radiobuttonbindings/">RadioButton.IsChecked Bindings</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-12-05'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Today I had to build a search screen, it had 3 radio buttons for different types of items to search, and each item had very specific search fields.</p>
+
+<p>On my viewmodel I had 3x IsSearchingBlahItems properties. And bound the IsChecked property on my radio buttons to those properties. I then had some stack panels which were bound to the same properties. Here is what this would look like:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/radiobuttonbindings/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/ccoz2010/">Code Camp Oz 2010</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-11-21'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Due to time restraints at the moment this will be a very short blog post.</p>
+
+<p>I have pushed all my latest changes to the VSTO contrib project to codeplex. The url is <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a>.</p>
+
+<p>I will upload my powerpoint deck and release my LinqPad example scripts soon as well.</p>
+
+<p>But to sum up my talk, the VSTO Contrib project makes it easy to:</p>
+
+<ul>
+<li>Cleanup your COM References deterministically without cluttering your code</li>
+<li>Use Ribbon XML ribbons with IoC, view model binding (listens to INotifyPropertyChanged and invalidates ribbon controls when needed) and wires up the current Explorer or Inspector to your ribbon view model.</li>
+<li>Makes it really easy to use custom task panes, and relate them to ribbons</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/automapperinheritance/">Adding Inheritance to AutoMapper</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-10-31'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Update:</strong> This is currently in the Automapper master, and will be included in the v2 release (hopefully Before/After map will also get included, patch submitted).</p>
+
+<p>In my current project, we are leveraging AutoMapper a lot to map our Domain to Dto&rsquo;s. The major problem we are facing is that our mappings are getting quite complex and bloated, especially for flattened Dtos or Summaries which have properties that cover all the properties from the concrete types they come from.
+It seemed unnatural that I could define a mapping that looked like:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/automapperinheritance/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/8">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/6">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

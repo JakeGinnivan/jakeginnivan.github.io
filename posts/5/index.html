@@ -1,0 +1,592 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Jake Ginnivan&#8217;s blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/posts/5">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan&#8217;s blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/apiapprover/">ApiApprover</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-02-19'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
+
+<p>The interesting thing about Semantic versioning is that often people accidentally break the semantic version. So I wrote a unit test which solves this problem</p>
+
+<pre><code>[Fact]
+public void phoenix_has_no_public_api_changes()
+{
+    // arrange
+    var phoenix = typeof(IPhoenixHost).Assembly;
+
+    // act
+    var publicApi = CodeGen.CreatePublicApiForAssembly(phoenix);
+
+    // assert
+    var reporter = new DiffReporter();
+    Approvals.Approve(new ApprovalTextWriter(publicApi), new XUnitTestFrameworkNamer(), reporter);
+}
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/apiapprover/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wp7-mvc-trace-logging-and-debugging/">WP7 MVC Debug and Tracing</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-09-22'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>WP7 Essentials Tracing</h2>
+
+<p>A new feature coming in the next release is a super easy to use Trace class to allow you to debug your app really easily.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wp7-mvc-trace-logging-and-debugging/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wp7-essentials-settings-provider/">WP7 Essentials Settings Provider</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-09-09'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Update: This project has been superseeded by <a href="https://github.com/JakeGinnivan/SettingsProvider.net">SettingsProvider.net</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wp7-essentials-settings-provider/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/teched-2011/">My Sessions at TechEd 2011</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-08-29'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
+
+<p>This sessions will have something for everyone, if you have never used VSTO and are interested in it, I will be showing the value it has.
+If you have used it, and hated it, I will also be showing how to improve your experience and give you a way of approaching the problems and some nice ways to improve the default experience. Part of this is a quick intro to COM Interop, how it works and how to make sure you avoid problems with it.
+And finally, I will be showing a bit of VSTO contrib and how you can use IoC and other cool enhancements to the platform.</p>
+
+<h1>WPH305 - Multi-Tasking and Application Services (Fri, 8:15am)</h1>
+
+<p>In this session with Chris Walsh, we will be going through a whole lot of App services related features in Windows Phone Mango. We will cover things like Multi-Tasking, Background agents, Tiles, Notifications and Search extra&rsquo;s. We have some cool demo&rsquo;s and it will be a fun session.</p>
+
+<h1>Demos</h1>
+
+<p>I also have a few demo&rsquo;s lined up
+ - Unit Testing with WP7 (1:30pm Wednesday)
+ - Windows Phone MVC Intro (2:00pm Wednesday)</p>
+
+<ul>
+<li>Unit Testing with WP7 (1:00pm Wednesday)</li>
+<li>Windows Phone MVC Intro (1:30pm Wednesday)</li>
+</ul>
+
+
+<p>If you attend, feedback is always welcomed and please submit your evals, it helps us as speakers a lot.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/multitargeted-windows-phone-project/">MultiTargeted WP7 Project</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-08-22'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I saw Shawn Wildermuth&rsquo;s post on maintaining a project targeting multiple versions of windows phone, I thought I would share the way I do it as I think it is far easier than the alternatives.
+<a href="http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions">http://wildermuth.com/2011/08/23/Maintaining_a_Project_with_Two_Windows_Phone_Versions</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/multitargeted-windows-phone-project/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/windows-phone-mvc-update/">Windows Phone MVC Update</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-08-21'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Windows Phone MVC?</h1>
+
+<p>So to get started, let me explain what it is.<br/>
+It is a MVC + MVVM Hybrid framework, I think MVVM falls down in a few area&rsquo;s, and by teaming up with the MVC pattern we can achieve great testability, performance, navigation, lifecycle etc..</p>
+
+<p>The aim of Windows Phone MVC is to make windows phone development quicker, easier, more enjoyable and most of all help you build a nice performant app which gives an awesome user experience.</p>
+
+<p>This is going to be quite a long post going through many features of Windows Phone MVC, I hope it gets across what I am trying to do with the framework, and how it can help you out!<br/>
+I am still a little way from v1, so there will be API changes, but I am more than happy to field some questions about how to use it.</p>
+
+<p>Many of the improvements on this release are due to <a href="http://transhub.wordpress.com/">http://transhub.wordpress.com/</a> using Windows Phone MVC and I have been working close with the transub team to make sure the framework helped them deliver a killer app!</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/windows-phone-mvc-update/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/phone-test-project/">Phone Test Project Template</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-08-20'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Last week I put together a project template for a windows phone 7 test project. At the moment there isn&rsquo;t a really good story for unit testing on the phone. If you have the mango tools you have to grab the Mango Silverlight Unit Test assemblies from Jeff Wincox&rsquo;s blog.</p>
+
+<p>The Project Template available at <a href="http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b">http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b</a> is really basic, and you then have to add a reference via NuGet of either the Silverlight Unit Testing Framework (doesn&rsquo;t work with Mango), or WindowsPhoneEssentials.Testing.</p>
+
+<p>The advantage of the WindowsPhoneEssentials.Testing project is it contains the Mango compatible versions, sets everything up and has a collection of really useful testing related helpers/abstractions for WP7. Check out <a href="http://windowsphonefoundations.net/windowsphoneessentials">http://windowsphonefoundations.net/windowsphoneessentials</a> or the source at <a href="http://wp7essentials.codeplex.com/">http://wp7essentials.codeplex.com/</a> for more information.</p>
+
+<p>But what you get after you install it is:</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/NewTestProject.png" alt="New Phone Test Project" /></p>
+
+<p>Then you add the NuGet reference to WindowsPhoneEssentials.Testing</p>
+
+<p><img src="/assets/posts/2011-08-20-phone-test-project/TestingNuGet.png" alt="Add NuGet reference to WindowsPhoneEssentials.Testing" /></p>
+
+<p>Enjoy!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpmvc/">Windows Phone MVC - Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-07-23'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the <a href="http://windowsphonefoundations.net/">http://windowsphonefoundations.net/</a> website which is home to Windows Phone Essentials, Windows Phone MVC and Windows Phone MVP (and more projects in the future).</p>
+
+<h1>Features</h1>
+
+<p>This will change over time, so check out the change log.</p>
+
+<ul>
+<li>Strongly Typed Navigation</li>
+<li>Custom Shell, Navigator and Journal to give better control over navigation of WP7</li>
+<li>TransitionFrame comes out of the box, for nice navigation animations</li>
+<li>Ability to pass arguments in navigation, rather than uri query strings</li>
+<li>Modal Dialog support</li>
+<li>Easy access to Obscured and Activated events on your view model</li>
+<li>Full Testable! All major WP7 classes (WindowsPhoneFrame, WindowsPhoneApplication etc) all have Interfaces and are wrapped to allow you to test</li>
+<li>Some helpers around Async. Execute.AsyncPattern or Execute.AsyncPatternWithResult synchronise async calls</li>
+<li>Task/Chooser support, in a testable way</li>
+<li>Convention based Controller and View discovery</li>
+<li>Autofac Support Via an Extension</li>
+<li>Easy access to page or application transient storage</li>
+<li>Simple tombstoning support</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpmvc/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpf-mvvm-thoughs/">MVVM, Design Time vs IoC Usage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-07-21'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>The problems</h1>
+
+<p>Lets start with the problems we want to solve with our solution</p>
+
+<ul>
+<li>Blend Design time support</li>
+<li>Resharper binding validation support</li>
+<li>No using ServiceLocator, DI only</li>
+<li>ViewModels should be testable</li>
+</ul>
+
+
+<p>Frameworks like Magellan solve these sort of issues in other ways, but if you don&rsquo;t want to take on a framework then maybe an approach like this may help you get started.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpf-mvvm-thoughs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/nhibernate-alias-warnings/">No More R# Warnings for nHibernate Aliases</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-07-21'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
+
+<p>Here is a scenario</p>
+
+<pre><code>var entryAlias = default(Entry);
+var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
+</code></pre>
+
+<p>In the above scenario R# will warn that entryAlias is always null, which is is, but I don&rsquo;t care, nHibernate is simply getting the type from the expression.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/nhibernate-alias-warnings/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/6">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/4">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

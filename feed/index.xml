@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-07-09T19:08:13+08:00</updated>
+  <updated>2014-09-30T03:42:34+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -27,20 +27,11 @@
 <ul>
 <li>TeamCity Project
 
-<ul>
-<li><ol>
+<ol>
 <li>CI</li>
-</ol>
-</li>
-<li><ol>
 <li>Acceptance/UI Tests (optional)</li>
-</ol>
-</li>
-<li><ol>
 <li>Release</li>
 </ol>
-</li>
-</ul>
 </li>
 </ul>
 
@@ -54,6 +45,9 @@ This build triggers whenever <code>1. CI</code> succeeds</p>
 
 <p><code>3. Release</code> (or 2. Release if there is no acceptance/ui test build) is run manually and it releases the artifacts build by <code>1. CI</code>, if that is a NuGet package it is pushed to NuGet.org, chocolatey packages get pushed to chocolatey.org, zip files get pushed as a GitHub release etc.
 Once this build succeeds it should tag the VCS root and push that tag.</p>
+
+<!-- more -->
+
 
 <h2>Build Configuration</h2>
 
