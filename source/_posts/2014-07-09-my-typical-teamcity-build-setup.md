@@ -11,9 +11,9 @@ I posted [Simple Versioning and Release Notes](http://jake.ginnivan.net/blog/201
 I normally have two but sometimes three builds for each project. The structure is something like this:
 
  - TeamCity Project
-   * 1. CI
-   * 2. Acceptance/UI Tests (optional)
-   * 3. Release
+   1. CI
+   2. Acceptance/UI Tests (optional)
+   3. Release
 
 `1. CI` builds the solution with correctly versioned assemblies (update assembly info files with version before build), runs all unit tests then creates any packages which are required. This includes NuGet packages, Chocolatey packages, zipped binaries, clickonce installers etc.
 This build monitors pull requests and is triggered automatically when there are new commits/branches.
@@ -24,6 +24,8 @@ This build triggers whenever `1. CI` succeeds
 
 `3. Release` (or 2. Release if there is no acceptance/ui test build) is run manually and it releases the artifacts build by `1. CI`, if that is a NuGet package it is pushed to NuGet.org, chocolatey packages get pushed to chocolatey.org, zip files get pushed as a GitHub release etc.
 Once this build succeeds it should tag the VCS root and push that tag.
+
+<!-- more -->
 
 ## Build Configuration
 ### VCS Root
