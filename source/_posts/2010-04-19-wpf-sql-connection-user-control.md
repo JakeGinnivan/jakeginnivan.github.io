@@ -3,16 +3,13 @@ layout: post
 title: WPF SQL Connection User Control
 metaTitle: WPF SQL Connection User Control
 description: null
-revised: {}
-date: {}
-categories: 
-  - Wpf
+date: 2010-04-19
+categories: [Wpf]
 migrated: true
 comments: true
 sharing: true
 footer: true
 permalink: "/wpf-sql-connection-user-control/"
-summary: "\n"
 published: true
 ---
 
