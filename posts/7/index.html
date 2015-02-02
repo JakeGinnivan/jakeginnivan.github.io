@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="With UI automation, you are constantly dealing with race conditions, especially in a good WPF app which lazy loads most things, and while we have put &hellip;">
+  <meta name="description" content="Why? When I started creating a RibbonFactory, I hadn&rsquo;t actually looked into the way VSTO does it, I just wanted to use Ribbon XML, because it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,127 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/vsto-contrib/ribbon-factory/">VSTO Contrib RibbonFactory</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Why?</h1>
+
+<p>When I started creating a RibbonFactory, I hadn&rsquo;t actually looked into the way VSTO does it, I just wanted to use Ribbon XML, because it has more flexibility, but have a single class to represent a single ribbon and also support an IoC container, and DI for my ribbons.</p>
+
+<p>Once I got that working, I started tweaking, improving, adding in context awareness and a view other things. Recently my reasons for trying to finish this have been:</p>
+
+<ul>
+<li>Lack of IoC/DI support in VSTO</li>
+<li>Cost of brute force reflection when using ribbon designer</li>
+<li>Wanting to use Ribbon XML over Ribbon Designer, but not really viable due to missing context for ribbon xml.</li>
+<li>Ribbon XML having a single callback file</li>
+<li>Making custom task panes, which are associated with a ribbon (i.e. button to show/hide custom task pane) really simple.</li>
+</ul>
+
+
+<p>The VSTO tooling is pretty good, especially around the designer, but I want the best of both worlds, and to be able to fall into <code>the pit of success</code> as <a href="http://www.paulstovell.com/">Paul Stovell</a> often says.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/vsto-contrib/ribbon-factory/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/vsto-contrib/introduction/">Introduction to VSTO Contrib</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Goal of VSTO Contrib</h1>
+
+<p>When I first started on this library, it was a very simple set of classes designed to help me do trivial tasks in VSTO, such as simplifying listening to certain events, wrappers, and it was really a dumping ground for code that solved problems I had while developing VSTO solutions.</p>
+
+<p>Just before TechEd last year (August), I started trying to tackle some more fundamental architectural issues, such as no ability to use DI, or IoC, which often causes VSTO solutions to have Ribbons with hundreds of lines of code behind, this issue is made worse with Ribbon XML which only lets you have a single callback file for ALL ribbons.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/vsto-contrib/introduction/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/vsto-contrib/com-cleanup-extension-methods/">Cleaning Up Office COM Interop Code With Extension Methods</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Office Automation and COM interop code can be really ugly, this post show you how the extension methods in VSTO Contrib can help</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/vsto-contrib/com-cleanup-extension-methods/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -425,121 +546,6 @@ What would you like to see?</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/radiobuttonbindings/">RadioButton.IsChecked Bindings</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2010-12-05'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Today I had to build a search screen, it had 3 radio buttons for different types of items to search, and each item had very specific search fields.</p>
-
-<p>On my viewmodel I had 3x IsSearchingBlahItems properties. And bound the IsChecked property on my radio buttons to those properties. I then had some stack panels which were bound to the same properties. Here is what this would look like:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/radiobuttonbindings/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/ccoz2010/">Code Camp Oz 2010</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2010-11-21'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Due to time restraints at the moment this will be a very short blog post.</p>
-
-<p>I have pushed all my latest changes to the VSTO contrib project to codeplex. The url is <a href="http://vstocontrib.codeplex.com/">http://vstocontrib.codeplex.com/</a>.</p>
-
-<p>I will upload my powerpoint deck and release my LinqPad example scripts soon as well.</p>
-
-<p>But to sum up my talk, the VSTO Contrib project makes it easy to:</p>
-
-<ul>
-<li>Cleanup your COM References deterministically without cluttering your code</li>
-<li>Use Ribbon XML ribbons with IoC, view model binding (listens to INotifyPropertyChanged and invalidates ribbon controls when needed) and wires up the current Explorer or Inspector to your ribbon view model.</li>
-<li>Makes it really easy to use custom task panes, and relate them to ribbons</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/automapperinheritance/">Adding Inheritance to AutoMapper</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2010-10-31'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Update:</strong> This is currently in the Automapper master, and will be included in the v2 release (hopefully Before/After map will also get included, patch submitted).</p>
-
-<p>In my current project, we are leveraging AutoMapper a lot to map our Domain to Dto&rsquo;s. The major problem we are facing is that our mappings are getting quite complex and bloated, especially for flattened Dtos or Summaries which have properties that cover all the properties from the concrete types they come from.
-It seemed unnatural that I could define a mapping that looked like:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/automapperinheritance/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/8">&larr; Older</a>
@@ -559,7 +565,7 @@ It seemed unnatural that I could define a mapping that looked like:</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

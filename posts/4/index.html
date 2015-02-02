@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Most of you would be aware of DelegateCommand, it allows you to turn a lambda (or two if you want to specify canexecute) into a WPF ICommand. This is &hellip;">
+  <meta name="description" content="Over the last day or so, I have been setting up the documentation website for TestStack at http://teststack.azurewebsites.net/ With Pretzel&rsquo;s &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,124 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/documentation-site-with-pretzel/">Documentation Site With Pretzel</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-07-27'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
+
+<p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/documentation-site-with-pretzel/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/teamcity-build-results-in-tfs/">TeamCity Build Results in TFS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-04-13'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Why?</h1>
+
+<p>Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our test tool, TFS for work items, GitHub for source control and TeamCity for our build server.</p>
+
+<p>All our tests are written using xUnit.net. When you start working with testers it becomes important to surface your automated and manual testing together, so testers can work more efficiently and have more confidence in the software the team is producing.</p>
+
+<p>Enter TFS. TFS is a great product that starts really value adding when you use different components together, the testing tools is an example of this. When you use Team Build with the testing tools, a heap of features and workflows start working way better!</p>
+
+<h1>What?</h1>
+
+<p>My goal is to have my automated regression tests (both UI and Integration tests) which are written in xUnit to report their results back into TFS (Builds) and Test Manager (Test Runs).</p>
+
+<p>This allows the Testers to use the planned automation features in TFS to mark certain Test Cases as &lsquo;Planned&rsquo; for automation, it also lights up a whole lot of reporting around test case readiness and other things.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/teamcity-build-results-in-tfs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/redirecting-process-output/">Redirecting Process Output</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.</p>
+
+<p>Based on a blog post that Lucian Wischik posted a while back at <a href="http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx">http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx</a> I have created a c# version of his code which makes it nice and easy.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/redirecting-process-output/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -396,168 +514,6 @@ Mehdi created BBDify a while ago, which got renamed to BDDfy when Mehdi, <a href
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/ddd-melbourne-rest-talk/">DDD Melbourne Rest Talk</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-07-30'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Over the weekend I presented at <a href="http://www.dddmelbourne.com/">http://www.dddmelbourne.com/</a> on building RESTful web services.</p>
-
-<p>I wanted to do it a bit different to the REST talks I had been to, and really try to cover how it all fits together, as well as the theory and covering the <a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a> I put together a RESTful beer API, which I want to evolve over time as a cool example. My intention is to release WebApi.Hal as a NuGet package once it matures a little more and I figure out the API and conventions.</p>
-
-<p>My slides are available <strong><a href="https://www.dropbox.com/s/vksivsuo5fx44qp/REST.pptx">here</a></strong></p>
-
-<p>All the sample code is available in the WebApi.Hal project on github (<a href="https://github.com/JakeGinnivan/WebApi.Hal">https://github.com/JakeGinnivan/WebApi.Hal</a>) and I do accept pull requests. =)</p>
-
-<p>The resource linker stuff is a bit clunky, but I think it is becoming quite a good example of a RESTful API. If you want to help out or have suggestions just fire me an email to jake at ginnivan dot net.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/azure-and-msshrtmi/">Azure and msshrtmi.dll</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-06-30'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>The Problem</h2>
-
-<p>A while back we received some Azure pull requests which added an Azure project and fixed all our SQL scripts so they were compatible with SQL Azure and that was pretty good, FunnelWeb would run in Azure.</p>
-
-<p>The problem though is updates to the my.config required a full new deployment, so I wanted to support loading the configuration from the Role Environment config files instead when running in Azure.</p>
-
-<p>So in our configuration settings class I put something like this:</p>
-
-<pre><code>public string Get(string name)
-{
-    return (RoleEnvironment.IsAvailable)
-                ? RoleEnvironment.GetConfigurationSettingValue(name)
-                : myConfigSettings.Get(name);
-}
-</code></pre>
-
-<p>All good, local testing works beautifully. So I start with deploying to Azure Websites via git using the same script we use to deploy to AppHarbor. And boom:</p>
-
-<pre><code>---&gt; System.TypeInitializationException: The type initializer for 'Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment' threw an exception. ---&gt; System.IO.FileNotFoundException: Could not load file or assembly 'msshrtmi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35' or one of its dependencies. The system cannot find the file specified.
-   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.InitializeEnvironment()
-   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment..cctor()
-   --- End of inner exception stack trace ---
-   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.get_IsAvailable()
-</code></pre>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/azure-and-msshrtmi/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/getting-started-with-api-approver/">Getting Started With ApprovalTests Without Installing TortoiseSVN</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-08'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have just installed Windows 8 consumer preview on my dev machine, then all my API Approval tests started failing with this exception because I don&rsquo;t have TortoiseMerge installed =(</p>
-
-<pre><code>System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
-   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
-   at System.Diagnostics.Process.Start()
-   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
-   at System.Diagnostics.Process.Start(String fileName, String arguments)
-   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
-   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
-   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
-   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
-   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
-   at Phoenix.Tests.ApiChanges.phoenix_has_no_public_api_changes() in C:\Users\Jake\_Code\Phoenix\src\net40\Phoenix.Tests\ApiChanges.cs:line 22
-System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
-   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
-   at System.Diagnostics.Process.Start()
-   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
-   at System.Diagnostics.Process.Start(String fileName, String arguments)
-   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
-   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
-   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
-   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
-   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
-</code></pre>
-
-<p>My issue is I don&rsquo;t want to install TortoiseSVN just to get TortoiseMerge which ApiApprover uses by default.</p>
-
-<p>So I created a Chocolatey package at <a href="http://chocolatey.org/packages/tortoisemerge">http://chocolatey.org/packages/tortoisemerge</a> which will download and add TortoiseMerge to your Path, then Approval Tests DiffReporter will just start working :)</p>
-
-<h1>Install Steps</h1>
-
-<h2>1. Install Chocolatey</h2>
-
-<p><strong>PS:></strong> <code>iex ((new-object net.webclient).DownloadString('http://bit.ly/psChocInstall'))</code></p>
-
-<h2>2. Install TortoiseMerge via Chocolatey</h2>
-
-<p><strong>PS:></strong> <code>cinst TortoiseMerge</code></p>
-
-<p>Done :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -577,7 +533,7 @@ System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

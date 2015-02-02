@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Many of the apps I have written need to target multiple databases or I want the connection to be configurable by the user. I have a user control in &hellip;">
+  <meta name="description" content="If we want to do anything interesting with VSTO and Outlook we will have to access data from Outlook. That will normally be Contacts, or Appointments &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,122 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/vsto-data-access-repositories/">Outlook Items, Repositories & Data Access</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-04-23'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If we want to do anything interesting with VSTO and Outlook we will have to access data from Outlook. That will normally be Contacts, or Appointments or Emails? When you do this you will probably leak items, then Outlook will stop behaving normally, you can get ghost inspectors (click save &amp; close, and the window stays open, but ribbon is grayed out), or errors when you try to edit a item through the Outlook UI. There can be many side effects, most are not fun to track down the cause.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/vsto-data-access-repositories/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/ioc-dependencyinjection-vsto/">IoC, Dependency Injection and VSTO</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-04-23'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A really common problem I see with VSTO is getting access to dependencies. Because the framework builds your ribbons and the main point of interaction is in the Load event, developers resort to putting dependencies in their ThisAddin.cs class, then access them through Globals.ThisAddin.MyDependency.</p>
+
+<p>This is bad..</p>
+
+<p>Unfortunately out of the box this is really hard to get around, in this post I will present a few options and a few helper classes that will be included in Outlook.Utility very soon.</p>
+
+<p>I try to use IoC and DI as much as I can inside Outlook add-ins, in some places this is really hard, so I fall back to a ServiceLocator.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/ioc-dependencyinjection-vsto/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/enterprise-vsto/">Enterprise VSTO</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-04-23'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Its been a while since I have blogged, since starting with VSTO I haven’t posted much. That is about to change.</p>
+
+<p>I have been playing around with VSTO a lot lately, mainly Outlook but I will move into Word and Excel very soon because I see a lot of business value in the VSTO platform.</p>
+
+<p>I have started an open source library called Outlook.Utility, which I will probably break into Office.Utility as well to separate Office and Outlook functionality. There is a very good but old article on MSDN (<a href="http://msdn.microsoft.com/en-us/library/aa479345.aspx">http://msdn.microsoft.com/en-us/library/aa479345.aspx</a>). In the code example in that article they have a Outlook.Utility project which has some really handy classes in it. I have cleaned up and enhanced a few of the classes, as well as adding my own.</p>
+
+<p>The main issue with the code is it doesn’t release any COM references and actually leaks, as I invest more time into my Outlook.Utility project I will clean up all the leaks as well as add my own helper classes and extensions. I am going to start a Enterprise VSTO series that will use this library and cover ways you can create a good maintainable add-in.</p>
+
+<p>Over a few posts I will cover IoC, Patterns to use, COM interop, performance issues/solutions, WPF integration (using MVVM) and a few other things. I then will probably put it all in a webcast at the end.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/enterprise-vsto/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -304,7 +420,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

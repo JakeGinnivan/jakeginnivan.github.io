@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clickonce | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/clickonce/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ClickOnce Signing Error]]></title>
     <link href="http://jake.ginnivan.net/clickonce-signing-error/"/>
-    <updated>2013-09-13T00:00:00+08:00</updated>
+    <updated>2013-09-13T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/clickonce-signing-error</id>
     <content type="html"><![CDATA[<p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
 
@@ -36,7 +36,7 @@
   <entry>
     <title type="html"><![CDATA[ClickOnce from Azure Blob Storage]]></title>
     <link href="http://jake.ginnivan.net/clickonce-from-azure-blob-storage/"/>
-    <updated>2013-08-08T00:00:00+08:00</updated>
+    <updated>2013-08-08T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/clickonce-from-azure-blob-storage</id>
     <content type="html"><![CDATA[<p>Even with all it&rsquo;s problems ClickOnce is actually a decent option if you want a simple installer and an application which Self Updates.</p>
 
@@ -216,7 +216,7 @@ write-host "Fixed Manfiest File"
   <entry>
     <title type="html"><![CDATA[ClickOnce Deployment in TeamCity]]></title>
     <link href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity/"/>
-    <updated>2009-08-29T00:00:00+08:00</updated>
+    <updated>2009-08-29T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/clickonce-deployment-in-teamcity</id>
     <content type="html"><![CDATA[<p>I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server.</p>
 

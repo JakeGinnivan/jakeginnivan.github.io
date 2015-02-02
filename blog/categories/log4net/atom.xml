@@ -4,7 +4,7 @@
   <title><![CDATA[Category: log4net | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/log4net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Verifying logged messages with Log4Net]]></title>
     <link href="http://jake.ginnivan.net/verifying-logged-messages-with-log4net/"/>
-    <updated>2013-09-13T00:00:00+08:00</updated>
+    <updated>2013-09-13T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/verifying-logged-messages-with-log4net</id>
     <content type="html"><![CDATA[<p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
 

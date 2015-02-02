@@ -4,7 +4,7 @@
   <title><![CDATA[Category: git | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Updating Chocolateys release notes with GitReleaseNotes]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/"/>
-    <updated>2014-06-26T05:51:20+08:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes</id>
+    <link href="http://jake.ginnivan.net/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes/"/>
+    <updated>2014-06-25T22:51:20+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes</id>
     <content type="html"><![CDATA[<p>Today I saw a tweet from Rob Reynolds today that <a href="https://twitter.com/ferventcoder/status/481816379340120064">Chocolatey 0.9.8.24 RC1 was released</a> so I clicked the link which was straight to the closed issues list on GitHub.</p>
 
 <p>I also noticed that many of the RCs and betas were not tagged in Git so you can&rsquo;t see what was fixed each beta.</p>
@@ -84,7 +84,7 @@ Feel free to post on issue on GitHub if you have issues with your project, it is
   <entry>
     <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
     <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
-    <updated>2013-12-17T00:00:00+08:00</updated>
+    <updated>2013-12-17T00:00:00+00:00</updated>
     <id>http://jake.ginnivan.net/gitreleasenotes</id>
     <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
 
@@ -150,7 +150,7 @@ It will then output your release notes in <a href="http://www.semanticreleasenot
   <entry>
     <title type="html"><![CDATA[Git Flow Versioning]]></title>
     <link href="http://jake.ginnivan.net/git-flow-versioning/"/>
-    <updated>2013-10-02T00:00:00+08:00</updated>
+    <updated>2013-10-02T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/git-flow-versioning</id>
     <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
 
@@ -318,7 +318,7 @@ git push upstream --tags
   <entry>
     <title type="html"><![CDATA[Setting up Git]]></title>
     <link href="http://jake.ginnivan.net/setting-up-git/"/>
-    <updated>2013-07-27T00:00:00+08:00</updated>
+    <updated>2013-07-27T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/setting-up-git</id>
     <content type="html"><![CDATA[<p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
 

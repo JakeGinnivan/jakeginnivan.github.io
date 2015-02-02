@@ -4,7 +4,7 @@
   <title><![CDATA[Category: continuous delivery | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/continuous-delivery/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Automated Project Environment Setup]]></title>
     <link href="http://jake.ginnivan.net/automated-project-environment-setup/"/>
-    <updated>2013-08-08T00:00:00+08:00</updated>
+    <updated>2013-08-08T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/automated-project-environment-setup</id>
     <content type="html"><![CDATA[<h2>Web Project Dev Environment</h2>
 
@@ -156,7 +156,7 @@ $elevate = Join-Path $directorypath "tools\Elevate.exe"
   <entry>
     <title type="html"><![CDATA[ClickOnce Deployment in TeamCity]]></title>
     <link href="http://jake.ginnivan.net/clickonce-deployment-in-teamcity/"/>
-    <updated>2009-08-29T00:00:00+08:00</updated>
+    <updated>2009-08-29T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/clickonce-deployment-in-teamcity</id>
     <content type="html"><![CDATA[<p>I have been trying to get a ClickOnce VSTO add-in publishing automatically during a build and do not want visual studio on my build server.</p>
 

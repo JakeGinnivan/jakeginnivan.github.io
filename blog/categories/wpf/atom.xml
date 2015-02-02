@@ -4,7 +4,7 @@
   <title><![CDATA[Category: wpf | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/wpf/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Pack URI in Unit Tests]]></title>
     <link href="http://jake.ginnivan.net/pack-uri-in-unit-tests/"/>
-    <updated>2013-09-16T00:00:00+08:00</updated>
+    <updated>2013-09-16T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/pack-uri-in-unit-tests</id>
     <content type="html"><![CDATA[<p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
 
@@ -45,7 +45,7 @@
   <entry>
     <title type="html"><![CDATA[Markpad Performance Push]]></title>
     <link href="http://jake.ginnivan.net/markpad-performance-push/"/>
-    <updated>2012-08-12T00:00:00+08:00</updated>
+    <updated>2012-08-12T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/markpad-performance-push</id>
     <content type="html"><![CDATA[<p>If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files.</p>
 
@@ -219,7 +219,7 @@ var controlHandle = host.ControlHandle;
   <entry>
     <title type="html"><![CDATA[MVVM, Design Time vs IoC usage]]></title>
     <link href="http://jake.ginnivan.net/wpf-mvvm-thoughs/"/>
-    <updated>2011-07-21T00:00:00+08:00</updated>
+    <updated>2011-07-21T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/wpf-mvvm-thoughs</id>
     <content type="html"><![CDATA[<h1>The problems</h1>
 
@@ -462,7 +462,7 @@ In my current projects, we actually define all windows as UserControls, and our 
   <entry>
     <title type="html"><![CDATA[Introduction to VSTO Contrib]]></title>
     <link href="http://jake.ginnivan.net/vsto-contrib/introduction/"/>
-    <updated>2011-04-05T00:00:00+08:00</updated>
+    <updated>2011-04-05T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/vsto-contrib/introduction</id>
     <content type="html"><![CDATA[<h1>Goal of VSTO Contrib</h1>
 
@@ -589,7 +589,7 @@ sheetOne.Name = "NewSheetName"; //Will throw exception, because Enumerator has a
   <entry>
     <title type="html"><![CDATA[Taking Screenshots of WPF apps]]></title>
     <link href="http://jake.ginnivan.net/wpf-screenshot/"/>
-    <updated>2011-02-15T00:00:00+08:00</updated>
+    <updated>2011-02-15T00:00:00+00:00</updated>
     <id>http://jake.ginnivan.net/wpf-screenshot</id>
     <content type="html"><![CDATA[<p>In my current project, we have quite an awesome UI automation setup running through every process (happy days path) in our WPF app.</p>
 

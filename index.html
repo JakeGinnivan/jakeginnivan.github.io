@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I posted Simple Versioning and Release Notes a few weeks ago talking about how to simplify release notes and versioning. This post is a bit of a &hellip;">
+  <meta name="description" content="Parts one and two have covered the InterceptKeys class which exposes a feed of raw keyboard events and the MessageProvider which turns key presses &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -95,6 +95,174 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/carnac-improvements/part-3/">Improving the Carnac Codebase and Rx Usage (Part 3)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-02T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Parts one and two have covered the InterceptKeys class which exposes a feed of raw keyboard events and the MessageProvider which turns key presses into messages to display on the screen. There is a class between those two, the KeyProvider which I am not going to actually blog about as it doesn&rsquo;t introduce any new concepts which I have not covered in parts 1 and 2 of this blog series.</p>
+
+<p><a href="/blog/carnac-improvements/part-1/">Part 1 - Refactoring the InterceptKeys class </a> <br/>
+<a href="/blog/carnac-improvements/part-2/">Part 2 - Refactoring the MessageProvider class</a><br/>
+Part 3 - Introducing the MessageController class<br/>
+Part 4 - Removing state mutation from the stream</p>
+
+<p>Instead we will dive into the MessageController class which brings the streams from the KeyProvider and MessageProvider together then maintains the list of Messages displayed on the screen. The requirements are:</p>
+
+<ul>
+<li>Add any new messages into the messages collection</li>
+<li>After 5 seconds set a flag on the message which triggers an animation</li>
+<li>1 second after that the message is removed from the messages collection</li>
+<li>If a message is updated the 5 second countdown should start again.</li>
+</ul>
+
+
+<h2>Old implementation</h2>
+
+<p>The previous implementation was quite simple but it was hard to test. Also Rx can solve this problem very nicely, so why not.</p>
+
+<ul>
+<li>New messages were added to the messages list</li>
+<li>A timer fired once a second, the callback did:
+
+<ul>
+<li>A foreach loop over every item which had a LastUpdated property more than 5 seconds go, then set the IsDeleting flag to true</li>
+<li>A foreach loop over every item which had a LastUpdated property more than 6 seconds go, then removed it from the list</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Lets rewrite this into Rx</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/carnac-improvements/part-3/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/carnac-improvements/part-2/">Improving the Carnac Codebase and Rx Usage (Part 2)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-01T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This post is the second part in a series covering a series of improvements in the carnac codebase, specifically to improve the usage of Rx. The next class I will be rewriting is the MessageProvider.</p>
+
+<p><a href="/blog/carnac-improvements/part-1/">Part 1 - Refactoring the InterceptKeys class</a><br/>
+Part 2 - Refactoring the MessageProvider class<br/>
+<a href="/blog/carnac-improvements/part-3/">Part 3 - Introducing the MessageController class</a><br/>
+Part 4 - Removing state mutation from the stream</p>
+
+<p>As a bit of background, in carnac a <code>KeyPress</code> is not directional and it also contains information about if modifiers were pressed at the same time. For Instance <code>ctrl + r</code> would be a KeyPress. A <code>Message</code> is what is shown on the screen.</p>
+
+<p>The message provider as it is does the following:</p>
+
+<ul>
+<li>Is <code>IObserver&lt;KeyPress&gt;</code></li>
+<li>It aggregates multiple KeyPresses into logical messages with the following rules:
+
+<ul>
+<li>Shortcuts are always shown in their own message</li>
+<li>If there has been more than a second between the last keypress a new message is created</li>
+<li>If the key presses were entered into different applications a new messsage is created</li>
+</ul>
+</li>
+<li>Apply &lsquo;Only show shortcuts&rsquo; filter</li>
+</ul>
+
+
+<p>Here is what the code looked like before the refactor.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/carnac-improvements/part-2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/carnac-improvements/part-1/">Improving the Carnac Codebase and Rx Usage (Part 1)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-31T00:00:00+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://carnackeys.com/">Carnac</a> is an open source project created as part of <a href="http://code52.org/">Code52</a>. It is a simple utility which overlays key presses on your screen as you type which is pretty handy for presentations. Carnac also ships with some keymaps for different applications so it understands when you are pressing shortcuts.</p>
+
+<p>Recently Scott Hanselman blogged about a <a href="http://www.hanselman.com/blog/QuakeModeConsoleForVisualStudioOpenACommandPromptWithAHotkey.aspx">Quake Mode console</a> and mentioned carnac, this triggered Brendan Forster and myself to think about carnac again. When we started writing carnac there was not any Rx experience amongst the team and we did a pretty bad job. I think carnac is a <em>great</em> Rx problem and the code can be improved to take advantage of Rx and be a really good non-trivial Rx sample.
+This blog series is all about the things we did wrong and the process I went through to refactor carnac into a much simpler code base and really leverage the power of Rx.</p>
+
+<p>Part 1 - Refactoring the InterceptKeys class<br/>
+<a href="/blog/carnac-improvements/part-2/">Part 2 - Refactoring the MessageProvider class</a><br/>
+<a href="/blog/carnac-improvements/part-3/">Part 3 - Introducing the MessageController class</a><br/>
+Part 4 - Removing state mutation from the stream</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/carnac-improvements/part-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/07/09/my-typical-teamcity-build-setup/">My Typical TeamCity Build Setup</a></h1>
     
     
@@ -104,7 +272,7 @@
 
 
 
-<time class='entry-date' datetime='2014-07-09T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2014-07-09T00:00:00+01:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -155,7 +323,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/">Updating Chocolateys Release Notes With GitReleaseNotes</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes/">Updating Chocolateys Release Notes With GitReleaseNotes</a></h1>
     
     
       <p class="meta">
@@ -164,7 +332,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-06-26T05:51:20+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:51 am</span></time>
+<time class='entry-date' datetime='2014-06-25T22:51:20+01:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:51 pm</span></time>
         
       </p>
     
@@ -183,7 +351,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
   
   
     <footer>
-      <a rel="full-article" href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes/">Read on &rarr;</a>
     </footer>
   
 
@@ -204,7 +372,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-06-10T00:00:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2014-06-10T00:00:00+01:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -249,7 +417,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-06-10T00:00:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2014-06-10T00:00:00+01:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -285,7 +453,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-05-25T17:05:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:05 pm</span></time>
+<time class='entry-date' datetime='2014-05-25T10:05:00+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:05 am</span></time>
         
       </p>
     
@@ -321,7 +489,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-05-19T17:46:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:46 pm</span></time>
+<time class='entry-date' datetime='2014-05-19T10:46:00+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:46 am</span></time>
         
       </p>
     
@@ -356,7 +524,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-05-17T18:43:14+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:43 pm</span></time>
+<time class='entry-date' datetime='2014-05-17T11:43:14+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:43 am</span></time>
         
       </p>
     
@@ -381,146 +549,6 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/15/unknown-git-mergetool/">Unknown Git Mergetool</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-05-15T03:08:32+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:08 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
-
-<pre><code>git config option merge.tool set to unknown tool: --global
-Resetting to default...
-
-This message is displayed because 'merge.tool' is not configured.
-See 'git mergetool --tool-help' or 'git help config' for more details.
-'git mergetool' will now attempt to use one of the following tools:
-tortoisemerge emerge vimdiff
-No known merge tool is available.
-</code></pre>
-
-<p>Somehow (seriously, I have <strong>no</strong> idea how I did this) I had created a setting in one of my repositories set my mergetool to <code>--global</code>.</p>
-
-<p>If you happen to get yourself into the same issue, run <code>git config --list</code> to see what your config settings are.</p>
-
-<p>For me, I had a rogue <code>merge.tool</code> entry, so I just had to run <code>git config --unset merge.tool</code> which deleted the entry and I was off again.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-05-08T17:05:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:05 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
-
-<p>Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/08/bddfy-v4-beta1/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/06/bddfy-examples-support/">BDDfy v4.0 Examples Support</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-05-06T00:09:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:09 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>One of the major features in BDDfy v4 is the inclusion of examples</p>
-
-<p><strong>Scenario:</strong> Successful rail card purchases<br/>
-<strong>Given:</strong> the buyer is a <em>&lt;buyer category&gt;</em><br/>
-<strong>And:</strong> the buyer selects a <em>&lt;fare&gt;</em><br/>
-<strong>When:</strong> the buyer pays<br/>
-<strong>Then:</strong> a sale occurs with an amount of <em>&lt;price&gt;</em></p>
-
-<p>Examples:</p>
-
-<pre><code>| Buyer Category | Fare          | Price |
-| Student        | Monthly Pass  | $76   |
-| Senior         | Monthly Pass  | $98   |
-| Standard       | Monthly Pass  | $146  |
-| Student        | Weekly Pass   | $23   |
-| Senior         | Weekly Pass   | $30   |
-| Standard       | Weekly Pass   | $44   |
-| Student        | Day Pass      | $4    |
-| Senior         | Day Pass      | $5    |
-| Standard       | Day Pass      | $7    |
-| Student        | Single Ticket | $1.5  |
-| Senior         | Single Ticket | $2    |
-| Standard       | Single Ticket | $3    |
-</code></pre>
-
-<p>This is an example of a Cucumber test with examples, for each row in the examples table the test will run effectively giving us a data driven BDD style test.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/06/bddfy-examples-support/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -538,7 +566,7 @@ No known merge tool is available.
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="A while back I got introduced to https://xamlstyler.codeplex.com/ which is a pretty good visual studio plug-in for formatting xaml, but I like &hellip;">
+  <meta name="description" content="I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,139 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-09-16'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
+
+<h2>Exception 1</h2>
+
+<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
+
+<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
+
+<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
+</code></pre>
+
+<h2>Exception 2</h2>
+
+<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
+
+<p>This one is fixed by giving WPF the default resource assembly.</p>
+
+<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
+</code></pre>
+
+<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/verifying-logged-messages-with-log4net/">Verifying Logged Messages With Log4Net</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-09-13'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
+
+<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
+</code></pre>
+
+<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
+
+<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
+</code></pre>
+
+<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/verifying-logged-messages-with-log4net/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/clickonce-signing-error/">ClickOnce Signing Error</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-09-13'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
+
+<p>The command:</p>
+
+<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
+</code></pre>
+
+<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
+
+<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
+
+<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -379,124 +512,6 @@ This means that you need a fully unlocked desktop for things to work correctly. 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/documentation-site-with-pretzel/">Documentation Site With Pretzel</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-07-27'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Over the last day or so, I have been setting up the documentation website for TestStack at <a href="http://teststack.azurewebsites.net/">http://teststack.azurewebsites.net/</a></p>
-
-<p>With Pretzel&rsquo;s Wiki template support, it is super easy to get your own site setup.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/documentation-site-with-pretzel/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/teamcity-build-results-in-tfs/">TeamCity Build Results in TFS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-04-13'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Why?</h1>
-
-<p>Recently I have been working with testers on our team, and trying to bring testing closer to our sprints. We use Microsoft Test Manager for our test tool, TFS for work items, GitHub for source control and TeamCity for our build server.</p>
-
-<p>All our tests are written using xUnit.net. When you start working with testers it becomes important to surface your automated and manual testing together, so testers can work more efficiently and have more confidence in the software the team is producing.</p>
-
-<p>Enter TFS. TFS is a great product that starts really value adding when you use different components together, the testing tools is an example of this. When you use Team Build with the testing tools, a heap of features and workflows start working way better!</p>
-
-<h1>What?</h1>
-
-<p>My goal is to have my automated regression tests (both UI and Integration tests) which are written in xUnit to report their results back into TFS (Builds) and Test Manager (Test Runs).</p>
-
-<p>This allows the Testers to use the planned automation features in TFS to mark certain Test Cases as &lsquo;Planned&rsquo; for automation, it also lights up a whole lot of reporting around test case readiness and other things.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/teamcity-build-results-in-tfs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/redirecting-process-output/">Redirecting Process Output</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I sometimes have the need to shell a process and redirect the output. But I often have issues with deadlocks between processes and other random issues.</p>
-
-<p>Based on a blog post that Lucian Wischik posted a while back at <a href="http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx">http://blogs.msdn.com/b/lucian/archive/2008/12/29/system-diagnostics-process-redirect-standardinput-standardoutput-standarderror.aspx</a> I have created a c# version of his code which makes it nice and easy.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/redirecting-process-output/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -516,7 +531,7 @@ This means that you need a fully unlocked desktop for things to work correctly. 
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

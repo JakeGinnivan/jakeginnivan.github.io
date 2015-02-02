@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I am currently working on a .net 4.0 project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM &hellip;">
+  <meta name="description" content="Today my git mergetool stopped working. When I ran git mergetool I was greeted with: git config option merge.tool set to unknown tool: --global &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -95,7 +95,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/05/14/unknown-git-mergetool/">Unknown Git Mergetool</a></h1>
     
     
       <p class="meta">
@@ -104,7 +104,147 @@
 
 
 
-<time class='entry-date' datetime='2014-01-15T02:55:09+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:55 am</span></time>
+<time class='entry-date' datetime='2014-05-14T20:08:32+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:08 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
+
+<pre><code>git config option merge.tool set to unknown tool: --global
+Resetting to default...
+
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+tortoisemerge emerge vimdiff
+No known merge tool is available.
+</code></pre>
+
+<p>Somehow (seriously, I have <strong>no</strong> idea how I did this) I had created a setting in one of my repositories set my mergetool to <code>--global</code>.</p>
+
+<p>If you happen to get yourself into the same issue, run <code>git config --list</code> to see what your config settings are.</p>
+
+<p>For me, I had a rogue <code>merge.tool</code> entry, so I just had to run <code>git config --unset merge.tool</code> which deleted the entry and I was off again.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/08/bddfy-v4-beta1/">BDDfy v4.0 Beta 1 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-08T10:05:00+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:05 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
+
+<p>Please give it a go and report any issues/feedback you have so can fix them before the final v4 release.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/08/bddfy-v4-beta1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/05/bddfy-examples-support/">BDDfy v4.0 Examples Support</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-05T17:09:00+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:09 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the major features in BDDfy v4 is the inclusion of examples</p>
+
+<p><strong>Scenario:</strong> Successful rail card purchases<br/>
+<strong>Given:</strong> the buyer is a <em>&lt;buyer category&gt;</em><br/>
+<strong>And:</strong> the buyer selects a <em>&lt;fare&gt;</em><br/>
+<strong>When:</strong> the buyer pays<br/>
+<strong>Then:</strong> a sale occurs with an amount of <em>&lt;price&gt;</em></p>
+
+<p>Examples:</p>
+
+<pre><code>| Buyer Category | Fare          | Price |
+| Student        | Monthly Pass  | $76   |
+| Senior         | Monthly Pass  | $98   |
+| Standard       | Monthly Pass  | $146  |
+| Student        | Weekly Pass   | $23   |
+| Senior         | Weekly Pass   | $30   |
+| Standard       | Weekly Pass   | $44   |
+| Student        | Day Pass      | $4    |
+| Senior         | Day Pass      | $5    |
+| Standard       | Day Pass      | $7    |
+| Student        | Single Ticket | $1.5  |
+| Senior         | Single Ticket | $2    |
+| Standard       | Single Ticket | $3    |
+</code></pre>
+
+<p>This is an example of a Cucumber test with examples, for each row in the examples table the test will run effectively giving us a data driven BDD style test.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/05/bddfy-examples-support/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">nUnit 2.6.3, Async and .net 4.0 Broken</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-01-14T18:55:09+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:55 pm</span></time>
         
       </p>
     
@@ -127,7 +267,7 @@ Recently I added async void and Task support to <a href="https://github.com/Test
   
   
     <footer>
-      <a rel="full-article" href="/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/">Read on &rarr;</a>
     </footer>
   
 
@@ -148,7 +288,7 @@ Recently I added async void and Task support to <a href="https://github.com/Test
 
 
 
-<time class='entry-date' datetime='2014-01-10T22:12:49+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:12 pm</span></time>
+<time class='entry-date' datetime='2014-01-10T14:12:49+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:12 pm</span></time>
         
       </p>
     
@@ -182,7 +322,7 @@ Recently I added async void and Task support to <a href="https://github.com/Test
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/01/06/blog-migration/">Blog Migration</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/01/05/blog-migration/">Blog Migration</a></h1>
     
     
       <p class="meta">
@@ -191,7 +331,7 @@ Recently I added async void and Task support to <a href="https://github.com/Test
 
 
 
-<time class='entry-date' datetime='2014-01-06T00:51:56+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:51 am</span></time>
+<time class='entry-date' datetime='2014-01-05T16:51:56+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:51 pm</span></time>
         
       </p>
     
@@ -388,139 +528,6 @@ Recently I added async void and Task support to <a href="https://github.com/Test
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/pack-uri-in-unit-tests/">Pack URI in Unit Tests</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-09-16'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
-
-<h2>Exception 1</h2>
-
-<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
-
-<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
-
-<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
-</code></pre>
-
-<h2>Exception 2</h2>
-
-<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
-
-<p>This one is fixed by giving WPF the default resource assembly.</p>
-
-<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
-</code></pre>
-
-<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/verifying-logged-messages-with-log4net/">Verifying Logged Messages With Log4Net</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-09-13'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
-
-<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
-</code></pre>
-
-<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
-
-<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
-</code></pre>
-
-<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/verifying-logged-messages-with-log4net/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/clickonce-signing-error/">ClickOnce Signing Error</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-09-13'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
-
-<p>The command:</p>
-
-<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
-</code></pre>
-
-<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
-
-<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
-
-<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -540,7 +547,7 @@ Recently I added async void and Task support to <a href="https://github.com/Test
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning. &hellip;">
+  <meta name="description" content="Over the weekend I presented at http://www.dddmelbourne.com/ on building RESTful web services. I wanted to do it a bit different to the REST talks I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,168 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/ddd-melbourne-rest-talk/">DDD Melbourne Rest Talk</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-07-30'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Over the weekend I presented at <a href="http://www.dddmelbourne.com/">http://www.dddmelbourne.com/</a> on building RESTful web services.</p>
+
+<p>I wanted to do it a bit different to the REST talks I had been to, and really try to cover how it all fits together, as well as the theory and covering the <a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a> I put together a RESTful beer API, which I want to evolve over time as a cool example. My intention is to release WebApi.Hal as a NuGet package once it matures a little more and I figure out the API and conventions.</p>
+
+<p>My slides are available <strong><a href="https://www.dropbox.com/s/vksivsuo5fx44qp/REST.pptx">here</a></strong></p>
+
+<p>All the sample code is available in the WebApi.Hal project on github (<a href="https://github.com/JakeGinnivan/WebApi.Hal">https://github.com/JakeGinnivan/WebApi.Hal</a>) and I do accept pull requests. =)</p>
+
+<p>The resource linker stuff is a bit clunky, but I think it is becoming quite a good example of a RESTful API. If you want to help out or have suggestions just fire me an email to jake at ginnivan dot net.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/azure-and-msshrtmi/">Azure and msshrtmi.dll</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-06-30'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>The Problem</h2>
+
+<p>A while back we received some Azure pull requests which added an Azure project and fixed all our SQL scripts so they were compatible with SQL Azure and that was pretty good, FunnelWeb would run in Azure.</p>
+
+<p>The problem though is updates to the my.config required a full new deployment, so I wanted to support loading the configuration from the Role Environment config files instead when running in Azure.</p>
+
+<p>So in our configuration settings class I put something like this:</p>
+
+<pre><code>public string Get(string name)
+{
+    return (RoleEnvironment.IsAvailable)
+                ? RoleEnvironment.GetConfigurationSettingValue(name)
+                : myConfigSettings.Get(name);
+}
+</code></pre>
+
+<p>All good, local testing works beautifully. So I start with deploying to Azure Websites via git using the same script we use to deploy to AppHarbor. And boom:</p>
+
+<pre><code>---&gt; System.TypeInitializationException: The type initializer for 'Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment' threw an exception. ---&gt; System.IO.FileNotFoundException: Could not load file or assembly 'msshrtmi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35' or one of its dependencies. The system cannot find the file specified.
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.InitializeEnvironment()
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment..cctor()
+   --- End of inner exception stack trace ---
+   at Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.get_IsAvailable()
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/azure-and-msshrtmi/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/getting-started-with-api-approver/">Getting Started With ApprovalTests Without Installing TortoiseSVN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-03-08'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have just installed Windows 8 consumer preview on my dev machine, then all my API Approval tests started failing with this exception because I don&rsquo;t have TortoiseMerge installed =(</p>
+
+<pre><code>System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
+   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start()
+   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start(String fileName, String arguments)
+   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
+   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
+   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
+   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
+   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
+   at Phoenix.Tests.ApiChanges.phoenix_has_no_public_api_changes() in C:\Users\Jake\_Code\Phoenix\src\net40\Phoenix.Tests\ApiChanges.cs:line 22
+System.ComponentModel.Win32Exception: System.ComponentModel.Win32Exception : The system cannot find the file specified
+   at System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start()
+   at System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
+   at System.Diagnostics.Process.Start(String fileName, String arguments)
+   at ApprovalTests.Reporters.DiffReporter.Launch(LaunchArgs launchArgs)
+   at ApprovalTests.Reporters.DiffReporter.Report(String approved, String received)
+   at ApprovalTests.Approvers.FileApprover.ReportFailure(IApprovalFailureReporter reporter)
+   at ApprovalTests.Core.Approvals.Approve(IApprovalApprover approver, IApprovalFailureReporter reporter)
+   at ApprovalTests.Approvals.Approve(IApprovalWriter writer, IApprovalNamer namer, IApprovalFailureReporter reporter)
+</code></pre>
+
+<p>My issue is I don&rsquo;t want to install TortoiseSVN just to get TortoiseMerge which ApiApprover uses by default.</p>
+
+<p>So I created a Chocolatey package at <a href="http://chocolatey.org/packages/tortoisemerge">http://chocolatey.org/packages/tortoisemerge</a> which will download and add TortoiseMerge to your Path, then Approval Tests DiffReporter will just start working :)</p>
+
+<h1>Install Steps</h1>
+
+<h2>1. Install Chocolatey</h2>
+
+<p><strong>PS:></strong> <code>iex ((new-object net.webclient).DownloadString('http://bit.ly/psChocInstall'))</code></p>
+
+<h2>2. Install TortoiseMerge via Chocolatey</h2>
+
+<p><strong>PS:></strong> <code>cinst TortoiseMerge</code></p>
+
+<p>Done :)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -384,149 +546,6 @@ I am still a little way from v1, so there will be API changes, but I am more tha
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/wpmvc/">Windows Phone MVC - Released</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-07-23'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the <a href="http://windowsphonefoundations.net/">http://windowsphonefoundations.net/</a> website which is home to Windows Phone Essentials, Windows Phone MVC and Windows Phone MVP (and more projects in the future).</p>
-
-<h1>Features</h1>
-
-<p>This will change over time, so check out the change log.</p>
-
-<ul>
-<li>Strongly Typed Navigation</li>
-<li>Custom Shell, Navigator and Journal to give better control over navigation of WP7</li>
-<li>TransitionFrame comes out of the box, for nice navigation animations</li>
-<li>Ability to pass arguments in navigation, rather than uri query strings</li>
-<li>Modal Dialog support</li>
-<li>Easy access to Obscured and Activated events on your view model</li>
-<li>Full Testable! All major WP7 classes (WindowsPhoneFrame, WindowsPhoneApplication etc) all have Interfaces and are wrapped to allow you to test</li>
-<li>Some helpers around Async. Execute.AsyncPattern or Execute.AsyncPatternWithResult synchronise async calls</li>
-<li>Task/Chooser support, in a testable way</li>
-<li>Convention based Controller and View discovery</li>
-<li>Autofac Support Via an Extension</li>
-<li>Easy access to page or application transient storage</li>
-<li>Simple tombstoning support</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/wpmvc/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/wpf-mvvm-thoughs/">MVVM, Design Time vs IoC Usage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-07-21'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>The problems</h1>
-
-<p>Lets start with the problems we want to solve with our solution</p>
-
-<ul>
-<li>Blend Design time support</li>
-<li>Resharper binding validation support</li>
-<li>No using ServiceLocator, DI only</li>
-<li>ViewModels should be testable</li>
-</ul>
-
-
-<p>Frameworks like Magellan solve these sort of issues in other ways, but if you don&rsquo;t want to take on a framework then maybe an approach like this may help you get started.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/wpf-mvvm-thoughs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/nhibernate-alias-warnings/">No More R# Warnings for nHibernate Aliases</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-07-21'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
-
-<p>Here is a scenario</p>
-
-<pre><code>var entryAlias = default(Entry);
-var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
-</code></pre>
-
-<p>In the above scenario R# will warn that entryAlias is always null, which is is, but I don&rsquo;t care, nHibernate is simply getting the type from the expression.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/nhibernate-alias-warnings/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/6">&larr; Older</a>
@@ -546,7 +565,7 @@ var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -14,9 +14,1508 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Improving the carnac codebase and Rx usage (Part 3)]]></title>
+    <link href="http://jake.ginnivan.net/blog/carnac-improvements/part-3/"/>
+    <updated>2015-02-02T00:00:00+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/carnac-improvements/improving-carnacs-code-part-3</id>
+    <content type="html"><![CDATA[<p>Parts one and two have covered the InterceptKeys class which exposes a feed of raw keyboard events and the MessageProvider which turns key presses into messages to display on the screen. There is a class between those two, the KeyProvider which I am not going to actually blog about as it doesn&rsquo;t introduce any new concepts which I have not covered in parts 1 and 2 of this blog series.</p>
+
+<p><a href="http://jake.ginnivan.net/blog/carnac-improvements/part-1/">Part 1 - Refactoring the InterceptKeys class </a> <br/>
+<a href="http://jake.ginnivan.net/blog/carnac-improvements/part-2/">Part 2 - Refactoring the MessageProvider class</a><br/>
+Part 3 - Introducing the MessageController class<br/>
+Part 4 - Removing state mutation from the stream</p>
+
+<p>Instead we will dive into the MessageController class which brings the streams from the KeyProvider and MessageProvider together then maintains the list of Messages displayed on the screen. The requirements are:</p>
+
+<ul>
+<li>Add any new messages into the messages collection</li>
+<li>After 5 seconds set a flag on the message which triggers an animation</li>
+<li>1 second after that the message is removed from the messages collection</li>
+<li>If a message is updated the 5 second countdown should start again.</li>
+</ul>
+
+
+<h2>Old implementation</h2>
+
+<p>The previous implementation was quite simple but it was hard to test. Also Rx can solve this problem very nicely, so why not.</p>
+
+<ul>
+<li>New messages were added to the messages list</li>
+<li>A timer fired once a second, the callback did:
+
+<ul>
+<li>A foreach loop over every item which had a LastUpdated property more than 5 seconds go, then set the IsDeleting flag to true</li>
+<li>A foreach loop over every item which had a LastUpdated property more than 6 seconds go, then removed it from the list</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Lets rewrite this into Rx</p>
+
+<!-- more -->
+
+
+<h1>Implementing in Rx</h1>
+
+<h2>Messages stream</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">IObservable</span><span class="p">&lt;</span><span class="n">KeyPress</span><span class="p">&gt;</span> <span class="n">keyStream</span> <span class="p">=</span> <span class="n">keyProvider</span><span class="p">.</span><span class="n">GetKeyStream</span><span class="p">();</span>
+</span><span class='line'><span class="n">IObservable</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">messageStream</span> <span class="p">=</span> <span class="n">messageProvider</span><span class="p">.</span><span class="n">GetMessageStream</span><span class="p">(</span><span class="n">keyStream</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step one is to get the messages subscription. Nothing much to see here except the variable names and types.</p>
+
+<h2>Adding messages</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">addMessageSubscription</span> <span class="p">=</span> <span class="n">messageStream</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span> <span class="n">messages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">message</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Also not much to see here, we subscribe to the messages stream and when a new value is yeilded we add that into the message into the messages collection.</p>
+
+<h2>Fading messages out</h2>
+
+<p>Now is where things become a little more interesting. Lets start off with simply setting the flag after 5 seconds</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Delay</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">IsDeleting</span> <span class="p">=</span> <span class="k">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Great, but this does not take into account the updates. Here is the problem we want to solve visualised.</p>
+
+<p>Each - represents a second, | is a completed stream</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">---------</span><span class="n">a</span><span class="p">----*</span><span class="n">ab</span><span class="p">----</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">|</span>
+</span><span class='line'>         <span class="p">-----</span><span class="n">b</span><span class="p">|</span>
+</span><span class='line'>                   <span class="p">---------</span><span class="n">ab</span><span class="p">|</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">-------------</span><span class="n">ab</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This shows us that we need a nested stream of some sort. Lets rewrite the fade out query into something that will create an inner stream.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageStream</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// the inner stream goes here</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="n">fadeOutMessageStream</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">IsDeleting</span> <span class="p">=</span> <span class="k">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we need to write the inner stream. Once again lets visualise the problem (x is an update, @ is the start of an observable.Timer(), o is the stream yeilding a value)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">x</span><span class="p">---</span><span class="n">x</span><span class="p">----</span><span class="n">x</span><span class="p">-----</span>
+</span><span class='line'><span class="err">@</span><span class="p">---|</span>
+</span><span class='line'>    <span class="err">@</span><span class="p">----|</span>
+</span><span class='line'>         <span class="err">@</span><span class="p">-----</span><span class="n">o</span><span class="p">|</span>
+</span><span class='line'><span class="p">---------------</span><span class="n">x</span><span class="p">|</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The thing that is changing and we are reacting to in this query is the updates of the message. A message has a property with signature <code>IObservable&lt;Unit&gt; Updates { get; }</code> which we can subscribe to for updates to that message. We also want to kick off right away when we subscribe (otherwise the timer will not start until an update happens). With this in mind, the start of the inner query is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we need to introduce a timer of some sort. Because each update has it&rsquo;s own timeout we need another nested stream. The marble diagram shows the nested screen pattern off really nicely. To get the nested stream we just do a <code>.Select()</code> which give us:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The return type of that select is actually <code>IObservable&lt;IObservable&lt;long&gt;&gt;</code> which is the nested stream. In the marble diagram above you will notice that when we get an update and start a timer we close the previous timer stream. In Rx this is known as the <code>.Switch()</code> statement. When the outer observable yeilds a new inner observable, switch will dispose the last inner observable and subscribe to the new stream instead. Now the code is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Switch</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We are not finished yet, switch returns us a single stream of type <code>IObservable&lt;long&gt;</code>. We need a stream of messages again:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageStream</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Switch</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We now are back showing the code which includes the outer stream. Our select we have just added simply ignores what it gets given and returns the message passed by the outer query.</p>
+
+<p>Going back to our marble diagram you will notice there is one thing missing:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">---------</span><span class="n">a</span><span class="p">----*</span><span class="n">ab</span><span class="p">----</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">|</span>
+</span><span class='line'>         <span class="p">-----</span><span class="n">b</span><span class="p">|</span>
+</span><span class='line'>                   <span class="p">---------</span><span class="n">ab</span><span class="p">|</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">-------------</span><span class="n">ab</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After each inner stream yeilds a value, it immediately terminates. This is an easy fix, we just append <code>.Take(1)</code> to the inner query giving us:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageStream</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Switch</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">message</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Take</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="n">fadeOutMessageStream</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">IsDeleting</span> <span class="p">=</span> <span class="k">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Onto the <a href="https://www.youtube.com/watch?v=Rre3zgL7eMk#t=56">Next song</a></p>
+
+<h2>Removing messages</h2>
+
+<p>The nice thing about Rx is that you can just build on other streams. So we just take our <code>fadeOutMessageStream</code>, apply a 1 second delay then subscribe.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">removeMessageStream</span> <span class="p">=</span> <span class="n">fadeOutMessageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Delay</span><span class="p">(</span><span class="n">OneSecond</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">messages</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">m</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Next steps</h2>
+
+<p>One thing all of these streams rely on is that each of them receive the <em>same instance</em> of each message. It is no good to us if each of them are working on a different messages. This is an easy fix using an operator we saw in Part 1 of this series, <code>.Publish()</code>.</p>
+
+<p>But this time we will not use <code>.RefCount()</code> as we want to set up our queries then turn them on all at the same time, otherwise we have race conditions that messages might be added but never removed. We want all 3 of our subscriptions to start simultanously.</p>
+
+<p>Lets zoom out to the method level and have a look what the <code>KeyController.Start</code> method looks like after we publish the stream.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">stopCarnacDisposable</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&quot;Carnac cannot be started more than once&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">keyStream</span> <span class="p">=</span> <span class="n">keyProvider</span><span class="p">.</span><span class="n">GetKeyStream</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">IConnectableObservable</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">messageStream</span> <span class="p">=</span> <span class="n">messageProvider</span><span class="p">.</span><span class="n">GetMessageStream</span><span class="p">(</span><span class="n">keyStream</span><span class="p">).</span><span class="n">Publish</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">addMessageSubscription</span> <span class="p">=</span> <span class="p">...;</span>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="p">...;</span>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">removeMessageStream</span> <span class="p">=</span> <span class="p">...;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">underlyingMessageSubscription</span> <span class="p">=</span> <span class="n">messageStream</span><span class="p">.</span><span class="n">Connect</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">stopCarnacDisposable</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CompositeDisposable</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">underlyingMessageSubscription</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">addMessageSubscription</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">fadeOutMessageSubscription</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">removeMessageStream</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We simply save a new <code>CompositeDisposable</code> which takes any number of IDisposable&rsquo;s as constructor parameters to a field called <code>stopCarnacDisposable</code>. Then when the <code>MessageController</code> is disposed it will dispose all of the things streams it has subscribed to including the underlying messages stream.</p>
+
+<p>To walk through what we see above, I publish the message stream, create the three subscriptions and then I call <code>.Connect()</code> on the messageStream (which is now of type <code>IConnectableObservable&lt;Message&gt;</code>).</p>
+
+<p>This allows me to explicitly control the underlying stream, when disposing I simply dispose the underlying stream then all of my other streams and everything is cleaned up nicely.</p>
+
+<h3>Specifying Schedulers</h3>
+
+<p>One part of the code I have ommited is explicitly specifying on what Scheduler everything will run on. I have introduced an <code>IConcurrencyService</code> which abstracts me from the static Rx schedulers (allowing me to write tests, which is coming up next!). When using Rx you should always specify what schedulers you want your code to run on, in carnac&rsquo;s case we want everything to run on the UI Thread. Normally this is bad but because we are modifying messages which are bound to by the UI we have to. Maybe a future blog post can be how we made carnacs Rx streams immutable, but not now.</p>
+
+<p>We do that by adding these two lines before every <code>.Subscribe()</code> call in this class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">.</span><span class="n">ObserveOn</span><span class="p">(</span><span class="n">concurrencyService</span><span class="p">.</span><span class="n">MainThreadScheduler</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="n">SubscribeOn</span><span class="p">(</span><span class="n">concurrencyService</span><span class="p">.</span><span class="n">MainThreadScheduler</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Error handling</h3>
+
+<p>I wanted to call our error handling explicitly, carnac has <em>none</em>. It didn&rsquo;t before this refactor and it didn&rsquo;t after. There is a GitHub issue open at the time of writing this blog post to sort this out.</p>
+
+<h2>Testing</h2>
+
+<p>I mentioned at the start of this post that this would be easier to test, lets put that to the test and write some tests. First off the simplest case.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[Fact]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MessagesAreAddedIntoKeysColletion</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">sut</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">ProvideMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">keysCollection</span><span class="p">.</span><span class="n">ShouldContain</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">IsDeleting</span><span class="p">.</span><span class="n">ShouldBe</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A is a property which returns a KeyPress and ProvideMessage simply yields that message to the messageStream which the KeyProvider subscribes to. Now we have an simple example test, here is a more complex example.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[Fact]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MessagesAreFlaggedAsDeletingAfter5Seconds</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">sut</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">ProvideMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">testScheduler</span><span class="p">.</span><span class="n">AdvanceBy</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="m">5</span><span class="p">).</span><span class="n">Ticks</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">IsDeleting</span><span class="p">.</span><span class="n">ShouldBe</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this test we have made use of our ICurrencyService by making it always return a <code>TestScheduler</code>. The <code>TestScheduler</code> is in the Rx.Testing NuGet library and is <strong>very</strong> useful. Because Rx abstracts time we can write tests which rely on time very quickly and they also execute very fast.</p>
+
+<p>The above test provides a message to the messageStream and then moves time forward by 5 seconds and makes sure that our message has been flagged for deletion, which it has. Lets push this a little harder and make sure that we do not expire when that message has been updated.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[Fact]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MessageTimeoutIsStartedAgainIfMessageIsUpdated</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">sut</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">ProvideMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">testScheduler</span><span class="p">.</span><span class="n">AdvanceBy</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="m">3</span><span class="p">).</span><span class="n">Ticks</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">Merge</span><span class="p">(</span><span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">));</span> <span class="c1">// Update message</span>
+</span><span class='line'>    <span class="n">testScheduler</span><span class="p">.</span><span class="n">AdvanceBy</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="m">3</span><span class="p">).</span><span class="n">Ticks</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">IsDeleting</span><span class="p">.</span><span class="n">ShouldBe</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">keysCollection</span><span class="p">.</span><span class="n">ShouldContain</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see the code to test our Rx queries is really simply.</p>
+
+<h1>Summary</h1>
+
+<p>The MessageController is quite a small class and reasonably simple once you are familiar with Rx concepts but it has some interesting problems which many applications have and demonstrates how they can be easily solved and tested.</p>
+
+<p>Part 4 will remove the mutation of existing messages from the stream. Any sort of mutation of state inside an Rx stream is likely to be a source of bugs and make the application very hard to reason about and debug. Unlike the first 3 posts in this series part 4 will be changing overall architecture and introducing some new concepts into the carnac codebase.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Improving the carnac codebase and Rx usage (Part 2)]]></title>
+    <link href="http://jake.ginnivan.net/blog/carnac-improvements/part-2/"/>
+    <updated>2015-02-01T00:00:00+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/carnac-improvements/improving-carnacs-code-part-2</id>
+    <content type="html"><![CDATA[<p>This post is the second part in a series covering a series of improvements in the carnac codebase, specifically to improve the usage of Rx. The next class I will be rewriting is the MessageProvider.</p>
+
+<p><a href="http://jake.ginnivan.net/blog/carnac-improvements/part-1/">Part 1 - Refactoring the InterceptKeys class</a><br/>
+Part 2 - Refactoring the MessageProvider class<br/>
+<a href="http://jake.ginnivan.net/blog/carnac-improvements/part-3/">Part 3 - Introducing the MessageController class</a><br/>
+Part 4 - Removing state mutation from the stream</p>
+
+<p>As a bit of background, in carnac a <code>KeyPress</code> is not directional and it also contains information about if modifiers were pressed at the same time. For Instance <code>ctrl + r</code> would be a KeyPress. A <code>Message</code> is what is shown on the screen.</p>
+
+<p>The message provider as it is does the following:</p>
+
+<ul>
+<li>Is <code>IObserver&lt;KeyPress&gt;</code></li>
+<li>It aggregates multiple KeyPresses into logical messages with the following rules:
+
+<ul>
+<li>Shortcuts are always shown in their own message</li>
+<li>If there has been more than a second between the last keypress a new message is created</li>
+<li>If the key presses were entered into different applications a new messsage is created</li>
+</ul>
+</li>
+<li>Apply &lsquo;Only show shortcuts&rsquo; filter</li>
+</ul>
+
+
+<p>Here is what the code looked like before the refactor.</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">MessageProvider</span> <span class="p">:</span> <span class="n">IMessageProvider</span><span class="p">,</span> <span class="n">IObserver</span><span class="p">&lt;</span><span class="n">KeyPress</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">readonly</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">subject</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;();</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">readonly</span> <span class="n">IShortcutProvider</span> <span class="n">shortcutProvider</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="n">IDisposable</span> <span class="n">keyStream</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">readonly</span> <span class="n">PopupSettings</span> <span class="n">settings</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="nf">MessageProvider</span><span class="p">(</span><span class="n">IKeyProvider</span> <span class="n">keyProvider</span><span class="p">,</span> <span class="n">IShortcutProvider</span> <span class="n">shortcutProvider</span><span class="p">,</span> <span class="n">ISettingsProvider</span> <span class="n">settingsProvider</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="n">shortcutProvider</span> <span class="p">=</span> <span class="n">shortcutProvider</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">settings</span> <span class="p">=</span> <span class="n">settingsProvider</span><span class="p">.</span><span class="n">GetSettings</span><span class="p">&lt;</span><span class="n">PopupSettings</span><span class="p">&gt;();</span>
+</span><span class='line'>        <span class="n">keyStream</span> <span class="p">=</span> <span class="n">keyProvider</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="n">Message</span> <span class="n">CurrentMessage</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="n">IDisposable</span> <span class="nf">Subscribe</span><span class="p">(</span><span class="n">IObserver</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">subject</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">observer</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">OnNext</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Message</span> <span class="n">message</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">currentKeyPress</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span><span class="k">value</span><span class="p">};</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">keyPresses</span> <span class="p">=</span> <span class="n">CurrentMessage</span> <span class="p">==</span> <span class="k">null</span> <span class="p">?</span> <span class="n">currentKeyPress</span> <span class="p">:</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">Keys</span><span class="p">.</span><span class="n">Concat</span><span class="p">(</span><span class="n">currentKeyPress</span><span class="p">).</span><span class="n">ToArray</span><span class="p">();</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">possibleShortcuts</span> <span class="p">=</span> <span class="n">GetPossibleShortcuts</span><span class="p">(</span><span class="n">keyPresses</span><span class="p">).</span><span class="n">ToList</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">possibleShortcuts</span><span class="p">.</span><span class="n">Any</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">var</span> <span class="n">shortcut</span> <span class="p">=</span> <span class="n">possibleShortcuts</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">s</span> <span class="p">=&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">IsMatch</span><span class="p">(</span><span class="n">keyPresses</span><span class="p">));</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">shortcut</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">message</span> <span class="p">=</span> <span class="n">CurrentMessage</span> <span class="p">??</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">AddKey</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">ShortcutName</span> <span class="p">=</span> <span class="n">shortcut</span><span class="p">.</span><span class="n">Name</span><span class="p">;</span>
+</span><span class='line'>                <span class="c1">//Have duplicated as it was easier for now, this should be cleaned up</span>
+</span><span class='line'>                <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Haven&#39;t matched a Chord, try just the last keypress</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">keyShortcuts</span> <span class="p">=</span> <span class="n">GetPossibleShortcuts</span><span class="p">(</span><span class="n">currentKeyPress</span><span class="p">).</span><span class="n">ToList</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">keyShortcuts</span><span class="p">.</span><span class="n">Any</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">var</span> <span class="n">shortcut</span> <span class="p">=</span> <span class="n">keyShortcuts</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">s</span> <span class="p">=&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">IsMatch</span><span class="p">(</span><span class="n">currentKeyPress</span><span class="p">));</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">shortcut</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="c1">//For matching last keypress, we want a new message</span>
+</span><span class='line'>                <span class="n">message</span> <span class="p">=</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">AddKey</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">ShortcutName</span> <span class="p">=</span> <span class="n">shortcut</span><span class="p">.</span><span class="n">Name</span><span class="p">;</span>
+</span><span class='line'>                <span class="c1">//Have duplicated as it was easier for now, this should be cleaned up</span>
+</span><span class='line'>                <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(!</span><span class="k">value</span><span class="p">.</span><span class="n">IsShortcut</span> <span class="p">&amp;&amp;</span> <span class="n">settings</span><span class="p">.</span><span class="n">DetectShortcutsOnly</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ShouldCreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">))</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">message</span> <span class="p">=</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'>            <span class="n">message</span> <span class="p">=</span> <span class="n">CurrentMessage</span> <span class="p">??</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">message</span><span class="p">.</span><span class="n">AddKey</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="n">Message</span> <span class="nf">CreateNewMessage</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span>
+</span><span class='line'>                              <span class="p">{</span>
+</span><span class='line'>                                  <span class="n">StartingTime</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">,</span>
+</span><span class='line'>                                  <span class="n">ProcessName</span> <span class="p">=</span> <span class="k">value</span><span class="p">.</span><span class="n">Process</span><span class="p">.</span><span class="n">ProcessName</span>
+</span><span class='line'>                              <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">CurrentMessage</span> <span class="p">=</span> <span class="n">message</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">subject</span><span class="p">.</span><span class="n">OnNext</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">ShouldCreateNewMessage</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span>
+</span><span class='line'>            <span class="n">CurrentMessage</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span>
+</span><span class='line'>            <span class="n">IsDifferentProcess</span><span class="p">(</span><span class="k">value</span><span class="p">)</span> <span class="p">||</span>
+</span><span class='line'>            <span class="n">IsOlderThanOneSecond</span><span class="p">()</span> <span class="p">||</span>
+</span><span class='line'>            <span class="n">LastKeyPressWasShortcut</span><span class="p">()</span> <span class="p">||</span>
+</span><span class='line'>            <span class="k">value</span><span class="p">.</span><span class="n">IsShortcut</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">LastKeyPressWasShortcut</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">Keys</span><span class="p">.</span><span class="n">Last</span><span class="p">().</span><span class="n">IsShortcut</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">KeyShortcut</span><span class="p">&gt;</span> <span class="n">GetPossibleShortcuts</span><span class="p">(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">KeyPress</span><span class="p">&gt;</span> <span class="n">keyPresses</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">shortcutProvider</span><span class="p">.</span><span class="n">GetShortcutsMatching</span><span class="p">(</span><span class="n">keyPresses</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">IsOlderThanOneSecond</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">LastMessage</span> <span class="p">&lt;</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">AddSeconds</span><span class="p">(-</span><span class="m">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">IsDifferentProcess</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">ProcessName</span> <span class="p">!=</span> <span class="k">value</span><span class="p">.</span><span class="n">Process</span><span class="p">.</span><span class="n">ProcessName</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">OnError</span><span class="p">(</span><span class="n">Exception</span> <span class="n">error</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">OnCompleted</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first thing you will notice is that most of the methods in this class access and manipulate the property <code>CurrentMessage</code>. This makes this class really hard to follow and rationalise what is going on.</p>
+
+<h1>Removing <code>IObservable&lt;T&gt;</code></h1>
+
+<p>Like in the previous class we refactored, the first thing we need to do is to stop implementing IObservable<T>.</p>
+
+<p>Our subscribe method will change from <code>IDisposable Subscribe(IObserver&lt;Message&gt; observer)</code> to <code>IObservable&lt;Message&gt; GetMessageStream(IObservable&lt;KeyPress&gt; keyStream)</code></p>
+
+<p>This means consumers of this class can simply pass an observable in and get a new feed. It also makes this class easy to test.</p>
+
+<h1>Visualising the requirements</h1>
+
+<p>After looking at the current behaviour I decided that it would make more sense to not show a partial shortcut on the screen until it had either been completed or broken. With that in mind, we will start off with a series of key presses. a, b, ctrl+r, ctrl+r, ctrl+r, a, ↓, ↓ (↓ is the down arrow key). For these examples imagine we have a single shortcut which is ctrl+r, ctrl+r.</p>
+
+<p>If we draw an ascii marble diagram it will look like this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">a</span><span class="p">----</span><span class="err">↓</span><span class="p">----</span><span class="err">↓</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first requirement is that we batch shortcuts into a single message.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">a</span><span class="p">-----------</span><span class="err">↓</span><span class="p">---</span><span class="err">↓</span>
+</span><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">--------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">-------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">--</span><span class="n">a</span><span class="p">---</span><span class="err">↓</span><span class="p">---</span><span class="err">↓</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the above diagram we see that ctrl+r, ctrl+r is a completed shortcut so our second stream emits the completed shortcut. But when we have ctrl+r, &lsquo;a&rsquo; that is not a shortcut. It is instead a broken shortcut so the second stream emits two messages, one directly after the other. a, b and the arrow keys emit a completed message right away because they are not part of any potential shortcuts.</p>
+
+<p>The next step is to merge messages together which we want to display on the screen together. In the above example we want to see this on the screen:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">ab</span>
+</span><span class='line'><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">+</span><span class="n">r</span> <span class="p">[</span><span class="n">Rename</span><span class="p">]</span>
+</span><span class='line'><span class="n">crtl</span><span class="p">+</span><span class="n">r</span>
+</span><span class='line'><span class="n">a</span><span class="err">↓</span> <span class="n">x</span> <span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets add that into our marble diagram. Items prefixed with * are new messages which will replace the messages it has been merged with</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">a</span><span class="p">-----------</span><span class="err">↓</span><span class="p">----</span><span class="err">↓</span><span class="p">-------</span>
+</span><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">--------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">-------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">--</span><span class="n">a</span><span class="p">---</span><span class="err">↓</span><span class="p">----</span><span class="err">↓</span><span class="p">-------</span>
+</span><span class='line'><span class="n">a</span><span class="p">----*</span><span class="n">ab</span><span class="p">------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">-------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">--</span><span class="n">a</span><span class="p">---*</span><span class="n">a</span><span class="err">↓</span><span class="p">--*</span><span class="n">ab</span><span class="err">↓</span> <span class="n">x</span> <span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have an idea visually of what our streams will look like we can turn this into Rx.</p>
+
+<h1>Writing the query</h1>
+
+<p>In Rx when we want to reduce the number of items we have where we need some sort of aggregation function. In this case we want to use the <code>.Scan()</code> operator.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">keyStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Scan</span><span class="p">(</span><span class="k">new</span> <span class="n">ShortcutAccumulator</span><span class="p">(),</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="n">ProcessKey</span><span class="p">(</span><span class="n">shortcutProvider</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">HasCompletedValue</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">acc</span> <span class="p">=&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="n">GetMessages</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Scan calls your accumulation function for each item in the stream, but unlike <code>Aggregate</code> it will emit the new aggregated value. In this case we start off with an empty <code>ShortcutAccumulator</code>, then the <code>keyStream</code> yields a value it is passed to the current <code>ShortcutAccumulator</code> which returns either itself or a new <code>ShortcutAccumulator</code> which <code>.Scan</code> will yield.</p>
+
+<p>The ShortcutAccumulator will check if that key press matches any shortcuts. If it doesn&rsquo;t, or that key completes the shortcut, it sets the HasCompletedValue property to true and returns itself. When a completed accumulator is asked to process a key it will simply create a new <code>ShortcutAccumulator</code>and get it to process the key and return that accumulator instead of itself.</p>
+
+<p>Because <code>.Scan</code> will emit the <code>ShortcutAccumulator</code> after each key press, we can simply filter the accumulators which are not completed yet, then select many on each completed ShortcutAccumulator to get the messages it has accumulated. The reason for the select many is when a shortcut is broken we create a message for each accumulated key press. And our stream now matches the second line in our marble diagram.</p>
+
+<p>To do the final line in our marble diagram we need another <code>Scan</code> which merges Messages which need to be merged.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">keyStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Scan</span><span class="p">(</span><span class="k">new</span> <span class="n">ShortcutAccumulator</span><span class="p">(),</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="n">ProcessKey</span><span class="p">(</span><span class="n">shortcutProvider</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">HasCompletedValue</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">GetMessages</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Scan</span><span class="p">(</span><span class="k">new</span> <span class="n">Message</span><span class="p">(),</span> <span class="p">(</span><span class="n">previousMessage</span><span class="p">,</span> <span class="n">newMessage</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">messageMerger</span><span class="p">.</span><span class="n">MergeIfNeeded</span><span class="p">(</span><span class="n">previousMessage</span><span class="p">,</span> <span class="n">newMessage</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="p">!</span><span class="n">settings</span><span class="p">.</span><span class="n">DetectShortcutsOnly</span> <span class="p">||</span> <span class="n">m</span><span class="p">.</span><span class="n">IsShortcut</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Whether a message needs to be merged or not is no longer the responsibility of this class, it has been moved into our <code>MessageMerger</code> class. <code>MergeIfNeeded</code> will check for all the merge conditions like the key presses being over a second apart, from different processes, either message being a shortcut etc and if they can be merged the new message will be merged into the previous. Ideally our entire stream would be immutable but that will have to be a separate task, we are refactoring existing code after all.</p>
+
+<p>Finally we apply the Shortcut Only setting and filter our list if that option is set.</p>
+
+<h1>Summary</h1>
+
+<p>The end result of the <code>MessageProvider</code> refactoring was a great improvement. The end result is a single method returning an Rx statement which forfills all of our requirements. The shortcut detection logic was moved into another class which has a single responsibility making it much easier to understand what is going on and follow.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Improving the carnac codebase and Rx usage (Part 1)]]></title>
+    <link href="http://jake.ginnivan.net/blog/carnac-improvements/part-1/"/>
+    <updated>2015-01-31T00:00:00+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/carnac-improvements/improving-carnacs-code</id>
+    <content type="html"><![CDATA[<p><a href="http://carnackeys.com/">Carnac</a> is an open source project created as part of <a href="http://code52.org/">Code52</a>. It is a simple utility which overlays key presses on your screen as you type which is pretty handy for presentations. Carnac also ships with some keymaps for different applications so it understands when you are pressing shortcuts.</p>
+
+<p>Recently Scott Hanselman blogged about a <a href="http://www.hanselman.com/blog/QuakeModeConsoleForVisualStudioOpenACommandPromptWithAHotkey.aspx">Quake Mode console</a> and mentioned carnac, this triggered Brendan Forster and myself to think about carnac again. When we started writing carnac there was not any Rx experience amongst the team and we did a pretty bad job. I think carnac is a <em>great</em> Rx problem and the code can be improved to take advantage of Rx and be a really good non-trivial Rx sample.
+This blog series is all about the things we did wrong and the process I went through to refactor carnac into a much simpler code base and really leverage the power of Rx.</p>
+
+<p>Part 1 - Refactoring the InterceptKeys class<br/>
+<a href="http://jake.ginnivan.net/blog/carnac-improvements/part-2/">Part 2 - Refactoring the MessageProvider class</a><br/>
+<a href="http://jake.ginnivan.net/blog/carnac-improvements/part-3/">Part 3 - Introducing the MessageController class</a><br/>
+Part 4 - Removing state mutation from the stream</p>
+
+<!-- more -->
+
+
+<h1>Fixing the InterceptKeys class</h1>
+
+<p>Carnac uses windows low level keyboard hooks to listen to key pressess. We have a class called <code>InterceptKeys</code> which is responsible for giving us an Rx stream of KeyEvents. This includes direction so if you press <code>ctrl+r</code> the stream would look like this:</p>
+
+<ul>
+<li>ctrl (down)</li>
+<li>r (down)</li>
+<li>r (up)</li>
+<li>ctrl (up)</li>
+</ul>
+
+
+<p>That is all this class has to do. The only other thing to note is <code>InterceptKeys</code> is a singleton and should only ever have a single low level keyboard hook created.</p>
+
+<p>Here is the original code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[PermissionSet(SecurityAction.LinkDemand, Name = &quot;FullTrust&quot;)]</span>
+</span><span class='line'><span class="na">[PermissionSet(SecurityAction.InheritanceDemand, Name=&quot;FullTrust&quot;)]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">InterceptKeys</span> <span class="p">:</span> <span class="n">IObservable</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;,</span> <span class="n">IDisposable</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">InterceptKeys</span> <span class="n">current</span> <span class="p">=</span> <span class="k">new</span> <span class="n">InterceptKeys</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">readonly</span> <span class="n">Win32Methods</span><span class="p">.</span><span class="n">LowLevelKeyboardProc</span> <span class="n">callback</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">readonly</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;</span> <span class="n">subject</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">disposed</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">IntPtr</span> <span class="n">hookId</span> <span class="p">=</span> <span class="n">IntPtr</span><span class="p">.</span><span class="n">Zero</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">decimal</span> <span class="n">subscriberCount</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">InterceptKeys</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">subject</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;();</span>
+</span><span class='line'>        <span class="n">callback</span> <span class="p">=</span> <span class="n">HookCallback</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="n">InterceptKeys</span> <span class="n">Current</span> <span class="p">{</span> <span class="k">return</span> <span class="n">current</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Dispose</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">GC</span><span class="p">.</span><span class="n">SuppressFinalize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="n">IDisposable</span> <span class="nf">Subscribe</span><span class="p">(</span><span class="n">IObserver</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;</span> <span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">IDisposable</span> <span class="n">dispose</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">observer</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">subscriberCount</span><span class="p">++;</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">subscriberCount</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">hookId</span> <span class="p">=</span> <span class="n">SetHook</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="nf">DelegateDisposable</span><span class="p">(()</span> <span class="p">=&gt;</span>
+</span><span class='line'>                                          <span class="p">{</span>
+</span><span class='line'>                                              <span class="n">subscriberCount</span><span class="p">--;</span>
+</span><span class='line'>                                              <span class="k">if</span> <span class="p">(</span><span class="n">subscriberCount</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>                                                  <span class="n">Win32Methods</span><span class="p">.</span><span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">);</span>
+</span><span class='line'>                                              <span class="n">dispose</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'>                                          <span class="p">});</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">IntPtr</span> <span class="nf">HookCallback</span><span class="p">(</span><span class="kt">int</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">IntPtr</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">IntPtr</span> <span class="n">lParam</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">nCode</span> <span class="p">&gt;=</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="cm">/* snip, not really important, just calculating the variabless used below. */</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kt">var</span> <span class="n">interceptKeyEventArgs</span> <span class="p">=</span> <span class="k">new</span> <span class="n">InterceptKeyEventArgs</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">keyDirection</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">shift</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">subject</span><span class="p">.</span><span class="n">OnNext</span><span class="p">(</span><span class="n">interceptKeyEventArgs</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">interceptKeyEventArgs</span><span class="p">.</span><span class="n">Handled</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="p">(</span><span class="n">IntPtr</span><span class="p">)</span><span class="m">1</span><span class="p">;</span> <span class="c1">//handled</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Win32Methods</span><span class="p">.</span><span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">static</span> <span class="n">IntPtr</span> <span class="nf">SetHook</span><span class="p">(</span><span class="n">Win32Methods</span><span class="p">.</span><span class="n">LowLevelKeyboardProc</span> <span class="n">proc</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">using</span> <span class="p">(</span><span class="n">Process</span> <span class="n">curProcess</span> <span class="p">=</span> <span class="n">Process</span><span class="p">.</span><span class="n">GetCurrentProcess</span><span class="p">())</span>
+</span><span class='line'>        <span class="k">using</span> <span class="p">(</span><span class="n">ProcessModule</span> <span class="n">curModule</span> <span class="p">=</span> <span class="n">curProcess</span><span class="p">.</span><span class="n">MainModule</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">Win32Methods</span><span class="p">.</span><span class="n">SetWindowsHookEx</span><span class="p">(</span><span class="n">Win32Methods</span><span class="p">.</span><span class="n">WH_KEYBOARD_LL</span><span class="p">,</span> <span class="n">proc</span><span class="p">,</span>
+</span><span class='line'>                                                  <span class="n">Win32Methods</span><span class="p">.</span><span class="n">GetModuleHandle</span><span class="p">(</span><span class="n">curModule</span><span class="p">.</span><span class="n">ModuleName</span><span class="p">),</span> <span class="m">0</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">(</span><span class="kt">bool</span> <span class="n">disposing</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(!</span><span class="n">disposed</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">disposing</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="n">subject</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="n">subject</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">disposed</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">DelegateDisposable</span> <span class="p">:</span> <span class="n">IDisposable</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">readonly</span> <span class="n">Action</span> <span class="n">dispose</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="nf">DelegateDisposable</span><span class="p">(</span><span class="n">Action</span> <span class="n">dispose</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">this</span><span class="p">.</span><span class="n">dispose</span> <span class="p">=</span> <span class="n">dispose</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">dispose</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are a lot of things we did wrong, lets look at them one at a time.</p>
+
+<h1>DelegateDisposable class</h1>
+
+<p>This is a simple win. Rx comes with a <em>heap</em> of really useful disposable types. We can delete our nested DelegateDisposable class and replace it&rsquo;s usage with <code>Disposable.Create()</code>. Quite an easy win.</p>
+
+<h1>Implementing IObservable<InterceptKeyEventArgs></h1>
+
+<p>When using Rx you should never have to implement <code>IObservable&lt;T&gt;</code> or <code>IObserver&lt;T&gt;</code>. If you do then you should be looking for a better way to do it.</p>
+
+<p>Because we are implementing <code>IObservable</code> we have to provide a <code>.Subscribe</code> method. Lets have a look at that.</p>
+
+<pre><code>public IDisposable Subscribe(IObserver&lt;InterceptKeyEventArgs&gt; observer)
+{
+    IDisposable dispose = subject.Subscribe(observer);
+    subscriberCount++;
+    if (subscriberCount == 1)
+        hookId = SetHook(callback);
+    return Disposable.Create(() =&gt;
+                      {
+                          subscriberCount--;
+                          if (subscriberCount == 0)
+                              Win32Methods.UnhookWindowsHookEx(hookId);
+                          dispose.Dispose();
+                      });
+}
+</code></pre>
+
+<p>The first side effect of this is that we have to do subscription management ourselves now! The good news is we can make a very simple change to improve this.</p>
+
+<ol>
+<li>No longer inherit from <code>IObservable&lt;InterceptKeyEventArgs&gt;</code></li>
+<li>Rename subscribe to <code>GetKeyStream</code> with this signature:<br/>
+<code>IObservable&lt;InterceptKeyEventArgs&gt; GetKeyStream()</code></li>
+<li>Make it compile again.</li>
+</ol>
+
+
+<p>To make it compile we need to create the observable that we are going to return. We will do that in the contructor of <code>InterceptKeys</code> so we always return the same observable to all callers (remember <code>InterceptKeys</code> is a singleton).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">InterceptKeys</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">keyStream</span> <span class="p">=</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;(</span><span class="n">observer</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">hookId</span> <span class="p">=</span> <span class="n">SetHook</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">dispose</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Disposable</span><span class="p">.</span><span class="n">Create</span><span class="p">(()</span> <span class="p">=&gt;</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">Win32Methods</span><span class="p">.</span><span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">dispose</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Publish</span><span class="p">().</span><span class="n">RefCount</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="n">IObservable</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;</span> <span class="n">GetKeyStream</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">keyStream</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ok this is looking better! We no longer are doing subscription management ourself. Lets look at the new Rx features we have used.</p>
+
+<h3>Observable.Create</h3>
+
+<p>If you ever need an observable, it is likely you want to use a static method off the <code>Observable</code> class. <code>Observable.Create</code> passes us an observable which we can call <code>.OnNext()</code>, <code>.OnError()</code> or <code>.OnComplete()</code> on to yield new values to any subscribers.</p>
+
+<p>You then return an <code>IDisposable</code> which is called when the subscription is disposed by the subscriber.</p>
+
+<h3>Publish()</h3>
+
+<p>The next new thing is the <code>.Publish</code> extension method which is actually just a helper which calls the <code>.Multicast(Subject&lt;T&gt;)</code> extension. Multicast takes a subject (which is both a observer and an observable) and returns an <code>IConnectableObservable&lt;T&gt;</code>. When you subscribe to a connectable observable you are actually subscribing to the subject you passed into <code>.Multicast()</code>. <code>IConnectableObservable&lt;T&gt;</code> has a method called <code>Connect</code> on it, when you call connect it subscribes to the feed which you called <code>Multicast</code> on and passes in your Subject as the observer.</p>
+
+<p>In effect <code>Multicast</code> means all subscribers actually share a single subscription, the subject simply determines the behaviour. Here are three examples:</p>
+
+<ul>
+<li><code>.Publish()</code> = <code>.Multicast(new Subject&lt;T&gt;)</code></li>
+<li><code>.PublishLast()</code> = <code>.Multicast(new AsyncSubject&lt;T&gt;)</code></li>
+<li><code>.Replay()</code> = <code>.Multicast(new ReplaySubject&lt;T&gt;)</code></li>
+</ul>
+
+
+<p>As a quick example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">observable</span> <span class="p">=</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;(</span><span class="n">observer</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Subscribed</span><span class="err">&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">hookId</span> <span class="p">=</span> <span class="n">SetHook</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">dispose</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Disposable</span><span class="p">.</span><span class="n">Create</span><span class="p">(()</span> <span class="p">=&gt;</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Unsubscribed</span><span class="err">&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">Win32Methods</span><span class="p">.</span><span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">dispose</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Without Publish</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">subscription</span> <span class="p">=</span> <span class="n">observable</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="p">});</span> <span class="c1">// Prints &#39;Subscribed&#39;</span>
+</span><span class='line'><span class="n">subscription</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span> <span class="c1">// Prints &#39;Unsubscribed&#39;</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">subscription2</span> <span class="p">=</span> <span class="n">observable</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="p">});</span> <span class="c1">// Prints &#39;Subscribed&#39;</span>
+</span><span class='line'><span class="n">subscription2</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span> <span class="c1">// Prints &#39;Unsubscribed&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// With Publish</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">published</span> <span class="p">=</span> <span class="n">observable</span><span class="p">.</span><span class="n">Publish</span><span class="p">();</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">subscription</span> <span class="p">=</span> <span class="n">published</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="p">});</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">subscription2</span> <span class="p">=</span> <span class="n">published</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="p">});</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">underlyingSubscription</span> <span class="p">=</span> <span class="n">observable</span><span class="p">.</span><span class="n">Connect</span><span class="p">();</span>   <span class="c1">// Prints &#39;Subscribed&#39;</span>
+</span><span class='line'><span class="n">subscription</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'><span class="n">subscription2</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'><span class="n">underlyingSubscription</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>  <span class="c1">// Prints &#39;Unsubscribed&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>RefCount()</h3>
+
+<p>Most of the time you do not want to manage the connection/disconnection of a connected observable yourself. This is where <code>RefCount</code> extension method comes in. It simply counts the number of subscribers and when the observable has subscribers it connects the underlying Published observable. Once all subscribers have Disposed it will disconnect the Published observable.</p>
+
+<p>Now Rx is fully managing our subscriptions and will make sure we only ever have a single low-level keyboard hook!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">observable</span> <span class="p">=</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;(</span><span class="n">observer</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Subscribed</span><span class="err">&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">hookId</span> <span class="p">=</span> <span class="n">SetHook</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">dispose</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Disposable</span><span class="p">.</span><span class="n">Create</span><span class="p">(()</span> <span class="p">=&gt;</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Unsubscribed</span><span class="err">&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">Win32Methods</span><span class="p">.</span><span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">dispose</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'>    <span class="p">}).</span><span class="n">Publish</span><span class="p">().</span><span class="n">RefCount</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Cleanup</h2>
+
+<p>Now that we have made this change, what else can be cleaned up?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">decimal</span> <span class="n">subscriberCount</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Dispose</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">GC</span><span class="p">.</span><span class="n">SuppressFinalize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">(</span><span class="kt">bool</span> <span class="n">disposing</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(!</span><span class="n">disposed</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">disposing</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">subject</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">subject</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">disposed</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can delete all of this code now.</p>
+
+<h1>Using <code>Subject&lt;InterceptKeyEventArgs&gt;</code></h1>
+
+<p>The next warning sign we should be looking for in our Rx code is the use of Subjects. A subject is both a <code>IObservable&lt;T&gt;</code> AND an <code>IObserver&lt;T&gt;</code>. In this case we have a subject stored in a field which the Low Level Keyboard hook publishes to, inside our keyStream observable we have subscribed to the subject using the observer that <code>Observable.Create</code> gave to us.</p>
+
+<p>To do this we have to move the low level keyboard hook into our <code>Observable.Create</code> so it can publish directly to the observer Rx has created us.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">keyStream</span> <span class="p">=</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;(</span><span class="n">observer</span> <span class="p">=&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Debug</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;Subscribed to keys&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">IntPtr</span> <span class="n">hookId</span> <span class="p">=</span> <span class="n">IntPtr</span><span class="p">.</span><span class="n">Zero</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// Need to hold onto this callback, otherwise it will get GC&#39;d as it is an unmanged callback</span>
+</span><span class='line'>    <span class="n">callback</span> <span class="p">=</span> <span class="p">(</span><span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">)</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">nCode</span> <span class="p">&gt;=</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">var</span> <span class="n">eventArgs</span> <span class="p">=</span> <span class="n">CreateEventArgs</span><span class="p">(</span><span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">observer</span><span class="p">.</span><span class="n">OnNext</span><span class="p">(</span><span class="n">eventArgs</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">eventArgs</span><span class="p">.</span><span class="n">Handled</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="p">(</span><span class="n">IntPtr</span><span class="p">)</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nf">CallNextHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">};</span>
+</span><span class='line'>    <span class="n">hookId</span> <span class="p">=</span> <span class="n">SetHook</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">Disposable</span><span class="p">.</span><span class="n">Create</span><span class="p">(()</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Debug</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;Unsubscribed from keys&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">callback</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="p">.</span><span class="n">Publish</span><span class="p">().</span><span class="n">RefCount</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is not the nicest code because of the API of <code>SetWindowsHookEx</code> but we have removed our Subject and the code is far easier to understand now.</p>
+
+<h1>Summary</h1>
+
+<p>After those refactorings we have a far more maintainable class and we have removed a number of Rx anti-patterns. This is what the class looks like after those refactorings:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[PermissionSet(SecurityAction.LinkDemand, Name = &quot;FullTrust&quot;)]</span>
+</span><span class='line'><span class="na">[PermissionSet(SecurityAction.InheritanceDemand, Name = &quot;FullTrust&quot;)]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">InterceptKeys</span> <span class="p">:</span> <span class="n">IInterceptKeys</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">readonly</span> <span class="n">InterceptKeys</span> <span class="n">Current</span> <span class="p">=</span> <span class="k">new</span> <span class="n">InterceptKeys</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">LowLevelKeyboardProc</span> <span class="n">callback</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">readonly</span> <span class="n">IObservable</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;</span> <span class="n">keyStream</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="nf">InterceptKeys</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">keyStream</span> <span class="p">=</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;(</span><span class="n">observer</span> <span class="p">=&gt;</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">Debug</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;Subscribed to keys&quot;</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">IntPtr</span> <span class="n">hookId</span> <span class="p">=</span> <span class="n">IntPtr</span><span class="p">.</span><span class="n">Zero</span><span class="p">;</span>
+</span><span class='line'>            <span class="c1">// Need to hold onto this callback, otherwise it will get GC&#39;d as it is an unmanged callback</span>
+</span><span class='line'>            <span class="n">callback</span> <span class="p">=</span> <span class="p">(</span><span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">)</span> <span class="p">=&gt;</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="n">nCode</span> <span class="p">&gt;=</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="kt">var</span> <span class="n">eventArgs</span> <span class="p">=</span> <span class="n">CreateEventArgs</span><span class="p">(</span><span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</span><span class='line'>                    <span class="n">observer</span><span class="p">.</span><span class="n">OnNext</span><span class="p">(</span><span class="n">eventArgs</span><span class="p">);</span>
+</span><span class='line'>                    <span class="k">if</span> <span class="p">(</span><span class="n">eventArgs</span><span class="p">.</span><span class="n">Handled</span><span class="p">)</span>
+</span><span class='line'>                        <span class="k">return</span> <span class="p">(</span><span class="n">IntPtr</span><span class="p">)</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">return</span> <span class="nf">CallNextHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>            <span class="n">hookId</span> <span class="p">=</span> <span class="n">SetHook</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">Disposable</span><span class="p">.</span><span class="n">Create</span><span class="p">(()</span> <span class="p">=&gt;</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">Debug</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;Unsubscribed from keys&quot;</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hookId</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">callback</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">});</span>
+</span><span class='line'>        <span class="p">})</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">Publish</span><span class="p">().</span><span class="n">RefCount</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="n">IObservable</span><span class="p">&lt;</span><span class="n">InterceptKeyEventArgs</span><span class="p">&gt;</span> <span class="n">GetKeyStream</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">keyStream</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">InterceptKeyEventArgs</span> <span class="nf">CreateEventArgs</span><span class="p">(</span><span class="n">IntPtr</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">IntPtr</span> <span class="n">lParam</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/* snip, not really important, just calculating the variabless used below. */</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="nf">InterceptKeyEventArgs</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">keyDirection</span><span class="p">,</span> <span class="n">alt</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">shift</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">static</span> <span class="n">IntPtr</span> <span class="nf">SetHook</span><span class="p">(</span><span class="n">LowLevelKeyboardProc</span> <span class="n">proc</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">//TODO: This requires FullTrust to use the Process class - is there any options for doing this in MediumTrust?</span>
+</span><span class='line'>        <span class="c1">//</span>
+</span><span class='line'>        <span class="k">using</span> <span class="p">(</span><span class="n">Process</span> <span class="n">curProcess</span> <span class="p">=</span> <span class="n">Process</span><span class="p">.</span><span class="n">GetCurrentProcess</span><span class="p">())</span>
+</span><span class='line'>        <span class="k">using</span> <span class="p">(</span><span class="n">ProcessModule</span> <span class="n">curModule</span> <span class="p">=</span> <span class="n">curProcess</span><span class="p">.</span><span class="n">MainModule</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nf">SetWindowsHookEx</span><span class="p">(</span><span class="n">WH_KEYBOARD_LL</span><span class="p">,</span> <span class="n">proc</span><span class="p">,</span> <span class="n">GetModuleHandle</span><span class="p">(</span><span class="n">curModule</span><span class="p">.</span><span class="n">ModuleName</span><span class="p">),</span> <span class="m">0</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pretty good result in the end. We have reduced this file from 224 lines of code to 100 lines by not implmenting IObservable<T> ourselves, letting Rx manage our subscriptions (with <code>.Publish().RefCount()</code>) and making sure we use types provided by Rx (<code>Disposable.Create</code> instead of our own type).</p>
+
+<p>Next in this series we will be rewriting the class which takes key presses (ctrl + f, a, b, space etc) and turns it into the messages carnac shows on the screen.</p>
+
+<p><a href="http://jake.ginnivan.net/blog/carnac-improvements/part-2/">Check out part 2</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[My Typical TeamCity build Setup]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/07/09/my-typical-teamcity-build-setup/"/>
-    <updated>2014-07-09T00:00:00+08:00</updated>
+    <updated>2014-07-09T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/07/09/my-typical-teamcity-build-setup</id>
     <content type="html"><![CDATA[<p>I posted <a href="http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/">Simple Versioning and Release Notes</a> a few weeks ago talking about how to simplify release notes and versioning. This post is a bit of a cheat sheet for how I set up my builds.</p>
 
@@ -145,9 +1644,9 @@ The snapshot dependency is really important, it means that you release the artif
   
   <entry>
     <title type="html"><![CDATA[Updating Chocolateys release notes with GitReleaseNotes]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/"/>
-    <updated>2014-06-26T05:51:20+08:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes</id>
+    <link href="http://jake.ginnivan.net/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes/"/>
+    <updated>2014-06-25T22:51:20+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes</id>
     <content type="html"><![CDATA[<p>Today I saw a tweet from Rob Reynolds today that <a href="https://twitter.com/ferventcoder/status/481816379340120064">Chocolatey 0.9.8.24 RC1 was released</a> so I clicked the link which was straight to the closed issues list on GitHub.</p>
 
 <p>I also noticed that many of the RCs and betas were not tagged in Git so you can&rsquo;t see what was fixed each beta.</p>
@@ -227,7 +1726,7 @@ Feel free to post on issue on GitHub if you have issues with your project, it is
   <entry>
     <title type="html"><![CDATA[Using Approval text in tests]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests/"/>
-    <updated>2014-06-10T00:00:00+08:00</updated>
+    <updated>2014-06-10T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/06/10/using-approval-text-in-tests</id>
     <content type="html"><![CDATA[<h2>Using Approval Text in tests</h2>
 
@@ -252,7 +1751,7 @@ Feel free to post on issue on GitHub if you have issues with your project, it is
   <entry>
     <title type="html"><![CDATA[Low friction Octopress/GitHub pages Setup]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup/"/>
-    <updated>2014-06-10T00:00:00+08:00</updated>
+    <updated>2014-06-10T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/06/10/low-friction-octopress-github-pages-setup</id>
     <content type="html"><![CDATA[<p>My blog uses <a href="http://octopress.org">Octopress</a> which is basically Jekyll plus a whole bunch of plug-ins preconfigured and it is hosted on <a href="https://pages.github.com">GitHub Pages</a>. But sometimes I really miss being able to simply create or edit posts online. I started looking around and found <a href="http://prose.io/">Prose.io</a>.</p>
 
@@ -322,7 +1821,7 @@ prose:
 <li>Install everything you would need to get Octopress building locally on your build server</li>
 <li>Create new build</li>
 <li>Add VCS root pointing at <code>source</code></li>
-<li> Set TeamCity Checkout mode to <em>checkout on agent</em></li>
+<li>Set TeamCity Checkout mode to <em>checkout on agent</em></li>
 <li>Add <code>Command Line</code> Build Step with Exe of <code>bundle</code> and Parameter of <code>install</code>. This will install all the dependencies Octopress needs</li>
 <li><p>Next we need TeamCity to clone our repo into the <code>_deploy</code> directory, we can do this with another Command Line build step with the <em>Run</em> parameter set to Custom Script (the reason for <code>git checkout master</code> is that I have the source branch set as default, and the _deploy branch needs to be on master)</p>
 
@@ -347,7 +1846,7 @@ prose:
   <entry>
     <title type="html"><![CDATA[Simple Versioning and release notes]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes/"/>
-    <updated>2014-05-25T17:05:00+08:00</updated>
+    <updated>2014-05-25T10:05:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/05/25/simple-versioning-and-release-notes</id>
     <content type="html"><![CDATA[<p>I do <a href="http://jake.ginnivan.net/open-source-work">a lot of open source</a> and one common time sink across all projects is versioning and generating good release notes.</p>
 
@@ -552,7 +2051,7 @@ It is much more strict and uses GitHub milestones and set tags to generate the r
   <entry>
     <title type="html"><![CDATA[Cannot type capital V on Sculpt Keyboard]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/05/19/key-not-working-on-sculpt-keyboard/"/>
-    <updated>2014-05-19T17:46:00+08:00</updated>
+    <updated>2014-05-19T10:46:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/05/19/key-not-working-on-sculpt-keyboard</id>
     <content type="html"><![CDATA[<p>At the MVP summit last year I picked up a <a href="http://www.microsoft.com/hardware/en-gb/p/sculpt-ergonomic-desktop">Sculpt Ergonomic Desktop pack</a>, mainly because I cannot stand the UK keyboard layout and wanted to stay on the US layout while working in London.</p>
 
@@ -567,7 +2066,7 @@ It is much more strict and uses GitHub milestones and set tags to generate the r
   <entry>
     <title type="html"><![CDATA[Disable thumbs.db]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db/"/>
-    <updated>2014-05-17T18:43:14+08:00</updated>
+    <updated>2014-05-17T11:43:14+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/05/17/disable-thumbs-dot-db</id>
     <content type="html"><![CDATA[<p>Thumbs.db is created by windows whenever a folder has images in it as a cache for the thumbnails for the images. But it gets locked and stops me switching branches in git and I have to restart my PC sometimes.</p>
 
@@ -585,9 +2084,9 @@ It is much more strict and uses GitHub milestones and set tags to generate the r
   
   <entry>
     <title type="html"><![CDATA[Unknown git mergetool]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/05/15/unknown-git-mergetool/"/>
-    <updated>2014-05-15T03:08:32+08:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/05/15/unknown-git-mergetool</id>
+    <link href="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/"/>
+    <updated>2014-05-14T20:08:32+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool</id>
     <content type="html"><![CDATA[<p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
 
 <pre><code>git config option merge.tool set to unknown tool: --global
@@ -611,7 +2110,7 @@ No known merge tool is available.
   <entry>
     <title type="html"><![CDATA[BDDfy v4.0 Beta 1 Released]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1/"/>
-    <updated>2014-05-08T17:05:00+08:00</updated>
+    <updated>2014-05-08T10:05:00+01:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/05/08/bddfy-v4-beta1</id>
     <content type="html"><![CDATA[<p>We are excited to announce v4 beta 1 of BDDfy! To give it a spin just change your NuGet settings to include pre-release and update. v4 has a bunch of new stuff included which takes BDDfy from not only the simplest BDD framework for .NET but also one of the most powerful!</p>
 
@@ -706,9 +2205,9 @@ No known merge tool is available.
   
   <entry>
     <title type="html"><![CDATA[BDDfy v4.0 Examples Support]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/05/06/bddfy-examples-support/"/>
-    <updated>2014-05-06T00:09:00+08:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/05/06/bddfy-examples-support</id>
+    <link href="http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support/"/>
+    <updated>2014-05-05T17:09:00+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/05/05/bddfy-examples-support</id>
     <content type="html"><![CDATA[<p>One of the major features in BDDfy v4 is the inclusion of examples</p>
 
 <p><strong>Scenario:</strong> Successful rail card purchases<br/>
@@ -902,9 +2401,9 @@ We will also give you row and column information of values if they cannot be ass
   
   <entry>
     <title type="html"><![CDATA[nUnit 2.6.3, async and .net 4.0 broken]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/"/>
-    <updated>2014-01-15T02:55:09+08:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken</id>
+    <link href="http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/"/>
+    <updated>2014-01-14T18:55:09+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken</id>
     <content type="html"><![CDATA[<p>I am currently working on a <strong>.net 4.0</strong> project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM because we do not have stats on how many clients currently have the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=3556">.net 4.0 KB 2468871 patch</a> which enables PCL support. These issues affect the RTM version as well.</p>
 
 <p>Recently I have upgraded to nCrunch 2.2 beta and ReSharper 8.1 both which ship with the upgraded nUnit 2.6.3 runner. After I upgraded these tools I noticed tests which should have been failing were passing and passing tests were being reported as failing but showing stack traces from a different test..</p>
@@ -999,7 +2498,7 @@ Tests Not Run:
   <entry>
     <title type="html"><![CDATA[On Async and Sync Contexts]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts/"/>
-    <updated>2014-01-10T22:12:49+08:00</updated>
+    <updated>2014-01-10T14:12:49+00:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts</id>
     <content type="html"><![CDATA[<p>This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation Contexts. Quite a few of my assumptions were wrong, or the behaviour is different between the .NET 4.0 implementation (CTP3 and RTM) and what happens in .NET 4.5.</p>
 
@@ -1236,9 +2735,9 @@ Because of the way the SyncContext flowed, the nUnit synchronisation context was
   
   <entry>
     <title type="html"><![CDATA[Blog Migration]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/01/06/blog-migration/"/>
-    <updated>2014-01-06T00:51:56+08:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/01/06/blog-migration</id>
+    <link href="http://jake.ginnivan.net/blog/2014/01/05/blog-migration/"/>
+    <updated>2014-01-05T16:51:56+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/05/blog-migration</id>
     <content type="html"><![CDATA[<p>I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site generators.</p>
 
 <p>Those of you subscribed to my RSS feeds will likely get duplications, sorry about that.</p>
@@ -1258,7 +2757,7 @@ Because of the way the SyncContext flowed, the nUnit synchronisation context was
   <entry>
     <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
     <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
-    <updated>2013-12-17T00:00:00+08:00</updated>
+    <updated>2013-12-17T00:00:00+00:00</updated>
     <id>http://jake.ginnivan.net/gitreleasenotes</id>
     <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
 
@@ -1324,7 +2823,7 @@ It will then output your release notes in <a href="http://www.semanticreleasenot
   <entry>
     <title type="html"><![CDATA[Git Flow Versioning]]></title>
     <link href="http://jake.ginnivan.net/git-flow-versioning/"/>
-    <updated>2013-10-02T00:00:00+08:00</updated>
+    <updated>2013-10-02T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/git-flow-versioning</id>
     <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
 
@@ -1492,7 +2991,7 @@ git push upstream --tags
   <entry>
     <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
     <link href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity/"/>
-    <updated>2013-09-28T00:00:00+08:00</updated>
+    <updated>2013-09-28T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</id>
     <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
 
@@ -1617,7 +3116,7 @@ git push upstream --tags
   <entry>
     <title type="html"><![CDATA[Convention Tests v2 Released]]></title>
     <link href="http://jake.ginnivan.net/conventiontests-v2-released/"/>
-    <updated>2013-09-19T00:00:00+08:00</updated>
+    <updated>2013-09-19T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/conventiontests-v2-released</id>
     <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
 
@@ -1692,136 +3191,6 @@ TestAssembly.ClassWithPrivateDefaultCtor
 </code></pre>
 
 <p>Then if you look in the directory where your test assembly is, there will be an html report called <code>Conventions.htm</code>, serving as living documentation!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Pack URI in Unit Tests]]></title>
-    <link href="http://jake.ginnivan.net/pack-uri-in-unit-tests/"/>
-    <updated>2013-09-16T00:00:00+08:00</updated>
-    <id>http://jake.ginnivan.net/pack-uri-in-unit-tests</id>
-    <content type="html"><![CDATA[<p>I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues.</p>
-
-<h2>Exception 1</h2>
-
-<h3>System.UriFormatException : Invalid URI: Invalid port specified</h3>
-
-<p>This one is pretty easy to fix, you can use the <code>PackUriHelper</code> which registers a few things in it&rsquo;s static ctor</p>
-
-<pre><code>PackUriHelper.Create(new Uri("reliable://0"))
-</code></pre>
-
-<h2>Exception 2</h2>
-
-<h3>System.NotSupportedException : The URI prefix is not recognized</h3>
-
-<p>This one is fixed by giving WPF the default resource assembly.</p>
-
-<pre><code>System.Windows.Application.ResourceAssembly = typeof(App).Assembly;
-</code></pre>
-
-<p>Now you should be able to unit tests around pack uri&rsquo;s</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Verifying logged messages with Log4Net]]></title>
-    <link href="http://jake.ginnivan.net/verifying-logged-messages-with-log4net/"/>
-    <updated>2013-09-13T00:00:00+08:00</updated>
-    <id>http://jake.ginnivan.net/verifying-logged-messages-with-log4net</id>
-    <content type="html"><![CDATA[<p>I came across a constructor which looked something like this, just to enable a test to inject a mocked ILog and validate the calls.</p>
-
-<pre><code>ClassCtor(...., Func&lt;ILog&gt; logFactory) { .. }
-</code></pre>
-
-<p>The log factory would grab inject a log for the class, but everywhere else in the app used</p>
-
-<pre><code>ILog log = LogManager.GetLogger(typeof(CLASS));
-</code></pre>
-
-<p>There must be a better way, something like a scoped appender or something, so I came up with this syntax</p>
-
-<!-- more -->
-
-
-<pre><code>[TestFixture]
-public class RecordTest
-{
-    [Test]
-    public void DoTest()
-    {
-        var testing = Log4NetTestHelper.RecordLog(() =&gt;
-        {
-            var log = LogManager.GetLogger(typeof (RecordTest));
-            log.Error("Testing!");
-        });
-
-        Assert.AreEqual("ERROR - RecordTest | Testing!", testing[0]);
-    }
-}
-</code></pre>
-
-<p>Pretty easy, you record the logs which are logged inside a lambda. This means you don&rsquo;t have to inject logs and modify your code if you decide you want to assert on a logged message</p>
-
-<p>The class to do this is pretty simple</p>
-
-<pre><code>public static class Log4NetTestHelper
-{
-    public static string[] RecordLog(Action action)
-    {
-        if (!LogManager.GetRepository().Configured)
-            BasicConfigurator.Configure();
-        var logMessages = new List&lt;string&gt;();
-        var root = ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root;
-        var attachable = root as IAppenderAttachable;
-
-        var appender = new MemoryAppender();
-        if (attachable != null)
-            attachable.AddAppender(appender);
-
-        try
-        {           
-            action();
-        }
-        finally
-        {
-            var loggingEvents = appender.GetEvents();
-            foreach (var loggingEvent in loggingEvents)
-            {
-                var stringWriter = new StringWriter();
-                loggingEvent.WriteRenderedMessage(stringWriter);
-                logMessages.Add(string.Format("{0} - {1} | {2}", loggingEvent.Level.DisplayName, loggingEvent.LoggerName, stringWriter.ToString()));
-            }
-            if (attachable != null)
-                attachable.RemoveAppender(appender);
-        }
-
-        return logMessages.ToArray();
-    }
-}
-</code></pre>
-
-<p>Enjoy!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ClickOnce Signing Error]]></title>
-    <link href="http://jake.ginnivan.net/clickonce-signing-error/"/>
-    <updated>2013-09-13T00:00:00+08:00</updated>
-    <id>http://jake.ginnivan.net/clickonce-signing-error</id>
-    <content type="html"><![CDATA[<p>On my current project we use ClickOnce, and I am setting up the build server to sign using a proper cert rather than a self generated one.</p>
-
-<p>The command:</p>
-
-<pre><code>mage.exe -New Application -ToFile &lt;path&gt;\App.exe.manifest -name "&lt;Name&gt;" -Version 0.1.1.1 -FromDirectory &lt;path&gt;\0.1.1.1\ -IconFile App.ico -CertHash "‏ca5da5a1f7c57411111111a79cbf50c4432ed949"
-</code></pre>
-
-<p>And was getting <code>This certificate cannot be used for signing - "ca5da5a1f7c57411111111a79cbf50c4432ed949"</code></p>
-
-<p>I was searching for what extended attributes are required, checking if I got the right thumbprint and wasted a bunch of time.</p>
-
-<p>The fix was simple, <strong>remove the quotes</strong> around the thumbprint</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vsto | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/vsto/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[VSTO Contrib v0.12 Released]]></title>
     <link href="http://jake.ginnivan.net/vsto-contrib/v0-12-released/"/>
-    <updated>2013-08-06T00:00:00+08:00</updated>
+    <updated>2013-08-06T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/vsto-contrib/v0-12-released</id>
     <content type="html"><![CDATA[<p>I have just pushed the button on VSTO Contrib v0.12!</p>
 
@@ -37,7 +37,7 @@ Due to the complexities of supporting multiple versions, I have dropped Office 2
   <entry>
     <title type="html"><![CDATA[VSTOContrib Context Menus]]></title>
     <link href="http://jake.ginnivan.net/vstocontrib-outlook-contextmenus/"/>
-    <updated>2012-08-22T00:00:00+08:00</updated>
+    <updated>2012-08-22T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/vstocontrib-outlook-contextmenus</id>
     <content type="html"><![CDATA[<p>So the scenario was that I want to show additional menu items when right clicking on an email.</p>
 
@@ -104,7 +104,7 @@ public class ExplorerViewModel : OfficeViewModelBase, IRibbonViewModel
   <entry>
     <title type="html"><![CDATA[My Sessions at TechEd 2011]]></title>
     <link href="http://jake.ginnivan.net/teched-2011/"/>
-    <updated>2011-08-29T00:00:00+08:00</updated>
+    <updated>2011-08-29T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/teched-2011</id>
     <content type="html"><![CDATA[<h1>DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
 
@@ -135,7 +135,7 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   <entry>
     <title type="html"><![CDATA[Ribbon XML and Ribbon Designer in Depth]]></title>
     <link href="http://jake.ginnivan.net/vsto-ribbon-designer-in-depth/"/>
-    <updated>2011-04-05T00:00:00+08:00</updated>
+    <updated>2011-04-05T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/vsto-ribbon-designer-in-depth</id>
     <content type="html"><![CDATA[<p>Ever wanted to know a bit more about how VSTO gives you the Ribbon designer. This post will explain Ribbon XML, then how the designer gives you more.</p>
 
@@ -215,7 +215,7 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   <entry>
     <title type="html"><![CDATA[VSTO Contrib RibbonFactory]]></title>
     <link href="http://jake.ginnivan.net/vsto-contrib/ribbon-factory/"/>
-    <updated>2011-04-05T00:00:00+08:00</updated>
+    <updated>2011-04-05T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/vsto-contrib/ribbon-factory</id>
     <content type="html"><![CDATA[<h1>Why?</h1>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: resharper | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/resharper/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ReSharper Xaml Attribute Ordering Plug-in]]></title>
     <link href="http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin/"/>
-    <updated>2013-09-09T00:00:00+08:00</updated>
+    <updated>2013-09-09T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/resharper-xaml-attribute-ordering-plugin</id>
     <content type="html"><![CDATA[<p>A while back I got introduced to <a href="https://xamlstyler.codeplex.com/">https://xamlstyler.codeplex.com/</a> which is a pretty good visual studio plug-in for formatting xaml, but I like ReSharper&rsquo;s formatting options better :)</p>
 
@@ -37,7 +37,7 @@
   <entry>
     <title type="html"><![CDATA[No more R# warnings for nHibernate aliases]]></title>
     <link href="http://jake.ginnivan.net/nhibernate-alias-warnings/"/>
-    <updated>2011-07-21T00:00:00+08:00</updated>
+    <updated>2011-07-21T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/nhibernate-alias-warnings</id>
     <content type="html"><![CDATA[<p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
 

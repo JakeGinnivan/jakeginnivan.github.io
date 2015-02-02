@@ -4,7 +4,7 @@
   <title><![CDATA[Category: async | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/async/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[nUnit 2.6.3, async and .net 4.0 broken]]></title>
-    <link href="http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken/"/>
-    <updated>2014-01-15T02:55:09+08:00</updated>
-    <id>http://jake.ginnivan.net/blog/2014/01/15/nunit-263-async-and-dotnet40-broken</id>
+    <link href="http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken/"/>
+    <updated>2014-01-14T18:55:09+00:00</updated>
+    <id>http://jake.ginnivan.net/blog/2014/01/14/nunit-263-async-and-dotnet40-broken</id>
     <content type="html"><![CDATA[<p>I am currently working on a <strong>.net 4.0</strong> project which uses async/await quite heavily. We also are using the old AsyncTargeting pack rather than the RTM because we do not have stats on how many clients currently have the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=3556">.net 4.0 KB 2468871 patch</a> which enables PCL support. These issues affect the RTM version as well.</p>
 
 <p>Recently I have upgraded to nCrunch 2.2 beta and ReSharper 8.1 both which ship with the upgraded nUnit 2.6.3 runner. After I upgraded these tools I noticed tests which should have been failing were passing and passing tests were being reported as failing but showing stack traces from a different test..</p>
@@ -112,7 +112,7 @@ Tests Not Run:
   <entry>
     <title type="html"><![CDATA[On Async and Sync Contexts]]></title>
     <link href="http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts/"/>
-    <updated>2014-01-10T22:12:49+08:00</updated>
+    <updated>2014-01-10T14:12:49+00:00</updated>
     <id>http://jake.ginnivan.net/blog/2014/01/10/on-async-and-sync-contexts</id>
     <content type="html"><![CDATA[<p>This week has been a really heavy learning experience for me in terms of async/await, .ConfigureAwait() and how it interacts with Synchronisation Contexts. Quite a few of my assumptions were wrong, or the behaviour is different between the .NET 4.0 implementation (CTP3 and RTM) and what happens in .NET 4.5.</p>
 
@@ -350,7 +350,7 @@ Because of the way the SyncContext flowed, the nUnit synchronisation context was
   <entry>
     <title type="html"><![CDATA[Awaitable DelegateCommand]]></title>
     <link href="http://jake.ginnivan.net/awaitable-delegatecommand/"/>
-    <updated>2013-03-15T00:00:00+08:00</updated>
+    <updated>2013-03-15T00:00:00+00:00</updated>
     <id>http://jake.ginnivan.net/awaitable-delegatecommand</id>
     <content type="html"><![CDATA[<p>Most of you would be aware of DelegateCommand, it allows you to turn a lambda (or two if you want to specify canexecute) into a WPF ICommand.</p>
 
@@ -464,7 +464,7 @@ public class AwaitableDelegateCommand&lt;T&gt; : IAsyncCommand&lt;T&gt;, IComman
   <entry>
     <title type="html"><![CDATA[Async warning with nSubstitute]]></title>
     <link href="http://jake.ginnivan.net/async-warning-with-nsubstitute/"/>
-    <updated>2012-10-16T00:00:00+08:00</updated>
+    <updated>2012-10-16T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/async-warning-with-nsubstitute</id>
     <content type="html"><![CDATA[<p>I got sick of a heap of warnings in VS which look like this:</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: automapper | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/automapper/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Adding Inheritance to AutoMapper]]></title>
     <link href="http://jake.ginnivan.net/automapperinheritance/"/>
-    <updated>2010-10-31T00:00:00+08:00</updated>
+    <updated>2010-10-31T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/automapperinheritance</id>
     <content type="html"><![CDATA[<p><strong>Update:</strong> This is currently in the Automapper master, and will be included in the v2 release (hopefully Before/After map will also get included, patch submitted).</p>
 

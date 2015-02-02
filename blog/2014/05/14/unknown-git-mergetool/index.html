@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Migration - Jake Ginnivan&#8217;s blog</title>
+  <title>Unknown Git Mergetool - Jake Ginnivan&#8217;s blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site &hellip;">
+  <meta name="description" content="Today my git mergetool stopped working. When I ran git mergetool I was greeted with: git config option merge.tool set to unknown tool: --global &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/01/06/blog-migration">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
@@ -92,7 +92,7 @@
   
   <header>
     
-      <h1 class="entry-title">Blog Migration</h1>
+      <h1 class="entry-title">Unknown Git Mergetool</h1>
     
     
       <p class="meta">
@@ -101,26 +101,30 @@
 
 
 
-<time class='entry-date' datetime='2014-01-06T00:51:56+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:51 am</span></time>
+<time class='entry-date' datetime='2014-05-14T20:08:32+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:08 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site generators.</p>
+<div class="entry-content"><p>Today my git mergetool stopped working. When I ran <code>git mergetool</code> I was greeted with:</p>
 
-<p>Those of you subscribed to my RSS feeds will likely get duplications, sorry about that.</p>
+<pre><code>git config option merge.tool set to unknown tool: --global
+Resetting to default...
 
-<h2>LinqPad Migration script</h2>
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+tortoisemerge emerge vimdiff
+No known merge tool is available.
+</code></pre>
 
-<p>Migrates posts, and images (putting them in the correct spot for Jekyll sites and rewriting links in your blog posts as it goes)</p>
+<p>Somehow (seriously, I have <strong>no</strong> idea how I did this) I had created a setting in one of my repositories set my mergetool to <code>--global</code>.</p>
 
-<p>Available at <a href="http://share.linqpad.net/76oqrd.linq">http://share.linqpad.net/76oqrd.linq</a></p>
+<p>If you happen to get yourself into the same issue, run <code>git config --list</code> to see what your config settings are.</p>
 
-<h2>Other Links</h2>
-
-<p><a href="https://github.com/tokkonopapa/octopress-tagcloud">https://github.com/tokkonopapa/octopress-tagcloud</a></p>
+<p>For me, I had a rogue <code>merge.tool</code> entry, so I just had to run <code>git config --unset merge.tool</code> which deleted the entry and I was off again.</p>
 </div>
 
 
@@ -136,7 +140,7 @@
 
 
 
-<time class='entry-date' datetime='2014-01-06T00:51:56+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:51 am</span></time>
+<time class='entry-date' datetime='2014-05-14T20:08:32+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:08 pm</span></time>
       
 
 
@@ -144,7 +148,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/01/06/blog-migration/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/01/06/blog-migration/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/" >Tweet</a>
   
   
   
@@ -153,10 +157,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/gitreleasenotes/" title="Previous Post: GitReleaseNotes Initial Release!">&laquo; GitReleaseNotes Initial Release!</a>
+        <a class="basic-alignment left" href="/blog/2014/05/08/bddfy-v4-beta1/" title="Previous Post: BDDfy v4.0 Beta 1 Released">&laquo; BDDfy v4.0 Beta 1 Released</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/01/10/on-async-and-sync-contexts/" title="Next Post: On Async and Sync Contexts">On Async and Sync Contexts &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/05/17/disable-thumbs-dot-db/" title="Next Post: Disable thumbs.db">Disable thumbs.db &raquo;</a>
       
     </p>
   </footer>
@@ -180,7 +184,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
@@ -194,8 +198,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/01/06/blog-migration/';
-        var disqus_url = 'http://jake.ginnivan.net/blog/2014/01/06/blog-migration/';
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2014/05/14/unknown-git-mergetool/';
         var disqus_script = 'embed.js';
       
     (function () {

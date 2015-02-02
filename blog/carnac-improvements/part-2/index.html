@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Improving the Carnac Codebase and Rx Usage (Part 2) - Jake Ginnivan&#8217;s blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="This post is the second part in a series covering a series of improvements in the carnac codebase, specifically to improve the usage of Rx. The next &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/carnac-improvements/part-2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan&#8217;s blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Improving the Carnac Codebase and Rx Usage (Part 2)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-01T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This post is the second part in a series covering a series of improvements in the carnac codebase, specifically to improve the usage of Rx. The next class I will be rewriting is the MessageProvider.</p>
+
+<p><a href="/blog/carnac-improvements/part-1/">Part 1 - Refactoring the InterceptKeys class</a><br/>
+Part 2 - Refactoring the MessageProvider class<br/>
+<a href="/blog/carnac-improvements/part-3/">Part 3 - Introducing the MessageController class</a><br/>
+Part 4 - Removing state mutation from the stream</p>
+
+<p>As a bit of background, in carnac a <code>KeyPress</code> is not directional and it also contains information about if modifiers were pressed at the same time. For Instance <code>ctrl + r</code> would be a KeyPress. A <code>Message</code> is what is shown on the screen.</p>
+
+<p>The message provider as it is does the following:</p>
+
+<ul>
+<li>Is <code>IObserver&lt;KeyPress&gt;</code></li>
+<li>It aggregates multiple KeyPresses into logical messages with the following rules:
+
+<ul>
+<li>Shortcuts are always shown in their own message</li>
+<li>If there has been more than a second between the last keypress a new message is created</li>
+<li>If the key presses were entered into different applications a new messsage is created</li>
+</ul>
+</li>
+<li>Apply &lsquo;Only show shortcuts&rsquo; filter</li>
+</ul>
+
+
+<p>Here is what the code looked like before the refactor.</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">MessageProvider</span> <span class="p">:</span> <span class="n">IMessageProvider</span><span class="p">,</span> <span class="n">IObserver</span><span class="p">&lt;</span><span class="n">KeyPress</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">readonly</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">subject</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;();</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">readonly</span> <span class="n">IShortcutProvider</span> <span class="n">shortcutProvider</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="n">IDisposable</span> <span class="n">keyStream</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">readonly</span> <span class="n">PopupSettings</span> <span class="n">settings</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="nf">MessageProvider</span><span class="p">(</span><span class="n">IKeyProvider</span> <span class="n">keyProvider</span><span class="p">,</span> <span class="n">IShortcutProvider</span> <span class="n">shortcutProvider</span><span class="p">,</span> <span class="n">ISettingsProvider</span> <span class="n">settingsProvider</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="n">shortcutProvider</span> <span class="p">=</span> <span class="n">shortcutProvider</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">settings</span> <span class="p">=</span> <span class="n">settingsProvider</span><span class="p">.</span><span class="n">GetSettings</span><span class="p">&lt;</span><span class="n">PopupSettings</span><span class="p">&gt;();</span>
+</span><span class='line'>        <span class="n">keyStream</span> <span class="p">=</span> <span class="n">keyProvider</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="n">Message</span> <span class="n">CurrentMessage</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="n">IDisposable</span> <span class="nf">Subscribe</span><span class="p">(</span><span class="n">IObserver</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">subject</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">observer</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">OnNext</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Message</span> <span class="n">message</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">currentKeyPress</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span><span class="k">value</span><span class="p">};</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">keyPresses</span> <span class="p">=</span> <span class="n">CurrentMessage</span> <span class="p">==</span> <span class="k">null</span> <span class="p">?</span> <span class="n">currentKeyPress</span> <span class="p">:</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">Keys</span><span class="p">.</span><span class="n">Concat</span><span class="p">(</span><span class="n">currentKeyPress</span><span class="p">).</span><span class="n">ToArray</span><span class="p">();</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">possibleShortcuts</span> <span class="p">=</span> <span class="n">GetPossibleShortcuts</span><span class="p">(</span><span class="n">keyPresses</span><span class="p">).</span><span class="n">ToList</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">possibleShortcuts</span><span class="p">.</span><span class="n">Any</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">var</span> <span class="n">shortcut</span> <span class="p">=</span> <span class="n">possibleShortcuts</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">s</span> <span class="p">=&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">IsMatch</span><span class="p">(</span><span class="n">keyPresses</span><span class="p">));</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">shortcut</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">message</span> <span class="p">=</span> <span class="n">CurrentMessage</span> <span class="p">??</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">AddKey</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">ShortcutName</span> <span class="p">=</span> <span class="n">shortcut</span><span class="p">.</span><span class="n">Name</span><span class="p">;</span>
+</span><span class='line'>                <span class="c1">//Have duplicated as it was easier for now, this should be cleaned up</span>
+</span><span class='line'>                <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Haven&#39;t matched a Chord, try just the last keypress</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">keyShortcuts</span> <span class="p">=</span> <span class="n">GetPossibleShortcuts</span><span class="p">(</span><span class="n">currentKeyPress</span><span class="p">).</span><span class="n">ToList</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">keyShortcuts</span><span class="p">.</span><span class="n">Any</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="kt">var</span> <span class="n">shortcut</span> <span class="p">=</span> <span class="n">keyShortcuts</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">s</span> <span class="p">=&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">IsMatch</span><span class="p">(</span><span class="n">currentKeyPress</span><span class="p">));</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">shortcut</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="c1">//For matching last keypress, we want a new message</span>
+</span><span class='line'>                <span class="n">message</span> <span class="p">=</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">AddKey</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">message</span><span class="p">.</span><span class="n">ShortcutName</span> <span class="p">=</span> <span class="n">shortcut</span><span class="p">.</span><span class="n">Name</span><span class="p">;</span>
+</span><span class='line'>                <span class="c1">//Have duplicated as it was easier for now, this should be cleaned up</span>
+</span><span class='line'>                <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(!</span><span class="k">value</span><span class="p">.</span><span class="n">IsShortcut</span> <span class="p">&amp;&amp;</span> <span class="n">settings</span><span class="p">.</span><span class="n">DetectShortcutsOnly</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">ShouldCreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">))</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">message</span> <span class="p">=</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'>            <span class="n">message</span> <span class="p">=</span> <span class="n">CurrentMessage</span> <span class="p">??</span> <span class="n">CreateNewMessage</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">message</span><span class="p">.</span><span class="n">AddKey</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="n">Message</span> <span class="nf">CreateNewMessage</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span>
+</span><span class='line'>                              <span class="p">{</span>
+</span><span class='line'>                                  <span class="n">StartingTime</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">,</span>
+</span><span class='line'>                                  <span class="n">ProcessName</span> <span class="p">=</span> <span class="k">value</span><span class="p">.</span><span class="n">Process</span><span class="p">.</span><span class="n">ProcessName</span>
+</span><span class='line'>                              <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">CurrentMessage</span> <span class="p">=</span> <span class="n">message</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">subject</span><span class="p">.</span><span class="n">OnNext</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">ShouldCreateNewMessage</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span>
+</span><span class='line'>            <span class="n">CurrentMessage</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span>
+</span><span class='line'>            <span class="n">IsDifferentProcess</span><span class="p">(</span><span class="k">value</span><span class="p">)</span> <span class="p">||</span>
+</span><span class='line'>            <span class="n">IsOlderThanOneSecond</span><span class="p">()</span> <span class="p">||</span>
+</span><span class='line'>            <span class="n">LastKeyPressWasShortcut</span><span class="p">()</span> <span class="p">||</span>
+</span><span class='line'>            <span class="k">value</span><span class="p">.</span><span class="n">IsShortcut</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">LastKeyPressWasShortcut</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">Keys</span><span class="p">.</span><span class="n">Last</span><span class="p">().</span><span class="n">IsShortcut</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">KeyShortcut</span><span class="p">&gt;</span> <span class="n">GetPossibleShortcuts</span><span class="p">(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">KeyPress</span><span class="p">&gt;</span> <span class="n">keyPresses</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">shortcutProvider</span><span class="p">.</span><span class="n">GetShortcutsMatching</span><span class="p">(</span><span class="n">keyPresses</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">IsOlderThanOneSecond</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">LastMessage</span> <span class="p">&lt;</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">AddSeconds</span><span class="p">(-</span><span class="m">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">IsDifferentProcess</span><span class="p">(</span><span class="n">KeyPress</span> <span class="k">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">CurrentMessage</span><span class="p">.</span><span class="n">ProcessName</span> <span class="p">!=</span> <span class="k">value</span><span class="p">.</span><span class="n">Process</span><span class="p">.</span><span class="n">ProcessName</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">OnError</span><span class="p">(</span><span class="n">Exception</span> <span class="n">error</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">OnCompleted</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first thing you will notice is that most of the methods in this class access and manipulate the property <code>CurrentMessage</code>. This makes this class really hard to follow and rationalise what is going on.</p>
+
+<h1>Removing <code>IObservable&lt;T&gt;</code></h1>
+
+<p>Like in the previous class we refactored, the first thing we need to do is to stop implementing IObservable<T>.</p>
+
+<p>Our subscribe method will change from <code>IDisposable Subscribe(IObserver&lt;Message&gt; observer)</code> to <code>IObservable&lt;Message&gt; GetMessageStream(IObservable&lt;KeyPress&gt; keyStream)</code></p>
+
+<p>This means consumers of this class can simply pass an observable in and get a new feed. It also makes this class easy to test.</p>
+
+<h1>Visualising the requirements</h1>
+
+<p>After looking at the current behaviour I decided that it would make more sense to not show a partial shortcut on the screen until it had either been completed or broken. With that in mind, we will start off with a series of key presses. a, b, ctrl+r, ctrl+r, ctrl+r, a, ↓, ↓ (↓ is the down arrow key). For these examples imagine we have a single shortcut which is ctrl+r, ctrl+r.</p>
+
+<p>If we draw an ascii marble diagram it will look like this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">a</span><span class="p">----</span><span class="err">↓</span><span class="p">----</span><span class="err">↓</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first requirement is that we batch shortcuts into a single message.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">a</span><span class="p">-----------</span><span class="err">↓</span><span class="p">---</span><span class="err">↓</span>
+</span><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">--------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">-------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">--</span><span class="n">a</span><span class="p">---</span><span class="err">↓</span><span class="p">---</span><span class="err">↓</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the above diagram we see that ctrl+r, ctrl+r is a completed shortcut so our second stream emits the completed shortcut. But when we have ctrl+r, &lsquo;a&rsquo; that is not a shortcut. It is instead a broken shortcut so the second stream emits two messages, one directly after the other. a, b and the arrow keys emit a completed message right away because they are not part of any potential shortcuts.</p>
+
+<p>The next step is to merge messages together which we want to display on the screen together. In the above example we want to see this on the screen:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">ab</span>
+</span><span class='line'><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">+</span><span class="n">r</span> <span class="p">[</span><span class="n">Rename</span><span class="p">]</span>
+</span><span class='line'><span class="n">crtl</span><span class="p">+</span><span class="n">r</span>
+</span><span class='line'><span class="n">a</span><span class="err">↓</span> <span class="n">x</span> <span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets add that into our marble diagram. Items prefixed with * are new messages which will replace the messages it has been merged with</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">----</span><span class="n">a</span><span class="p">-----------</span><span class="err">↓</span><span class="p">----</span><span class="err">↓</span><span class="p">-------</span>
+</span><span class='line'><span class="n">a</span><span class="p">----</span><span class="n">b</span><span class="p">--------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">-------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">--</span><span class="n">a</span><span class="p">---</span><span class="err">↓</span><span class="p">----</span><span class="err">↓</span><span class="p">-------</span>
+</span><span class='line'><span class="n">a</span><span class="p">----*</span><span class="n">ab</span><span class="p">------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">,</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">-------------</span><span class="n">ctrl</span><span class="p">+</span><span class="n">r</span><span class="p">--</span><span class="n">a</span><span class="p">---*</span><span class="n">a</span><span class="err">↓</span><span class="p">--*</span><span class="n">ab</span><span class="err">↓</span> <span class="n">x</span> <span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have an idea visually of what our streams will look like we can turn this into Rx.</p>
+
+<h1>Writing the query</h1>
+
+<p>In Rx when we want to reduce the number of items we have where we need some sort of aggregation function. In this case we want to use the <code>.Scan()</code> operator.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">keyStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Scan</span><span class="p">(</span><span class="k">new</span> <span class="n">ShortcutAccumulator</span><span class="p">(),</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="n">ProcessKey</span><span class="p">(</span><span class="n">shortcutProvider</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">HasCompletedValue</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">acc</span> <span class="p">=&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="n">GetMessages</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Scan calls your accumulation function for each item in the stream, but unlike <code>Aggregate</code> it will emit the new aggregated value. In this case we start off with an empty <code>ShortcutAccumulator</code>, then the <code>keyStream</code> yields a value it is passed to the current <code>ShortcutAccumulator</code> which returns either itself or a new <code>ShortcutAccumulator</code> which <code>.Scan</code> will yield.</p>
+
+<p>The ShortcutAccumulator will check if that key press matches any shortcuts. If it doesn&rsquo;t, or that key completes the shortcut, it sets the HasCompletedValue property to true and returns itself. When a completed accumulator is asked to process a key it will simply create a new <code>ShortcutAccumulator</code>and get it to process the key and return that accumulator instead of itself.</p>
+
+<p>Because <code>.Scan</code> will emit the <code>ShortcutAccumulator</code> after each key press, we can simply filter the accumulators which are not completed yet, then select many on each completed ShortcutAccumulator to get the messages it has accumulated. The reason for the select many is when a shortcut is broken we create a message for each accumulated key press. And our stream now matches the second line in our marble diagram.</p>
+
+<p>To do the final line in our marble diagram we need another <code>Scan</code> which merges Messages which need to be merged.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">keyStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Scan</span><span class="p">(</span><span class="k">new</span> <span class="n">ShortcutAccumulator</span><span class="p">(),</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="n">ProcessKey</span><span class="p">(</span><span class="n">shortcutProvider</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">HasCompletedValue</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">GetMessages</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Scan</span><span class="p">(</span><span class="k">new</span> <span class="n">Message</span><span class="p">(),</span> <span class="p">(</span><span class="n">previousMessage</span><span class="p">,</span> <span class="n">newMessage</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">messageMerger</span><span class="p">.</span><span class="n">MergeIfNeeded</span><span class="p">(</span><span class="n">previousMessage</span><span class="p">,</span> <span class="n">newMessage</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="p">!</span><span class="n">settings</span><span class="p">.</span><span class="n">DetectShortcutsOnly</span> <span class="p">||</span> <span class="n">m</span><span class="p">.</span><span class="n">IsShortcut</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Whether a message needs to be merged or not is no longer the responsibility of this class, it has been moved into our <code>MessageMerger</code> class. <code>MergeIfNeeded</code> will check for all the merge conditions like the key presses being over a second apart, from different processes, either message being a shortcut etc and if they can be merged the new message will be merged into the previous. Ideally our entire stream would be immutable but that will have to be a separate task, we are refactoring existing code after all.</p>
+
+<p>Finally we apply the Shortcut Only setting and filter our list if that option is set.</p>
+
+<h1>Summary</h1>
+
+<p>The end result of the <code>MessageProvider</code> refactoring was a great improvement. The end result is a single method returning an Rx statement which forfills all of our requirements. The shortcut detection logic was moved into another class which has a single responsibility making it much easier to understand what is going on and follow.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-02-01T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/carnac-improvements/part-2/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/carnac-improvements/part-2/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/carnac-improvements/part-1/" title="Previous Post: Improving the carnac codebase and Rx usage (Part 1)">&laquo; Improving the carnac codebase and Rx usage (Part 1)</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/carnac-improvements/part-3/" title="Next Post: Improving the carnac codebase and Rx usage (Part 3)">Improving the carnac codebase and Rx usage (Part 3) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/carnac-improvements/part-2/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/carnac-improvements/part-2/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

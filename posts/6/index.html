@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have hit this before, but it was VSTO related and posted about it http://jake.ginnivan.net/clickonce-deployment-in-teamcity When trying to publish &hellip;">
+  <meta name="description" content="I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the http://windowsphonefoundations.net/ website &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,149 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpmvc/">Windows Phone MVC - Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-07-23'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I blogged a few weeks ago about the Windows Phone Essentials project, since then, I have started up the <a href="http://windowsphonefoundations.net/">http://windowsphonefoundations.net/</a> website which is home to Windows Phone Essentials, Windows Phone MVC and Windows Phone MVP (and more projects in the future).</p>
+
+<h1>Features</h1>
+
+<p>This will change over time, so check out the change log.</p>
+
+<ul>
+<li>Strongly Typed Navigation</li>
+<li>Custom Shell, Navigator and Journal to give better control over navigation of WP7</li>
+<li>TransitionFrame comes out of the box, for nice navigation animations</li>
+<li>Ability to pass arguments in navigation, rather than uri query strings</li>
+<li>Modal Dialog support</li>
+<li>Easy access to Obscured and Activated events on your view model</li>
+<li>Full Testable! All major WP7 classes (WindowsPhoneFrame, WindowsPhoneApplication etc) all have Interfaces and are wrapped to allow you to test</li>
+<li>Some helpers around Async. Execute.AsyncPattern or Execute.AsyncPatternWithResult synchronise async calls</li>
+<li>Task/Chooser support, in a testable way</li>
+<li>Convention based Controller and View discovery</li>
+<li>Autofac Support Via an Extension</li>
+<li>Easy access to page or application transient storage</li>
+<li>Simple tombstoning support</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpmvc/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/wpf-mvvm-thoughs/">MVVM, Design Time vs IoC Usage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-07-21'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>The problems</h1>
+
+<p>Lets start with the problems we want to solve with our solution</p>
+
+<ul>
+<li>Blend Design time support</li>
+<li>Resharper binding validation support</li>
+<li>No using ServiceLocator, DI only</li>
+<li>ViewModels should be testable</li>
+</ul>
+
+
+<p>Frameworks like Magellan solve these sort of issues in other ways, but if you don&rsquo;t want to take on a framework then maybe an approach like this may help you get started.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/wpf-mvvm-thoughs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/nhibernate-alias-warnings/">No More R# Warnings for nHibernate Aliases</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-07-21'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I dislike having R# warnings in code bases I work on, and try to leave every class I work on having a green status.</p>
+
+<p>Here is a scenario</p>
+
+<pre><code>var entryAlias = default(Entry);
+var entries = session.QueryOver&lt;Entry&gt;(()=&gt;entryAlias);
+</code></pre>
+
+<p>In the above scenario R# will warn that entryAlias is always null, which is is, but I don&rsquo;t care, nHibernate is simply getting the type from the expression.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/nhibernate-alias-warnings/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -373,127 +516,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-contrib/ribbon-factory/">VSTO Contrib RibbonFactory</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Why?</h1>
-
-<p>When I started creating a RibbonFactory, I hadn&rsquo;t actually looked into the way VSTO does it, I just wanted to use Ribbon XML, because it has more flexibility, but have a single class to represent a single ribbon and also support an IoC container, and DI for my ribbons.</p>
-
-<p>Once I got that working, I started tweaking, improving, adding in context awareness and a view other things. Recently my reasons for trying to finish this have been:</p>
-
-<ul>
-<li>Lack of IoC/DI support in VSTO</li>
-<li>Cost of brute force reflection when using ribbon designer</li>
-<li>Wanting to use Ribbon XML over Ribbon Designer, but not really viable due to missing context for ribbon xml.</li>
-<li>Ribbon XML having a single callback file</li>
-<li>Making custom task panes, which are associated with a ribbon (i.e. button to show/hide custom task pane) really simple.</li>
-</ul>
-
-
-<p>The VSTO tooling is pretty good, especially around the designer, but I want the best of both worlds, and to be able to fall into <code>the pit of success</code> as <a href="http://www.paulstovell.com/">Paul Stovell</a> often says.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-contrib/ribbon-factory/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-contrib/introduction/">Introduction to VSTO Contrib</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Goal of VSTO Contrib</h1>
-
-<p>When I first started on this library, it was a very simple set of classes designed to help me do trivial tasks in VSTO, such as simplifying listening to certain events, wrappers, and it was really a dumping ground for code that solved problems I had while developing VSTO solutions.</p>
-
-<p>Just before TechEd last year (August), I started trying to tackle some more fundamental architectural issues, such as no ability to use DI, or IoC, which often causes VSTO solutions to have Ribbons with hundreds of lines of code behind, this issue is made worse with Ribbon XML which only lets you have a single callback file for ALL ribbons.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-contrib/introduction/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-contrib/com-cleanup-extension-methods/">Cleaning Up Office COM Interop Code With Extension Methods</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-04-05'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Office Automation and COM interop code can be really ugly, this post show you how the extension methods in VSTO Contrib can help</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-contrib/com-cleanup-extension-methods/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/7">&larr; Older</a>
@@ -513,7 +535,7 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Jake Ginnivan -
+  Copyright &copy; 2015 - Jake Ginnivan -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Improving the Carnac Codebase and Rx Usage (Part 3) - Jake Ginnivan&#8217;s blog</title>
+  <meta name="author" content="Jake Ginnivan">
+
+  
+  <meta name="description" content="Parts one and two have covered the InterceptKeys class which exposes a feed of raw keyboard events and the MessageProvider which turns key presses &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/carnac-improvements/part-3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42948513-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Ginnivan&#8217;s blog</a></h1>
+  
+  <ul class="social-links">
+  
+    <li><a class="feed" href="/feed" title="RSS"></a></li>
+  
+  
+    <li><a class="twitter" href="http://twitter.com/JakeGinnivan" title="Twitter" target="_black"></a></li>
+  
+  
+    <li><a class="github" href="https://github.com/JakeGinnivan" title="GitHub" target="_black"></a></li>
+  
+</ul>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/open-source-work">Open Source</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Improving the Carnac Codebase and Rx Usage (Part 3)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-02T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Parts one and two have covered the InterceptKeys class which exposes a feed of raw keyboard events and the MessageProvider which turns key presses into messages to display on the screen. There is a class between those two, the KeyProvider which I am not going to actually blog about as it doesn&rsquo;t introduce any new concepts which I have not covered in parts 1 and 2 of this blog series.</p>
+
+<p><a href="/blog/carnac-improvements/part-1/">Part 1 - Refactoring the InterceptKeys class </a> <br/>
+<a href="/blog/carnac-improvements/part-2/">Part 2 - Refactoring the MessageProvider class</a><br/>
+Part 3 - Introducing the MessageController class<br/>
+Part 4 - Removing state mutation from the stream</p>
+
+<p>Instead we will dive into the MessageController class which brings the streams from the KeyProvider and MessageProvider together then maintains the list of Messages displayed on the screen. The requirements are:</p>
+
+<ul>
+<li>Add any new messages into the messages collection</li>
+<li>After 5 seconds set a flag on the message which triggers an animation</li>
+<li>1 second after that the message is removed from the messages collection</li>
+<li>If a message is updated the 5 second countdown should start again.</li>
+</ul>
+
+
+<h2>Old implementation</h2>
+
+<p>The previous implementation was quite simple but it was hard to test. Also Rx can solve this problem very nicely, so why not.</p>
+
+<ul>
+<li>New messages were added to the messages list</li>
+<li>A timer fired once a second, the callback did:
+
+<ul>
+<li>A foreach loop over every item which had a LastUpdated property more than 5 seconds go, then set the IsDeleting flag to true</li>
+<li>A foreach loop over every item which had a LastUpdated property more than 6 seconds go, then removed it from the list</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Lets rewrite this into Rx</p>
+
+<!-- more -->
+
+
+<h1>Implementing in Rx</h1>
+
+<h2>Messages stream</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">IObservable</span><span class="p">&lt;</span><span class="n">KeyPress</span><span class="p">&gt;</span> <span class="n">keyStream</span> <span class="p">=</span> <span class="n">keyProvider</span><span class="p">.</span><span class="n">GetKeyStream</span><span class="p">();</span>
+</span><span class='line'><span class="n">IObservable</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">messageStream</span> <span class="p">=</span> <span class="n">messageProvider</span><span class="p">.</span><span class="n">GetMessageStream</span><span class="p">(</span><span class="n">keyStream</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step one is to get the messages subscription. Nothing much to see here except the variable names and types.</p>
+
+<h2>Adding messages</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">addMessageSubscription</span> <span class="p">=</span> <span class="n">messageStream</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span> <span class="n">messages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">message</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Also not much to see here, we subscribe to the messages stream and when a new value is yeilded we add that into the message into the messages collection.</p>
+
+<h2>Fading messages out</h2>
+
+<p>Now is where things become a little more interesting. Lets start off with simply setting the flag after 5 seconds</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Delay</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">IsDeleting</span> <span class="p">=</span> <span class="k">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Great, but this does not take into account the updates. Here is the problem we want to solve visualised.</p>
+
+<p>Each - represents a second, | is a completed stream</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">---------</span><span class="n">a</span><span class="p">----*</span><span class="n">ab</span><span class="p">----</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">|</span>
+</span><span class='line'>         <span class="p">-----</span><span class="n">b</span><span class="p">|</span>
+</span><span class='line'>                   <span class="p">---------</span><span class="n">ab</span><span class="p">|</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">-------------</span><span class="n">ab</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This shows us that we need a nested stream of some sort. Lets rewrite the fade out query into something that will create an inner stream.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageStream</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// the inner stream goes here</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="n">fadeOutMessageStream</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">IsDeleting</span> <span class="p">=</span> <span class="k">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we need to write the inner stream. Once again lets visualise the problem (x is an update, @ is the start of an observable.Timer(), o is the stream yeilding a value)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">x</span><span class="p">---</span><span class="n">x</span><span class="p">----</span><span class="n">x</span><span class="p">-----</span>
+</span><span class='line'><span class="err">@</span><span class="p">---|</span>
+</span><span class='line'>    <span class="err">@</span><span class="p">----|</span>
+</span><span class='line'>         <span class="err">@</span><span class="p">-----</span><span class="n">o</span><span class="p">|</span>
+</span><span class='line'><span class="p">---------------</span><span class="n">x</span><span class="p">|</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The thing that is changing and we are reacting to in this query is the updates of the message. A message has a property with signature <code>IObservable&lt;Unit&gt; Updates { get; }</code> which we can subscribe to for updates to that message. We also want to kick off right away when we subscribe (otherwise the timer will not start until an update happens). With this in mind, the start of the inner query is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we need to introduce a timer of some sort. Because each update has it&rsquo;s own timeout we need another nested stream. The marble diagram shows the nested screen pattern off really nicely. To get the nested stream we just do a <code>.Select()</code> which give us:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The return type of that select is actually <code>IObservable&lt;IObservable&lt;long&gt;&gt;</code> which is the nested stream. In the marble diagram above you will notice that when we get an update and start a timer we close the previous timer stream. In Rx this is known as the <code>.Switch()</code> statement. When the outer observable yeilds a new inner observable, switch will dispose the last inner observable and subscribe to the new stream instead. Now the code is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Switch</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We are not finished yet, switch returns us a single stream of type <code>IObservable&lt;long&gt;</code>. We need a stream of messages again:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageStream</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Switch</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We now are back showing the code which includes the outer stream. Our select we have just added simply ignores what it gets given and returns the message passed by the outer query.</p>
+
+<p>Going back to our marble diagram you will notice there is one thing missing:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">---------</span><span class="n">a</span><span class="p">----*</span><span class="n">ab</span><span class="p">----</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">|</span>
+</span><span class='line'>         <span class="p">-----</span><span class="n">b</span><span class="p">|</span>
+</span><span class='line'>                   <span class="p">---------</span><span class="n">ab</span><span class="p">|</span>
+</span><span class='line'><span class="p">-----</span><span class="n">a</span><span class="p">--------</span><span class="n">b</span><span class="p">-------------</span><span class="n">ab</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After each inner stream yeilds a value, it immediately terminates. This is an easy fix, we just append <code>.Take(1)</code> to the inner query giving us:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageStream</span> <span class="p">=</span> <span class="n">messageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">message</span> <span class="p">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">Updated</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">StartWith</span><span class="p">(</span><span class="n">Unit</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Observable</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">FiveSeconds</span><span class="p">))</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Switch</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">message</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">Take</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">var</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="n">fadeOutMessageStream</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">IsDeleting</span> <span class="p">=</span> <span class="k">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Onto the <a href="https://www.youtube.com/watch?v=Rre3zgL7eMk#t=56">Next song</a></p>
+
+<h2>Removing messages</h2>
+
+<p>The nice thing about Rx is that you can just build on other streams. So we just take our <code>fadeOutMessageStream</code>, apply a 1 second delay then subscribe.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">var</span> <span class="n">removeMessageStream</span> <span class="p">=</span> <span class="n">fadeOutMessageStream</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Delay</span><span class="p">(</span><span class="n">OneSecond</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">messages</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">m</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Next steps</h2>
+
+<p>One thing all of these streams rely on is that each of them receive the <em>same instance</em> of each message. It is no good to us if each of them are working on a different messages. This is an easy fix using an operator we saw in Part 1 of this series, <code>.Publish()</code>.</p>
+
+<p>But this time we will not use <code>.RefCount()</code> as we want to set up our queries then turn them on all at the same time, otherwise we have race conditions that messages might be added but never removed. We want all 3 of our subscriptions to start simultanously.</p>
+
+<p>Lets zoom out to the method level and have a look what the <code>KeyController.Start</code> method looks like after we publish the stream.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">stopCarnacDisposable</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&quot;Carnac cannot be started more than once&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">keyStream</span> <span class="p">=</span> <span class="n">keyProvider</span><span class="p">.</span><span class="n">GetKeyStream</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">IConnectableObservable</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">messageStream</span> <span class="p">=</span> <span class="n">messageProvider</span><span class="p">.</span><span class="n">GetMessageStream</span><span class="p">(</span><span class="n">keyStream</span><span class="p">).</span><span class="n">Publish</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">addMessageSubscription</span> <span class="p">=</span> <span class="p">...;</span>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="p">...;</span>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">removeMessageStream</span> <span class="p">=</span> <span class="p">...;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">underlyingMessageSubscription</span> <span class="p">=</span> <span class="n">messageStream</span><span class="p">.</span><span class="n">Connect</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">stopCarnacDisposable</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CompositeDisposable</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">underlyingMessageSubscription</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">addMessageSubscription</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">fadeOutMessageSubscription</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">removeMessageStream</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We simply save a new <code>CompositeDisposable</code> which takes any number of IDisposable&rsquo;s as constructor parameters to a field called <code>stopCarnacDisposable</code>. Then when the <code>MessageController</code> is disposed it will dispose all of the things streams it has subscribed to including the underlying messages stream.</p>
+
+<p>To walk through what we see above, I publish the message stream, create the three subscriptions and then I call <code>.Connect()</code> on the messageStream (which is now of type <code>IConnectableObservable&lt;Message&gt;</code>).</p>
+
+<p>This allows me to explicitly control the underlying stream, when disposing I simply dispose the underlying stream then all of my other streams and everything is cleaned up nicely.</p>
+
+<h3>Specifying Schedulers</h3>
+
+<p>One part of the code I have ommited is explicitly specifying on what Scheduler everything will run on. I have introduced an <code>IConcurrencyService</code> which abstracts me from the static Rx schedulers (allowing me to write tests, which is coming up next!). When using Rx you should always specify what schedulers you want your code to run on, in carnac&rsquo;s case we want everything to run on the UI Thread. Normally this is bad but because we are modifying messages which are bound to by the UI we have to. Maybe a future blog post can be how we made carnacs Rx streams immutable, but not now.</p>
+
+<p>We do that by adding these two lines before every <code>.Subscribe()</code> call in this class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">.</span><span class="n">ObserveOn</span><span class="p">(</span><span class="n">concurrencyService</span><span class="p">.</span><span class="n">MainThreadScheduler</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="n">SubscribeOn</span><span class="p">(</span><span class="n">concurrencyService</span><span class="p">.</span><span class="n">MainThreadScheduler</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Error handling</h3>
+
+<p>I wanted to call our error handling explicitly, carnac has <em>none</em>. It didn&rsquo;t before this refactor and it didn&rsquo;t after. There is a GitHub issue open at the time of writing this blog post to sort this out.</p>
+
+<h2>Testing</h2>
+
+<p>I mentioned at the start of this post that this would be easier to test, lets put that to the test and write some tests. First off the simplest case.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[Fact]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MessagesAreAddedIntoKeysColletion</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">sut</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">ProvideMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">keysCollection</span><span class="p">.</span><span class="n">ShouldContain</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">IsDeleting</span><span class="p">.</span><span class="n">ShouldBe</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A is a property which returns a KeyPress and ProvideMessage simply yields that message to the messageStream which the KeyProvider subscribes to. Now we have an simple example test, here is a more complex example.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[Fact]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MessagesAreFlaggedAsDeletingAfter5Seconds</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">sut</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">ProvideMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">testScheduler</span><span class="p">.</span><span class="n">AdvanceBy</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="m">5</span><span class="p">).</span><span class="n">Ticks</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">IsDeleting</span><span class="p">.</span><span class="n">ShouldBe</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this test we have made use of our ICurrencyService by making it always return a <code>TestScheduler</code>. The <code>TestScheduler</code> is in the Rx.Testing NuGet library and is <strong>very</strong> useful. Because Rx abstracts time we can write tests which rely on time very quickly and they also execute very fast.</p>
+
+<p>The above test provides a message to the messageStream and then moves time forward by 5 seconds and makes sure that our message has been flagged for deletion, which it has. Lets push this a little harder and make sure that we do not expire when that message has been updated.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="na">[Fact]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">MessageTimeoutIsStartedAgainIfMessageIsUpdated</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">sut</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">ProvideMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">testScheduler</span><span class="p">.</span><span class="n">AdvanceBy</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="m">3</span><span class="p">).</span><span class="n">Ticks</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">Merge</span><span class="p">(</span><span class="k">new</span> <span class="n">Message</span><span class="p">(</span><span class="n">A</span><span class="p">));</span> <span class="c1">// Update message</span>
+</span><span class='line'>    <span class="n">testScheduler</span><span class="p">.</span><span class="n">AdvanceBy</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="m">3</span><span class="p">).</span><span class="n">Ticks</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">message</span><span class="p">.</span><span class="n">IsDeleting</span><span class="p">.</span><span class="n">ShouldBe</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">keysCollection</span><span class="p">.</span><span class="n">ShouldContain</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see the code to test our Rx queries is really simply.</p>
+
+<h1>Summary</h1>
+
+<p>The MessageController is quite a small class and reasonably simple once you are familiar with Rx concepts but it has some interesting problems which many applications have and demonstrates how they can be easily solved and tested.</p>
+
+<p>Part 4 will remove the mutation of existing messages from the stream. Any sort of mutation of state inside an Rx stream is likely to be a source of bugs and make the application very hard to reason about and debug. Unlike the first 3 posts in this series part 4 will be changing overall architecture and introducing some new concepts into the carnac codebase.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Ginnivan</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-02-02T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/carnac-improvements/part-3/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/carnac-improvements/part-3/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/carnac-improvements/part-2/" title="Previous Post: Improving the carnac codebase and Rx usage (Part 2)">&laquo; Improving the carnac codebase and Rx usage (Part 2)</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Jake Ginnivan -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jakeginnivansblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/carnac-improvements/part-3/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/carnac-improvements/part-3/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

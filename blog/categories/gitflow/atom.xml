@@ -4,7 +4,7 @@
   <title><![CDATA[Category: gitflow | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/gitflow/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2014-09-30T03:42:34+08:00</updated>
+  <updated>2015-02-02T22:41:40+00:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Git Flow Versioning]]></title>
     <link href="http://jake.ginnivan.net/git-flow-versioning/"/>
-    <updated>2013-10-02T00:00:00+08:00</updated>
+    <updated>2013-10-02T00:00:00+01:00</updated>
     <id>http://jake.ginnivan.net/git-flow-versioning</id>
     <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
 
