@@ -174,23 +174,23 @@ One thing all of these streams rely on is that each of them receive the *same in
 
 But this time we will not use `.RefCount()` as we want to set up our queries then turn them on all at the same time, otherwise we have race conditions that messages might be added but never removed. We want all 3 of our subscriptions to start simultanously.
 
-Lets zoom out to the method level and have a look what the `KeyController.Start` method looks like after we publish the stream.
+Lets zoom out to the method level and have a look what the `MessageController.Start` method looks like after we publish the stream.
 
 ``` csharp
+readonly SerialDisposable stopCarnacDisposable = new SerialDisposable();
+
 public void Start()
 {
-    if (stopCarnacDisposable != null) throw new InvalidOperationException("Carnac cannot be started more than once");
-
     var keyStream = keyProvider.GetKeyStream();
     IConnectableObservable<Message> messageStream = messageProvider.GetMessageStream(keyStream).Publish();
 
     IDisposable addMessageSubscription = ...;
     IDisposable fadeOutMessageSubscription = ...;
-    IDisposable removeMessageStream = ...;
+    IDisposable removeMessageSubscription = ...;
 
     IDisposable underlyingMessageSubscription = messageStream.Connect();
 
-    stopCarnacDisposable = new CompositeDisposable(
+    stopCarnacDisposable.Disposable = new CompositeDisposable(
         underlyingMessageSubscription,
         addMessageSubscription,
         fadeOutMessageSubscription,
@@ -198,7 +198,13 @@ public void Start()
 }
 ```
 
-We simply save a new `CompositeDisposable` which takes any number of IDisposable's as constructor parameters to a field called `stopCarnacDisposable`. Then when the `MessageController` is disposed it will dispose all of the things streams it has subscribed to including the underlying messages stream.
+The `MessageController` will use two different types of Rx Disposables. They are:
+
+ - `SerialDisposable` - If the .Disposable property is set multiple times the current value is Disposed before it is updated to the latest value.
+ I use this so if `.Start` is called multiple times we will create a new subscription but it makes sure the previous subscription is disposed.
+ - `CompositeDisposable` - Takes any number of IDisposable's as constructor parameters, when it is disposed all disposables passed into the ctor will be disposed
+
+The new `CompositeDisposable` which takes all our of subscriptions is assigned to the `stopCarnacDisposable.Disposable` property before exiting the `Start` method. When the `MessageProvider` class is disposed `stopCarnacDisposable.Dispose()` will be called disposing any subscription which has been started by `Start`.
 
 To walk through what we see above, I publish the message stream, create the three subscriptions and then I call `.Connect()` on the messageStream (which is now of type `IConnectableObservable<Message>`).
 
