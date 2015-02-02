@@ -3,9 +3,15 @@ layout: post
 published: true
 title: Improving the carnac codebase and Rx usage (Part 3)
 comments: true
+permalink: /blog/carnac-improvements/part-3/
 ---
 
 Parts one and two have covered the InterceptKeys class which exposes a feed of raw keyboard events and the MessageProvider which turns key presses into messages to display on the screen. There is a class between those two, the KeyProvider which I am not going to actually blog about as it doesn't introduce any new concepts which I have not covered in parts 1 and 2 of this blog series.
+
+[Part 1 - Refactoring the InterceptKeys class ](/blog/carnac-improvements/part-1/)   
+[Part 2 - Refactoring the MessageProvider class](/blog/carnac-improvements/part-2/)  
+Part 3 - Introducing the MessageController class  
+Part 4 - Removing state mutation from the stream
 
 Instead we will dive into the MessageController class which brings the streams from the KeyProvider and MessageProvider together then maintains the list of Messages displayed on the screen. The requirements are:
 
@@ -23,6 +29,8 @@ The previous implementation was quite simple but it was hard to test. Also Rx ca
    - A foreach loop over every item which had a LastUpdated property more than 6 seconds go, then removed it from the list
 
 Lets rewrite this into Rx
+
+<!-- more -->
 
 # Implementing in Rx
 ## Messages stream
@@ -166,11 +174,13 @@ One thing all of these streams rely on is that each of them receive the *same in
 
 But this time we will not use `.RefCount()` as we want to set up our queries then turn them on all at the same time, otherwise we have race conditions that messages might be added but never removed. We want all 3 of our subscriptions to start simultanously.
 
-Lets zoon out to the method level and have a look what the `KeyController.Start` method looks like after we publish the stream.
+Lets zoom out to the method level and have a look what the `KeyController.Start` method looks like after we publish the stream.
 
 ``` csharp
-public IDisposable Start()
+public void Start()
 {
+    if (stopCarnacDisposable != null) throw new InvalidOperationException("Carnac cannot be started more than once");
+
     var keyStream = keyProvider.GetKeyStream();
     IConnectableObservable<Message> messageStream = messageProvider.GetMessageStream(keyStream).Publish();
 
@@ -180,7 +190,7 @@ public IDisposable Start()
 
     IDisposable underlyingMessageSubscription = messageStream.Connect();
 
-    return new CompositeDisposable(
+    stopCarnacDisposable = new CompositeDisposable(
         underlyingMessageSubscription,
         addMessageSubscription,
         fadeOutMessageSubscription,
@@ -188,7 +198,7 @@ public IDisposable Start()
 }
 ```
 
-We simple return a new `CompositeDisposable` which takes any number of IDisposable's as constructor parameters, then when it is disposed it will dispose all of the things passed to it.
+We simply save a new `CompositeDisposable` which takes any number of IDisposable's as constructor parameters to a field called `stopCarnacDisposable`. Then when the `MessageController` is disposed it will dispose all of the things streams it has subscribed to including the underlying messages stream.
 
 To walk through what we see above, I publish the message stream, create the three subscriptions and then I call `.Connect()` on the messageStream (which is now of type `IConnectableObservable<Message>`).
 
@@ -266,4 +276,4 @@ As you can see the code to test our Rx queries is really simply.
 # Summary
 The MessageController is quite a small class and reasonably simple once you are familiar with Rx concepts but it has some interesting problems which many applications have and demonstrates how they can be easily solved and tested.
 
-This concludes this series and I hope it has been useful to you. I have wanted to do this refactoring for quite a while as carnac is a great sample Rx application as the problem is inherently stream based. Before this refactor though there were many bad practices being used. I am sure that things could be improved upon more but I leave that up to you. If you see a way the carnac codebase could be cleaned up or improved please jump in and submit a pull request. 
+Part 4 will remove the mutation of existing messages from the stream. Any sort of mutation of state inside an Rx stream is likely to be a source of bugs and make the application very hard to reason about and debug. Unlike the first 3 posts in this series part 4 will be changing overall architecture and introducing some new concepts into the carnac codebase. 

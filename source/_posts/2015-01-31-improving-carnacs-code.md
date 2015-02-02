@@ -3,12 +3,20 @@ layout: post
 published: true
 title: Improving the carnac codebase and Rx usage (Part 1)
 comments: true
+permalink: /blog/carnac-improvements/part-1/
 ---
 
 [Carnac](http://carnackeys.com/) is an open source project created as part of [Code52](http://code52.org/). It is a simple utility which overlays key presses on your screen as you type which is pretty handy for presentations. Carnac also ships with some keymaps for different applications so it understands when you are pressing shortcuts.
 
 Recently Scott Hanselman blogged about a [Quake Mode console](http://www.hanselman.com/blog/QuakeModeConsoleForVisualStudioOpenACommandPromptWithAHotkey.aspx) and mentioned carnac, this triggered Brendan Forster and myself to think about carnac again. When we started writing carnac there was not any Rx experience amongst the team and we did a pretty bad job. I think carnac is a *great* Rx problem and the code can be improved to take advantage of Rx and be a really good non-trivial Rx sample.
-This post is all about the things we did wrong and the process I went through to refactor carnac into a much simpler code base and really leverage the power of Rx.
+This blog series is all about the things we did wrong and the process I went through to refactor carnac into a much simpler code base and really leverage the power of Rx.
+
+Part 1 - Refactoring the InterceptKeys class  
+[Part 2 - Refactoring the MessageProvider class](/blog/carnac-improvements/part-2/)  
+[Part 3 - Introducing the MessageController class](/blog/carnac-improvements/part-3/)  
+Part 4 - Removing state mutation from the stream
+
+<!-- more -->
 
 # Fixing the InterceptKeys class
 Carnac uses windows low level keyboard hooks to listen to key pressess. We have a class called `InterceptKeys` which is responsible for giving us an Rx stream of KeyEvents. This includes direction so if you press `ctrl+r` the stream would look like this:
@@ -132,7 +140,7 @@ This is a simple win. Rx comes with a *heap* of really useful disposable types. 
 # Implementing IObservable<InterceptKeyEventArgs>
 When using Rx you should never have to implement `IObservable<T>` or `IObserver<T>`. If you do then you should be looking for a better way to do it.
 
-Because we are implementing IObservable we have to provide a Subscribe method. Lets have a look at that.
+Because we are implementing `IObservable` we have to provide a `.Subscribe` method. Lets have a look at that.
 
     public IDisposable Subscribe(IObserver<InterceptKeyEventArgs> observer)
     {
@@ -151,12 +159,12 @@ Because we are implementing IObservable we have to provide a Subscribe method. L
 
 The first side effect of this is that we have to do subscription management ourselves now! The good news is we can make a very simple change to improve this.
 
-1. No longer inherit from IObservable<InterceptKeyEventArgs>
+1. No longer inherit from `IObservable<InterceptKeyEventArgs>`
 2. Rename subscribe to `GetKeyStream` with this signature:  
 `IObservable<InterceptKeyEventArgs> GetKeyStream()`
 3. Make it compile again.
 
-To make it compile we need to create the observable that we are going to return. We will do that in the contructor of InterceptKeys so we always return the same observable to all callers (remember InterceptKeys is a singleton).
+To make it compile we need to create the observable that we are going to return. We will do that in the contructor of `InterceptKeys` so we always return the same observable to all callers (remember `InterceptKeys` is a singleton).
 
 ``` csharp
 InterceptKeys()
@@ -184,13 +192,21 @@ public IObservable<InterceptKeyEventArgs> GetKeyStream()
 Ok this is looking better! We no longer are doing subscription management ourself. Lets look at the new Rx features we have used.
 
 ### Observable.Create
-If you ever need an observable, it is likely you want to use a static method off the `Observable` class. Observable.Create passes us an observable which we can call OnNext(), OnError() or OnComplete() on to yield new values to any subscribers.
+If you ever need an observable, it is likely you want to use a static method off the `Observable` class. `Observable.Create` passes us an observable which we can call `.OnNext()`, `.OnError()` or `.OnComplete()` on to yield new values to any subscribers.
 
-You then return an IDisposable which is called when the subscription is disposed by the subscriber. 
+You then return an `IDisposable` which is called when the subscription is disposed by the subscriber. 
 
 ### Publish()
-The next new thing is the Publish extension method. It takes an IObservable and returns a IConnectableObservable. Connectable observables give the subscriber control over when the underlying source is actually connected to and disconnected from. As a quick example:
+The next new thing is the `.Publish` extension method which is actually just a helper which calls the `.Multicast(Subject<T>)` extension. Multicast takes a subject (which is both a observer and an observable) and returns an `IConnectableObservable<T>`. When you subscribe to a connectable observable you are actually subscribing to the subject you passed into `.Multicast()`. `IConnectableObservable<T>` has a method called `Connect` on it, when you call connect it subscribes to the feed which you called `Multicast` on and passes in your Subject as the observer.
 
+In effect `Multicast` means all subscribers actually share a single subscription, the subject simply determines the behaviour. Here are three examples:
+
+ - `.Publish()` = `.Multicast(new Subject<T>)`
+ - `.PublishLast()` = `.Multicast(new AsyncSubject<T>)`
+ - `.Replay()` = `.Multicast(new ReplaySubject<T>)`
+
+
+As a quick example:
 ```csharp
 var observable = Observable.Create<InterceptKeyEventArgs>(observer =>
     {
@@ -209,17 +225,39 @@ var observable = Observable.Create<InterceptKeyEventArgs>(observer =>
 // Without Publish
 var subscription = observable.Subscribe(_ => { }); // Prints 'Subscribed'
 subscription.Dispose(); // Prints 'Unsubscribed'
+var subscription2 = observable.Subscribe(_ => { }); // Prints 'Subscribed'
+subscription2.Dispose(); // Prints 'Unsubscribed'
 
 // With Publish
 var published = observable.Publish();
 var subscription = published.Subscribe(_ => { });
-observable.Connect();   // Prints 'Subscribed'
+var subscription2 = published.Subscribe(_ => { });
+var underlyingSubscription = observable.Connect();   // Prints 'Subscribed'
+subscription.Dispose();
+subscription2.Dispose();
+underlyingSubscription.Dispose();  // Prints 'Unsubscribed'
 ```
 
 ### RefCount()
 Most of the time you do not want to manage the connection/disconnection of a connected observable yourself. This is where `RefCount` extension method comes in. It simply counts the number of subscribers and when the observable has subscribers it connects the underlying Published observable. Once all subscribers have Disposed it will disconnect the Published observable.
 
 Now Rx is fully managing our subscriptions and will make sure we only ever have a single low-level keyboard hook!
+
+``` csharp
+var observable = Observable.Create<InterceptKeyEventArgs>(observer =>
+    {
+        Debug.WriteLine('Subscribed');
+        hookId = SetHook(callback);
+        var dispose = subject.Subscribe(observer)
+
+        return Disposable.Create(() =>
+        {
+            Debug.WriteLine('Unsubscribed');
+            Win32Methods.UnhookWindowsHookEx(hookId);
+            dispose.Dispose();
+        });
+    }).Publish().RefCount();
+```
 
 ## Cleanup
 Now that we have made this change, what else can be cleaned up?
@@ -254,10 +292,10 @@ protected virtual void Dispose(bool disposing)
 We can delete all of this code now. 
 
 
-# Using Subject<InterceptKeyEventArgs>
-The next warning sign we should be looking for in our Rx code is the use of Subjects. A subject is both a IObservable<T> AND an IObserver<T>. In this case we have a subject stored in a field which the Low Level Keyboard hook publishes to, inside our keyStream observable we have subscribed to the subject using the observer that Observable.Create gave to us. 
+# Using `Subject<InterceptKeyEventArgs>`
+The next warning sign we should be looking for in our Rx code is the use of Subjects. A subject is both a `IObservable<T>` AND an `IObserver<T>`. In this case we have a subject stored in a field which the Low Level Keyboard hook publishes to, inside our keyStream observable we have subscribed to the subject using the observer that `Observable.Create` gave to us. 
 
-To do this we have to move the low level keyboard hook into our Observable.Create so it can publish directly to the observer Rx has created us.
+To do this we have to move the low level keyboard hook into our `Observable.Create` so it can publish directly to the observer Rx has created us.
 
 ``` csharp
 keyStream = Observable.Create<InterceptKeyEventArgs>(observer =>
@@ -357,6 +395,8 @@ public class InterceptKeys : IInterceptKeys
 }
 ```
 
-Pretty good result in the end. We have reduced this file from 224 lines of code to 100 lines by not implmenting IObservable<T> ourselves, letting Rx manage our subscriptions (with Publish().RefCount()) and making sure we use types provided by Rx (Disposable.Create instead of our own type).
+Pretty good result in the end. We have reduced this file from 224 lines of code to 100 lines by not implmenting IObservable<T> ourselves, letting Rx manage our subscriptions (with `.Publish().RefCount()`) and making sure we use types provided by Rx (`Disposable.Create` instead of our own type).
 
 Next in this series we will be rewriting the class which takes key presses (ctrl + f, a, b, space etc) and turns it into the messages carnac shows on the screen. 
+
+[Check out part 2](/blog/carnac-improvements/part-2/)

@@ -3,15 +3,21 @@ layout: post
 published: true
 title: Improving the carnac codebase and Rx usage (Part 2)
 comments: true
+permalink: /blog/carnac-improvements/part-2/
 ---
 
 This post is the second part in a series covering a series of improvements in the carnac codebase, specifically to improve the usage of Rx. The next class I will be rewriting is the MessageProvider.
 
-As a bit of background, in carnac a KeyPress is not directional and it also contains information about if modifiers were pressed at the same time. For Instance `ctrl + r` would be a KeyPress. A `Message` is what is shown on the screen.
+[Part 1 - Refactoring the InterceptKeys class](/blog/carnac-improvements/part-1/)  
+Part 2 - Refactoring the MessageProvider class  
+[Part 3 - Introducing the MessageController class](/blog/carnac-improvements/part-3/)  
+Part 4 - Removing state mutation from the stream
+
+As a bit of background, in carnac a `KeyPress` is not directional and it also contains information about if modifiers were pressed at the same time. For Instance `ctrl + r` would be a KeyPress. A `Message` is what is shown on the screen.
 
 The message provider as it is does the following:
 
- - Is IObserver<KeyPress>
+ - Is `IObserver<KeyPress>`
  - It aggregates multiple KeyPresses into logical messages with the following rules:
    - Shortcuts are always shown in their own message
    - If there has been more than a second between the last keypress a new message is created
@@ -19,6 +25,8 @@ The message provider as it is does the following:
  - Apply 'Only show shortcuts' filter
 
 Here is what the code looked like before the refactor.
+
+<!-- more -->
 
 ``` csharp
 public class MessageProvider : IMessageProvider, IObserver<KeyPress>
@@ -146,9 +154,9 @@ public class MessageProvider : IMessageProvider, IObserver<KeyPress>
 }
 ```
 
-The first thing you will notice is that most of the methods in this class access and manipulate the property CurrentMessage. This makes this class really hard to follow and rationalise what is going on. 
+The first thing you will notice is that most of the methods in this class access and manipulate the property `CurrentMessage`. This makes this class really hard to follow and rationalise what is going on. 
 
-# Removing IObservable<T>
+# Removing `IObservable<T>`
 Like in the previous class we refactored, the first thing we need to do is to stop implementing IObservable<T>. 
 
 Our subscribe method will change from `IDisposable Subscribe(IObserver<Message> observer)` to `IObservable<Message> GetMessageStream(IObservable<KeyPress> keyStream)`
@@ -160,7 +168,9 @@ After looking at the current behaviour I decided that it would make more sense t
 
 If we draw an ascii marble diagram it will look like this
 
-`a----b----ctrl+r----ctrl+r----ctrl+r----a----↓----↓`
+```
+a----b----ctrl+r----ctrl+r----ctrl+r----a----↓----↓
+```
 
 The first requirement is that we batch shortcuts into a single message. 
 
@@ -190,7 +200,7 @@ a----*ab------------ctrl+r,ctrl+r-------------ctrl+r--a---*a↓--*ab↓ x 2
 Now we have an idea visually of what our streams will look like we can turn this into Rx.
 
 # Writing the query
-In Rx when we want to reduce the number of items we have where we need some sort of aggregation function. In this case we want to use the `Scan` operator.
+In Rx when we want to reduce the number of items we have where we need some sort of aggregation function. In this case we want to use the `.Scan()` operator.
 
 ``` csharp
 return keyStream
@@ -199,11 +209,11 @@ return keyStream
     .SelectMany(acc => acc.GetMessages())
 ```
 
-Scan calls your accumulation function for each item in the stream, but unlike `Aggregate` it will emit the new aggregated value. In this case we start off with an empty ShortcutAccumulator, when we get a key press we simply pass it to the accumulator along with the shortcut provider.
+Scan calls your accumulation function for each item in the stream, but unlike `Aggregate` it will emit the new aggregated value. In this case we start off with an empty `ShortcutAccumulator`, then the `keyStream` yields a value it is passed to the current `ShortcutAccumulator` which returns either itself or a new `ShortcutAccumulator` which `.Scan` will yield.
 
-The ShortcutAccumulator will check if that key press matches any shortcuts. If it doesn't, or that key completes the shortcut, it sets the HasCompletedValue property to true and returns itself. When a completed accumulator is asked to process a key it will simply create a new ShortcutAccumulator and get it to process the key and return that accumulator instead of itself.
+The ShortcutAccumulator will check if that key press matches any shortcuts. If it doesn't, or that key completes the shortcut, it sets the HasCompletedValue property to true and returns itself. When a completed accumulator is asked to process a key it will simply create a new `ShortcutAccumulator `and get it to process the key and return that accumulator instead of itself.
 
-Because Scan will emit the ShortcutAccumulator after each key press, we can simply filter the accumulators which are not completed yet, then select many on each completed ShortcutAccumulator to get the messages it has accumulated. The reason for the select many is when a shortcut is broken we create a message for each accumulated key press. And our stream now matches the second line in our marble diagram.
+Because `.Scan` will emit the `ShortcutAccumulator` after each key press, we can simply filter the accumulators which are not completed yet, then select many on each completed ShortcutAccumulator to get the messages it has accumulated. The reason for the select many is when a shortcut is broken we create a message for each accumulated key press. And our stream now matches the second line in our marble diagram.
 
 To do the final line in our marble diagram we need another `Scan` which merges Messages which need to be merged.
 
@@ -216,10 +226,10 @@ return keyStream
     .Where(m => !settings.DetectShortcutsOnly || m.IsShortcut);
 ```
 
-Whether a message needs to be merged or not is no longer the responsibility of this class, it has been moved into our MessageMerger class. MergeIfNeeded will check for all the merge conditions like the key presses being over a second apart, from different processes, either message being a shortcut etc and if they can be merged the new message will be merged into the previous. Ideally our entire stream would be immutable but that will have to be a separate task, we are refactoring existing code after all. 
+Whether a message needs to be merged or not is no longer the responsibility of this class, it has been moved into our `MessageMerger` class. `MergeIfNeeded` will check for all the merge conditions like the key presses being over a second apart, from different processes, either message being a shortcut etc and if they can be merged the new message will be merged into the previous. Ideally our entire stream would be immutable but that will have to be a separate task, we are refactoring existing code after all. 
 
 Finally we apply the Shortcut Only setting and filter our list if that option is set.
 
 # Summary
-The end result of the MessageProvider refactoring was a great improvement. The end result is a single method returning an Rx statement which forfills all of our requirements. The shortcut detection logic was moved into another class which has a single responsibility making it much easier to understand what is going on and follow. 
+The end result of the `MessageProvider` refactoring was a great improvement. The end result is a single method returning an Rx statement which forfills all of our requirements. The shortcut detection logic was moved into another class which has a single responsibility making it much easier to understand what is going on and follow. 
 
