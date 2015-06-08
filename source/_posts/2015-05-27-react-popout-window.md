@@ -7,7 +7,7 @@ comments: true
 
 Recently I had a requirement to have a chat history panel which could be popped out into it's own window and that window needed to have live updates. I figured I had two ways of doing it, I could open a new window which initialised itself and had it's own connection to the server to get updates or I could keep with the React way and have the components which pop out simply flow updates to the window via props.
 
-The component which needs to support popping out is the `History` component which takes a set of items which get rendered.
+The component which needs to support popping out is the `ChatHistory` component which takes a set of items which get rendered.
 ``` js
 <ChatHistory messages={this.props.chat.messages} />
 ```
