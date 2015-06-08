@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Jake Ginnivan&#8217;s blog</title>
+  <title>Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Over the weekend I presented at http://www.dddmelbourne.com/ on building RESTful web services. I wanted to do it a bit different to the REST talks I &hellip;">
+  <meta name="description" content="If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files. While &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/posts/5">
+  <link rel="canonical" href="http://jake.ginnivan.net/posts/5/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -48,7 +48,7 @@
 
 <body    class="collapse-sidebar sidebar-footer" >
   <header role="banner"><hgroup>
-  <h1><a href="/">Jake Ginnivan&#8217;s blog</a></h1>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
   <ul class="social-links">
   
@@ -71,7 +71,7 @@
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input type="hidden" name="sitesearch" value="jake.ginnivan.net">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -89,6 +89,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/markpad-performance-push/">Markpad Performance Push</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-12'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files.</p>
+
+<p><img src="/assets/posts/2012-08-12-markpad-performance-push/screenshot.png" alt="MarkPad" /></p>
+
+<p>While flying back from Oslo and <a href="http://www.ndcoslo.com/">NDC</a> I spent probably 12+ hours of my ~20 hours of flying working on improving performance in MarkPad and cleaning up the codebase. This is documenting the most significant change.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/markpad-performance-push/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -498,49 +536,6 @@ I am still a little way from v1, so there will be API changes, but I am more tha
     <footer>
       <a rel="full-article" href="/windows-phone-mvc-update/">Read on &rarr;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/phone-test-project/">Phone Test Project Template</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-08-20'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Last week I put together a project template for a windows phone 7 test project. At the moment there isn&rsquo;t a really good story for unit testing on the phone. If you have the mango tools you have to grab the Mango Silverlight Unit Test assemblies from Jeff Wincox&rsquo;s blog.</p>
-
-<p>The Project Template available at <a href="http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b">http://visualstudiogallery.msdn.microsoft.com/6819514d-4bd6-4f31-a231-48c6530ed03b</a> is really basic, and you then have to add a reference via NuGet of either the Silverlight Unit Testing Framework (doesn&rsquo;t work with Mango), or WindowsPhoneEssentials.Testing.</p>
-
-<p>The advantage of the WindowsPhoneEssentials.Testing project is it contains the Mango compatible versions, sets everything up and has a collection of really useful testing related helpers/abstractions for WP7. Check out <a href="http://windowsphonefoundations.net/windowsphoneessentials">http://windowsphonefoundations.net/windowsphoneessentials</a> or the source at <a href="http://wp7essentials.codeplex.com/">http://wp7essentials.codeplex.com/</a> for more information.</p>
-
-<p>But what you get after you install it is:</p>
-
-<p><img src="/assets/posts/2011-08-20-phone-test-project/NewTestProject.png" alt="New Phone Test Project" /></p>
-
-<p>Then you add the NuGet reference to WindowsPhoneEssentials.Testing</p>
-
-<p><img src="/assets/posts/2011-08-20-phone-test-project/TestingNuGet.png" alt="Add NuGet reference to WindowsPhoneEssentials.Testing" /></p>
-
-<p>Enjoy!</p>
-</div>
-  
   
 
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-02-02T22:41:40+00:00</updated>
+  <updated>2015-06-08T23:13:02+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -12,6 +12,204 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ReactJS Popout window]]></title>
+    <link href="http://jake.ginnivan.net/blog/2015/05/27/react-popout-window/"/>
+    <updated>2015-05-27T00:00:00+01:00</updated>
+    <id>http://jake.ginnivan.net/blog/2015/05/27/react-popout-window</id>
+    <content type="html"><![CDATA[<p>Recently I had a requirement to have a chat history panel which could be popped out into it&rsquo;s own window and that window needed to have live updates. I figured I had two ways of doing it, I could open a new window which initialised itself and had it&rsquo;s own connection to the server to get updates or I could keep with the React way and have the components which pop out simply flow updates to the window via props.</p>
+
+<p>The component which needs to support popping out is the <code>History</code> component which takes a set of items which get rendered.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">ChatHistory</span> <span class="nx">items</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">history</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A simplified implementation looks like this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">ChatHistory</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">popout</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">popout</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">poppedOut</span><span class="o">:</span> <span class="kc">false</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">popout</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">poppedOut</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">Graphicon</span> <span class="nx">style</span><span class="o">=</span><span class="p"></span> <span class="nx">icon</span><span class="o">=</span><span class="s1">&#39;popout&#39;</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">popout</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>        <span class="p">)}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next is how do I pop this content out. First I create a <code>PoppedOutChatHistory</code> component:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">PoppedOutChatHistory</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span> <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>        <span class="p">)}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then I introduced a <code>Popout</code> react component into the <code>ChatHistory</code> render function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">isPoppedOut</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">Popout</span> <span class="nx">title</span><span class="o">=</span><span class="s1">&#39;Window title&#39;</span> <span class="nx">onClosing</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">popupClosed</span><span class="p">}</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">PoppedOutChatHistory</span> <span class="nx">messages</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">items</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/Popout&gt;</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">span</span> <span class="nx">style</span><span class="o">=</span><span class="p"></span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">popout</span><span class="p">}</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;buttonGlyphicon glyphicon glyphicon-export&quot;</span><span class="o">&gt;&lt;</span><span class="err">/span&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>        <span class="p">)}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">popupClosed</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">poppedOut</span><span class="o">:</span> <span class="kc">false</span> <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>Popout</code> component is quite simple, when <code>show</code> is set to true then it will render the content in a new popout window. The nice thing about having this as a React component is that the <code>Popout</code> window&rsquo;s lifecycle is tied to the lifecycle of the owning component. So when the History component is unmounted the <code>Popout</code> will close the popup it might have had opened.</p>
+
+<h2>Summary</h2>
+
+<p>I am pretty happy with the result of this Component, I can continue to flow props and handle events. For instance if I wanted to pop up a input form:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">Popout</span> <span class="nx">title</span><span class="o">=</span><span class="s1">&#39;Window title&#39;</span> <span class="nx">onClosing</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">popupClosed</span><span class="p">}</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s1">&#39;text&#39;</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">textChanged</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s1">&#39;button&#39;</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">submit</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="err">/Popout&gt;</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Source and install</h3>
+
+<blockquote><p>npm install react-popup &ndash;save</p></blockquote>
+
+<p><a href="https://github.com/JakeGinnivan/react-popout">Source on GitHub</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Improving the carnac codebase and Rx usage (Part 3)]]></title>
@@ -263,7 +461,7 @@ Part 4 - Removing state mutation from the stream</p>
 
 <p>But this time we will not use <code>.RefCount()</code> as we want to set up our queries then turn them on all at the same time, otherwise we have race conditions that messages might be added but never removed. We want all 3 of our subscriptions to start simultanously.</p>
 
-<p>Lets zoom out to the method level and have a look what the <code>KeyController.Start</code> method looks like after we publish the stream.</p>
+<p>Lets zoom out to the method level and have a look what the <code>MessageController.Start</code> method looks like after we publish the stream.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -284,20 +482,20 @@ Part 4 - Removing state mutation from the stream</p>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">stopCarnacDisposable</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&quot;Carnac cannot be started more than once&quot;</span><span class="p">);</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">readonly</span> <span class="n">SerialDisposable</span> <span class="n">stopCarnacDisposable</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SerialDisposable</span><span class="p">();</span>
 </span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="kt">var</span> <span class="n">keyStream</span> <span class="p">=</span> <span class="n">keyProvider</span><span class="p">.</span><span class="n">GetKeyStream</span><span class="p">();</span>
 </span><span class='line'>    <span class="n">IConnectableObservable</span><span class="p">&lt;</span><span class="n">Message</span><span class="p">&gt;</span> <span class="n">messageStream</span> <span class="p">=</span> <span class="n">messageProvider</span><span class="p">.</span><span class="n">GetMessageStream</span><span class="p">(</span><span class="n">keyStream</span><span class="p">).</span><span class="n">Publish</span><span class="p">();</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">IDisposable</span> <span class="n">addMessageSubscription</span> <span class="p">=</span> <span class="p">...;</span>
 </span><span class='line'>    <span class="n">IDisposable</span> <span class="n">fadeOutMessageSubscription</span> <span class="p">=</span> <span class="p">...;</span>
-</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">removeMessageStream</span> <span class="p">=</span> <span class="p">...;</span>
+</span><span class='line'>    <span class="n">IDisposable</span> <span class="n">removeMessageSubscription</span> <span class="p">=</span> <span class="p">...;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">IDisposable</span> <span class="n">underlyingMessageSubscription</span> <span class="p">=</span> <span class="n">messageStream</span><span class="p">.</span><span class="n">Connect</span><span class="p">();</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">stopCarnacDisposable</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CompositeDisposable</span><span class="p">(</span>
+</span><span class='line'>    <span class="n">stopCarnacDisposable</span><span class="p">.</span><span class="n">Disposable</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CompositeDisposable</span><span class="p">(</span>
 </span><span class='line'>        <span class="n">underlyingMessageSubscription</span><span class="p">,</span>
 </span><span class='line'>        <span class="n">addMessageSubscription</span><span class="p">,</span>
 </span><span class='line'>        <span class="n">fadeOutMessageSubscription</span><span class="p">,</span>
@@ -306,7 +504,16 @@ Part 4 - Removing state mutation from the stream</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>We simply save a new <code>CompositeDisposable</code> which takes any number of IDisposable&rsquo;s as constructor parameters to a field called <code>stopCarnacDisposable</code>. Then when the <code>MessageController</code> is disposed it will dispose all of the things streams it has subscribed to including the underlying messages stream.</p>
+<p>The <code>MessageController</code> will use two different types of Rx Disposables. They are:</p>
+
+<ul>
+<li><code>SerialDisposable</code> - If the .Disposable property is set multiple times the current value is Disposed before it is updated to the latest value.
+I use this so if <code>.Start</code> is called multiple times we will create a new subscription but it makes sure the previous subscription is disposed.</li>
+<li><code>CompositeDisposable</code> - Takes any number of IDisposable&rsquo;s as constructor parameters, when it is disposed all disposables passed into the ctor will be disposed</li>
+</ul>
+
+
+<p>The new <code>CompositeDisposable</code> which takes all our of subscriptions is assigned to the <code>stopCarnacDisposable.Disposable</code> property before exiting the <code>Start</code> method. When the <code>MessageProvider</code> class is disposed <code>stopCarnacDisposable.Dispose()</code> will be called disposing any subscription which has been started by <code>Start</code>.</p>
 
 <p>To walk through what we see above, I publish the message stream, create the three subscriptions and then I call <code>.Connect()</code> on the messageStream (which is now of type <code>IConnectableObservable&lt;Message&gt;</code>).</p>
 
@@ -3110,87 +3317,6 @@ git push upstream --tags
 <p>Now hit run, this will publish to NuGet and create the tag in Git. The final step is to go back to GitHub and publish the release (this is not done automatically, and I&rsquo;m sure it could be automated through the GitHub API).</p>
 
 <p>This is my first attempt at making it easy for me to release my open source projects with SemVer and GitHub Releases</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Convention Tests v2 Released]]></title>
-    <link href="http://jake.ginnivan.net/conventiontests-v2-released/"/>
-    <updated>2013-09-19T00:00:00+01:00</updated>
-    <id>http://jake.ginnivan.net/conventiontests-v2-released</id>
-    <content type="html"><![CDATA[<h2>ConventionTests v2 Released</h2>
-
-<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
-
-<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
-
-<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
-
-<h2>What is ConventionTests?</h2>
-
-<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
-
-<!-- more -->
-
-
-<h2>Getting Started</h2>
-
-<p>It is really easy to get started with Convention Tests, we have included a bunch of conventions out of the box. The included conventions are:</p>
-
-<ul>
-<li>All Classes Have Default Constructor</li>
-<li>All Methods are Virtual</li>
-<li>Class type has specific namespace (for example, all dtos must live in the ProjectName.Dtos namespace)</li>
-<li>Files are Embedded Resources</li>
-<li>Project does not reference dlls from Bin or Obj directory</li>
-<li>Plus others will be added!</li>
-</ul>
-
-
-<h3>Writing your first Convention test</h3>
-
-<h4>1. Using your favourite testing framework, create a new test. Lets call it <code>nhibernate_entities_must_have_default_constructor</code></h4>
-
-<h4>2. Define some data</h4>
-
-<p>At the moment there is minimal support for type scanning, but better support will be added soon!</p>
-
-<pre><code>var itemsToVerify = typeof (SampleDomainClass).Assembly.GetTypes();
-var nhibernateEntities = new Types("nHibernate Entitites")
-{
-    TypesToVerify = itemsToVerify
-};
-</code></pre>
-
-<h4>3. Assert the convention</h4>
-
-<p><code>Convention.Is(new AllClassesHaveDefaultConstructor(), nhibernateEntities);</code></p>
-
-<h4>That&rsquo;s it!</h4>
-
-<p>When you run this convention, if it fails an exception will be thrown, which will look something like this:</p>
-
-<pre><code>ConventionFailedException
-Message = Failed: 'Types must have a default constructor' for 'nHibernate Entitites'
---------------------------------------------------------------------------
-
-TestAssembly.ClassWithNoDefaultCtor
-TestAssembly.ClassWithPrivateDefaultCtor
-</code></pre>
-
-<p>How cool is that!</p>
-
-<h3>Reporting</h3>
-
-<p>If you would like to use ConventionTests reporting features, you just have to opt in by specifying the reporter you want. This makes it easy to add your own reporters, for example a WikiReporter may be better than the <code>HtmlReporter</code></p>
-
-<p>In your <code>Properties\AssemblyInfo.cs</code> file add the reporters you want. This are global reporters which will report the results of all conventions.</p>
-
-<pre><code>[assembly: ConventionReporter(typeof(HtmlConventionResultsReporter))]
-[assembly: ConventionReporter(typeof(MarkdownConventionResultsReporter))]
-</code></pre>
-
-<p>Then if you look in the directory where your test assembly is, there will be an html report called <code>Conventions.htm</code>, serving as living documentation!</p>
 ]]></content>
   </entry>
   

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Jake Ginnivan&#8217;s blog</title>
+  <title>Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Today I had to build a search screen, it had 3 radio buttons for different types of items to search, and each item had very specific search fields. &hellip;">
+  <meta name="description" content="I am a few days late to post this, but oh well =) 2010 was an amazing year for me, I joined Readify in February and have been doing as learning and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/posts/8">
+  <link rel="canonical" href="http://jake.ginnivan.net/posts/8/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -48,7 +48,7 @@
 
 <body    class="collapse-sidebar sidebar-footer" >
   <header role="banner"><hgroup>
-  <h1><a href="/">Jake Ginnivan&#8217;s blog</a></h1>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
   <ul class="social-links">
   
@@ -71,7 +71,7 @@
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input type="hidden" name="sitesearch" value="jake.ginnivan.net">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -89,6 +89,68 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2010wrapup/">2010 Wrapup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-01-01'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I am a few days late to post this, but oh well =)</p>
+
+<p>2010 was an amazing year for me, I joined <a href="http://readify.net">Readify</a> in February and have been doing as learning and community work as I can. Last year I managed to present 6 times, and I hope to present more this year.</p>
+
+<h2>Presentations</h2>
+
+<ul>
+<li>April, <a href="http://perthdotnet.org">PerthDotNet</a> <strong>VSTO in Visual Studio 2010</strong></li>
+<li>May, <a href="http://melbourne.ozalt.net">Alt.NET Melbourne</a> <strong>TDD, Unit Testing and Mocking</strong></li>
+<li>June, <a href="http://www.sharepointusers.org.au/MOSSIG/default.aspx">MOSSIG</a> (Melbourne) <strong>Developing Add-ins with VSTO</strong></li>
+<li>August, <a href="http://australia.msteched.com/">TechEd</a> (Gold Coast) <strong>Developing with the VSTO Platform</strong></li>
+<li>November, <a href="http://codecampoz.com/">CodeCampOz</a> (Wagga Wagga) <strong>Extending Office with VSTO</strong></li>
+<li>November, <a href="http://sddn.org.au">SDDN</a> (Perth) <strong>MahTweets for Windows Phone 7</strong></li>
+</ul>
+
+
+<p>I also attended the <a href="/evangeloz2010">Microsoft Evangelism Academy</a> just before Christmas, which was a 3 day intense training course organised by Sarah Vaughn and Andrew Coates from Microsoft DPE with the goal of improving the presentation skills of 8 the lucky people that were selected. Read more about it <a href="/evangeloz2010">here</a>.</p>
+
+<h2>Open Source Work</h2>
+
+<ul>
+<li><a href="http://vstocontrib.codeplex.com/">VSTO Contrib</a> - Collection of libraries which make COM Interop much easier, and add IoC support to VSTO Add-ins (which making it easier to test).</li>
+<li><a href="http://fibre.codeplex.com/">Fibre Async Framework</a> - Another Async framework, which runs on Silverlight and WP7 as well as .NET 3.5/4.0. It simply allows you to coordinate async work, or perform work asynchronously. Goals are similar to the Task parallel library in .NET 4.0, but has a simpler API, and works on more frameworks. I would like to think it has a lower barrier to entry than other frameworks due to it&rsquo;s simplicity.</li>
+<li><a href="https://github.com/jbogard/AutoMapper">AutoMapper</a> - Added Inheritance to AutoMapper, made AutoMapper feel MUCH more predictable. My fork is available at <a href="https://github.com/JakeGinnivan/AutoMapper/">https://github.com/JakeGinnivan/AutoMapper/</a> Hopefully the changes will be pulled into the Jimmy&rsquo;s repository soon =)</li>
+<li><a href="http://mahtweetswp7.codeplex.com/">MahTweets for Windows Phone</a> - Have done a lot on this project, lots of refactoring and cleanups mainly.</li>
+<li><a href="http://code.google.com/p/funnelweb/">FunnelWeb Blog</a>  -The blog engine that is behind my blog, started by <a href="http://www.paulstovell.com/">Paul Stovell</a> it is now an awesome open source blog engine based on MVC3.</li>
+</ul>
+
+
+<h2>This year</h2>
+
+<p>This year I want to keep up my Open Source work, as well as do more presenting. One of the biggest fails this year is that I have been so busy and have stopped playing Inline Hockey, doing Rock n' Roll and also Ballroom dancing. I will start at least the dancing back up this year.</p>
+
+<p>Look forward to catching up with all the people I have met this year!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -442,40 +504,6 @@ It seemed unnatural that I could define a mapping that looked like:</p>
   
     <footer>
       <a rel="full-article" href="/vsto-com-interop/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/vsto-project-structure/">How to Structure a New VSTO Project</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2010-04-23'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2010</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Without a good project structure you will find you cannot test any of your code and will possibly run into maintainability problems. For my user group talk last month I built a Outlook add-in that synchronises contacts and events from Facebook into outlook. I chose Facebook because it has a easy to access public API and most people are familiar with it. Over the next few weeks I will go through the process of building it, demonstrating many concepts as I go. At the end I will release the completed project.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/vsto-project-structure/">Read on &rarr;</a>
     </footer>
   
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: webapi | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/webapi/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-02-02T22:41:40+00:00</updated>
+  <updated>2015-06-08T23:13:02+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -34,7 +34,7 @@
 }
 </code></pre>
 
-<p>Our WebApi site starts 404&#8217;ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.</p>
+<p>Our WebApi site starts 404'ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.</p>
 
 <!-- more -->
 

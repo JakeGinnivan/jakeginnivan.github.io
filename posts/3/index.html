@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Jake Ginnivan&#8217;s blog</title>
+  <title>Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I had a unit tests which constructed a pack uri, and I didn&rsquo;t want to abstract it (needless abstraction) so here is how I solved a few issues. &hellip;">
+  <meta name="description" content="ConventionTests v2 Released Krzysztof Koźmic first spoke about ConventionTests at NDC 2012. You can find the video of that talk here, slides here and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,13 +18,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/posts/3">
+  <link rel="canonical" href="http://jake.ginnivan.net/posts/3/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -48,7 +48,7 @@
 
 <body    class="collapse-sidebar sidebar-footer" >
   <header role="banner"><hgroup>
-  <h1><a href="/">Jake Ginnivan&#8217;s blog</a></h1>
+  <h1><a href="/">Jake Ginnivan's blog</a></h1>
   
   <ul class="social-links">
   
@@ -71,7 +71,7 @@
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:jake.ginnivan.net" />
+    <input type="hidden" name="sitesearch" value="jake.ginnivan.net">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -89,6 +89,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/conventiontests-v2-released/">Convention Tests V2 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-09-19'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>ConventionTests v2 Released</h2>
+
+<p><a href="https://github.com/kkozmic">Krzysztof Koźmic</a> first spoke about ConventionTests at NDC 2012. You can find the video of that talk <a href="http://vimeo.com/43676874">here</a>, slides <a href="http://kozmic.pl/presentations/">here</a> and the introductory blog post <a href="http://kozmic.pl/2012/06/14/using-conventiontests/">here</a>.</p>
+
+<p>In v2, we have rewritten convention tests from the ground up to make it easier to get started, bundle some default conventions and also decouple it from a specific unit testing framework.</p>
+
+<p>There is still plenty we can make better, so please raise issues on github with suggestions!</p>
+
+<h2>What is ConventionTests?</h2>
+
+<p>Convention over Configuration is a great way to cut down repetitive boilerplate code. But how do you validate that your code adheres to your conventions? Convention Tests is a code-only NuGet that provides a simple API to build validation rules for convention validation tests.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/conventiontests-v2-released/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -470,42 +514,6 @@ This means that you need a fully unlocked desktop for things to work correctly. 
   
     <footer>
       <a rel="full-article" href="/teamcity-ui-test-agent/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/setting-up-git/">Setting Up Git</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-07-27'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have setup git many times for myself, and also team members. I thought I would just share the way I install and setup my Git environment on Windows.</p>
-
-<p>I use <a href="https://code.google.com/p/gitextensions/">Git Extensions</a> as my Gui when I am not using the Command Line (which is my preference). It also is bundled with KDiff3 and MsysGit which means you only have to download one things.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/setting-up-git/">Read on &rarr;</a>
     </footer>
   
 
