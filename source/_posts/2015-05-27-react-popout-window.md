@@ -9,7 +9,7 @@ Recently I had a requirement to have a chat history panel which could be popped 
 
 The component which needs to support popping out is the `History` component which takes a set of items which get rendered.
 ``` js
-<ChatHistory items={this.props.request.history} />
+<ChatHistory messages={this.props.chat.messages} />
 ```
 
 A simplified implementation looks like this
@@ -32,10 +32,10 @@ class ChatHistory extends React.Component {
     return (
       <div>
         <Graphicon style={{float:right}} icon='popout' onClick={this.popout} />
-        {this.props.items.map(item =>
+        {this.props.messages.map(msg =>
           <div>
-            {item.date}
-            <pre>{item.text}</pre>
+            {msg.date}
+            <pre>{msg.text}</pre>
           </div>
         )}
       </div>
@@ -53,10 +53,10 @@ class PoppedOutChatHistory extends React.Component {
   render() {
     return (
       <div>
-        {this.props.messages.map(item =>
+        {this.props.messages.map(msg =>
           <div>
             {item.date}
-            <pre>{item.text}</pre>
+            <pre>{msg.text}</pre>
           </div>
         )}
       </div>
@@ -73,17 +73,17 @@ render() {
   if (this.state.isPoppedOut) {
     return (
       <Popout title='Window title' onClosing={this.popupClosed}>
-        <PoppedOutChatHistory messages={this.props.items} />
+        <PoppedOutChatHistory messages={this.props.messages} />
       </Popout>
     );
   } else {
     return (
       <div>
       <span style={{float:right}} onClick={this.popout} className="buttonGlyphicon glyphicon glyphicon-export"></span>
-        {this.props.messages.map(item =>
+        {this.props.messages.map(msg =>
           <div>
-            {item.date}
-            <pre>{item.text}</pre>
+            {msg.date}
+            <pre>{msg.text}</pre>
           </div>
         )}
       </div>
