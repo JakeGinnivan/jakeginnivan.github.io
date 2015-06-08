@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-06-08T23:23:43+01:00</updated>
+  <updated>2015-06-08T23:24:51+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -20,7 +20,7 @@
     <id>http://jake.ginnivan.net/blog/2015/05/27/react-popout-window</id>
     <content type="html"><![CDATA[<p>Recently I had a requirement to have a chat history panel which could be popped out into it&rsquo;s own window and that window needed to have live updates. I figured I had two ways of doing it, I could open a new window which initialised itself and had it&rsquo;s own connection to the server to get updates or I could keep with the React way and have the components which pop out simply flow updates to the window via props.</p>
 
-<p>The component which needs to support popping out is the <code>History</code> component which takes a set of items which get rendered.</p>
+<p>The component which needs to support popping out is the <code>ChatHistory</code> component which takes a set of items which get rendered.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">ChatHistory</span> <span class="nx">messages</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">messages</span><span class="p">}</span> <span class="o">/&gt;</span>
