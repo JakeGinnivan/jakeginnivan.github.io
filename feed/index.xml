@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-06-08T23:13:02+01:00</updated>
+  <updated>2015-06-08T23:23:43+01:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -23,7 +23,7 @@
 <p>The component which needs to support popping out is the <code>History</code> component which takes a set of items which get rendered.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">ChatHistory</span> <span class="nx">items</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">history</span><span class="p">}</span> <span class="o">/&gt;</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">ChatHistory</span> <span class="nx">messages</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">messages</span><span class="p">}</span> <span class="o">/&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -73,10 +73,10 @@
 </span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
 </span><span class='line'>        <span class="o">&lt;</span><span class="nx">Graphicon</span> <span class="nx">style</span><span class="o">=</span><span class="p"></span> <span class="nx">icon</span><span class="o">=</span><span class="s1">&#39;popout&#39;</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">popout</span><span class="p">}</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">msg</span> <span class="o">=&gt;</span>
 </span><span class='line'>          <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-</span><span class='line'>            <span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
-</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
+</span><span class='line'>            <span class="p">{</span><span class="nx">msg</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">msg</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
 </span><span class='line'>          <span class="o">&lt;</span><span class="err">/div&gt;</span>
 </span><span class='line'>        <span class="p">)}</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
@@ -110,10 +110,10 @@
 </span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">msg</span> <span class="o">=&gt;</span>
 </span><span class='line'>          <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
 </span><span class='line'>            <span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
-</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">msg</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
 </span><span class='line'>          <span class="o">&lt;</span><span class="err">/div&gt;</span>
 </span><span class='line'>        <span class="p">)}</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
@@ -154,17 +154,17 @@
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">isPoppedOut</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="nx">Popout</span> <span class="nx">title</span><span class="o">=</span><span class="s1">&#39;Window title&#39;</span> <span class="nx">onClosing</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">popupClosed</span><span class="p">}</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">PoppedOutChatHistory</span> <span class="nx">messages</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">items</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">PoppedOutChatHistory</span> <span class="nx">messages</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">}</span> <span class="o">/&gt;</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="err">/Popout&gt;</span>
 </span><span class='line'>    <span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="nx">span</span> <span class="nx">style</span><span class="o">=</span><span class="p"></span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">popout</span><span class="p">}</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;buttonGlyphicon glyphicon glyphicon-export&quot;</span><span class="o">&gt;&lt;</span><span class="err">/span&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">msg</span> <span class="o">=&gt;</span>
 </span><span class='line'>          <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
-</span><span class='line'>            <span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
-</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
+</span><span class='line'>            <span class="p">{</span><span class="nx">msg</span><span class="p">.</span><span class="nx">date</span><span class="p">}</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">msg</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/pre&gt;</span>
 </span><span class='line'>          <span class="o">&lt;</span><span class="err">/div&gt;</span>
 </span><span class='line'>        <span class="p">)}</span>
 </span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
