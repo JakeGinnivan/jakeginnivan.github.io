@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Ever wanted to know a bit more about how VSTO gives you the Ribbon designer. This post will explain Ribbon XML, then how the designer gives you more. ">
+  <meta name="description" content="When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool. This blog post http://blogs.msdn.com/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,46 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/tfsmergetools/">TFS Merge Tools Configuration</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-06-01'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
+
+<p>This blog post <a href="http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx">http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx</a> lists all common merge tools, and the command line arguments for each of them.</p>
+
+<p>I use KDiff, so the Compare arguments are <code>%1 --fname %6 %2 --fname %7</code> and Merge arguments are <code>%3 --fname %8 %2 --fname %7 %1 --fname %6 -o %4</code></p>
+
+<p>Great, except I have to register all the extensions that I want to use KDiff for. This is my list:</p>
+
+<pre><code>.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql,.rptproj,.rdl,.rss,.settings
+</code></pre>
+
+<p>What other extensions am I missing?</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -442,77 +482,6 @@ What would you like to see?</p>
     <footer>
       <a rel="full-article" href="/wpf-screenshot/">Read on &rarr;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/evangeloz2010/">Microsoft Evangelism Academy</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-01-01'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I am a little late blogging about this, by last month I attended the inaugural Microsoft Evangelism Academy (<a href="http://twitter.com/#search?q=%23EvangelOz">#EvangelOz</a>) which was organised by Andrew Coates (<a href="http://twitter.com/coatsy">@coatsy</a>) and Sarah Vaughan (<a href="http://twitter.com/sarahvaughan">@sarahvaughan</a>) at Microsoft DPE. The goal of this program is to take 8 of us to the next level with our presenting! It started with 3 days of coaching, it will continue until August 2011 and will include:</p>
-
-<ul>
-<li>Monthly conference calls</li>
-<li>Monthly 1 on 1 catchup over the phone with a mentor</li>
-<li>1 day of group training in Melbourne every 2-3 months</li>
-<li>Talk at UserGroups, Conferences and whatever we can!</li>
-</ul>
-
-
-<p>I was lucky enough to attend with:</p>
-
-<ul>
-<li><a href="http://demonictalkingskull.com/">James Bannan</a> (<a href="http://twitter.com/jamesbannan">@JamesBannan</a>)</li>
-<li>Windows Desktop Experience MVP</li>
-<li><a href="http://azure.snagy.name/blog/">Steven Nagy</a> (<a href="http://twitter.com/snagy">@snagy</a>)</li>
-<li>Windows Azure MVP</li>
-<li><a href="http://www.soulsolutions.com.au/Blog.aspx">John O’Brien</a> (<a href="http://twitter.com/soulsolutions">@soulsolutions</a>)</li>
-<li>Windows Live MVP</li>
-<li><a href="http://www.made4the.net/default.aspx">Jeremy Thake</a> (<a href="http://twitter.com/jthake">@jthake</a>)</li>
-<li>SharePoint MVP</li>
-<li><a href="http://blog.walshie.me/">Chris Walsh</a> (<a href="http://twitter.com/ChrisWalshie">@ChrisWalshie</a>)</li>
-<li>Windows Phone 7 guru</li>
-<li><a href="http://www.soulsolutions.com.au/Blog.aspx">Bronwen Zande</a> (<a href="http://twitter.com/BronwenZ">@BronwenZ</a>)</li>
-<li>Windows Live MVP</li>
-<li><a href="http://mrhodes.net/">Mark Rhodes</a> (<a href="http://twitter.com/MRhodes">@MRhodes</a>)</li>
-<li>SharePoint Infrastructure guru</li>
-</ul>
-
-
-<p>Over the three days I made some new friends, and learnt a lot about the art of presenting. We covered many areas including Motion, Gestures, Eye Contact, Voice, Stance, Visuals, Content and much more.</p>
-
-<p>I found the whole exercise quite challenging and have to say thanks to  Steve Herzberg (<a href="http://twitter.com/nrgsteve">@nrgsteve</a>) and Melony Dos Remedios from NRG Solutions. They were great mentors, and I look forward to catching up with them again in February!</p>
-
-<p>Hopefully I will post some video&rsquo;s/pictures of the course over the few weeks, but in the meantime you can have a look at any of the others blog posts about EvangelOz =)</p>
-
-<ul>
-<li><a href="http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/">http://mrhodes.net/2010/12/22/a-few-days-at-the-microsoft-evangelism-academy/</a></li>
-<li><a href="http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/">http://demonictalkingskull.com/2010/12/microsoft-evangelism-academy-day-1/</a></li>
-<li><a href="http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx">http://www.soulsolutions.com.au/Blog/tabid/73/EntryId/670/Day-1-at-the-Evangelism-Academy.aspx</a></li>
-<li><a href="http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx">http://wss.made4the.net/archive/2010/12/16/microsoft-evangelism-academy-australia-evangeloz.aspx</a></li>
-</ul>
-
-</div>
-  
   
 
 

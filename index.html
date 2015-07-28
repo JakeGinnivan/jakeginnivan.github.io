@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Recently I had a requirement to have a chat history panel which could be popped out into it&rsquo;s own window and that window needed to have live &hellip;">
+  <meta name="description" content="Today GitVersion v3.0.0 has been released. For me it has been a long time coming, with 4 beta releases and incorporating a lot of feedback between &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -95,6 +95,84 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/07/28/gitversion-v3/">GitVersion v3.0.0!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-28T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Today GitVersion v3.0.0 has been released. For me it has been a long time coming, with 4 beta releases and incorporating a lot of feedback between each release. It all started with <a href="https://github.com/GitTools/GitVersion/pull/338">this pull request</a> which replaced the existing approach of each git workflow being hard coded with a class responsible for calculating each branch type.</p>
+
+<p>This meant that GitFlow and GitHubFlow had completely separate code paths with very little shared, it also meant that things like commit counting varied on different branches. v3 changed all that and now is entirely driven by configuration. This initial pull request weighed in at 78 commits, 196 files, changed 2,500 lines of code and deleted another 700. 106 pull requests later we are shipping.</p>
+
+<p>This configuration based approach has been really important for a number of reasons:</p>
+
+<ol>
+<li>Understanding/documenting what GitVersion is doing.</li>
+<li>When we had bug reports of a version being incorrectly calculated there was never a generic fix.</li>
+<li>The logic for every branch was different and inconsistent. Then GitFlow and GitHubFlow worked quite differently in some respects</li>
+<li>It was hard to get GitVersion to work with nightlies and publishing CI builds to NuGet</li>
+<li>This meant that getting GitVersion working with Octopus deploy was not great</li>
+</ol>
+
+
+<p>A number of long standing bugs were fixed with the changes made in v3, some of the highlights of the new features</p>
+
+<ul>
+<li><code>GitVersion init</code> is a configuration tool which allows you to make GitVersion work the way you want it to</li>
+<li>Decent documentation!
+
+<ul>
+<li>Check it out at <a href="http://gitversion.readthedocs.org/en/latest">http://gitversion.readthedocs.org/en/latest</a></li>
+</ul>
+</li>
+<li>Configurable version incrementing
+
+<ul>
+<li><a href="http://gitversion.readthedocs.org/en/latest/reference/continuous-delivery/">Continuous Delivery</a> (default) means GitVersion will only increment the version when you release and tag, this works great for some scenarios and not well for otherwise</li>
+<li><a href="http://gitversion.readthedocs.org/en/latest/reference/continuous-deployment/">Continuous Deployment</a>, meaning each commit will produce a <em>different</em> SemVer</li>
+<li>Read more at [<a href="http://gitversion.readthedocs.org/en/latest/more-info/version-increments/">http://gitversion.readthedocs.org/en/latest/more-info/version-increments/</a>]</li>
+</ul>
+</li>
+<li>Better error reporting - when things go wrong (which should be a lot less often now) we try to give you decent information including:
+
+<ul>
+<li>Dumping out a cleaned git history graph which you can paste into an issue so we can reproduce the issue</li>
+<li>Logging out all decisions and sources for versions</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Whats next</h2>
+
+<p>There are a few features which will be released in 3.1 which will make GitVersion nicer to get started. v4 hopefully will be not too far down the road when we rethink the command line usage and fix a few other things which have got a bit complex over time.</p>
+
+<h2>Give it a go</h2>
+
+<p>All the links you need are on our GitHub page at <a href="https://github.com/GitTools/GitVersion#gitversion">https://github.com/GitTools/GitVersion#gitversion</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/05/27/react-popout-window/">ReactJS Popout Window</a></h1>
     
     
@@ -104,7 +182,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-27T00:00:00+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2015-05-27T00:00:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -322,7 +400,7 @@
 
 
 
-<time class='entry-date' datetime='2015-02-02T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2015-02-02T00:00:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -389,7 +467,7 @@ Part 4 - Removing state mutation from the stream</p>
 
 
 
-<time class='entry-date' datetime='2015-02-01T00:00:00+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2015-02-01T00:00:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -448,7 +526,7 @@ Part 4 - Removing state mutation from the stream</p>
 
 
 
-<time class='entry-date' datetime='2015-01-31T00:00:00+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2015-01-31T00:00:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -490,7 +568,7 @@ Part 4 - Removing state mutation from the stream</p>
 
 
 
-<time class='entry-date' datetime='2014-07-09T00:00:00+01:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2014-07-09T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -541,7 +619,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes/">Updating Chocolateys Release Notes With GitReleaseNotes</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/">Updating Chocolateys Release Notes With GitReleaseNotes</a></h1>
     
     
       <p class="meta">
@@ -550,7 +628,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-06-25T22:51:20+01:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:51 pm</span></time>
+<time class='entry-date' datetime='2014-06-26T05:51:20+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:51 am</span></time>
         
       </p>
     
@@ -569,7 +647,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
   
   
     <footer>
-      <a rel="full-article" href="/blog/2014/06/25/updating-chocolateys-release-notes-with-gitreleasenotes/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2014/06/26/updating-chocolateys-release-notes-with-gitreleasenotes/">Read on &rarr;</a>
     </footer>
   
 
@@ -590,7 +668,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-06-10T00:00:00+01:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2014-06-10T00:00:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -635,7 +713,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-06-10T00:00:00+01:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+<time class='entry-date' datetime='2014-06-10T00:00:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
@@ -671,7 +749,7 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
 
 
 
-<time class='entry-date' datetime='2014-05-25T10:05:00+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:05 am</span></time>
+<time class='entry-date' datetime='2014-05-25T17:05:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:05 pm</span></time>
         
       </p>
     
@@ -688,41 +766,6 @@ Once this build succeeds it should tag the VCS root and push that tag.</p>
     <footer>
       <a rel="full-article" href="/blog/2014/05/25/simple-versioning-and-release-notes/">Read on &rarr;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/19/key-not-working-on-sculpt-keyboard/">Cannot Type Capital v on Sculpt Keyboard</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-05-19T10:46:00+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:46 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>At the MVP summit last year I picked up a <a href="http://www.microsoft.com/hardware/en-gb/p/sculpt-ergonomic-desktop">Sculpt Ergonomic Desktop pack</a>, mainly because I cannot stand the UK keyboard layout and wanted to stay on the US layout while working in London.</p>
-
-<p>I just had a very strange issue, I could not type a capital <strong>V</strong>, lowercase worked fine. Plugging into another machine showed the same issue.</p>
-
-<p>One of the problems with the Sculpt is that the function keys get stuck. Apparently if the <code>F5</code> key gets stuck, then you can no longer type a capital V. If the <code>F2</code> key is stuck then you won&rsquo;t be able to type a capital C.</p>
-
-<p>If you hit this random issue, hopefully you will read this post before returning your keyboard.</p>
-</div>
-  
   
 
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: presenting | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/presenting/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-06-08T23:24:51+01:00</updated>
+  <updated>2015-07-28T11:38:08+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[DDD Melbourne Rest Talk]]></title>
     <link href="http://jake.ginnivan.net/ddd-melbourne-rest-talk/"/>
-    <updated>2012-07-30T00:00:00+01:00</updated>
+    <updated>2012-07-30T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/ddd-melbourne-rest-talk</id>
     <content type="html"><![CDATA[<p>Over the weekend I presented at <a href="http://www.dddmelbourne.com/">http://www.dddmelbourne.com/</a> on building RESTful web services.</p>
 
@@ -33,7 +33,7 @@
   <entry>
     <title type="html"><![CDATA[My Sessions at TechEd 2011]]></title>
     <link href="http://jake.ginnivan.net/teched-2011/"/>
-    <updated>2011-08-29T00:00:00+01:00</updated>
+    <updated>2011-08-29T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/teched-2011</id>
     <content type="html"><![CDATA[<h1>DEV304 - Adding Value to Software Projects with VSTO (Wed, 11:30am)</h1>
 
@@ -64,7 +64,7 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   <entry>
     <title type="html"><![CDATA[DDD Sydney - Rich Client Automation]]></title>
     <link href="http://jake.ginnivan.net/dddsydney/"/>
-    <updated>2011-06-29T00:00:00+01:00</updated>
+    <updated>2011-06-29T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/dddsydney</id>
     <content type="html"><![CDATA[<h1>Rich Client UI Automation, without shooting yourself in the foot</h1>
 
@@ -81,7 +81,7 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   <entry>
     <title type="html"><![CDATA[Windows Phone 7 Frameworks Presentation]]></title>
     <link href="http://jake.ginnivan.net/presentations/perth-dotnet-wp7-frameworks/"/>
-    <updated>2011-02-25T00:00:00+00:00</updated>
+    <updated>2011-02-25T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/presentations/perth-dotnet-wp7-frameworks</id>
     <content type="html"><![CDATA[<h1>Windows Phone 7 Frameworks</h1>
 
@@ -114,7 +114,7 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   <entry>
     <title type="html"><![CDATA[Microsoft Evangelism Academy]]></title>
     <link href="http://jake.ginnivan.net/evangeloz2010/"/>
-    <updated>2011-01-01T00:00:00+00:00</updated>
+    <updated>2011-01-01T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/evangeloz2010</id>
     <content type="html"><![CDATA[<p>I am a little late blogging about this, by last month I attended the inaugural Microsoft Evangelism Academy (<a href="http://twitter.com/#search?q=%23EvangelOz">#EvangelOz</a>) which was organised by Andrew Coates (<a href="http://twitter.com/coatsy">@coatsy</a>) and Sarah Vaughan (<a href="http://twitter.com/sarahvaughan">@sarahvaughan</a>) at Microsoft DPE. The goal of this program is to take 8 of us to the next level with our presenting! It started with 3 days of coaching, it will continue until August 2011 and will include:</p>
 

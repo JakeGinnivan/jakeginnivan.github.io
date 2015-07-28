@@ -4,7 +4,7 @@
   <title><![CDATA[Category: github | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-06-08T23:24:51+01:00</updated>
+  <updated>2015-07-28T11:38:08+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
     <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
-    <updated>2013-12-17T00:00:00+00:00</updated>
+    <updated>2013-12-17T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/gitreleasenotes</id>
     <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
 
@@ -82,7 +82,7 @@ It will then output your release notes in <a href="http://www.semanticreleasenot
   <entry>
     <title type="html"><![CDATA[Git Flow Versioning]]></title>
     <link href="http://jake.ginnivan.net/git-flow-versioning/"/>
-    <updated>2013-10-02T00:00:00+01:00</updated>
+    <updated>2013-10-02T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/git-flow-versioning</id>
     <content type="html"><![CDATA[<p>As a follow up to my last post <a href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity">http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</a> I have been investigating more into different ways to achieve semantic versioning and being able to release in an easy way.</p>
 
@@ -250,7 +250,7 @@ git push upstream --tags
   <entry>
     <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
     <link href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity/"/>
-    <updated>2013-09-28T00:00:00+01:00</updated>
+    <updated>2013-09-28T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</id>
     <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
 

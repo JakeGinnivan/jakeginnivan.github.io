@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Migration - Jake Ginnivan's blog</title>
+  <title>GitVersion v3.0.0! - Jake Ginnivan's blog</title>
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site &hellip;">
+  <meta name="description" content="Today GitVersion v3.0.0 has been released. For me it has been a long time coming, with 4 beta releases and incorporating a lot of feedback between &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jake.ginnivan.net/blog/2014/01/05/blog-migration/">
+  <link rel="canonical" href="http://jake.ginnivan.net/blog/2015/07/28/gitversion-v3/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/feed" rel="alternate" title="Jake Ginnivan's blog" type="application/atom+xml">
@@ -92,7 +92,7 @@
   
   <header>
     
-      <h1 class="entry-title">Blog Migration</h1>
+      <h1 class="entry-title">GitVersion v3.0.0!</h1>
     
     
       <p class="meta">
@@ -101,26 +101,63 @@
 
 
 
-<time class='entry-date' datetime='2014-01-05T16:51:56+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:51 pm</span></time>
+<time class='entry-date' datetime='2015-07-28T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I have finally decided to move from FunnelWeb to Jekyll. My needs for a blog engine are changing, and at the moment I am liking the static site generators.</p>
+<div class="entry-content"><p>Today GitVersion v3.0.0 has been released. For me it has been a long time coming, with 4 beta releases and incorporating a lot of feedback between each release. It all started with <a href="https://github.com/GitTools/GitVersion/pull/338">this pull request</a> which replaced the existing approach of each git workflow being hard coded with a class responsible for calculating each branch type.</p>
 
-<p>Those of you subscribed to my RSS feeds will likely get duplications, sorry about that.</p>
+<p>This meant that GitFlow and GitHubFlow had completely separate code paths with very little shared, it also meant that things like commit counting varied on different branches. v3 changed all that and now is entirely driven by configuration. This initial pull request weighed in at 78 commits, 196 files, changed 2,500 lines of code and deleted another 700. 106 pull requests later we are shipping.</p>
 
-<h2>LinqPad Migration script</h2>
+<p>This configuration based approach has been really important for a number of reasons:</p>
 
-<p>Migrates posts, and images (putting them in the correct spot for Jekyll sites and rewriting links in your blog posts as it goes)</p>
+<ol>
+<li>Understanding/documenting what GitVersion is doing.</li>
+<li>When we had bug reports of a version being incorrectly calculated there was never a generic fix.</li>
+<li>The logic for every branch was different and inconsistent. Then GitFlow and GitHubFlow worked quite differently in some respects</li>
+<li>It was hard to get GitVersion to work with nightlies and publishing CI builds to NuGet</li>
+<li>This meant that getting GitVersion working with Octopus deploy was not great</li>
+</ol>
 
-<p>Available at <a href="http://share.linqpad.net/76oqrd.linq">http://share.linqpad.net/76oqrd.linq</a></p>
 
-<h2>Other Links</h2>
+<p>A number of long standing bugs were fixed with the changes made in v3, some of the highlights of the new features</p>
 
-<p><a href="https://github.com/tokkonopapa/octopress-tagcloud">https://github.com/tokkonopapa/octopress-tagcloud</a></p>
+<ul>
+<li><code>GitVersion init</code> is a configuration tool which allows you to make GitVersion work the way you want it to</li>
+<li>Decent documentation!
+
+<ul>
+<li>Check it out at <a href="http://gitversion.readthedocs.org/en/latest">http://gitversion.readthedocs.org/en/latest</a></li>
+</ul>
+</li>
+<li>Configurable version incrementing
+
+<ul>
+<li><a href="http://gitversion.readthedocs.org/en/latest/reference/continuous-delivery/">Continuous Delivery</a> (default) means GitVersion will only increment the version when you release and tag, this works great for some scenarios and not well for otherwise</li>
+<li><a href="http://gitversion.readthedocs.org/en/latest/reference/continuous-deployment/">Continuous Deployment</a>, meaning each commit will produce a <em>different</em> SemVer</li>
+<li>Read more at [<a href="http://gitversion.readthedocs.org/en/latest/more-info/version-increments/">http://gitversion.readthedocs.org/en/latest/more-info/version-increments/</a>]</li>
+</ul>
+</li>
+<li>Better error reporting - when things go wrong (which should be a lot less often now) we try to give you decent information including:
+
+<ul>
+<li>Dumping out a cleaned git history graph which you can paste into an issue so we can reproduce the issue</li>
+<li>Logging out all decisions and sources for versions</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Whats next</h2>
+
+<p>There are a few features which will be released in 3.1 which will make GitVersion nicer to get started. v4 hopefully will be not too far down the road when we rethink the command line usage and fix a few other things which have got a bit complex over time.</p>
+
+<h2>Give it a go</h2>
+
+<p>All the links you need are on our GitHub page at <a href="https://github.com/GitTools/GitVersion#gitversion">https://github.com/GitTools/GitVersion#gitversion</a></p>
 </div>
 
 
@@ -136,7 +173,7 @@
 
 
 
-<time class='entry-date' datetime='2014-01-05T16:51:56+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:51 pm</span></time>
+<time class='entry-date' datetime='2015-07-28T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
       
 
 
@@ -144,7 +181,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2014/01/05/blog-migration/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2014/01/05/blog-migration/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jake.ginnivan.net/blog/2015/07/28/gitversion-v3/" data-via="JakeGinnivan" data-counturl="http://jake.ginnivan.net/blog/2015/07/28/gitversion-v3/" >Tweet</a>
   
   
   
@@ -153,10 +190,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/gitreleasenotes/" title="Previous Post: GitReleaseNotes Initial Release!">&laquo; GitReleaseNotes Initial Release!</a>
+        <a class="basic-alignment left" href="/blog/2015/05/27/react-popout-window/" title="Previous Post: ReactJS Popout window">&laquo; ReactJS Popout window</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/10/on-async-and-sync-contexts/" title="Next Post: On Async and Sync Contexts">On Async and Sync Contexts &raquo;</a>
       
     </p>
   </footer>
@@ -194,8 +229,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jake.ginnivan.net/blog/2014/01/05/blog-migration/';
-        var disqus_url = 'http://jake.ginnivan.net/blog/2014/01/05/blog-migration/';
+        var disqus_identifier = 'http://jake.ginnivan.net/blog/2015/07/28/gitversion-v3/';
+        var disqus_url = 'http://jake.ginnivan.net/blog/2015/07/28/gitversion-v3/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -9,7 +9,8 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="Last week I put together a project template for a windows phone 7 test project. At the moment there isn&rsquo;t a really good story for unit testing &hellip;">
+  <meta name="description" content="Windows Phone MVC? So to get started, let me explain what it is.
+It is a MVC + MVVM Hybrid framework, I think MVVM falls down in a few area&rsquo;s, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +90,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/windows-phone-mvc-update/">Windows Phone MVC Update</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-08-21'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Windows Phone MVC?</h1>
+
+<p>So to get started, let me explain what it is.<br/>
+It is a MVC + MVVM Hybrid framework, I think MVVM falls down in a few area&rsquo;s, and by teaming up with the MVC pattern we can achieve great testability, performance, navigation, lifecycle etc..</p>
+
+<p>The aim of Windows Phone MVC is to make windows phone development quicker, easier, more enjoyable and most of all help you build a nice performant app which gives an awesome user experience.</p>
+
+<p>This is going to be quite a long post going through many features of Windows Phone MVC, I hope it gets across what I am trying to do with the framework, and how it can help you out!<br/>
+I am still a little way from v1, so there will be API changes, but I am more than happy to field some questions about how to use it.</p>
+
+<p>Many of the improvements on this release are due to <a href="http://transhub.wordpress.com/">http://transhub.wordpress.com/</a> using Windows Phone MVC and I have been working close with the transub team to make sure the framework helped them deliver a killer app!</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/windows-phone-mvc-update/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -480,46 +525,6 @@ lib\SL4-WindowsPhone\WindowsPhoneEssentials.dll
     <footer>
       <a rel="full-article" href="/wp7essentials/">Read on &rarr;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/tfsmergetools/">TFS Merge Tools Configuration</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-06-01'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When I first install Visual Studio and TFS Explorer, high on my priorities is to configure a decent merge tool.</p>
-
-<p>This blog post <a href="http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx">http://blogs.msdn.com/b/jmanning/archive/2006/02/20/diff-merge-configuration-in-team-foundation-common-command-and-argument-values.aspx</a> lists all common merge tools, and the command line arguments for each of them.</p>
-
-<p>I use KDiff, so the Compare arguments are <code>%1 --fname %6 %2 --fname %7</code> and Merge arguments are <code>%3 --fname %8 %2 --fname %7 %1 --fname %6 -o %4</code></p>
-
-<p>Great, except I have to register all the extensions that I want to use KDiff for. This is my list:</p>
-
-<pre><code>.xml,.xaml,.cs,.csproj,.sln,.config,.msbuild,.txt,.cmd,.bat,.ps1,.nuspec,.xsd,.tasks,.xsl,.resx,.vb,.sql,.rptproj,.rdl,.rss,.settings
-</code></pre>
-
-<p>What other extensions am I missing?</p>
-</div>
-  
   
 
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nuget | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/nuget/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-06-08T23:24:51+01:00</updated>
+  <updated>2015-07-28T11:38:08+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Release NuGet SemVer packages from Teamcity]]></title>
     <link href="http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity/"/>
-    <updated>2013-09-28T00:00:00+01:00</updated>
+    <updated>2013-09-28T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/release-nuget-semver-packages-from-teamcity</id>
     <content type="html"><![CDATA[<p>I have a number of open source projects and I do not really have a <strong>good</strong> release process. So I spend the arvo trying to figure out a good way to do it.</p>
 
@@ -141,7 +141,7 @@
   <entry>
     <title type="html"><![CDATA[ApiApprover]]></title>
     <link href="http://jake.ginnivan.net/apiapprover/"/>
-    <updated>2012-02-19T00:00:00+00:00</updated>
+    <updated>2012-02-19T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/apiapprover</id>
     <content type="html"><![CDATA[<p>Recently I had an issue at work, we wanted to guarantee we had no breaking public API changes, and wanted to start adhering to semantic versioning.</p>
 
@@ -189,7 +189,7 @@ PublicApiApprovalTest.cs</p>
   <entry>
     <title type="html"><![CDATA[NuGet Packages targeting WP7]]></title>
     <link href="http://jake.ginnivan.net/nugetwp7/"/>
-    <updated>2011-06-21T00:00:00+01:00</updated>
+    <updated>2011-06-21T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/nugetwp7</id>
     <content type="html"><![CDATA[<p><strong>Update</strong> Compatibility table at <a href="http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples">http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package#Common_Framework_and_Profile_Targeting_Examples</a></p>
 

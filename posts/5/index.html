@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Ginnivan">
 
   
-  <meta name="description" content="If you haven&rsquo;t seen Markpad, think Windows Live Writer, but for Jekyll, Pretzel, FunnelWeb blogs, and also editing normal markdown files. While &hellip;">
+  <meta name="description" content="Scenario So the scenario is that we are in the middle of migrating all our services into Azure, and there will be a time when our services will be &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/web-api-problem-404s-for-everything/">Web Api Problem - 404s for Everything</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-08-20'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Scenario</h1>
+
+<p>So the scenario is that we are in the middle of migrating all our services into Azure, and there will be a time when our services will be running on premise and also in Azure.</p>
+
+<p>We added this class to our project and added a reference to <code>Microsoft.WindowsAzure.ServiceRuntime</code> (from the GAC):</p>
+
+<pre><code>public class WebRole : RoleEntryPoint
+{
+    public override bool OnStart()
+    {
+        //Start code
+        return base.OnStart();
+    }
+}
+</code></pre>
+
+<p>Our WebApi site starts 404'ing. There was also a heap of other work which was brought in at the same time, so tracking this down was rather hard.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/web-api-problem-404s-for-everything/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -491,50 +541,6 @@ And finally, I will be showing a bit of VSTO contrib and how you can use IoC and
   
     <footer>
       <a rel="full-article" href="/multitargeted-windows-phone-project/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/windows-phone-mvc-update/">Windows Phone MVC Update</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-08-21'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2011</span></span> <span class='time'>12:00 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Windows Phone MVC?</h1>
-
-<p>So to get started, let me explain what it is.<br/>
-It is a MVC + MVVM Hybrid framework, I think MVVM falls down in a few area&rsquo;s, and by teaming up with the MVC pattern we can achieve great testability, performance, navigation, lifecycle etc..</p>
-
-<p>The aim of Windows Phone MVC is to make windows phone development quicker, easier, more enjoyable and most of all help you build a nice performant app which gives an awesome user experience.</p>
-
-<p>This is going to be quite a long post going through many features of Windows Phone MVC, I hope it gets across what I am trying to do with the framework, and how it can help you out!<br/>
-I am still a little way from v1, so there will be API changes, but I am more than happy to field some questions about how to use it.</p>
-
-<p>Many of the improvements on this release are due to <a href="http://transhub.wordpress.com/">http://transhub.wordpress.com/</a> using Windows Phone MVC and I have been working close with the transub team to make sure the framework helped them deliver a killer app!</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/windows-phone-mvc-update/">Read on &rarr;</a>
     </footer>
   
 

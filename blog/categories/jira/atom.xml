@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jira | Jake Ginnivan's blog]]></title>
   <link href="http://jake.ginnivan.net/blog/categories/jira/atom.xml" rel="self"/>
   <link href="http://jake.ginnivan.net/"/>
-  <updated>2015-06-08T23:24:51+01:00</updated>
+  <updated>2015-07-28T11:38:08+08:00</updated>
   <id>http://jake.ginnivan.net/</id>
   <author>
     <name><![CDATA[Jake Ginnivan]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[GitReleaseNotes Initial Release!]]></title>
     <link href="http://jake.ginnivan.net/gitreleasenotes/"/>
-    <updated>2013-12-17T00:00:00+00:00</updated>
+    <updated>2013-12-17T00:00:00+08:00</updated>
     <id>http://jake.ginnivan.net/gitreleasenotes</id>
     <content type="html"><![CDATA[<p>I have just used GitReleaseNotes to publish a release of GitReleaseNotes on GitHub <a href="https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0">https://github.com/JakeGinnivan/GitReleaseNotes/releases/tag/0.2.0</a>!</p>
 
